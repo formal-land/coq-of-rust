@@ -72,7 +72,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.Tuple [] |)
           |) in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (|
             M.call_closure (|
               Ty.path "u32",

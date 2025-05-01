@@ -92,458 +92,443 @@ Module blake2.
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        M.catch_return
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            []
-            [
-              Ty.path "revm_precompile::interface::PrecompileOutput";
-              Ty.path "revm_precompile::interface::PrecompileErrors"
-            ]) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ input :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      M.get_trait_method (|
-                        "core::ops::index::Index",
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.path "core::ops::range::RangeFull" ],
-                        "index",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.path "bytes::bytes::Bytes",
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| input |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |);
-                        Value.StructTuple "core::ops::range::RangeFull" [] [] []
-                      ]
-                    |)
-                  |)
-                |) in
-              let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "revm_precompile::interface::PrecompileOutput";
+                Ty.path "revm_precompile::interface::PrecompileErrors"
+              ]) (|
+            ltac:(M.monadic
+              (M.alloc (|
                 M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                  let~ input :
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [],
+                            [ Ty.path "core::ops::range::RangeFull" ],
+                            "index",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ne,
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.path "bytes::bytes::Bytes",
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
                                   [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| input |) |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "bytes::bytes::Bytes" ],
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.path "alloy_primitives::bytes_::Bytes",
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_precompile::blake2::INPUT_LENGTH",
-                                        Ty.path "usize"
                                       |)
                                     |)
                                   ]
                                 |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ]
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "revm_precompile::interface::PrecompileErrors",
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_precompile::interface::PrecompileError",
-                                          [],
-                                          [ Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ],
-                                          "into",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_precompile::interface::PrecompileError::Blake2WrongLength"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ rounds : Ty.path "usize" :=
-                M.cast
-                  (Ty.path "usize")
-                  (M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 4 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 4 ]
-                                [ Ty.path "u8" ];
-                              Ty.path "core::array::TryFromSliceError"
-                            ],
-                          "unwrap",
-                          [],
-                          []
-                        |),
+                            |);
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
+                          ]
+                        |)
+                      |)
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "revm_precompile::blake2::INPUT_LENGTH",
+                                            Ty.path "usize"
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                                        ]
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "revm_precompile::interface::PrecompileErrors",
+                                            M.get_trait_method (|
+                                              "core::convert::Into",
+                                              Ty.path "revm_precompile::interface::PrecompileError",
+                                              [],
+                                              [
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                              "into",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.StructTuple
+                                                "revm_precompile::interface::PrecompileError::Blake2WrongLength"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ rounds : Ty.path "usize" :=
+                    M.cast
+                      (Ty.path "usize")
+                      (M.call_closure (|
+                        Ty.path "u32",
+                        M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                         [
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                  [ Ty.path "u8" ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            M.get_trait_method (|
-                              "core::convert::TryInto",
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 4 ]
+                              [ Ty.path "u8" ],
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "core::result::Result")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                  [ Ty.path "u8" ]
-                              ],
-                              "try_into",
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "u8" ];
+                                  Ty.path "core::array::TryFromSliceError"
+                                ],
+                              "unwrap",
                               [],
                               []
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
                                     Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      [],
-                                      [
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "u8" ];
+                                    Ty.path "core::array::TryFromSliceError"
+                                  ],
+                                M.get_trait_method (|
+                                  "core::convert::TryInto",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                  "try_into",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
+                                          (Ty.path "&")
                                           []
-                                          [ Ty.path "usize" ]
-                                      ],
-                                      "index",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| input |) |)
-                                      |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        []
-                                        [ Ty.path "usize" ]
-                                        [ ("end_", Value.Integer IntegerKind.Usize 4) ]
-                                    ]
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeTo")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
+                                            [ ("end_", Value.Integer IntegerKind.Usize 4) ]
+                                        ]
+                                      |)
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             ]
                           |)
                         ]
-                      |)
-                    ]
-                  |)) in
-              let~ gas_used : Ty.path "u64" :=
-                M.call_closure (|
-                  Ty.path "u64",
-                  BinOp.Wrap.mul,
-                  [
-                    M.cast (Ty.path "u64") (M.read (| rounds |));
+                      |)) in
+                  let~ gas_used : Ty.path "u64" :=
+                    M.call_closure (|
+                      Ty.path "u64",
+                      BinOp.Wrap.mul,
+                      [
+                        M.cast (Ty.path "u64") (M.read (| rounds |));
+                        M.read (|
+                          get_constant (| "revm_precompile::blake2::F_ROUND", Ty.path "u64" |)
+                        |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
                     M.read (|
-                      get_constant (| "revm_precompile::blake2::F_ROUND", Ty.path "u64" |)
-                    |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                                        ]
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "revm_precompile::interface::PrecompileErrors",
+                                            M.get_trait_method (|
+                                              "core::convert::Into",
+                                              Ty.path "revm_precompile::interface::PrecompileError",
+                                              [],
+                                              [
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                              "into",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.StructTuple
+                                                "revm_precompile::interface::PrecompileError::OutOfGas"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ f : Ty.path "bool" :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.path "bool",
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| input |) |),
+                          Value.Integer IntegerKind.Usize 212
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ :=
+                                is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Integer IntegerKind.U8 1
+                                |) in
+                              M.alloc (| Value.Bool true |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ :=
+                                is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Integer IntegerKind.U8 0
+                                |) in
+                              M.alloc (| Value.Bool false |)));
+                          fun γ =>
+                            ltac:(M.monadic
                               (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.gt,
-                                  [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                                        ]
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "revm_precompile::interface::PrecompileErrors",
+                                            M.get_trait_method (|
+                                              "core::convert::Into",
+                                              Ty.path "revm_precompile::interface::PrecompileError",
+                                              [],
+                                              [
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ],
+                                              "into",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.StructTuple
+                                                "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
                                 |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              |)))
+                        ]
+                      |)
+                    |) in
+                  let~ h :
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 8 ]
+                        [ Ty.path "u64" ] :=
+                    repeat (|
+                      Value.Integer IntegerKind.U64 0,
+                      Value.Integer IntegerKind.Usize 8
+                    |) in
+                  let~ m :
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u64" ] :=
+                    repeat (|
+                      Value.Integer IntegerKind.U64 0,
+                      Value.Integer IntegerKind.Usize 16
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.use
+                        (M.match_operator (|
+                          Ty.tuple [],
                           M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ]
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "revm_precompile::interface::PrecompileErrors",
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_precompile::interface::PrecompileError",
-                                          [],
-                                          [ Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ],
-                                          "into",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_precompile::interface::PrecompileError::OutOfGas"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ f : Ty.path "bool" :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
-                    M.SubPointer.get_array_field (|
-                      M.deref (| M.read (| input |) |),
-                      Value.Integer IntegerKind.Usize 212
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.U8 1
-                            |) in
-                          M.alloc (| Value.Bool true |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.U8 0
-                            |) in
-                          M.alloc (| Value.Bool false |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [
-                                      Ty.path "revm_precompile::interface::PrecompileOutput";
-                                      Ty.path "revm_precompile::interface::PrecompileErrors"
-                                    ]
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "revm_precompile::interface::PrecompileErrors",
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_precompile::interface::PrecompileError",
-                                          [],
-                                          [ Ty.path "revm_precompile::interface::PrecompileErrors"
-                                          ],
-                                          "into",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)
-                              |)
-                            |)
-                          |)))
-                    ]
-                  |)
-                |) in
-              let~ h :
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 8 ]
-                    [ Ty.path "u64" ] :=
-                repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 8 |) in
-              let~ m :
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 16 ]
-                    [ Ty.path "u64" ] :=
-                repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 16 |) in
-              let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::step_by::StepBy")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ]
-                              ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
-                          [
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -560,327 +545,343 @@ Module blake2.
                                     ]
                                 ],
                               M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
+                                "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ]
                                   ],
                                 [],
                                 [],
-                                "enumerate",
+                                "into_iter",
                                 [],
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::iter::adapters::step_by::StepBy")
+                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "core::ops::range::Range")
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
                                         []
-                                        [ Ty.path "usize" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ]
                                     ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
                                     [],
                                     [],
-                                    "step_by",
+                                    "enumerate",
                                     [],
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      []
-                                      [ Ty.path "usize" ]
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "step_by",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        ("start", Value.Integer IntegerKind.Usize 4);
-                                        ("end_", Value.Integer IntegerKind.Usize 68)
-                                      ];
-                                    Value.Integer IntegerKind.Usize 8
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
+                                          [
+                                            ("start", Value.Integer IntegerKind.Usize 4);
+                                            ("end_", Value.Integer IntegerKind.Usize 68)
+                                          ];
+                                        Value.Integer IntegerKind.Usize 8
+                                      ]
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          |),
+                          [
+                            fun γ =>
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                              []
-                                              [
+                                (let iter := M.copy (| γ |) in
+                                M.loop (|
+                                  Ty.tuple [],
+                                  ltac:(M.monadic
+                                    (let~ _ : Ty.tuple [] :=
+                                      M.read (|
+                                        M.match_operator (|
+                                          Ty.tuple [],
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                  (Ty.path
+                                                    "core::iter::adapters::enumerate::Enumerate")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "core::ops::range::Range")
+                                                      (Ty.path
+                                                        "core::iter::adapters::step_by::StepBy")
                                                       []
-                                                      [ Ty.path "usize" ]
-                                                  ]
-                                              ],
-                                            [],
-                                            [],
-                                            "next",
-                                            [],
-                                            []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "next",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
                                           |),
                                           [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let γ1_0 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                            let γ1_1 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                            let i := M.copy (| γ1_0 |) in
-                                            let pos := M.copy (| γ1_1 |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.write (|
-                                                M.SubPointer.get_array_field (|
-                                                  h,
-                                                  M.read (| i |)
-                                                |),
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  M.get_associated_function (|
-                                                    Ty.path "u64",
-                                                    "from_le_bytes",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let γ1_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                                let γ1_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                                let i := M.copy (| γ1_0 |) in
+                                                let pos := M.copy (| γ1_1 |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (|
+                                                    M.SubPointer.get_array_field (|
+                                                      h,
+                                                      M.read (| i |)
+                                                    |),
                                                     M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 8 ]
-                                                        [ Ty.path "u8" ],
+                                                      Ty.path "u64",
                                                       M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Value.Integer IntegerKind.Usize 8 ]
-                                                              [ Ty.path "u8" ];
-                                                            Ty.path "core::array::TryFromSliceError"
-                                                          ],
-                                                        "unwrap",
+                                                        Ty.path "u64",
+                                                        "from_le_bytes",
                                                         [],
                                                         []
                                                       |),
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 8
-                                                                ]
-                                                                [ Ty.path "u8" ];
-                                                              Ty.path
-                                                                "core::array::TryFromSliceError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::convert::TryInto",
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                                            [ Ty.path "u8" ],
+                                                          M.get_associated_function (|
                                                             Ty.apply
-                                                              (Ty.path "&")
+                                                              (Ty.path "core::result::Result")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "slice")
-                                                                  []
-                                                                  [ Ty.path "u8" ]
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      8
+                                                                  ]
+                                                                  [ Ty.path "u8" ];
+                                                                Ty.path
+                                                                  "core::array::TryFromSliceError"
                                                               ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 8
-                                                                ]
-                                                                [ Ty.path "u8" ]
-                                                            ],
-                                                            "try_into",
+                                                            "unwrap",
                                                             [],
                                                             []
                                                           |),
                                                           [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
                                                                   Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
+                                                                    (Ty.path "array")
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ],
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::index::Index",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8
+                                                                    ]
+                                                                    [ Ty.path "u8" ];
+                                                                  Ty.path
+                                                                    "core::array::TryFromSliceError"
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "core::convert::TryInto",
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
                                                                     Ty.apply
                                                                       (Ty.path "slice")
                                                                       []
-                                                                      [ Ty.path "u8" ],
-                                                                    [],
+                                                                      [ Ty.path "u8" ]
+                                                                  ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
                                                                     [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8
+                                                                    ]
+                                                                    [ Ty.path "u8" ]
+                                                                ],
+                                                                "try_into",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
                                                                       Ty.apply
-                                                                        (Ty.path
-                                                                          "core::ops::range::Range")
+                                                                        (Ty.path "&")
                                                                         []
-                                                                        [ Ty.path "usize" ]
-                                                                    ],
-                                                                    "index",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| input |)
-                                                                      |)
-                                                                    |);
-                                                                    Value.StructRecord
-                                                                      "core::ops::range::Range"
-                                                                      []
-                                                                      [ Ty.path "usize" ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ],
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::index::Index",
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ],
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::range::Range")
+                                                                            []
+                                                                            [ Ty.path "usize" ]
+                                                                        ],
+                                                                        "index",
+                                                                        [],
+                                                                        []
+                                                                      |),
                                                                       [
-                                                                        ("start", M.read (| pos |));
-                                                                        ("end_",
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            BinOp.Wrap.add,
-                                                                            [
-                                                                              M.read (| pos |);
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                8
-                                                                            ]
-                                                                          |))
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| input |)
+                                                                          |)
+                                                                        |);
+                                                                        Value.StructRecord
+                                                                          "core::ops::range::Range"
+                                                                          []
+                                                                          [ Ty.path "usize" ]
+                                                                          [
+                                                                            ("start",
+                                                                              M.read (| pos |));
+                                                                            ("end_",
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| pos |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    8
+                                                                                ]
+                                                                              |))
+                                                                          ]
                                                                       ]
-                                                                  ]
+                                                                    |)
+                                                                  |)
                                                                 |)
-                                                              |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |))
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::step_by::StepBy")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ]
-                              ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
-                          [
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                |)))
+                          ]
+                        |))
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.use
+                        (M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (|
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -897,572 +898,589 @@ Module blake2.
                                     ]
                                 ],
                               M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
+                                "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ]
                                   ],
                                 [],
                                 [],
-                                "enumerate",
+                                "into_iter",
                                 [],
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::iter::adapters::step_by::StepBy")
+                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "core::ops::range::Range")
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
                                         []
-                                        [ Ty.path "usize" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ]
                                     ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
                                     [],
                                     [],
-                                    "step_by",
+                                    "enumerate",
                                     [],
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      []
-                                      [ Ty.path "usize" ]
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "step_by",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        ("start", Value.Integer IntegerKind.Usize 68);
-                                        ("end_", Value.Integer IntegerKind.Usize 196)
-                                      ];
-                                    Value.Integer IntegerKind.Usize 8
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
+                                          [
+                                            ("start", Value.Integer IntegerKind.Usize 68);
+                                            ("end_", Value.Integer IntegerKind.Usize 196)
+                                          ];
+                                        Value.Integer IntegerKind.Usize 8
+                                      ]
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          |),
+                          [
+                            fun γ =>
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                              []
-                                              [
+                                (let iter := M.copy (| γ |) in
+                                M.loop (|
+                                  Ty.tuple [],
+                                  ltac:(M.monadic
+                                    (let~ _ : Ty.tuple [] :=
+                                      M.read (|
+                                        M.match_operator (|
+                                          Ty.tuple [],
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                  (Ty.path
+                                                    "core::iter::adapters::enumerate::Enumerate")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "core::ops::range::Range")
+                                                      (Ty.path
+                                                        "core::iter::adapters::step_by::StepBy")
                                                       []
-                                                      [ Ty.path "usize" ]
-                                                  ]
-                                              ],
-                                            [],
-                                            [],
-                                            "next",
-                                            [],
-                                            []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "next",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
                                           |),
                                           [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let γ1_0 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                            let γ1_1 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                            let i := M.copy (| γ1_0 |) in
-                                            let pos := M.copy (| γ1_1 |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.write (|
-                                                M.SubPointer.get_array_field (|
-                                                  m,
-                                                  M.read (| i |)
-                                                |),
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  M.get_associated_function (|
-                                                    Ty.path "u64",
-                                                    "from_le_bytes",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let γ1_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                                let γ1_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                                let i := M.copy (| γ1_0 |) in
+                                                let pos := M.copy (| γ1_1 |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (|
+                                                    M.SubPointer.get_array_field (|
+                                                      m,
+                                                      M.read (| i |)
+                                                    |),
                                                     M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 8 ]
-                                                        [ Ty.path "u8" ],
+                                                      Ty.path "u64",
                                                       M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Value.Integer IntegerKind.Usize 8 ]
-                                                              [ Ty.path "u8" ];
-                                                            Ty.path "core::array::TryFromSliceError"
-                                                          ],
-                                                        "unwrap",
+                                                        Ty.path "u64",
+                                                        "from_le_bytes",
                                                         [],
                                                         []
                                                       |),
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 8
-                                                                ]
-                                                                [ Ty.path "u8" ];
-                                                              Ty.path
-                                                                "core::array::TryFromSliceError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::convert::TryInto",
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                                            [ Ty.path "u8" ],
+                                                          M.get_associated_function (|
                                                             Ty.apply
-                                                              (Ty.path "&")
+                                                              (Ty.path "core::result::Result")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "slice")
-                                                                  []
-                                                                  [ Ty.path "u8" ]
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      8
+                                                                  ]
+                                                                  [ Ty.path "u8" ];
+                                                                Ty.path
+                                                                  "core::array::TryFromSliceError"
                                                               ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 8
-                                                                ]
-                                                                [ Ty.path "u8" ]
-                                                            ],
-                                                            "try_into",
+                                                            "unwrap",
                                                             [],
                                                             []
                                                           |),
                                                           [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
                                                                   Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
+                                                                    (Ty.path "array")
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ],
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::index::Index",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8
+                                                                    ]
+                                                                    [ Ty.path "u8" ];
+                                                                  Ty.path
+                                                                    "core::array::TryFromSliceError"
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "core::convert::TryInto",
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
                                                                     Ty.apply
                                                                       (Ty.path "slice")
                                                                       []
-                                                                      [ Ty.path "u8" ],
-                                                                    [],
+                                                                      [ Ty.path "u8" ]
+                                                                  ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
                                                                     [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8
+                                                                    ]
+                                                                    [ Ty.path "u8" ]
+                                                                ],
+                                                                "try_into",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
                                                                       Ty.apply
-                                                                        (Ty.path
-                                                                          "core::ops::range::Range")
+                                                                        (Ty.path "&")
                                                                         []
-                                                                        [ Ty.path "usize" ]
-                                                                    ],
-                                                                    "index",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| input |)
-                                                                      |)
-                                                                    |);
-                                                                    Value.StructRecord
-                                                                      "core::ops::range::Range"
-                                                                      []
-                                                                      [ Ty.path "usize" ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ],
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::index::Index",
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ],
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::range::Range")
+                                                                            []
+                                                                            [ Ty.path "usize" ]
+                                                                        ],
+                                                                        "index",
+                                                                        [],
+                                                                        []
+                                                                      |),
                                                                       [
-                                                                        ("start", M.read (| pos |));
-                                                                        ("end_",
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            BinOp.Wrap.add,
-                                                                            [
-                                                                              M.read (| pos |);
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                8
-                                                                            ]
-                                                                          |))
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| input |)
+                                                                          |)
+                                                                        |);
+                                                                        Value.StructRecord
+                                                                          "core::ops::range::Range"
+                                                                          []
+                                                                          [ Ty.path "usize" ]
+                                                                          [
+                                                                            ("start",
+                                                                              M.read (| pos |));
+                                                                            ("end_",
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| pos |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    8
+                                                                                ]
+                                                                              |))
+                                                                          ]
                                                                       ]
-                                                                  ]
+                                                                    |)
+                                                                  |)
                                                                 |)
-                                                              |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |))
-                |) in
-              let~ t :
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 2 ]
-                    [ Ty.path "u64" ] :=
-                Value.Array
-                  [
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                |)))
+                          ]
+                        |))
+                    |) in
+                  let~ t :
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u64" ] :=
+                    Value.Array
                       [
                         M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 8 ]
-                            [ Ty.path "u8" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 8 ]
-                                  [ Ty.path "u8" ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            "unwrap",
-                            [],
-                            []
-                          |),
+                          Ty.path "u64",
+                          M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                           [
                             M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                    [ Ty.path "u8" ];
-                                  Ty.path "core::array::TryFromSliceError"
-                                ],
-                              M.get_trait_method (|
-                                "core::convert::TryInto",
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u8" ],
+                              M.get_associated_function (|
                                 Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                    [ Ty.path "u8" ]
-                                ],
-                                "try_into",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      M.get_trait_method (|
-                                        "core::ops::index::Index",
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::Range")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| input |) |)
-                                        |);
-                                        Value.StructRecord
-                                          "core::ops::range::Range"
-                                          []
-                                          [ Ty.path "usize" ]
-                                          [
-                                            ("start", Value.Integer IntegerKind.Usize 196);
-                                            ("end_",
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  Value.Integer IntegerKind.Usize 196;
-                                                  Value.Integer IntegerKind.Usize 8
-                                                ]
-                                              |))
-                                          ]
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      ]
-                    |);
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 8 ]
-                            [ Ty.path "u8" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 8 ]
-                                  [ Ty.path "u8" ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            "unwrap",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                    [ Ty.path "u8" ];
-                                  Ty.path "core::array::TryFromSliceError"
-                                ],
-                              M.get_trait_method (|
-                                "core::convert::TryInto",
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                    [ Ty.path "u8" ]
-                                ],
-                                "try_into",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      M.get_trait_method (|
-                                        "core::ops::index::Index",
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::Range")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| input |) |)
-                                        |);
-                                        Value.StructRecord
-                                          "core::ops::range::Range"
-                                          []
-                                          [ Ty.path "usize" ]
-                                          [
-                                            ("start", Value.Integer IntegerKind.Usize 204);
-                                            ("end_",
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  Value.Integer IntegerKind.Usize 204;
-                                                  Value.Integer IntegerKind.Usize 8
-                                                ]
-                                              |))
-                                          ]
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
-                  ] in
-              let~ _ : Ty.tuple [] :=
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (| "revm_precompile::blake2::algo::compress", [], [] |),
-                  [
-                    M.read (| rounds |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, h |) |)
-                    |);
-                    M.read (| m |);
-                    M.read (| t |);
-                    M.read (| f |)
-                  ]
-                |) in
-              let~ out :
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 64 ]
-                    [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |) in
-              let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::zip::Zip")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::step_by::StepBy")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ]
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::zip::Zip")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                  (Ty.path "core::result::Result")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                      [ Ty.path "u8" ];
+                                    Ty.path "core::array::TryFromSliceError"
+                                  ],
+                                "unwrap",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ];
+                                      Ty.path "core::array::TryFromSliceError"
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::convert::TryInto",
+                                    Ty.apply
+                                      (Ty.path "&")
                                       []
-                                      [ Ty.path "usize" ]
-                                  ];
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ]
-                              ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                    "try_into",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::Range")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
+                                              [
+                                                ("start", Value.Integer IntegerKind.Usize 196);
+                                                ("end_",
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 196;
+                                                      Value.Integer IntegerKind.Usize 8
+                                                    ]
+                                                  |))
+                                              ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u8" ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                      [ Ty.path "u8" ];
+                                    Ty.path "core::array::TryFromSliceError"
+                                  ],
+                                "unwrap",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ];
+                                      Ty.path "core::array::TryFromSliceError"
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::convert::TryInto",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                    "try_into",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::Range")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |);
+                                            Value.StructRecord
+                                              "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
+                                              [
+                                                ("start", Value.Integer IntegerKind.Usize 204);
+                                                ("end_",
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 204;
+                                                      Value.Integer IntegerKind.Usize 8
+                                                    ]
+                                                  |))
+                                              ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      ] in
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_function (| "revm_precompile::blake2::algo::compress", [], [] |),
+                      [
+                        M.read (| rounds |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, h |) |)
+                        |);
+                        M.read (| m |);
+                        M.read (| t |);
+                        M.read (| f |)
+                      ]
+                    |) in
+                  let~ out :
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 64 ]
+                        [ Ty.path "u8" ] :=
+                    repeat (|
+                      Value.Integer IntegerKind.U8 0,
+                      Value.Integer IntegerKind.Usize 64
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.use
+                        (M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (|
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::iter::adapters::zip::Zip")
@@ -1480,303 +1498,372 @@ Module blake2.
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ]
                                 ],
                               M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
+                                "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
-                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                  (Ty.path "core::iter::adapters::zip::Zip")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u64" ]
                                   ],
                                 [],
                                 [],
-                                "zip",
+                                "into_iter",
                                 [],
-                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ]
-                                ]
+                                []
                               |),
                               [
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::iter::adapters::step_by::StepBy")
+                                    (Ty.path "core::iter::adapters::zip::Zip")
                                     []
                                     [
                                       Ty.apply
-                                        (Ty.path "core::ops::range::Range")
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
                                         []
-                                        [ Ty.path "usize" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u64" ]
                                     ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
-                                      (Ty.path "core::ops::range::Range")
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
                                       []
-                                      [ Ty.path "usize" ],
-                                    [],
-                                    [],
-                                    "step_by",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      []
-                                      [ Ty.path "usize" ]
                                       [
-                                        ("start", Value.Integer IntegerKind.Usize 0);
-                                        ("end_", Value.Integer IntegerKind.Usize 64)
-                                      ];
-                                    Value.Integer IntegerKind.Usize 8
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                    "iter",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
                                     [],
-                                    []
+                                    [],
+                                    "zip",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u64" ]
+                                    ]
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, h |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "step_by",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
+                                          [
+                                            ("start", Value.Integer IntegerKind.Usize 0);
+                                            ("end_", Value.Integer IntegerKind.Usize 64)
+                                          ];
+                                        Value.Integer IntegerKind.Usize 8
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u64" ],
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                        "iter",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, h |))
+                                      ]
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          |),
+                          [
+                            fun γ =>
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [
-                                              Ty.tuple
+                                (let iter := M.copy (| γ |) in
+                                M.loop (|
+                                  Ty.tuple [],
+                                  ltac:(M.monadic
+                                    (let~ _ : Ty.tuple [] :=
+                                      M.read (|
+                                        M.match_operator (|
+                                          Ty.tuple [],
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
                                                 [
-                                                  Ty.path "usize";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                                ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::zip::Zip")
-                                              []
-                                              [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                    ]
+                                                ],
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                  (Ty.path "core::iter::adapters::zip::Zip")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "core::ops::range::Range")
+                                                      (Ty.path
+                                                        "core::iter::adapters::step_by::StepBy")
                                                       []
-                                                      [ Ty.path "usize" ]
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::slice::iter::Iter")
-                                                  []
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                            [],
-                                            [],
-                                            "next",
-                                            [],
-                                            []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [ Ty.path "u64" ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "next",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
                                           |),
                                           [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let γ1_0 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                            let γ1_1 :=
-                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                            let i := M.copy (| γ1_0 |) in
-                                            let h := M.copy (| γ1_1 |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "copy_from_slice",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "&mut")
-                                                          []
-                                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let γ1_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                                let γ1_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                                let i := M.copy (| γ1_0 |) in
+                                                let h := M.copy (| γ1_1 |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.call_closure (|
+                                                    Ty.tuple [],
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "copy_from_slice",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "slice")
+                                                              (Ty.path "&mut")
                                                               []
-                                                              [ Ty.path "u8" ]
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::index::IndexMut",
-                                                          Ty.apply
-                                                            (Ty.path "array")
-                                                            [ Value.Integer IntegerKind.Usize 64 ]
-                                                            [ Ty.path "u8" ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::ops::range::Range")
-                                                              []
-                                                              [ Ty.path "usize" ]
-                                                          ],
-                                                          "index_mut",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (| Pointer.Kind.MutRef, out |);
-                                                          Value.StructRecord
-                                                            "core::ops::range::Range"
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                            [
-                                                              ("start", M.read (| i |));
-                                                              ("end_",
-                                                                M.call_closure (|
-                                                                  Ty.path "usize",
-                                                                  BinOp.Wrap.add,
-                                                                  [
-                                                                    M.read (| i |);
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      8
-                                                                  ]
-                                                                |))
-                                                            ]
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |);
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.alloc (|
-                                                            M.call_closure (|
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::index::IndexMut",
                                                               Ty.apply
                                                                 (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 8
+                                                                [ Value.Integer IntegerKind.Usize 64
                                                                 ]
                                                                 [ Ty.path "u8" ],
-                                                              M.get_associated_function (|
-                                                                Ty.path "u64",
-                                                                "to_le_bytes",
-                                                                [],
-                                                                []
-                                                              |),
+                                                              [],
                                                               [
-                                                                M.read (|
-                                                                  M.deref (| M.read (| h |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ]
+                                                              ],
+                                                              "index_mut",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                out
+                                                              |);
+                                                              Value.StructRecord
+                                                                "core::ops::range::Range"
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                                [
+                                                                  ("start", M.read (| i |));
+                                                                  ("end_",
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.read (| i |);
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          8
+                                                                      ]
+                                                                    |))
+                                                                ]
+                                                            ]
                                                           |)
                                                         |)
-                                                      |)
-                                                    |))
-                                                ]
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |))
-                |) in
-              M.alloc (|
-                Value.StructTuple
-                  "core::result::Result::Ok"
-                  []
-                  [
-                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                  ]
-                  [
-                    M.call_closure (|
-                      Ty.path "revm_precompile::interface::PrecompileOutput",
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::interface::PrecompileOutput",
-                        "new",
-                        [],
-                        []
-                      |),
+                                                      |);
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8
+                                                                    ]
+                                                                    [ Ty.path "u8" ],
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "u64",
+                                                                    "to_le_bytes",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.deref (| M.read (| h |) |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |))
+                                                    ]
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                |)))
+                          ]
+                        |))
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
                       [
-                        M.read (| gas_used |);
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
+                      [
                         M.call_closure (|
-                          Ty.path "alloy_primitives::bytes_::Bytes",
-                          M.get_trait_method (|
-                            "core::convert::Into",
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 64 ]
-                              [ Ty.path "u8" ],
-                            [],
-                            [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                            "into",
+                          Ty.path "revm_precompile::interface::PrecompileOutput",
+                          M.get_associated_function (|
+                            Ty.path "revm_precompile::interface::PrecompileOutput",
+                            "new",
                             [],
                             []
                           |),
-                          [ M.read (| out |) ]
+                          [
+                            M.read (| gas_used |);
+                            M.call_closure (|
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              M.get_trait_method (|
+                                "core::convert::Into",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 64 ]
+                                  [ Ty.path "u8" ],
+                                [],
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                "into",
+                                [],
+                                []
+                              |),
+                              [ M.read (| out |) ]
+                            |)
+                          ]
                         |)
                       ]
-                    |)
-                  ]
-              |)
-            |)))
+                  |)
+                |)
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2485,7 +2572,7 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2516,7 +2603,7 @@ Module blake2.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -2546,12 +2633,12 @@ Module blake2.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3004,7 +3091,7 @@ Module blake2.
               |) in
             M.use
               (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -3034,12 +3121,12 @@ Module blake2.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply

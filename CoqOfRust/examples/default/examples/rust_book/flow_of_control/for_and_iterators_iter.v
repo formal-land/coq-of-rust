@@ -85,7 +85,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.read (|
             M.use
               (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -162,12 +162,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -217,7 +217,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         |) in
                                       let name := M.copy (| γ0_0 |) in
                                       M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        Ty.tuple [],
                                         name,
                                         [
                                           fun γ =>

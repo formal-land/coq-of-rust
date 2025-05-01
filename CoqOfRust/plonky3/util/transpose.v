@@ -44,7 +44,7 @@ Module transpose.
         M.read (|
           M.use
             (M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -91,12 +91,12 @@ Module transpose.
                   ltac:(M.monadic
                     (let iter := M.copy (| γ |) in
                     M.loop (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -137,7 +137,7 @@ Module transpose.
                                     let i := M.copy (| γ0_0 |) in
                                     M.use
                                       (M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        Ty.tuple [],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -173,12 +173,12 @@ Module transpose.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
-                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.read (|
                                                       M.match_operator (|
-                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                        Ty.tuple [],
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -395,7 +395,7 @@ Module transpose.
         M.read (|
           M.use
             (M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -437,12 +437,12 @@ Module transpose.
                   ltac:(M.monadic
                     (let iter := M.copy (| γ |) in
                     M.loop (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -483,7 +483,7 @@ Module transpose.
                                     let i := M.copy (| γ0_0 |) in
                                     M.use
                                       (M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        Ty.tuple [],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -534,12 +534,12 @@ Module transpose.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
-                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.read (|
                                                       M.match_operator (|
-                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                        Ty.tuple [],
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -757,7 +757,7 @@ Module transpose.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -917,7 +917,7 @@ Module transpose.
         let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

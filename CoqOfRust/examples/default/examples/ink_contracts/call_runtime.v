@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "call_runtime::AccountId" ],
+            Ty.path "call_runtime::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -368,7 +368,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
         (let e := M.alloc (| e |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "call_runtime::RuntimeError" ],
+            Ty.path "call_runtime::RuntimeError",
             e,
             [
               fun γ =>

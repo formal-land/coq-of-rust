@@ -1111,14 +1111,9 @@ Module ascii.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                  ],
+                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1216,14 +1211,9 @@ Module ascii.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                  ],
+                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1301,7 +1291,7 @@ Module ascii.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1792,27 +1782,17 @@ Module ascii.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
+                  Ty.tuple
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 6 ]
-                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                          Ty.path "usize"
-                        ]
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 6 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                      Ty.path "usize"
                     ],
                   self,
                   [

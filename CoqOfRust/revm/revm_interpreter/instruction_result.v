@@ -348,7 +348,7 @@ Module instruction_result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -1093,10 +1093,7 @@ Module instruction_result.
           (let e := M.alloc (| e |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              Ty.path "revm_interpreter::instruction_result::InstructionResult",
               e,
               [
                 fun γ =>
@@ -1171,7 +1168,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -1186,7 +1183,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Continue"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1194,7 +1191,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Stop"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1202,7 +1199,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Return"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1210,7 +1207,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1218,7 +1215,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -1250,7 +1247,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -1270,7 +1267,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Continue"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1278,7 +1275,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Stop"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1286,7 +1283,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Return"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1294,7 +1291,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1302,12 +1299,12 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                                       |) in
-                                    Value.Tuple []))
+                                    M.alloc (| Value.Tuple [] |)))
                               ],
                               fun γ =>
                                 ltac:(M.monadic
                                   match γ with
-                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   | _ => M.impossible "wrong number of arguments"
                                   end)
                             |)));
@@ -1323,7 +1320,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Revert"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1331,7 +1328,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1339,7 +1336,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1347,7 +1344,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1355,7 +1352,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                                       |) in
-                                    Value.Tuple []));
+                                    M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1363,12 +1360,12 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                                       |) in
-                                    Value.Tuple []))
+                                    M.alloc (| Value.Tuple [] |)))
                               ],
                               fun γ =>
                                 ltac:(M.monadic
                                   match γ with
-                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   | _ => M.impossible "wrong number of arguments"
                                   end)
                             |)))
@@ -1404,7 +1401,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -1439,7 +1436,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -1454,7 +1451,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Revert"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1462,7 +1459,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1470,7 +1467,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1478,7 +1475,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1486,7 +1483,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1494,7 +1491,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -1527,7 +1524,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -1542,7 +1539,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1550,7 +1547,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1558,7 +1555,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1566,7 +1563,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1574,7 +1571,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1582,7 +1579,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1590,7 +1587,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1598,7 +1595,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1606,7 +1603,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1614,7 +1611,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1622,7 +1619,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1630,7 +1627,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1638,7 +1635,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1646,7 +1643,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1654,7 +1651,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1662,7 +1659,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1670,7 +1667,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1678,7 +1675,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1686,7 +1683,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1694,7 +1691,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1702,7 +1699,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1710,7 +1707,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1718,7 +1715,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1726,7 +1723,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1734,7 +1731,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1742,7 +1739,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1750,7 +1747,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1758,7 +1755,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1766,7 +1763,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -1807,10 +1804,7 @@ Module instruction_result.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              Ty.path "revm_interpreter::instruction_result::InstructionResult",
               value,
               [
                 fun γ =>
@@ -1930,10 +1924,7 @@ Module instruction_result.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              Ty.path "revm_interpreter::instruction_result::InstructionResult",
               value,
               [
                 fun γ =>
@@ -1946,10 +1937,7 @@ Module instruction_result.
                       |) in
                     let error := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       error,
                       [
                         fun γ =>
@@ -2422,7 +2410,7 @@ Module instruction_result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -2753,14 +2741,9 @@ Module instruction_result.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
-                    []
-                    [ HaltReasonT ]
-                ],
+                [ HaltReasonT ],
               self,
               [
                 fun γ =>
@@ -2917,14 +2900,9 @@ Module instruction_result.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               self,
               [
                 fun γ =>
@@ -3167,7 +3145,7 @@ Module instruction_result.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                      Ty.path "bool",
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -3348,19 +3326,19 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -3440,7 +3418,7 @@ Module instruction_result.
                 ]
               |) in
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               self,
               [
                 fun γ =>
@@ -3566,7 +3544,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -3613,14 +3591,9 @@ Module instruction_result.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::option::Option")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "revm_context_interface::result::SuccessReason" ]
-                ],
+                [ Ty.path "revm_context_interface::result::SuccessReason" ],
               self,
               [
                 fun γ =>
@@ -3678,7 +3651,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -3720,7 +3693,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -3766,10 +3739,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ],
               self,
               [
                 fun γ =>
@@ -3952,14 +3922,9 @@ Module instruction_result.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
-                    []
-                    [ HaltReasonT ]
-                ],
+                [ HaltReasonT ],
               result,
               [
                 fun γ =>
@@ -4410,7 +4375,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -4418,7 +4383,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -4875,7 +4840,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -4883,7 +4848,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic

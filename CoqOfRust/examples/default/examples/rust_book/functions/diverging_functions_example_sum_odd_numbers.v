@@ -153,7 +153,7 @@ Module main.
             M.read (|
               M.use
                 (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -181,12 +181,12 @@ Module main.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -233,7 +233,7 @@ Module main.
                                         let~ addition : Ty.path "u32" :=
                                           M.read (|
                                             M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
+                                              Ty.path "u32",
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "bool",

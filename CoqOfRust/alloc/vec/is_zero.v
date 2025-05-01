@@ -41,10 +41,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -111,10 +108,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -181,10 +175,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -251,10 +242,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -321,10 +309,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -391,10 +376,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -461,10 +443,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -531,10 +510,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -601,10 +577,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -671,10 +644,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -741,10 +711,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -811,10 +778,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -881,10 +845,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -951,10 +912,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -1021,10 +979,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -1103,10 +1058,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool") ],
+                                Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool"),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -1336,7 +1288,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -1564,7 +1516,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -1769,7 +1721,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -1951,7 +1903,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -2110,7 +2062,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -2241,7 +2193,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -2345,7 +2297,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -2425,7 +2377,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>

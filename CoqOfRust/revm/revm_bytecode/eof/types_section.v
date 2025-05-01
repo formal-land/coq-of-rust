@@ -129,19 +129,13 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
+                Ty.path "revm_bytecode::eof::types_section::TypesSection",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
+                        Ty.path "revm_bytecode::eof::types_section::TypesSection",
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -456,13 +450,13 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -506,11 +500,7 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -565,14 +555,9 @@ Module eof.
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ],
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -711,7 +696,7 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                Ty.path "core::cmp::Ordering",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -751,7 +736,7 @@ Module eof.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -1115,25 +1100,23 @@ Module eof.
         | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple
-                    [
-                      Ty.path "revm_bytecode::eof::types_section::TypesSection";
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                    ];
-                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.tuple
                       [
+                        Ty.path "revm_bytecode::eof::types_section::TypesSection";
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ];
+                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -1147,13 +1130,8 @@ Module eof.
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                               ];
                             Ty.path "revm_bytecode::eof::EofDecodeError"
-                          ]
-                      ],
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+                          ],
+                        M.match_operator (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -1161,189 +1139,20 @@ Module eof.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                               Ty.path "u8"
-                            ]
-                        ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                                ];
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                  Ty.path "u8"
-                                ]
                             ],
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "u8"
-                                  ];
-                                Ty.path "revm_bytecode::eof::EofDecodeError"
-                              ],
-                            [],
-                            [],
-                            "branch",
-                            [],
-                            []
-                          |),
-                          [
+                          M.alloc (|
                             M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
+                                (Ty.path "core::ops::control_flow::ControlFlow")
                                 []
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                      Ty.path "u8"
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
                                     ];
-                                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                                ],
-                              M.get_function (|
-                                "revm_bytecode::eof::decode_helpers::consume_u8",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.path
-                                                "revm_bytecode::eof::types_section::TypesSection";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                            ];
-                                          Ty.path "revm_bytecode::eof::EofDecodeError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path
-                                                  "revm_bytecode::eof::types_section::TypesSection";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ];
-                                            Ty.path "revm_bytecode::eof::EofDecodeError"
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "revm_bytecode::eof::EofDecodeError"
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val := M.copy (| γ0_0 |) in
-                            val))
-                      ]
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let input := M.copy (| γ0_0 |) in
-                          let inputs := M.copy (| γ0_1 |) in
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path "revm_bytecode::eof::types_section::TypesSection";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ];
-                                    Ty.path "revm_bytecode::eof::EofDecodeError"
-                                  ]
-                              ],
-                            M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
                                   Ty.tuple
                                     [
                                       Ty.apply
@@ -1353,19 +1162,34 @@ Module eof.
                                       Ty.path "u8"
                                     ]
                                 ],
-                              M.alloc (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                        Ty.path "u8"
+                                      ];
+                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                  ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    (Ty.path "core::result::Result")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "core::convert::Infallible";
-                                          Ty.path "revm_bytecode::eof::EofDecodeError"
-                                        ];
                                       Ty.tuple
                                         [
                                           Ty.apply
@@ -1373,546 +1197,59 @@ Module eof.
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                           Ty.path "u8"
-                                        ]
+                                        ];
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
                                     ],
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                            Ty.path "u8"
-                                          ];
-                                        Ty.path "revm_bytecode::eof::EofDecodeError"
-                                      ],
-                                    [],
-                                    [],
-                                    "branch",
+                                  M.get_function (|
+                                    "revm_bytecode::eof::decode_helpers::consume_u8",
                                     [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                              Ty.path "u8"
-                                            ];
-                                          Ty.path "revm_bytecode::eof::EofDecodeError"
-                                        ],
-                                      M.get_function (|
-                                        "revm_bytecode::eof::decode_helpers::consume_u8",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| input |) |)
-                                        |)
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
                                     |)
                                   ]
                                 |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.path
-                                                        "revm_bytecode::eof::types_section::TypesSection";
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ]
-                                                    ];
-                                                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path
-                                                          "revm_bytecode::eof::types_section::TypesSection";
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [ Ty.path "u8" ]
-                                                          ]
-                                                      ];
-                                                    Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                  ],
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
                               ]
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let input := M.copy (| γ0_0 |) in
-                                  let outputs := M.copy (| γ0_1 |) in
-                                  M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path
-                                                  "revm_bytecode::eof::types_section::TypesSection";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ];
-                                            Ty.path "revm_bytecode::eof::EofDecodeError"
-                                          ]
-                                      ],
-                                    M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                              Ty.path "u16"
-                                            ]
-                                        ],
-                                      M.alloc (|
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
                                         M.call_closure (|
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                ];
                                               Ty.tuple
                                                 [
+                                                  Ty.path
+                                                    "revm_bytecode::eof::types_section::TypesSection";
                                                   Ty.apply
                                                     (Ty.path "&")
                                                     []
                                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ];
-                                                  Ty.path "u16"
-                                                ]
+                                                    ]
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
                                             ],
                                           M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
+                                            "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "u16"
-                                                  ];
-                                                Ty.path "revm_bytecode::eof::EofDecodeError"
-                                              ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "u16"
-                                                    ];
-                                                  Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                ],
-                                              M.get_function (|
-                                                "revm_bytecode::eof::decode_helpers::consume_u16",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| input |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.path
-                                                                "revm_bytecode::eof::types_section::TypesSection";
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [ Ty.path "u8" ]
-                                                                ]
-                                                            ];
-                                                          Ty.path
-                                                            "revm_bytecode::eof::EofDecodeError"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "revm_bytecode::eof::types_section::TypesSection";
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
-                                                              ];
-                                                            Ty.path
-                                                              "revm_bytecode::eof::EofDecodeError"
-                                                          ],
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "core::convert::Infallible";
-                                                              Ty.path
-                                                                "revm_bytecode::eof::EofDecodeError"
-                                                            ]
-                                                        ],
-                                                        "from_residual",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let input := M.copy (| γ0_0 |) in
-                                          let max_stack_size := M.copy (| γ0_1 |) in
-                                          let~ section :
-                                              Ty.path
-                                                "revm_bytecode::eof::types_section::TypesSection" :=
-                                            Value.StructRecord
-                                              "revm_bytecode::eof::types_section::TypesSection"
-                                              []
-                                              []
-                                              [
-                                                ("inputs", M.read (| inputs |));
-                                                ("outputs", M.read (| outputs |));
-                                                ("max_stack_size", M.read (| max_stack_size |))
-                                              ] in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.read (|
-                                              M.match_operator (|
-                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::ops::control_flow::ControlFlow")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.path "core::convert::Infallible";
-                                                            Ty.path
-                                                              "revm_bytecode::eof::EofDecodeError"
-                                                          ];
-                                                        Ty.tuple []
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::Try",
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.tuple [];
-                                                          Ty.path
-                                                            "revm_bytecode::eof::EofDecodeError"
-                                                        ],
-                                                      [],
-                                                      [],
-                                                      "branch",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.tuple [];
-                                                            Ty.path
-                                                              "revm_bytecode::eof::EofDecodeError"
-                                                          ],
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "revm_bytecode::eof::types_section::TypesSection",
-                                                          "validate",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, section |) ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                          0
-                                                        |) in
-                                                      let residual := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.path
-                                                                          "revm_bytecode::eof::types_section::TypesSection";
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
-                                                                              []
-                                                                              [ Ty.path "u8" ]
-                                                                          ]
-                                                                      ];
-                                                                    Ty.path
-                                                                      "revm_bytecode::eof::EofDecodeError"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_bytecode::eof::types_section::TypesSection";
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ Ty.path "u8" ]
-                                                                            ]
-                                                                        ];
-                                                                      Ty.path
-                                                                        "revm_bytecode::eof::EofDecodeError"
-                                                                    ],
-                                                                  [],
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
-                                                                        Ty.path
-                                                                          "revm_bytecode::eof::EofDecodeError"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                          0
-                                                        |) in
-                                                      let val := M.copy (| γ0_0 |) in
-                                                      val))
-                                                ]
-                                              |)
-                                            |) in
-                                          M.alloc (|
-                                            Value.StructTuple
-                                              "core::result::Result::Ok"
                                               []
                                               [
                                                 Ty.tuple
@@ -1930,25 +1267,675 @@ Module eof.
                                                       ]
                                                   ];
                                                 Ty.path "revm_bytecode::eof::EofDecodeError"
-                                              ]
+                                              ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                ]
+                                            ],
+                                            "from_residual",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| residual |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| γ0_0 |) in
+                                val))
+                          ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let input := M.copy (| γ0_0 |) in
+                              let inputs := M.copy (| γ0_1 |) in
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.path "revm_bytecode::eof::types_section::TypesSection";
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                      ];
+                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                  ],
+                                M.match_operator (|
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "u8"
+                                    ],
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ];
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "u8"
+                                            ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::Try",
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.tuple
                                               [
-                                                Value.Tuple
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "u8"
+                                              ];
+                                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                                          ],
+                                        [],
+                                        [],
+                                        "branch",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.path "u8"
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ],
+                                          M.get_function (|
+                                            "revm_bytecode::eof::decode_helpers::consume_u8",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Break",
+                                            0
+                                          |) in
+                                        let residual := M.copy (| γ0_0 |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.path
+                                                            "revm_bytecode::eof::types_section::TypesSection";
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ]
+                                                        ];
+                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path
+                                                              "revm_bytecode::eof::types_section::TypesSection";
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]
+                                                          ];
+                                                        Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "revm_bytecode::eof::EofDecodeError"
+                                                        ]
+                                                    ],
+                                                    "from_residual",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| residual |) ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Continue",
+                                            0
+                                          |) in
+                                        let val := M.copy (| γ0_0 |) in
+                                        val))
+                                  ]
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                      let input := M.copy (| γ0_0 |) in
+                                      let outputs := M.copy (| γ0_1 |) in
+                                      M.match_operator (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "revm_bytecode::eof::types_section::TypesSection";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                              ];
+                                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                                          ],
+                                        M.match_operator (|
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "u16"
+                                            ],
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                    ];
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ];
+                                                      Ty.path "u16"
+                                                    ]
+                                                ],
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::Try",
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
                                                   [
-                                                    M.read (| section |);
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ];
+                                                        Ty.path "u16"
+                                                      ];
+                                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                  ],
+                                                [],
+                                                [],
+                                                "branch",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ];
+                                                          Ty.path "u16"
+                                                        ];
+                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                    ],
+                                                  M.get_function (|
+                                                    "revm_bytecode::eof::decode_helpers::consume_u16",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.deref (| M.read (| input |) |)
                                                     |)
                                                   ]
+                                                |)
                                               ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |)
-                |)))
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                    0
+                                                  |) in
+                                                let residual := M.copy (| γ0_0 |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_bytecode::eof::types_section::TypesSection";
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ]
+                                                                ];
+                                                              Ty.path
+                                                                "revm_bytecode::eof::EofDecodeError"
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::FromResidual",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.path
+                                                                      "revm_bytecode::eof::types_section::TypesSection";
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ];
+                                                                Ty.path
+                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                              ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "revm_bytecode::eof::EofDecodeError"
+                                                                ]
+                                                            ],
+                                                            "from_residual",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| residual |) ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                    0
+                                                  |) in
+                                                let val := M.copy (| γ0_0 |) in
+                                                val))
+                                          ]
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let input := M.copy (| γ0_0 |) in
+                                              let max_stack_size := M.copy (| γ0_1 |) in
+                                              let~ section :
+                                                  Ty.path
+                                                    "revm_bytecode::eof::types_section::TypesSection" :=
+                                                Value.StructRecord
+                                                  "revm_bytecode::eof::types_section::TypesSection"
+                                                  []
+                                                  []
+                                                  [
+                                                    ("inputs", M.read (| inputs |));
+                                                    ("outputs", M.read (| outputs |));
+                                                    ("max_stack_size", M.read (| max_stack_size |))
+                                                  ] in
+                                              let~ _ : Ty.tuple [] :=
+                                                M.read (|
+                                                  M.match_operator (|
+                                                    Ty.tuple [],
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "revm_bytecode::eof::EofDecodeError"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "branch",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                              ],
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "revm_bytecode::eof::types_section::TypesSection",
+                                                              "validate",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                section
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual := M.copy (| γ0_0 |) in
+                                                          M.alloc (|
+                                                            M.never_to_any (|
+                                                              M.read (|
+                                                                M.return_ (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_bytecode::eof::types_section::TypesSection";
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u8" ]
+                                                                              ]
+                                                                          ];
+                                                                        Ty.path
+                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                      ],
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::FromResidual",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_bytecode::eof::types_section::TypesSection";
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8" ]
+                                                                                ]
+                                                                            ];
+                                                                          Ty.path
+                                                                            "revm_bytecode::eof::EofDecodeError"
+                                                                        ],
+                                                                      [],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "revm_bytecode::eof::EofDecodeError"
+                                                                          ]
+                                                                      ],
+                                                                      "from_residual",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| residual |) ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val := M.copy (| γ0_0 |) in
+                                                          val))
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.alloc (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Ok"
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.path
+                                                          "revm_bytecode::eof::types_section::TypesSection";
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ]
+                                                      ];
+                                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                  ]
+                                                  [
+                                                    Value.Tuple
+                                                      [
+                                                        M.read (| section |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| input |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1973,167 +1960,181 @@ Module eof.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    LogicalOp.or (|
-                                      LogicalOp.or (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        LogicalOp.or (|
+                                          LogicalOp.or (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.gt,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "revm_bytecode::eof::types_section::TypesSection",
+                                                    "inputs"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.U8 127
+                                              ]
+                                            |),
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.gt,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "revm_bytecode::eof::types_section::TypesSection",
+                                                      "outputs"
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.U8 128
+                                                ]
+                                              |)))
+                                          |),
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.gt,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "revm_bytecode::eof::types_section::TypesSection",
+                                                    "max_stack_size"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.U16 1023
+                                              ]
+                                            |)))
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.gt,
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "revm_bytecode::eof::types_section::TypesSection",
-                                                "inputs"
-                                              |)
-                                            |);
-                                            Value.Integer IntegerKind.U8 127
-                                          ]
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.gt,
-                                            [
-                                              M.read (|
+                                            M.cast
+                                              (Ty.path "u16")
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.deref (| M.read (| self |) |),
                                                   "revm_bytecode::eof::types_section::TypesSection",
-                                                  "outputs"
+                                                  "inputs"
                                                 |)
-                                              |);
-                                              Value.Integer IntegerKind.U8 128
-                                            ]
-                                          |)))
-                                      |),
-                                      ltac:(M.monadic
-                                        (M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.gt,
-                                          [
+                                              |));
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.deref (| M.read (| self |) |),
                                                 "revm_bytecode::eof::types_section::TypesSection",
                                                 "max_stack_size"
                                               |)
-                                            |);
-                                            Value.Integer IntegerKind.U16 1023
-                                          ]
-                                        |)))
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.gt,
-                                      [
-                                        M.cast
-                                          (Ty.path "u16")
-                                          (M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "revm_bytecode::eof::types_section::TypesSection",
-                                              "inputs"
                                             |)
-                                          |));
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::eof::types_section::TypesSection",
-                                            "max_stack_size"
-                                          |)
+                                          ]
                                         |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError"
-                                        ]
-                                        [
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
                                           Value.StructTuple
-                                            "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                            "core::result::Result::Err"
                                             []
-                                            []
-                                            []
-                                        ]
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]
+                          [ Value.Tuple [] ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

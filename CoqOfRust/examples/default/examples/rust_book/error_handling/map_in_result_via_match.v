@@ -21,14 +21,9 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       M.read (|
         M.match_operator (|
           Ty.apply
-            (Ty.path "*")
+            (Ty.path "core::result::Result")
             []
-            [
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-            ],
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -47,14 +42,9 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 let first_number := M.copy (| γ0_0 |) in
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::result::Result")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                    ],
+                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -149,7 +139,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let result := M.alloc (| result |) in
       M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           result,
           [
             fun γ =>

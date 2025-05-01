@@ -198,7 +198,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -285,7 +285,7 @@ Module borrow.
           let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
               [
                 fun γ =>
@@ -406,7 +406,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -496,14 +496,9 @@ Module borrow.
                   M.read (|
                     M.match_operator (|
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "&mut")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ]
-                        ],
+                        [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
                       M.deref (| M.read (| self |) |),
                       [
                         fun γ =>
@@ -560,20 +555,15 @@ Module borrow.
                                           M.read (|
                                             M.match_operator (|
                                               Ty.apply
-                                                (Ty.path "*")
+                                                (Ty.path "&mut")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&mut")
+                                                  Ty.associated_in_trait
+                                                    "alloc::borrow::ToOwned"
                                                     []
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "alloc::borrow::ToOwned"
-                                                        []
-                                                        []
-                                                        B
-                                                        "Owned"
-                                                    ]
+                                                    []
+                                                    B
+                                                    "Owned"
                                                 ],
                                               M.deref (| M.read (| self |) |),
                                               [
@@ -670,10 +660,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+              Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
               self,
               [
                 fun γ =>
@@ -744,7 +731,7 @@ Module borrow.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ B ] ],
+                  Ty.apply (Ty.path "&") [] [ B ],
                   M.deref (| M.read (| self |) |),
                   [
                     fun γ =>
@@ -1095,14 +1082,9 @@ Module borrow.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -1198,14 +1180,9 @@ Module borrow.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -1548,7 +1525,7 @@ Module borrow.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1600,7 +1577,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1631,7 +1608,7 @@ Module borrow.
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -1806,7 +1783,7 @@ Module borrow.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1849,7 +1826,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1897,7 +1874,7 @@ Module borrow.
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>

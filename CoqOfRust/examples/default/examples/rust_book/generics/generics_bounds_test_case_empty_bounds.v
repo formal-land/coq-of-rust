@@ -66,7 +66,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
         [ fun γ => ltac:(M.monadic (mk_str (| "red" |))) ]
       |)))
@@ -89,7 +89,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
         [ fun γ => ltac:(M.monadic (mk_str (| "blue" |))) ]
       |)))

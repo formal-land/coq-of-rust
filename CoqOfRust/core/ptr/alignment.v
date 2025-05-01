@@ -34,7 +34,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::ptr::alignment::Alignment" ],
+                Ty.path "core::ptr::alignment::Alignment",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -130,7 +130,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -164,7 +164,7 @@ Module ptr.
           (let a := M.alloc (| a |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               a,
               [
                 fun γ =>
@@ -265,14 +265,9 @@ Module ptr.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::ptr::alignment::Alignment" ]
-                  ],
+                  [ Ty.path "core::ptr::alignment::Alignment" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -351,7 +346,7 @@ Module ptr.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -554,7 +549,7 @@ Module ptr.
             let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::ptr::alignment::Alignment" ],
+                Ty.path "core::ptr::alignment::Alignment",
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

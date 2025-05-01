@@ -970,7 +970,7 @@ Module Run.
       (of_ty : OfTy.t ty) :
     let Output' : Set := OfTy.get_Set of_ty in
     {{ body 🔽 R, Output' }} ->
-    (forall (value_inter : Output.t R Output'),
+    (forall (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Loop ty body k 🔽 R, Output }}
@@ -1054,13 +1054,15 @@ Module LowM.
       {f : list Value.t -> M} {args : list Value.t}
       (run_f : {{ f args 🔽 A }})
       (k : SuccessOrPanic.t A -> t R Output)
-  | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
+  | Loop {A : Set} `{Link A}
+      (body : t R A)
+      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
   Arguments Let {_ _ _}.
   Arguments LetAlloc {_ _ _ _}.
   Arguments Call {_ _ _ _ _ _}.
-  Arguments Loop {_ _ _}.
+  Arguments Loop {_ _ _ _}.
 End LowM.
 
 (* Definition evaluate_get_sub_pointer {R A : Set} `{Link A} {index : Pointer.Index.t}
@@ -1205,12 +1207,12 @@ Proof.
     end.
   }
   { (* Loop *)
-    eapply LowM.Loop. {
+    eapply (LowM.Loop (A := Output')). {
       exact (evaluate _ _ _ _ _ run).
     }
     intros output'; eapply evaluate.
     match goal with
-    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    | H : forall _ : Output.t _ (Ref.t Pointer.Kind.Raw Output'), _ |- _ => apply (H output')
     end.
   }
   { (* MatchTuple *)

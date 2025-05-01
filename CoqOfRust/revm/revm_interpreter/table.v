@@ -137,7 +137,7 @@ Module table.
           let instruction := M.alloc (| instruction |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               self,
               [
                 fun γ =>
@@ -269,33 +269,28 @@ Module table.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
+                                  Ty.function
                                     [
-                                      Ty.function
+                                      Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.function
                                             [
-                                              Ty.function
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "&mut")
+                                                    (Ty.path
+                                                      "revm_interpreter::interpreter::Interpreter")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "revm_interpreter::interpreter::Interpreter")
-                                                        []
-                                                        [ WIRE ]
-                                                    ];
-                                                  Ty.apply (Ty.path "&mut") [] [ H ]
-                                                ]
-                                                (Ty.tuple [])
+                                                    [ WIRE ]
+                                                ];
+                                              Ty.apply (Ty.path "&mut") [] [ H ]
                                             ]
+                                            (Ty.tuple [])
                                         ]
-                                        CI
-                                    ],
+                                    ]
+                                    CI,
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -365,18 +360,9 @@ Module table.
                   M.read (|
                     M.match_operator (|
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "&mut")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 256 ]
-                                [ CI ]
-                            ]
+                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ]
                         ],
                       self,
                       [
@@ -488,15 +474,9 @@ Module table.
               M.read (|
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&mut")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
-                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ]
-                        ]
-                    ],
+                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ] ],
                   self,
                   [
                     fun γ =>
@@ -570,18 +550,13 @@ Module table.
                           |) in
                         M.match_operator (|
                           Ty.apply
-                            (Ty.path "*")
+                            (Ty.path "&mut")
                             []
                             [
                               Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 256 ]
-                                    [ CI ]
-                                ]
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 256 ]
+                                [ CI ]
                             ],
                           self,
                           [
@@ -877,10 +852,7 @@ Module table.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ],
+                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI,
                         M.alloc (| α0 |),
                         [
                           fun γ =>

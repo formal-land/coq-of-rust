@@ -182,17 +182,12 @@ Module air.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 24 ]
-                                          [ Ty.path "u32" ])
-                                    ],
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "usize" ] ]
+                                    (Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 24 ]
+                                      [ Ty.path "u32" ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -4116,34 +4111,29 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
-                                            (Ty.path "&")
-                                            []
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 32 ]
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Var"
-                                                ]
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
                                             ]
                                         ]
                                     ]
-                                    (Ty.tuple [])
-                                ],
+                                ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -4234,29 +4224,24 @@ Module air.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.apply
-                                                      (Ty.path "*")
-                                                      []
+                                                    Ty.function
                                                       [
-                                                        Ty.function
+                                                        Ty.tuple
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                                Ty.associated_in_trait
+                                                                  "p3_air::air::AirBuilder"
                                                                   []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_air::air::AirBuilder"
-                                                                      []
-                                                                      []
-                                                                      AB
-                                                                      "Var"
-                                                                  ]
+                                                                  []
+                                                                  AB
+                                                                  "Var"
                                                               ]
                                                           ]
-                                                          (Ty.tuple [])
-                                                      ],
+                                                      ]
+                                                      (Ty.tuple []),
                                                     M.alloc (| α0 |),
                                                     [
                                                       fun γ =>
@@ -4476,35 +4461,19 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
                                       Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_air::air::AirBuilder"
-                                                        []
-                                                        []
-                                                        AB
-                                                        "Var"
-                                                    ]
-                                                ];
-                                              Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [
                                                   Ty.associated_in_trait
                                                     "p3_air::air::AirBuilder"
@@ -4513,11 +4482,22 @@ Module air.
                                                     AB
                                                     "Var"
                                                 ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
                                             ]
                                         ]
                                     ]
-                                    (Ty.tuple [])
-                                ],
+                                ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -5181,41 +5161,36 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
                                       Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 2 ]
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_air::air::AirBuilder"
-                                                        []
-                                                        []
-                                                        AB
-                                                        "Var"
-                                                    ]
-                                                ];
                                               Ty.apply
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
-                                                [ Ty.path "u16" ]
-                                            ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var"
+                                                ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "u16" ]
                                         ]
                                     ]
-                                    (Ty.tuple [])
-                                ],
+                                ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -5437,39 +5412,28 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
                                         [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [
-                                              Ty.associated_in_trait
-                                                "p3_air::air::AirBuilder"
-                                                []
-                                                []
-                                                AB
-                                                "Var"
-                                            ]
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 2 ]
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr"
-                                      ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
+                                  ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -6558,35 +6522,19 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
                                       Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_air::air::AirBuilder"
-                                                        []
-                                                        []
-                                                        AB
-                                                        "Var"
-                                                    ]
-                                                ];
-                                              Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [
                                                   Ty.associated_in_trait
                                                     "p3_air::air::AirBuilder"
@@ -6595,11 +6543,22 @@ Module air.
                                                     AB
                                                     "Var"
                                                 ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
                                             ]
                                         ]
                                     ]
-                                    (Ty.tuple [])
-                                ],
+                                ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -7276,34 +7235,29 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
-                                            (Ty.path "&")
-                                            []
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 32 ]
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Var"
-                                                ]
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
                                             ]
                                         ]
                                     ]
-                                    (Ty.tuple [])
-                                ],
+                                ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -7394,29 +7348,24 @@ Module air.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.apply
-                                                      (Ty.path "*")
-                                                      []
+                                                    Ty.function
                                                       [
-                                                        Ty.function
+                                                        Ty.tuple
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                                Ty.associated_in_trait
+                                                                  "p3_air::air::AirBuilder"
                                                                   []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_air::air::AirBuilder"
-                                                                      []
-                                                                      []
-                                                                      AB
-                                                                      "Var"
-                                                                  ]
+                                                                  []
+                                                                  AB
+                                                                  "Var"
                                                               ]
                                                           ]
-                                                          (Ty.tuple [])
-                                                      ],
+                                                      ]
+                                                      (Ty.tuple []),
                                                     M.alloc (| α0 |),
                                                     [
                                                       fun γ =>
@@ -7465,7 +7414,7 @@ Module air.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8506,49 +8455,14 @@ Module air.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
+                                              Ty.function
                                                 [
-                                                  Ty.function
+                                                  Ty.tuple
                                                     [
                                                       Ty.tuple
                                                         [
                                                           Ty.tuple
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        32
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ];
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        2
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ]
-                                                                ];
                                                               Ty.apply
                                                                 (Ty.path "array")
                                                                 [ Value.Integer IntegerKind.Usize 32
@@ -8560,47 +8474,70 @@ Module air.
                                                                     []
                                                                     AB
                                                                     "Var"
+                                                                ];
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 2
                                                                 ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "p3_air::air::AirBuilder"
+                                                                    []
+                                                                    []
+                                                                    AB
+                                                                    "Var"
+                                                                ]
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_air::air::AirBuilder"
+                                                                []
+                                                                []
+                                                                AB
+                                                                "Var"
                                                             ]
                                                         ]
                                                     ]
-                                                    (Ty.tuple
+                                                ]
+                                                (Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 2 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ]
-                                                      ])
-                                                ],
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -8638,12 +8575,12 @@ Module air.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -8921,7 +8858,7 @@ Module air.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -9973,48 +9910,25 @@ Module air.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
+                                              Ty.function
                                                 [
-                                                  Ty.function
+                                                  Ty.tuple
                                                     [
                                                       Ty.tuple
                                                         [
                                                           Ty.tuple
                                                             [
-                                                              Ty.tuple
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 32
+                                                                ]
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        32
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ];
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        32
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ]
+                                                                  Ty.associated_in_trait
+                                                                    "p3_air::air::AirBuilder"
+                                                                    []
+                                                                    []
+                                                                    AB
+                                                                    "Var"
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "array")
@@ -10028,46 +9942,57 @@ Module air.
                                                                     AB
                                                                     "Var"
                                                                 ]
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_air::air::AirBuilder"
+                                                                []
+                                                                []
+                                                                AB
+                                                                "Var"
                                                             ]
                                                         ]
                                                     ]
-                                                    (Ty.tuple
+                                                ]
+                                                (Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ]
-                                                      ])
-                                                ],
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -10105,12 +10030,12 @@ Module air.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -10343,7 +10268,7 @@ Module air.
                                           let right_bits := M.copy (| γ1_2 |) in
                                           M.use
                                             (M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              Ty.tuple [],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -11169,62 +11094,57 @@ Module air.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
+                                                                        Ty.function
                                                                           [
-                                                                            Ty.function
+                                                                            Ty.tuple
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
                                                                                     Ty.tuple
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.associated_in_trait
-                                                                                              "p3_air::air::AirBuilder"
-                                                                                              []
-                                                                                              []
-                                                                                              AB
-                                                                                              "Var";
-                                                                                            Ty.associated_in_trait
-                                                                                              "p3_air::air::AirBuilder"
-                                                                                              []
-                                                                                              []
-                                                                                              AB
-                                                                                              "Var"
-                                                                                          ];
+                                                                                        Ty.associated_in_trait
+                                                                                          "p3_air::air::AirBuilder"
+                                                                                          []
+                                                                                          []
+                                                                                          AB
+                                                                                          "Var";
                                                                                         Ty.associated_in_trait
                                                                                           "p3_air::air::AirBuilder"
                                                                                           []
                                                                                           []
                                                                                           AB
                                                                                           "Var"
-                                                                                      ]
+                                                                                      ];
+                                                                                    Ty.associated_in_trait
+                                                                                      "p3_air::air::AirBuilder"
+                                                                                      []
+                                                                                      []
+                                                                                      AB
+                                                                                      "Var"
                                                                                   ]
                                                                               ]
-                                                                              (Ty.tuple
-                                                                                [
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var";
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var";
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var"
-                                                                                ])
-                                                                          ],
+                                                                          ]
+                                                                          (Ty.tuple
+                                                                            [
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var";
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var";
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var"
+                                                                            ]),
                                                                         M.alloc (| α0 |),
                                                                         [
                                                                           fun γ =>
@@ -11279,15 +11199,12 @@ Module air.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.read (|
                                                             M.match_operator (|
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.tuple [] ],
+                                                              Ty.tuple [],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -11658,7 +11575,7 @@ Module air.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -12691,48 +12608,25 @@ Module air.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
+                                              Ty.function
                                                 [
-                                                  Ty.function
+                                                  Ty.tuple
                                                     [
                                                       Ty.tuple
                                                         [
                                                           Ty.tuple
                                                             [
-                                                              Ty.tuple
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 32
+                                                                ]
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        32
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ];
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        32
-                                                                    ]
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Var"
-                                                                    ]
+                                                                  Ty.associated_in_trait
+                                                                    "p3_air::air::AirBuilder"
+                                                                    []
+                                                                    []
+                                                                    AB
+                                                                    "Var"
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "array")
@@ -12746,46 +12640,57 @@ Module air.
                                                                     AB
                                                                     "Var"
                                                                 ]
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_air::air::AirBuilder"
+                                                                []
+                                                                []
+                                                                AB
+                                                                "Var"
                                                             ]
                                                         ]
                                                     ]
-                                                    (Ty.tuple
+                                                ]
+                                                (Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "p3_air::air::AirBuilder"
-                                                              []
-                                                              []
-                                                              AB
-                                                              "Var"
-                                                          ]
-                                                      ])
-                                                ],
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ]),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -12823,12 +12728,12 @@ Module air.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -13061,7 +12966,7 @@ Module air.
                                           let right_bits := M.copy (| γ1_2 |) in
                                           M.use
                                             (M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              Ty.tuple [],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -13887,62 +13792,57 @@ Module air.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
+                                                                        Ty.function
                                                                           [
-                                                                            Ty.function
+                                                                            Ty.tuple
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
                                                                                     Ty.tuple
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.associated_in_trait
-                                                                                              "p3_air::air::AirBuilder"
-                                                                                              []
-                                                                                              []
-                                                                                              AB
-                                                                                              "Var";
-                                                                                            Ty.associated_in_trait
-                                                                                              "p3_air::air::AirBuilder"
-                                                                                              []
-                                                                                              []
-                                                                                              AB
-                                                                                              "Var"
-                                                                                          ];
+                                                                                        Ty.associated_in_trait
+                                                                                          "p3_air::air::AirBuilder"
+                                                                                          []
+                                                                                          []
+                                                                                          AB
+                                                                                          "Var";
                                                                                         Ty.associated_in_trait
                                                                                           "p3_air::air::AirBuilder"
                                                                                           []
                                                                                           []
                                                                                           AB
                                                                                           "Var"
-                                                                                      ]
+                                                                                      ];
+                                                                                    Ty.associated_in_trait
+                                                                                      "p3_air::air::AirBuilder"
+                                                                                      []
+                                                                                      []
+                                                                                      AB
+                                                                                      "Var"
                                                                                   ]
                                                                               ]
-                                                                              (Ty.tuple
-                                                                                [
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var";
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var";
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Var"
-                                                                                ])
-                                                                          ],
+                                                                          ]
+                                                                          (Ty.tuple
+                                                                            [
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var";
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var";
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Var"
+                                                                            ]),
                                                                         M.alloc (| α0 |),
                                                                         [
                                                                           fun γ =>
@@ -13997,15 +13897,12 @@ Module air.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.read (|
                                                             M.match_operator (|
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.tuple [] ],
+                                                              Ty.tuple [],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -14374,7 +14271,7 @@ Module air.
               |) in
             M.use
               (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -15361,42 +15258,24 @@ Module air.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
+                                          Ty.function
                                             [
-                                              Ty.function
+                                              Ty.tuple
                                                 [
                                                   Ty.tuple
                                                     [
                                                       Ty.tuple
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 32
-                                                                ]
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_air::air::AirBuilder"
-                                                                    []
-                                                                    []
-                                                                    AB
-                                                                    "Var"
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 32
-                                                                ]
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_air::air::AirBuilder"
-                                                                    []
-                                                                    []
-                                                                    AB
-                                                                    "Var"
-                                                                ]
+                                                              Ty.associated_in_trait
+                                                                "p3_air::air::AirBuilder"
+                                                                []
+                                                                []
+                                                                AB
+                                                                "Var"
                                                             ];
                                                           Ty.apply
                                                             (Ty.path "array")
@@ -15409,46 +15288,57 @@ Module air.
                                                                 AB
                                                                 "Var"
                                                             ]
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "p3_air::air::AirBuilder"
+                                                            []
+                                                            []
+                                                            AB
+                                                            "Var"
                                                         ]
                                                     ]
                                                 ]
-                                                (Ty.tuple
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [
-                                                        Ty.associated_in_trait
-                                                          "p3_air::air::AirBuilder"
-                                                          []
-                                                          []
-                                                          AB
-                                                          "Var"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [
-                                                        Ty.associated_in_trait
-                                                          "p3_air::air::AirBuilder"
-                                                          []
-                                                          []
-                                                          AB
-                                                          "Var"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [
-                                                        Ty.associated_in_trait
-                                                          "p3_air::air::AirBuilder"
-                                                          []
-                                                          []
-                                                          AB
-                                                          "Var"
-                                                      ]
-                                                  ])
-                                            ],
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Var"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Var"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Var"
+                                                  ]
+                                              ]),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -15483,12 +15373,12 @@ Module air.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -15716,7 +15606,7 @@ Module air.
                                       let right_bits := M.copy (| γ1_2 |) in
                                       M.use
                                         (M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -16472,62 +16362,57 @@ Module air.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.apply
-                                                                      (Ty.path "*")
-                                                                      []
+                                                                    Ty.function
                                                                       [
-                                                                        Ty.function
+                                                                        Ty.tuple
                                                                           [
                                                                             Ty.tuple
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.associated_in_trait
-                                                                                          "p3_air::air::AirBuilder"
-                                                                                          []
-                                                                                          []
-                                                                                          AB
-                                                                                          "Var";
-                                                                                        Ty.associated_in_trait
-                                                                                          "p3_air::air::AirBuilder"
-                                                                                          []
-                                                                                          []
-                                                                                          AB
-                                                                                          "Var"
-                                                                                      ];
+                                                                                    Ty.associated_in_trait
+                                                                                      "p3_air::air::AirBuilder"
+                                                                                      []
+                                                                                      []
+                                                                                      AB
+                                                                                      "Var";
                                                                                     Ty.associated_in_trait
                                                                                       "p3_air::air::AirBuilder"
                                                                                       []
                                                                                       []
                                                                                       AB
                                                                                       "Var"
-                                                                                  ]
+                                                                                  ];
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_air::air::AirBuilder"
+                                                                                  []
+                                                                                  []
+                                                                                  AB
+                                                                                  "Var"
                                                                               ]
                                                                           ]
-                                                                          (Ty.tuple
-                                                                            [
-                                                                              Ty.associated_in_trait
-                                                                                "p3_air::air::AirBuilder"
-                                                                                []
-                                                                                []
-                                                                                AB
-                                                                                "Var";
-                                                                              Ty.associated_in_trait
-                                                                                "p3_air::air::AirBuilder"
-                                                                                []
-                                                                                []
-                                                                                AB
-                                                                                "Var";
-                                                                              Ty.associated_in_trait
-                                                                                "p3_air::air::AirBuilder"
-                                                                                []
-                                                                                []
-                                                                                AB
-                                                                                "Var"
-                                                                            ])
-                                                                      ],
+                                                                      ]
+                                                                      (Ty.tuple
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "p3_air::air::AirBuilder"
+                                                                            []
+                                                                            []
+                                                                            AB
+                                                                            "Var";
+                                                                          Ty.associated_in_trait
+                                                                            "p3_air::air::AirBuilder"
+                                                                            []
+                                                                            []
+                                                                            AB
+                                                                            "Var";
+                                                                          Ty.associated_in_trait
+                                                                            "p3_air::air::AirBuilder"
+                                                                            []
+                                                                            []
+                                                                            AB
+                                                                            "Var"
+                                                                        ]),
                                                                     M.alloc (| α0 |),
                                                                     [
                                                                       fun γ =>
@@ -16582,12 +16467,12 @@ Module air.
                                               ltac:(M.monadic
                                                 (let iter := M.copy (| γ |) in
                                                 M.loop (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.read (|
                                                         M.match_operator (|
-                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                          Ty.tuple [],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply

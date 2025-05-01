@@ -51,10 +51,10 @@ Module collections.
               let iter := M.alloc (| iter |) in
               M.read (|
                 M.loop (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -83,7 +83,7 @@ Module collections.
                               |) in
                             let element := M.copy (| γ0_0 |) in
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple
@@ -163,10 +163,10 @@ Module collections.
                                         ]
                                       |) in
                                     M.loop (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -213,7 +213,7 @@ Module collections.
                                                     Value.Bool true
                                                   |) in
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -361,7 +361,7 @@ Module collections.
               let iter := M.alloc (| iter |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -389,7 +389,7 @@ Module collections.
                         let low := M.copy (| γ0_0 |) in
                         let high := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -405,7 +405,7 @@ Module collections.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -419,7 +419,7 @@ Module collections.
                                             let~ _ : Ty.tuple [] :=
                                               M.read (|
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   M.alloc (|
                                                     Value.Tuple
                                                       [
@@ -437,7 +437,7 @@ Module collections.
                                                         let left_val := M.copy (| γ0_0 |) in
                                                         let right_val := M.copy (| γ0_1 |) in
                                                         M.match_operator (|
-                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                          Ty.tuple [],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -715,7 +715,7 @@ Module collections.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -729,7 +729,7 @@ Module collections.
                                             let~ _ : Ty.tuple [] :=
                                               M.read (|
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   M.alloc (|
                                                     Value.Tuple
                                                       [
@@ -747,7 +747,7 @@ Module collections.
                                                         let left_val := M.copy (| γ0_0 |) in
                                                         let right_val := M.copy (| γ0_1 |) in
                                                         M.match_operator (|
-                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                          Ty.tuple [],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>

@@ -141,7 +141,7 @@ Module sparse.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -151,7 +151,7 @@ Module sparse.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -573,14 +573,7 @@ Module sparse.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [] ]
-                                            (Ty.tuple [ Ty.path "usize"; T ])
-                                        ],
+                                      Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -732,11 +725,7 @@ Module sparse.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                    ],
+                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize"),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -972,27 +961,22 @@ Module sparse.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
+                                  Ty.function
                                     [
-                                      Ty.function
+                                      Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.tuple [ Ty.path "usize"; T ] ]
-                                                ]
+                                                [ Ty.tuple [ Ty.path "usize"; T ] ]
                                             ]
                                         ]
-                                        (Ty.path "bool")
-                                    ],
+                                    ]
+                                    (Ty.path "bool"),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -1023,22 +1007,13 @@ Module sparse.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.tuple [ Ty.path "usize"; T ] ]
-                                        ]
+                                  Ty.tuple
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ]
                                     ]
-                                    T
-                                ],
+                                ]
+                                T,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1137,7 +1112,7 @@ Module sparse.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1181,12 +1156,12 @@ Module sparse.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply

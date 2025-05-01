@@ -238,10 +238,10 @@ Module num.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.loop (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -301,7 +301,7 @@ Module num.
                                     ]
                                   |) in
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -549,16 +549,13 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::dec2flt::common::BiasedFp" ],
+                  Ty.path "core::num::dec2flt::common::BiasedFp",
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.path "core::num::dec2flt::common::BiasedFp" ],
+                          Ty.path "core::num::dec2flt::common::BiasedFp",
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                         |)))
@@ -669,13 +666,13 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)))

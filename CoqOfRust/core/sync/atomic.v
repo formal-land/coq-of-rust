@@ -248,7 +248,7 @@ Module sync.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     self,
                     [
                       fun γ =>
@@ -940,7 +940,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -953,7 +953,7 @@ Module sync.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1073,7 +1073,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
@@ -1187,11 +1187,7 @@ Module sync.
             let failure := M.alloc (| failure |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]
-                  ],
+                Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1206,7 +1202,7 @@ Module sync.
                       let~ order : Ty.path "core::sync::atomic::Ordering" :=
                         M.read (|
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                            Ty.path "core::sync::atomic::Ordering",
                             M.alloc (|
                               Value.Tuple [ M.read (| success |); M.read (| failure |) ]
                             |),
@@ -1452,7 +1448,7 @@ Module sync.
                       let~ old : Ty.path "bool" :=
                         M.read (|
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                            Ty.path "bool",
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1516,14 +1512,9 @@ Module sync.
                         |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "bool"; Ty.path "bool" ]
-                          ],
+                          [ Ty.path "bool"; Ty.path "bool" ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1561,14 +1552,9 @@ Module sync.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "bool"; Ty.path "bool" ]
-                          ],
+                          [ Ty.path "bool"; Ty.path "bool" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1695,153 +1681,158 @@ Module sync.
             let new := M.alloc (| new |) in
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (get_constant (|
-                                    "core::sync::atomic::EMULATE_ATOMIC_BOOL",
-                                    Ty.path "bool"
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "bool"; Ty.path "bool" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicBool",
-                                          "compare_exchange",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| current |);
-                                          M.read (| new |);
-                                          M.read (| success |);
-                                          M.read (| failure |)
-                                        ]
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (get_constant (|
+                                        "core::sync::atomic::EMULATE_ATOMIC_BOOL",
+                                        Ty.path "bool"
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "bool"; Ty.path "bool" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicBool",
+                                              "compare_exchange",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| current |);
+                                              M.read (| new |);
+                                              M.read (| success |);
+                                              M.read (| failure |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.path "bool"; Ty.path "bool" ]
-                      ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
-                        M.get_function (|
-                          "core::sync::atomic::atomic_compare_exchange_weak",
-                          [],
-                          [ Ty.path "u8" ]
-                        |),
-                        [
+                          [ Ty.path "bool"; Ty.path "bool" ],
+                        M.alloc (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                              "get",
-                              [],
+                            Ty.apply
+                              (Ty.path "core::result::Result")
                               []
+                              [ Ty.path "u8"; Ty.path "u8" ],
+                            M.get_function (|
+                              "core::sync::atomic::atomic_compare_exchange_weak",
+                              [],
+                              [ Ty.path "u8" ]
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::sync::atomic::AtomicBool",
-                                  "v"
-                                |)
-                              |)
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                                  "get",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::sync::atomic::AtomicBool",
+                                      "v"
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.cast (Ty.path "u8") (M.read (| current |));
+                              M.cast (Ty.path "u8") (M.read (| new |));
+                              M.read (| success |);
+                              M.read (| failure |)
                             ]
-                          |);
-                          M.cast (Ty.path "u8") (M.read (| current |));
-                          M.cast (Ty.path "u8") (M.read (| new |));
-                          M.read (| success |);
-                          M.read (| failure |)
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let x := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                    |)
+                                  ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let x := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                    |)
+                                  ]
+                              |)))
                         ]
                       |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::result::Result::Ok",
-                              0
-                            |) in
-                          let x := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [ Ty.path "bool"; Ty.path "bool" ]
-                              [
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ne,
-                                  [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
-                                |)
-                              ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::result::Result::Err",
-                              0
-                            |) in
-                          let x := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ Ty.path "bool"; Ty.path "bool" ]
-                              [
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ne,
-                                  [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
-                                |)
-                              ]
-                          |)))
-                    ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1932,7 +1923,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2202,140 +2193,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "bool" :=
-                    M.call_closure (|
-                      Ty.path "bool",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicBool",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "bool" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "bool" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "bool" :=
+                        M.call_closure (|
+                          Ty.path "bool",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicBool",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "bool" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "bool" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "bool"; Ty.path "bool" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicBool",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "bool"; Ty.path "bool" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicBool",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "bool"; Ty.path "bool" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "bool"; Ty.path "bool" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2511,14 +2508,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
-                      ],
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -2948,7 +2940,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3198,149 +3190,155 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "*mut") [] [ T ];
+                                                Ty.apply (Ty.path "*mut") [] [ T ]
+                                              ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::sync::atomic::AtomicPtr")
+                                                []
+                                                [ T ],
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply (Ty.path "*mut") [] [ T ];
-                                            Ty.apply (Ty.path "*mut") [] [ T ]
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::sync::atomic::AtomicPtr")
-                                            []
-                                            [ T ],
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4206,10 +4204,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI8" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -4332,15 +4327,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI8" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI8" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -4599,7 +4588,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
+                Ty.path "i8",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
@@ -5092,140 +5081,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "i8" :=
-                    M.call_closure (|
-                      Ty.path "i8",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicI8",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "i8" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "i8" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "i8" :=
+                        M.call_closure (|
+                          Ty.path "i8",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI8",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "i8" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "i8" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "i8"; Ty.path "i8" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicI8",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i8"; Ty.path "i8" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicI8",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "i8"; Ty.path "i8" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "i8"; Ty.path "i8" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5658,10 +5653,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU8" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -5784,15 +5776,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU8" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU8" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -6051,7 +6037,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
+                Ty.path "u8",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
@@ -6544,140 +6530,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "u8" :=
-                    M.call_closure (|
-                      Ty.path "u8",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicU8",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u8" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "u8" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "u8" :=
+                        M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU8",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u8" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "u8" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "u8" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicU8",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "u8"; Ty.path "u8" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicU8",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "u8"; Ty.path "u8" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "u8"; Ty.path "u8" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7120,10 +7112,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI16" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -7246,19 +7235,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicI16" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI16" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -7517,7 +7496,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "i16" ],
+                Ty.path "i16",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
@@ -8010,140 +7989,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "i16" :=
-                    M.call_closure (|
-                      Ty.path "i16",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicI16",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "i16" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "i16" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "i16" :=
+                        M.call_closure (|
+                          Ty.path "i16",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI16",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "i16" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "i16" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "i16"; Ty.path "i16" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicI16",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i16"; Ty.path "i16" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicI16",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "i16"; Ty.path "i16" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "i16"; Ty.path "i16" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8586,10 +8571,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU16" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -8712,19 +8694,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicU16" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU16" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -8983,7 +8955,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
+                Ty.path "u16",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
@@ -9476,140 +9448,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "u16" :=
-                    M.call_closure (|
-                      Ty.path "u16",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicU16",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u16" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "u16" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "u16" :=
+                        M.call_closure (|
+                          Ty.path "u16",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU16",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u16" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "u16" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "u16"; Ty.path "u16" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicU16",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "u16"; Ty.path "u16" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicU16",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "u16"; Ty.path "u16" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "u16"; Ty.path "u16" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10052,10 +10030,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI32" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -10178,19 +10153,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicI32" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI32" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -10449,7 +10414,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
+                Ty.path "i32",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
@@ -10942,140 +10907,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "i32" :=
-                    M.call_closure (|
-                      Ty.path "i32",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicI32",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "i32" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "i32" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "i32" :=
+                        M.call_closure (|
+                          Ty.path "i32",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI32",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "i32" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "i32" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "i32"; Ty.path "i32" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicI32",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "i32" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicI32",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "i32"; Ty.path "i32" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "i32"; Ty.path "i32" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11518,10 +11489,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU32" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -11644,19 +11612,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicU32" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU32" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -11915,7 +11873,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
+                Ty.path "u32",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
@@ -12408,140 +12366,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "u32" :=
-                    M.call_closure (|
-                      Ty.path "u32",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicU32",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u32" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "u32" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "u32" :=
+                        M.call_closure (|
+                          Ty.path "u32",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU32",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u32" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "u32" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "u32"; Ty.path "u32" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicU32",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "u32"; Ty.path "u32" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicU32",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "u32"; Ty.path "u32" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "u32"; Ty.path "u32" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12984,10 +12948,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI64" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -13110,19 +13071,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicI64" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI64" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -13381,7 +13332,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "i64" ],
+                Ty.path "i64",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
@@ -13874,140 +13825,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "i64" :=
-                    M.call_closure (|
-                      Ty.path "i64",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicI64",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "i64" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "i64" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "i64" :=
+                        M.call_closure (|
+                          Ty.path "i64",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicI64",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "i64" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "i64" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "i64"; Ty.path "i64" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicI64",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i64"; Ty.path "i64" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicI64",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "i64"; Ty.path "i64" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "i64"; Ty.path "i64" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14450,10 +14407,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU64" ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -14576,19 +14530,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicU64" ]
-                          ]
-                      ],
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU64" ] ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -14847,7 +14791,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                Ty.path "u64",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
@@ -15340,140 +15284,146 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "u64" :=
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicU64",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u64" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "u64" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "u64" :=
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicU64",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u64" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "u64" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "u64"; Ty.path "u64" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicU64",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "u64"; Ty.path "u64" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicU64",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "u64"; Ty.path "u64" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "u64"; Ty.path "u64" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15916,11 +15866,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicIsize" ]
-                      ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -16043,18 +15989,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicIsize" ]
-                          ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicIsize" ]
                       ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
@@ -16314,7 +16251,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "isize" ],
+                Ty.path "isize",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -16810,140 +16747,149 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "isize"; Ty.path "isize" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "isize" :=
-                    M.call_closure (|
-                      Ty.path "isize",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicIsize",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "isize"; Ty.path "isize" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "isize" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "isize" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "isize" :=
+                        M.call_closure (|
+                          Ty.path "isize",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicIsize",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "isize" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "isize" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "isize"; Ty.path "isize" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicIsize",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "isize"; Ty.path "isize" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicIsize",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "isize"; Ty.path "isize" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "isize"; Ty.path "isize" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17386,11 +17332,7 @@ Module sync.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ]
-                      ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
                       fun γ =>
@@ -17513,18 +17455,9 @@ Module sync.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "&mut")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "core::sync::atomic::AtomicUsize" ]
-                          ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicUsize" ]
                       ],
                     M.alloc (| repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |) |),
                     [
@@ -17784,7 +17717,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                Ty.path "usize",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -18280,140 +18213,149 @@ Module sync.
             let set_order := M.alloc (| set_order |) in
             let fetch_order := M.alloc (| fetch_order |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "usize"; Ty.path "usize" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ prev : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::sync::atomic::AtomicUsize",
-                        "load",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| fetch_order |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "usize"; Ty.path "usize" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "usize" ],
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [ Ty.tuple [ Ty.path "usize" ] ],
-                                          "call_mut",
-                                          [],
-                                          []
+                      let~ prev : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.path "core::sync::atomic::AtomicUsize",
+                            "load",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                            M.read (| fetch_order |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
+                                              [ Ty.tuple [ Ty.path "usize" ] ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| prev |) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let next := M.copy (| γ0_0 |) in
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.path "usize"; Ty.path "usize" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::sync::atomic::AtomicUsize",
+                                              "compare_exchange_weak",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| prev |);
+                                              M.read (| next |);
+                                              M.read (| set_order |);
+                                              M.read (| fetch_order |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                          Value.Tuple [ M.read (| prev |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| x |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let next_prev := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.write (| prev, M.read (| next_prev |) |)
+                                              |)))
                                         ]
-                                      |)
-                                    |) in
-                                  let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let next := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "usize"; Ty.path "usize" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::sync::atomic::AtomicUsize",
-                                          "compare_exchange_weak",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.read (| prev |);
-                                          M.read (| next |);
-                                          M.read (| set_order |);
-                                          M.read (| fetch_order |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          let γ1_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (| M.return_ (| M.read (| x |) |) |)
-                                            |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Err",
-                                              0
-                                            |) in
-                                          let next_prev := M.copy (| γ0_0 |) in
-                                          M.alloc (| M.write (| prev, M.read (| next_prev |) |) |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.path "usize"; Ty.path "usize" ]
+                          [ M.read (| prev |) ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "usize"; Ty.path "usize" ]
-                      [ M.read (| prev |) ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18618,7 +18560,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::sync::atomic::Ordering" ],
+              Ty.path "core::sync::atomic::Ordering",
               order,
               [
                 fun γ =>
@@ -18685,7 +18627,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               order,
               [
                 fun γ =>
@@ -18831,7 +18773,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -18975,7 +18917,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -19062,7 +19004,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -19149,7 +19091,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -19257,9 +19199,9 @@ Module sync.
           let failure := M.alloc (| failure |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ],
+              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; Ty.path "bool" ] ],
+                Ty.tuple [ T; Ty.path "bool" ],
                 M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
                 [
                   fun γ =>
@@ -19643,10 +19585,7 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ],
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -19731,9 +19670,9 @@ Module sync.
           let failure := M.alloc (| failure |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ],
+              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; Ty.path "bool" ] ],
+                Ty.tuple [ T; Ty.path "bool" ],
                 M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
                 [
                   fun γ =>
@@ -20117,10 +20056,7 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; T ] ],
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -20182,7 +20118,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20269,7 +20205,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20356,7 +20292,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20443,7 +20379,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20530,7 +20466,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20617,7 +20553,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20704,7 +20640,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20791,7 +20727,7 @@ Module sync.
           let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               order,
               [
                 fun γ =>
@@ -20876,7 +20812,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               order,
               [
                 fun γ =>
@@ -20987,7 +20923,7 @@ Module sync.
           (let order := M.alloc (| order |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               order,
               [
                 fun γ =>

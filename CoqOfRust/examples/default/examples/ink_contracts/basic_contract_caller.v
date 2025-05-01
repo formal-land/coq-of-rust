@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "basic_contract_caller::AccountId" ],
+            Ty.path "basic_contract_caller::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)

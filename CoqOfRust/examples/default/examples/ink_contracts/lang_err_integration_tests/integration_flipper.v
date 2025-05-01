@@ -125,16 +125,9 @@ Module Impl_integration_flipper_Flipper.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "integration_flipper::Flipper";
-                    Ty.path "integration_flipper::FlipperError"
-                  ]
+              [ Ty.path "integration_flipper::Flipper"; Ty.path "integration_flipper::FlipperError"
               ],
             M.alloc (| Value.Tuple [] |),
             [

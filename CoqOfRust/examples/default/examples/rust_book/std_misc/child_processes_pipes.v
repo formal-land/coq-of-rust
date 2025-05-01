@@ -54,7 +54,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ process : Ty.path "std::process::Child" :=
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "std::process::Child" ],
+              Ty.path "std::process::Child",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -214,7 +214,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -404,7 +404,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |) in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (|
             M.call_closure (|
               Ty.apply

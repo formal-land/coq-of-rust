@@ -64,10 +64,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList" ],
+                Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
                 self,
                 [
                   fun γ =>
@@ -189,14 +186,9 @@ Module eip7702.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 self,
                 [
                   fun γ =>
@@ -298,13 +290,13 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -379,7 +371,7 @@ Module eip7702.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -692,7 +684,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                Ty.path "usize",
                 self,
                 [
                   fun γ =>
@@ -863,16 +855,11 @@ Module eip7702.
                 (M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::boxed::Box")
                       []
                       [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
-                            Ty.path "alloc::alloc::Global"
-                          ]
+                        Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                        Ty.path "alloc::alloc::Global"
                       ],
                     self,
                     [
@@ -1086,26 +1073,21 @@ Module eip7702.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
+                                                  Ty.function
                                                     [
-                                                      Ty.function
+                                                      Ty.tuple
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "alloy_eip7702::auth_list::SignedAuthorization"
-                                                                ]
+                                                              Ty.path
+                                                                "alloy_eip7702::auth_list::SignedAuthorization"
                                                             ]
                                                         ]
-                                                        (Ty.path
-                                                          "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
-                                                    ],
+                                                    ]
+                                                    (Ty.path
+                                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -1296,10 +1278,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList" ],
+                Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
                 self,
                 [
                   fun γ =>
@@ -1448,21 +1427,16 @@ Module eip7702.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.apply
-                                                  (Ty.path "*")
-                                                  []
+                                                Ty.function
                                                   [
-                                                    Ty.function
+                                                    Ty.tuple
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.path
-                                                              "alloy_eip7702::auth_list::SignedAuthorization"
-                                                          ]
+                                                        Ty.path
+                                                          "alloy_eip7702::auth_list::SignedAuthorization"
                                                       ]
-                                                      (Ty.path
-                                                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
-                                                  ],
+                                                  ]
+                                                  (Ty.path
+                                                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"),
                                                 M.alloc (| α0 |),
                                                 [
                                                   fun γ =>
@@ -1565,7 +1539,7 @@ Module eip7702.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     self,
                     [
                       fun γ =>
@@ -1639,11 +1613,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                  ],
+                Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization",
                 self,
                 [
                   fun γ =>
@@ -1889,7 +1859,7 @@ Module eip7702.
               let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     self,
                     [
                       fun γ =>

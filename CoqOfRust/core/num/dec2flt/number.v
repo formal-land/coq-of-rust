@@ -58,25 +58,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::dec2flt::number::Number" ],
+                  Ty.path "core::num::dec2flt::number::Number",
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.path "core::num::dec2flt::number::Number" ],
+                          Ty.path "core::num::dec2flt::number::Number",
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.path "core::num::dec2flt::number::Number" ],
+                                  Ty.path "core::num::dec2flt::number::Number",
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
@@ -436,19 +430,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                 |)))
@@ -611,63 +605,232 @@ Module num.
           | [], [ F ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ F ]) (|
-                ltac:(M.monadic
-                  (M.read (|
-                    let~ _cw : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (|
-                          "core::num::dec2flt::fpu::fpu_precision::set_precision",
-                          [],
-                          [ F ]
-                        |),
-                        []
-                      |) in
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ F ] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "core::num::dec2flt::number::Number",
-                                      "is_fast_path",
-                                      [],
-                                      [ F ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
+              M.read (|
+                M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ F ]) (|
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.read (|
+                        let~ _cw : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (|
+                              "core::num::dec2flt::fpu::fpu_precision::set_precision",
+                              [],
+                              [ F ]
+                            |),
+                            []
+                          |) in
+                        M.match_operator (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ F ],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "core::num::dec2flt::number::Number",
+                                          "is_fast_path",
+                                          [],
+                                          [ F ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ value : F :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ F ],
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                let~ value : F :=
+                                  M.read (|
+                                    M.match_operator (|
+                                      F,
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.le,
+                                                    [
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::num::dec2flt::number::Number",
+                                                          "exponent"
+                                                        |)
+                                                      |);
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
+                                                          Ty.path "i64"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ value : F :=
                                               M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.le,
+                                                F,
+                                                M.get_trait_method (|
+                                                  "core::num::dec2flt::float::RawFloat",
+                                                  F,
+                                                  [],
+                                                  [],
+                                                  "from_u64",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::num::dec2flt::number::Number",
+                                                      "mantissa"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            M.match_operator (|
+                                              F,
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "core::num::dec2flt::number::Number",
+                                                                  "exponent"
+                                                                |)
+                                                              |);
+                                                              Value.Integer IntegerKind.I64 0
+                                                            ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        F,
+                                                        M.get_trait_method (|
+                                                          "core::ops::arith::Div",
+                                                          F,
+                                                          [],
+                                                          [ F ],
+                                                          "div",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| value |);
+                                                          M.call_closure (|
+                                                            F,
+                                                            M.get_trait_method (|
+                                                              "core::num::dec2flt::float::RawFloat",
+                                                              F,
+                                                              [],
+                                                              [],
+                                                              "pow10_fast_path",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (UnOp.neg (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::num::dec2flt::number::Number",
+                                                                      "exponent"
+                                                                    |)
+                                                                  |)
+                                                                |))
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.call_closure (|
+                                                        F,
+                                                        M.get_trait_method (|
+                                                          "core::ops::arith::Mul",
+                                                          F,
+                                                          [],
+                                                          [ F ],
+                                                          "mul",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| value |);
+                                                          M.call_closure (|
+                                                            F,
+                                                            M.get_trait_method (|
+                                                              "core::num::dec2flt::float::RawFloat",
+                                                              F,
+                                                              [],
+                                                              [],
+                                                              "pow10_fast_path",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::num::dec2flt::number::Number",
+                                                                    "exponent"
+                                                                  |)
+                                                                |))
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let~ shift : Ty.path "i64" :=
+                                              M.call_closure (|
+                                                Ty.path "i64",
+                                                BinOp.Wrap.sub,
                                                 [
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -683,457 +846,301 @@ Module num.
                                                     |)
                                                   |)
                                                 ]
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        let~ value : F :=
-                                          M.call_closure (|
-                                            F,
-                                            M.get_trait_method (|
-                                              "core::num::dec2flt::float::RawFloat",
-                                              F,
-                                              [],
-                                              [],
-                                              "from_u64",
-                                              [],
-                                              []
-                                            |),
-                                            [
+                                              |) in
+                                            let~ mantissa : Ty.path "u64" :=
                                               M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::num::dec2flt::number::Number",
-                                                  "mantissa"
-                                                |)
-                                              |)
-                                            ]
-                                          |) in
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ F ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        BinOp.lt,
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "core::num::dec2flt::number::Number",
-                                                              "exponent"
-                                                            |)
-                                                          |);
-                                                          Value.Integer IntegerKind.I64 0
-                                                        ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    F,
-                                                    M.get_trait_method (|
-                                                      "core::ops::arith::Div",
-                                                      F,
-                                                      [],
-                                                      [ F ],
-                                                      "div",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| value |);
-                                                      M.call_closure (|
-                                                        F,
-                                                        M.get_trait_method (|
-                                                          "core::num::dec2flt::float::RawFloat",
-                                                          F,
-                                                          [],
-                                                          [],
-                                                          "pow10_fast_path",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.cast
-                                                            (Ty.path "usize")
-                                                            (UnOp.neg (|
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (| M.read (| self |) |),
-                                                                  "core::num::dec2flt::number::Number",
-                                                                  "exponent"
-                                                                |)
-                                                              |)
-                                                            |))
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.alloc (|
-                                                  M.call_closure (|
-                                                    F,
-                                                    M.get_trait_method (|
-                                                      "core::ops::arith::Mul",
-                                                      F,
-                                                      [],
-                                                      [ F ],
-                                                      "mul",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| value |);
-                                                      M.call_closure (|
-                                                        F,
-                                                        M.get_trait_method (|
-                                                          "core::num::dec2flt::float::RawFloat",
-                                                          F,
-                                                          [],
-                                                          [],
-                                                          "pow10_fast_path",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.cast
-                                                            (Ty.path "usize")
-                                                            (M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.deref (| M.read (| self |) |),
-                                                                "core::num::dec2flt::number::Number",
-                                                                "exponent"
-                                                              |)
-                                                            |))
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let~ shift : Ty.path "i64" :=
-                                          M.call_closure (|
-                                            Ty.path "i64",
-                                            BinOp.Wrap.sub,
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::num::dec2flt::number::Number",
-                                                  "exponent"
-                                                |)
-                                              |);
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
-                                                  Ty.path "i64"
-                                                |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ mantissa : Ty.path "u64" :=
-                                          M.read (|
-                                            M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [ Ty.path "core::convert::Infallible" ];
-                                                      Ty.path "u64"
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::Try",
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "u64" ],
-                                                    [],
-                                                    [],
-                                                    "branch",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                M.match_operator (|
+                                                  Ty.path "u64",
+                                                  M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path "core::option::Option")
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
                                                         []
-                                                        [ Ty.path "u64" ],
-                                                      M.get_associated_function (|
-                                                        Ty.path "u64",
-                                                        "checked_mul",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::convert::Infallible" ];
+                                                          Ty.path "u64"
+                                                        ],
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::Try",
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "u64" ],
+                                                        [],
+                                                        [],
+                                                        "branch",
                                                         [],
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "core::num::dec2flt::number::Number",
-                                                            "mantissa"
-                                                          |)
-                                                        |);
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            get_constant (|
-                                                              "core::num::dec2flt::number::INT_POW10",
-                                                              Ty.apply
-                                                                (Ty.path "array")
-                                                                [ Value.Integer IntegerKind.Usize 16
-                                                                ]
-                                                                [ Ty.path "u64" ]
-                                                            |),
-                                                            M.cast
-                                                              (Ty.path "usize")
-                                                              (M.read (| shift |))
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "u64" ],
+                                                          M.get_associated_function (|
+                                                            Ty.path "u64",
+                                                            "checked_mul",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "core::num::dec2flt::number::Number",
+                                                                "mantissa"
+                                                              |)
+                                                            |);
+                                                            M.read (|
+                                                              M.SubPointer.get_array_field (|
+                                                                get_constant (|
+                                                                  "core::num::dec2flt::number::INT_POW10",
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        16
+                                                                    ]
+                                                                    [ Ty.path "u64" ]
+                                                                |),
+                                                                M.cast
+                                                                  (Ty.path "usize")
+                                                                  (M.read (| shift |))
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                        0
-                                                      |) in
-                                                    let residual := M.copy (| γ0_0 |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "core::option::Option")
-                                                                []
-                                                                [ F ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::try_trait::FromResidual",
-                                                                Ty.apply
-                                                                  (Ty.path "core::option::Option")
-                                                                  []
-                                                                  [ F ],
-                                                                [],
-                                                                [
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                            0
+                                                          |) in
+                                                        let residual := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
+                                                                    [ F ],
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::FromResidual",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [ F ],
+                                                                    [],
                                                                     [
-                                                                      Ty.path
-                                                                        "core::convert::Infallible"
-                                                                    ]
-                                                                ],
-                                                                "from_residual",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.read (| residual |) ]
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                        0
-                                                      |) in
-                                                    let val := M.copy (| γ0_0 |) in
-                                                    val))
-                                              ]
-                                            |)
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.read (|
-                                            M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.gt,
-                                                            [
-                                                              M.read (| mantissa |);
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
-                                                                  Ty.path "u64"
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible"
+                                                                        ]
+                                                                    ],
+                                                                    "from_residual",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| residual |) ]
                                                                 |)
                                                               |)
-                                                            ]
+                                                            |)
                                                           |)
-                                                        |)) in
-                                                    let _ :=
-                                                      is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::None"
-                                                              []
-                                                              [ F ]
-                                                              []
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                            0
+                                                          |) in
+                                                        let val := M.copy (| γ0_0 |) in
+                                                        val))
+                                                  ]
+                                                |)
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.read (|
+                                                M.match_operator (|
+                                                  Ty.tuple [],
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.use
+                                                            (M.alloc (|
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.read (| mantissa |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                                      Ty.path "u64"
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)) in
+                                                        let _ :=
+                                                          is_constant_or_break_match (|
+                                                            M.read (| γ |),
+                                                            Value.Bool true
+                                                          |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::option::Option::None"
+                                                                  []
+                                                                  [ F ]
+                                                                  []
+                                                              |)
+                                                            |)
                                                           |)
-                                                        |)
-                                                      |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |)
-                                          |) in
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            F,
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              F,
-                                              [],
-                                              [ F ],
-                                              "mul",
-                                              [],
-                                              []
-                                            |),
-                                            [
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.alloc (|
                                               M.call_closure (|
                                                 F,
                                                 M.get_trait_method (|
-                                                  "core::num::dec2flt::float::RawFloat",
+                                                  "core::ops::arith::Mul",
                                                   F,
                                                   [],
-                                                  [],
-                                                  "from_u64",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| mantissa |) ]
-                                              |);
-                                              M.call_closure (|
-                                                F,
-                                                M.get_trait_method (|
-                                                  "core::num::dec2flt::float::RawFloat",
-                                                  F,
-                                                  [],
-                                                  [],
-                                                  "pow10_fast_path",
+                                                  [ F ],
+                                                  "mul",
                                                   [],
                                                   []
                                                 |),
                                                 [
-                                                  M.cast
-                                                    (Ty.path "usize")
-                                                    (M.read (|
-                                                      get_constant (|
-                                                        "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
-                                                        Ty.path "i64"
-                                                      |)
-                                                    |))
+                                                  M.call_closure (|
+                                                    F,
+                                                    M.get_trait_method (|
+                                                      "core::num::dec2flt::float::RawFloat",
+                                                      F,
+                                                      [],
+                                                      [],
+                                                      "from_u64",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| mantissa |) ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    F,
+                                                    M.get_trait_method (|
+                                                      "core::num::dec2flt::float::RawFloat",
+                                                      F,
+                                                      [],
+                                                      [],
+                                                      "pow10_fast_path",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.cast
+                                                        (Ty.path "usize")
+                                                        (M.read (|
+                                                          get_constant (|
+                                                            "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH",
+                                                            Ty.path "i64"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
-                                            ]
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::num::dec2flt::number::Number",
-                                              "negative"
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.write (|
-                                            value,
-                                            M.call_closure (|
-                                              F,
-                                              M.get_trait_method (|
-                                                "core::ops::arith::Neg",
-                                                F,
-                                                [],
-                                                [],
-                                                "neg",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| value |) ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                []
-                                [ F ]
-                                [ M.read (| value |) ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Value.StructTuple "core::option::Option::None" [] [ F ] []
-                            |)))
-                      ]
-                    |)
-                  |)))
+                                            |)))
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.read (|
+                                    M.match_operator (|
+                                      Ty.tuple [],
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::num::dec2flt::number::Number",
+                                                  "negative"
+                                                |)) in
+                                            let _ :=
+                                              is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.write (|
+                                                value,
+                                                M.call_closure (|
+                                                  F,
+                                                  M.get_trait_method (|
+                                                    "core::ops::arith::Neg",
+                                                    F,
+                                                    [],
+                                                    [],
+                                                    "neg",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| value |) ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)));
+                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    []
+                                    [ F ]
+                                    [ M.read (| value |) ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple "core::option::Option::None" [] [ F ] []
+                                |)))
+                          ]
+                        |)
+                      |)
+                    |)))
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

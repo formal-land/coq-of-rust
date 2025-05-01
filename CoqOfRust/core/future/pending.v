@@ -55,7 +55,7 @@ Module future.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
               β1,
               [
                 fun γ =>

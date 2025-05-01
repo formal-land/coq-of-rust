@@ -513,7 +513,7 @@ Module vec.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -563,7 +563,7 @@ Module vec.
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -606,7 +606,7 @@ Module vec.
                               |)
                             |) in
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -916,10 +916,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ],
+                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1055,10 +1052,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ],
+                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1175,331 +1169,350 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.tuple []) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ iter : Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                      M.get_function (|
-                        "core::mem::take",
-                        [],
-                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
+            M.read (|
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ iter : Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          M.get_function (|
+                            "core::mem::take",
+                            [],
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
+                          |),
+                          [
                             M.borrow (|
                               Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::vec::drain::Drain",
-                                "iter"
-                              |)
-                            |)
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ drop_len : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_trait_method (|
-                        "core::iter::traits::exact_size::ExactSizeIterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                        [],
-                        [],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, iter |) ]
-                    |) in
-                  let~ vec :
-                      Ty.apply
-                        (Ty.path "core::ptr::non_null::NonNull")
-                        []
-                        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ] :=
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::vec::drain::Drain",
-                        "vec"
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (get_constant (|
-                                    "core::mem::SizedTypeProperties::IS_ZST",
-                                    Ty.path "bool"
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ _ : Ty.tuple [] :=
-                                      M.read (|
-                                        let~ vec :
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
-                                              ] :=
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                []
-                                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
-                                                ],
-                                              "as_mut",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.MutRef, vec |) ]
-                                          |) in
-                                        let~ old_len : Ty.path "usize" :=
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| vec |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                              "set_len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| vec |) |)
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    BinOp.Wrap.add,
-                                                    [ M.read (| old_len |); M.read (| drop_len |) ]
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "alloc::vec::drain::Drain",
-                                                      "tail_len"
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                              "truncate",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| vec |) |)
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  M.read (| old_len |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "alloc::vec::drain::Drain",
-                                                      "tail_len"
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |) in
-                                    M.return_ (| Value.Tuple [] |)
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::drain::Drain",
+                                    "iter"
                                   |)
                                 |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _guard :
-                      Ty.apply (Ty.path "alloc::vec::drain::drop::DropGuard") [] [ T; A ] :=
-                    Value.StructTuple
-                      "alloc::vec::drain::drop::DropGuard"
-                      []
-                      [ T; A ]
-                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ] in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [ M.read (| drop_len |); Value.Integer IntegerKind.Usize 0 ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ drop_ptr : Ty.apply (Ty.path "*const") [] [ T ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                "as_slice",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, iter |) ]
+                              |)
                             |)
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ vec_ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        "as_mut_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                "as_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, vec |) ]
-                            |)
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ drop_offset : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ T ],
-                        "sub_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| drop_ptr |);
-                        (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |))
-                      ]
-                    |) in
-                  let~ to_drop :
-                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
-                      [
+                          ]
+                        |) in
+                      let~ drop_len : Ty.path "usize" :=
                         M.call_closure (|
-                          Ty.apply (Ty.path "*mut") [] [ T ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            "add",
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "core::iter::traits::exact_size::ExactSizeIterator",
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                            [],
+                            [],
+                            "len",
                             [],
                             []
                           |),
-                          [ M.read (| vec_ptr |); M.read (| drop_offset |) ]
-                        |);
-                        M.read (| drop_len |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (|
-                        "core::ptr::drop_in_place",
-                        [],
-                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                      |),
-                      [ M.read (| to_drop |) ]
-                    |) in
-                  M.alloc (| Value.Tuple [] |)
-                |)))
+                          [ M.borrow (| Pointer.Kind.Ref, iter |) ]
+                        |) in
+                      let~ vec :
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ] :=
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::drain::Drain",
+                            "vec"
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (get_constant (|
+                                        "core::mem::SizedTypeProperties::IS_ZST",
+                                        Ty.path "bool"
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            let~ vec :
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
+                                                  ] :=
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
+                                                  ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [ T; A ]
+                                                    ],
+                                                  "as_mut",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.MutRef, vec |) ]
+                                              |) in
+                                            let~ old_len : Ty.path "usize" :=
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| vec |) |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                                  "set_len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| vec |) |)
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.add,
+                                                        [
+                                                          M.read (| old_len |);
+                                                          M.read (| drop_len |)
+                                                        ]
+                                                      |);
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "alloc::vec::drain::Drain",
+                                                          "tail_len"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                                  "truncate",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| vec |) |)
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.read (| old_len |);
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "alloc::vec::drain::Drain",
+                                                          "tail_len"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |) in
+                                        M.return_ (| Value.Tuple [] |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _guard :
+                          Ty.apply (Ty.path "alloc::vec::drain::drop::DropGuard") [] [ T; A ] :=
+                        Value.StructTuple
+                          "alloc::vec::drain::drop::DropGuard"
+                          []
+                          [ T; A ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ] in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| drop_len |); Value.Integer IntegerKind.Usize 0
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ drop_ptr : Ty.apply (Ty.path "*const") [] [ T ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                    "as_slice",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, iter |) ]
+                                |)
+                              |)
+                            |)
+                          ]
+                        |) in
+                      let~ vec_ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                            "as_mut_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                    "as_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, vec |) ]
+                                |)
+                              |)
+                            |)
+                          ]
+                        |) in
+                      let~ drop_offset : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            "sub_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| drop_ptr |);
+                            (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |))
+                          ]
+                        |) in
+                      let~ to_drop :
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [ M.read (| vec_ptr |); M.read (| drop_offset |) ]
+                            |);
+                            M.read (| drop_len |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_function (|
+                            "core::ptr::drop_in_place",
+                            [],
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          |),
+                          [ M.read (| to_drop |) ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

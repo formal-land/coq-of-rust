@@ -53,10 +53,7 @@ Module buf.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -88,14 +85,9 @@ Module buf.
                       let s2 := M.copy (| γ0_1 |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "&")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                          ],
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>

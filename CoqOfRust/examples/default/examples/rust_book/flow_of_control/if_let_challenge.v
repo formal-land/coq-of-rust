@@ -37,7 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ a : Ty.path "if_let_challenge::Foo" :=
           Value.StructTuple "if_let_challenge::Foo::Bar" [] [] [] in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>

@@ -231,7 +231,7 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
       (let x := M.alloc (| x |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (|
-        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
+        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
         β1,
         [ fun γ => ltac:(M.monadic (M.read (| x |))) ]
       |)))

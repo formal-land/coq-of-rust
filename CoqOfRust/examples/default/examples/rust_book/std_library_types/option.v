@@ -20,10 +20,7 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Ty.apply
-            (Ty.path "*")
-            []
-            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -86,7 +83,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],

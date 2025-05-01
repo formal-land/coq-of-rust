@@ -44,16 +44,13 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                Ty.path "alloy_primitives::signature::parity::Parity",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -97,14 +94,9 @@ Module signature.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 self,
                 [
                   fun γ =>
@@ -266,7 +258,7 @@ Module signature.
                   ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 self,
                 [
                   fun γ =>
@@ -421,7 +413,7 @@ Module signature.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -582,13 +574,13 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -833,16 +825,11 @@ Module signature.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.path "alloy_primitives::signature::parity::Parity";
-                        Ty.path "alloy_primitives::signature::error::SignatureError"
-                      ]
+                    Ty.path "alloy_primitives::signature::parity::Parity";
+                    Ty.path "alloy_primitives::signature::error::SignatureError"
                   ],
                 value,
                 [
@@ -858,7 +845,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 0
                                 |) in
-                              Value.Tuple []));
+                              M.alloc (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -866,7 +853,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 1
                                 |) in
-                              Value.Tuple []))
+                              M.alloc (| Value.Tuple [] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -910,7 +897,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 27
                                 |) in
-                              Value.Tuple []));
+                              M.alloc (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -918,7 +905,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 28
                                 |) in
-                              Value.Tuple []))
+                              M.alloc (| Value.Tuple [] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -1037,10 +1024,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1055,7 +1039,7 @@ Module signature.
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1195,7 +1179,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 self,
                 [
                   fun γ =>
@@ -1275,7 +1259,7 @@ Module signature.
                                   0
                                 |) in
                               let b := M.alloc (| γ1_0 |) in
-                              Value.Tuple [ b ]));
+                              M.alloc (| Value.Tuple [ b ] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ := M.read (| γ |) in
@@ -1286,7 +1270,7 @@ Module signature.
                                   0
                                 |) in
                               let b := M.alloc (| γ1_0 |) in
-                              Value.Tuple [ b ]))
+                              M.alloc (| Value.Tuple [ b ] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -1355,10 +1339,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 self,
                 [
                   fun γ =>
@@ -1377,7 +1358,7 @@ Module signature.
                                   0
                                 |) in
                               let v := M.alloc (| γ1_0 |) in
-                              Value.Tuple [ v ]));
+                              M.alloc (| Value.Tuple [ v ] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ := M.read (| γ |) in
@@ -1388,7 +1369,7 @@ Module signature.
                                   0
                                 |) in
                               let v := M.alloc (| γ1_0 |) in
-                              Value.Tuple [ v ]))
+                              M.alloc (| Value.Tuple [ v ] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -1448,7 +1429,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                Ty.path "u64",
                 self,
                 [
                   fun γ =>
@@ -1523,7 +1504,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                Ty.path "alloy_primitives::signature::parity::Parity",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1595,7 +1576,7 @@ Module signature.
                           [
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                                Ty.path "u64",
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1691,7 +1672,7 @@ Module signature.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                Ty.path "alloy_primitives::signature::parity::Parity",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1758,7 +1739,7 @@ Module signature.
               let~ parity : Ty.path "bool" :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                    Ty.path "bool",
                     self,
                     [
                       fun γ =>
@@ -1802,7 +1783,7 @@ Module signature.
                                       0
                                     |) in
                                   let b := M.copy (| γ0_0 |) in
-                                  Value.Tuple [ b ]));
+                                  M.alloc (| Value.Tuple [ b ] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -1812,7 +1793,7 @@ Module signature.
                                       0
                                     |) in
                                   let b := M.copy (| γ0_0 |) in
-                                  Value.Tuple [ b ]))
+                                  M.alloc (| Value.Tuple [ b ] |)))
                             ],
                             fun γ =>
                               ltac:(M.monadic

@@ -171,14 +171,9 @@ Module utilities.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::borrow::Cow")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::borrow::Cow")
-                  []
-                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
-              ],
+              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -380,14 +375,9 @@ Module utilities.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::borrow::Cow")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::borrow::Cow")
-                  []
-                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-              ],
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -548,14 +538,9 @@ Module utilities.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::borrow::Cow")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::borrow::Cow")
-                  []
-                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
-              ],
+              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -764,14 +749,9 @@ Module utilities.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::borrow::Cow")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::borrow::Cow")
-                  []
-                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-              ],
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -997,18 +977,13 @@ Module utilities.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "&")
               []
               [
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      []
-                  ]
               ],
             M.alloc (| Value.Tuple [] |),
             [

@@ -693,11 +693,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -796,15 +792,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -919,7 +907,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1028,7 +1016,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1192,14 +1180,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1330,14 +1313,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1478,7 +1456,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1595,7 +1573,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1707,10 +1685,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1868,10 +1843,7 @@ Module slice.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2074,14 +2046,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2229,14 +2196,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2402,7 +2364,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2538,7 +2500,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2666,10 +2628,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -2705,7 +2664,7 @@ Module slice.
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2854,10 +2813,7 @@ Module slice.
               M.deref (|
                 M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -2893,7 +2849,7 @@ Module slice.
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -3955,7 +3911,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4092,7 +4048,7 @@ Module slice.
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -4719,14 +4675,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4829,14 +4780,9 @@ Module slice.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ],
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5036,7 +4982,7 @@ Module slice.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5155,7 +5101,7 @@ Module slice.
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -6023,7 +5969,7 @@ Module slice.
             let~ start : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                  Ty.path "usize",
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -6093,10 +6039,7 @@ Module slice.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ],
+                                          Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -6129,7 +6072,7 @@ Module slice.
             let~ end_ : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                  Ty.path "usize",
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -6188,10 +6131,7 @@ Module slice.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ],
+                                          Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -6235,7 +6175,7 @@ Module slice.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6270,7 +6210,7 @@ Module slice.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6345,400 +6285,410 @@ Module slice.
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           let bounds := M.alloc (| bounds |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              []
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ len : Ty.path "usize" :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      bounds,
-                      "core::ops::range::RangeTo",
-                      "end"
-                    |)
-                  |) in
-                let~ start : Ty.path "usize" :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::ops::range::Bound")
-                            []
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                          M.get_trait_method (|
-                            "core::ops::range::RangeBounds",
-                            R,
-                            [],
-                            [ Ty.path "usize" ],
-                            "start_bound",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, range |) ]
+                    let~ len : Ty.path "usize" :=
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          bounds,
+                          "core::ops::range::RangeTo",
+                          "end"
                         |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::range::Bound::Included",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let start := M.copy (| γ0_0 |) in
-                            start));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::range::Bound::Excluded",
-                                0
-                              |) in
-                            let start := M.copy (| γ0_0 |) in
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::convert::Infallible" ];
-                                      Ty.path "usize"
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    [],
-                                    [],
-                                    "branch",
-                                    [],
-                                    []
-                                  |),
-                                  [
+                      |) in
+                    let~ start : Ty.path "usize" :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.path "usize",
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::range::Bound")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                              M.get_trait_method (|
+                                "core::ops::range::RangeBounds",
+                                R,
+                                [],
+                                [ Ty.path "usize" ],
+                                "start_bound",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, range |) ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::range::Bound::Included",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let start := M.copy (| γ0_0 |) in
+                                start));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::range::Bound::Excluded",
+                                    0
+                                  |) in
+                                let start := M.copy (| γ0_0 |) in
+                                M.match_operator (|
+                                  Ty.path "usize",
+                                  M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::option::Option")
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
                                         []
-                                        [ Ty.path "usize" ],
-                                      M.get_associated_function (|
-                                        Ty.path "usize",
-                                        "checked_add",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ];
+                                          Ty.path "usize"
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::Try",
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "branch",
                                         [],
                                         []
                                       |),
                                       [
-                                        M.read (| M.deref (| M.read (| start |) |) |);
-                                        Value.Integer IntegerKind.Usize 1
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          M.get_associated_function (|
+                                            Ty.path "usize",
+                                            "checked_add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (| M.deref (| M.read (| start |) |) |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
                                       ]
                                     |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ops::range::Range")
-                                                      []
-                                                      [ Ty.path "usize" ]
-                                                  ],
-                                                [],
-                                                [
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Break",
+                                            0
+                                          |) in
+                                        let residual := M.copy (| γ0_0 |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.path "core::convert::Infallible" ]
-                                                ],
-                                                "from_residual",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ops::range::Range")
+                                                        []
+                                                        [ Ty.path "usize" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "core::convert::Infallible" ]
+                                                    ],
+                                                    "from_residual",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| residual |) ]
+                                                |)
+                                              |)
                                             |)
                                           |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
-                      ]
-                    |)
-                  |) in
-                let~ end_ : Ty.path "usize" :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::ops::range::Bound")
-                            []
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                          M.get_trait_method (|
-                            "core::ops::range::RangeBounds",
-                            R,
-                            [],
-                            [ Ty.path "usize" ],
-                            "end_bound",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, range |) ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Continue",
+                                            0
+                                          |) in
+                                        let val := M.copy (| γ0_0 |) in
+                                        val))
+                                  ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                          ]
                         |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::range::Bound::Included",
-                                0
-                              |) in
-                            let end_ := M.copy (| γ0_0 |) in
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::convert::Infallible" ];
-                                      Ty.path "usize"
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    [],
-                                    [],
-                                    "branch",
-                                    [],
-                                    []
-                                  |),
-                                  [
+                      |) in
+                    let~ end_ : Ty.path "usize" :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.path "usize",
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::range::Bound")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                              M.get_trait_method (|
+                                "core::ops::range::RangeBounds",
+                                R,
+                                [],
+                                [ Ty.path "usize" ],
+                                "end_bound",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, range |) ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::range::Bound::Included",
+                                    0
+                                  |) in
+                                let end_ := M.copy (| γ0_0 |) in
+                                M.match_operator (|
+                                  Ty.path "usize",
+                                  M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::option::Option")
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
                                         []
-                                        [ Ty.path "usize" ],
-                                      M.get_associated_function (|
-                                        Ty.path "usize",
-                                        "checked_add",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ];
+                                          Ty.path "usize"
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::Try",
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "branch",
                                         [],
                                         []
                                       |),
                                       [
-                                        M.read (| M.deref (| M.read (| end_ |) |) |);
-                                        Value.Integer IntegerKind.Usize 1
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          M.get_associated_function (|
+                                            Ty.path "usize",
+                                            "checked_add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (| M.deref (| M.read (| end_ |) |) |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
                                       ]
                                     |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ops::range::Range")
-                                                      []
-                                                      [ Ty.path "usize" ]
-                                                  ],
-                                                [],
-                                                [
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Break",
+                                            0
+                                          |) in
+                                        let residual := M.copy (| γ0_0 |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.path "core::convert::Infallible" ]
-                                                ],
-                                                "from_residual",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ops::range::Range")
+                                                        []
+                                                        [ Ty.path "usize" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "core::convert::Infallible" ]
+                                                    ],
+                                                    "from_residual",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| residual |) ]
+                                                |)
+                                              |)
                                             |)
                                           |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::range::Bound::Excluded",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let end_ := M.copy (| γ0_0 |) in
-                            end_));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                            len))
-                      ]
-                    |)
-                  |) in
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::control_flow::ControlFlow::Continue",
+                                            0
+                                          |) in
+                                        let val := M.copy (| γ0_0 |) in
+                                        val))
+                                  ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::range::Bound::Excluded",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let end_ := M.copy (| γ0_0 |) in
+                                end_));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                len))
+                          ]
+                        |)
+                      |) in
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                    ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              LogicalOp.or (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.gt,
-                                  [ M.read (| start |); M.read (| end_ |) ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [ M.read (| end_ |); M.read (| len |) ]
-                                  |)))
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::None"
-                            []
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                            []
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                            [
-                              Value.StructRecord
-                                "core::ops::range::Range"
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.or (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [ M.read (| start |); M.read (| end_ |) ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [ M.read (| end_ |); M.read (| len |) ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
                                 []
-                                [ Ty.path "usize" ]
-                                [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
-                            ]
-                        |)))
-                  ]
-                |)
-              |)))
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
+                                    [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                                ]
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6774,10 +6724,7 @@ Module slice.
           (let len := M.alloc (| len |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
             β1,
             [
               fun γ =>
@@ -6790,7 +6737,7 @@ Module slice.
                     let~ start : Ty.path "usize" :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                          Ty.path "usize",
                           start,
                           [
                             fun γ =>
@@ -6830,7 +6777,7 @@ Module slice.
                     let~ end_ : Ty.path "usize" :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                          Ty.path "usize",
                           end_,
                           [
                             fun γ =>
@@ -6917,14 +6864,9 @@ Module slice.
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::option::Option")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-              ],
+              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
             β1,
             [
               fun γ =>
@@ -6933,317 +6875,336 @@ Module slice.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
-                  M.catch_return
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
-                    ltac:(M.monadic
-                      (M.read (|
-                        let~ start : Ty.path "usize" :=
+                  M.read (|
+                    M.catch_return
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
+                      ltac:(M.monadic
+                        (M.alloc (|
                           M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                              start,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::range::Bound::Included",
-                                        0
-                                      |) in
-                                    let start := M.copy (| γ0_0 |) in
-                                    start));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::range::Bound::Excluded",
-                                        0
-                                      |) in
-                                    let start := M.copy (| γ0_0 |) in
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "core::convert::Infallible" ];
-                                              Ty.path "usize"
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
+                            let~ start : Ty.path "usize" :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.path "usize",
+                                  start,
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::range::Bound::Included",
+                                            0
+                                          |) in
+                                        let start := M.copy (| γ0_0 |) in
+                                        start));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::range::Bound::Excluded",
+                                            0
+                                          |) in
+                                        let start := M.copy (| γ0_0 |) in
+                                        M.match_operator (|
+                                          Ty.path "usize",
+                                          M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.path "usize" ],
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "checked_add",
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ];
+                                                  Ty.path "usize"
+                                                ],
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::Try",
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                [],
+                                                [],
+                                                "branch",
                                                 [],
                                                 []
                                               |),
                                               [
-                                                M.read (| start |);
-                                                Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "usize" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "usize",
+                                                    "checked_add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| start |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
+                                                |)
                                               ]
                                             |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::ops::range::Range")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::ops::range::Range")
-                                                              []
-                                                              [ Ty.path "usize" ]
-                                                          ],
-                                                        [],
-                                                        [
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                    0
+                                                  |) in
+                                                let residual := M.copy (| γ0_0 |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
                                                             []
-                                                            [ Ty.path "core::convert::Infallible" ]
-                                                        ],
-                                                        "from_residual",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::ops::range::Range")
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::FromResidual",
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ]
+                                                              ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible"
+                                                                ]
+                                                            ],
+                                                            "from_residual",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| residual |) ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (|
-                                        γ,
-                                        "core::ops::range::Bound::Unbounded"
-                                      |) in
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
-                              ]
-                            |)
-                          |) in
-                        let~ end_ : Ty.path "usize" :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                              end_,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::range::Bound::Included",
-                                        0
-                                      |) in
-                                    let end_ := M.copy (| γ0_0 |) in
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "core::convert::Infallible" ];
-                                              Ty.path "usize"
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                    0
+                                                  |) in
+                                                let val := M.copy (| γ0_0 |) in
+                                                val))
+                                          ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "core::ops::range::Bound::Unbounded"
+                                          |) in
+                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                  ]
+                                |)
+                              |) in
+                            let~ end_ : Ty.path "usize" :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.path "usize",
+                                  end_,
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::range::Bound::Included",
+                                            0
+                                          |) in
+                                        let end_ := M.copy (| γ0_0 |) in
+                                        M.match_operator (|
+                                          Ty.path "usize",
+                                          M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.path "usize" ],
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "checked_add",
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ];
+                                                  Ty.path "usize"
+                                                ],
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::Try",
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                [],
+                                                [],
+                                                "branch",
                                                 [],
                                                 []
                                               |),
-                                              [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1
+                                              [
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "usize" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "usize",
+                                                    "checked_add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| end_ |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
+                                                |)
                                               ]
                                             |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::ops::range::Range")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::ops::range::Range")
-                                                              []
-                                                              [ Ty.path "usize" ]
-                                                          ],
-                                                        [],
-                                                        [
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                    0
+                                                  |) in
+                                                let residual := M.copy (| γ0_0 |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
                                                             []
-                                                            [ Ty.path "core::convert::Infallible" ]
-                                                        ],
-                                                        "from_residual",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::ops::range::Range")
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::FromResidual",
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ]
+                                                              ],
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible"
+                                                                ]
+                                                            ],
+                                                            "from_residual",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| residual |) ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::range::Bound::Excluded",
-                                        0
-                                      |) in
-                                    let end_ := M.copy (| γ0_0 |) in
-                                    end_));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (|
-                                        γ,
-                                        "core::ops::range::Bound::Unbounded"
-                                      |) in
-                                    len))
-                              ]
-                            |)
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                            [
-                              Value.StructRecord
-                                "core::ops::range::Range"
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                    0
+                                                  |) in
+                                                let val := M.copy (| γ0_0 |) in
+                                                val))
+                                          ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::ops::range::Bound::Excluded",
+                                            0
+                                          |) in
+                                        let end_ := M.copy (| γ0_0 |) in
+                                        end_));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "core::ops::range::Bound::Unbounded"
+                                          |) in
+                                        len))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
                                 []
-                                [ Ty.path "usize" ]
-                                [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
-                            ]
-                        |)
-                      |)))
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
+                                    [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                                ]
+                            |)
+                          |)
+                        |)))
+                    |)
                   |)))
             ]
           |)))
@@ -7290,10 +7251,7 @@ Module slice.
           (let len := M.alloc (| len |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
             β1,
             [
               fun γ =>
@@ -7306,7 +7264,7 @@ Module slice.
                     let~ start : Ty.path "usize" :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                          Ty.path "usize",
                           start,
                           [
                             fun γ =>
@@ -7361,11 +7319,7 @@ Module slice.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [ Ty.function [ Ty.tuple [] ] (Ty.path "usize")
-                                                    ],
+                                                  Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -7399,7 +7353,7 @@ Module slice.
                     let~ end_ : Ty.path "usize" :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                          Ty.path "usize",
                           end_,
                           [
                             fun γ =>
@@ -7444,11 +7398,7 @@ Module slice.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [ Ty.function [ Ty.tuple [] ] (Ty.path "usize")
-                                                    ],
+                                                  Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -7530,180 +7480,184 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "&")
-                    []
-                    [
-                      Ty.associated_in_trait
-                        "core::slice::index::SliceIndex"
-                        []
-                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                        (Ty.tuple
-                          [
-                            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
-                            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
-                          ])
-                        "Output"
-                    ]
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                  M.get_trait_method (|
-                    "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [],
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "get",
-                    [],
-                    []
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
                   [
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
                           []
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::convert::Infallible" ];
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          (Ty.tuple
                             [
+                              Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                            ])
+                          "Output"
+                      ]
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                      M.get_trait_method (|
+                        "core::slice::index::SliceIndex",
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                        [],
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ]
                                   ],
-                                M.get_function (| "core::slice::index::into_range", [], [] |),
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                  [],
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      [],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
                                       []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| slice |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.read (| self |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "core::ops::range::Range")
                                           []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                            ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::convert::Infallible" ]
-                                          ],
-                                          "from_residual",
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    M.get_function (| "core::slice::index::into_range", [], [] |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
                                           [],
                                           []
                                         |),
-                                        [ M.read (| residual |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| slice |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| self |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                  ]
-                |)))
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7720,180 +7674,184 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "&mut")
-                    []
-                    [
-                      Ty.associated_in_trait
-                        "core::slice::index::SliceIndex"
-                        []
-                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                        (Ty.tuple
-                          [
-                            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
-                            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
-                          ])
-                        "Output"
-                    ]
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                  M.get_trait_method (|
-                    "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [],
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "get_mut",
-                    [],
-                    []
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
                   [
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
                           []
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::convert::Infallible" ];
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          (Ty.tuple
                             [
+                              Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                            ])
+                          "Output"
+                      ]
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                      M.get_trait_method (|
+                        "core::slice::index::SliceIndex",
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                        [],
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        "get_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ]
                                   ],
-                                M.get_function (| "core::slice::index::into_range", [], [] |),
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                  [],
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      [],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
                                       []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| slice |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.read (| self |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "core::ops::range::Range")
                                           []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                            ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::convert::Infallible" ]
-                                          ],
-                                          "from_residual",
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    M.get_function (| "core::slice::index::into_range", [], [] |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
                                           [],
                                           []
                                         |),
-                                        [ M.read (| residual |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| slice |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| self |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |)
-                  ]
-                |)))
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |)
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

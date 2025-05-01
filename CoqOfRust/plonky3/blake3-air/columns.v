@@ -325,7 +325,7 @@ Module columns.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -335,7 +335,7 @@ Module columns.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -376,7 +376,7 @@ Module columns.
                                     let left_val := M.copy (| γ0_0 |) in
                                     let right_val := M.copy (| γ0_1 |) in
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -466,14 +466,9 @@ Module columns.
               |) in
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "&")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "&")
-                    []
-                    [ Ty.apply (Ty.path "p3_blake3_air::columns::Blake3Cols") [] [ T ] ]
-                ],
+                [ Ty.apply (Ty.path "p3_blake3_air::columns::Blake3Cols") [] [ T ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -511,7 +506,7 @@ Module columns.
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -525,7 +520,7 @@ Module columns.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -609,7 +604,7 @@ Module columns.
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -623,7 +618,7 @@ Module columns.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -707,7 +702,7 @@ Module columns.
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -721,7 +716,7 @@ Module columns.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (|
                                         Value.Tuple
                                           [
@@ -768,7 +763,7 @@ Module columns.
                                             let left_val := M.copy (| γ0_0 |) in
                                             let right_val := M.copy (| γ0_1 |) in
                                             M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              Ty.tuple [],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -923,7 +918,7 @@ Module columns.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -934,7 +929,7 @@ Module columns.
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (|
                                     Value.Tuple
                                       [
@@ -975,7 +970,7 @@ Module columns.
                                         let left_val := M.copy (| γ0_0 |) in
                                         let right_val := M.copy (| γ0_1 |) in
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -1069,14 +1064,9 @@ Module columns.
                   |) in
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&mut")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
-                        [ Ty.apply (Ty.path "p3_blake3_air::columns::Blake3Cols") [] [ T ] ]
-                    ],
+                    [ Ty.apply (Ty.path "p3_blake3_air::columns::Blake3Cols") [] [ T ] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -1114,7 +1104,7 @@ Module columns.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1128,7 +1118,7 @@ Module columns.
                                     let~ _ : Ty.tuple [] :=
                                       M.read (|
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -1212,7 +1202,7 @@ Module columns.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1226,7 +1216,7 @@ Module columns.
                                     let~ _ : Ty.tuple [] :=
                                       M.read (|
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -1310,7 +1300,7 @@ Module columns.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1324,7 +1314,7 @@ Module columns.
                                     let~ _ : Ty.tuple [] :=
                                       M.read (|
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (|
                                             Value.Tuple
                                               [
@@ -1373,7 +1363,7 @@ Module columns.
                                                 let left_val := M.copy (| γ0_0 |) in
                                                 let right_val := M.copy (| γ0_1 |) in
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>

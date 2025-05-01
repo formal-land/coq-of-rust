@@ -397,19 +397,19 @@ Module eip7702.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -555,7 +555,7 @@ Module eip7702.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+              Ty.path "core::cmp::Ordering",
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -603,7 +603,7 @@ Module eip7702.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                      Ty.path "core::cmp::Ordering",
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -729,10 +729,7 @@ Module eip7702.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -787,14 +784,9 @@ Module eip7702.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "core::option::Option")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::cmp::Ordering" ]
-                        ],
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -949,528 +941,554 @@ Module eip7702.
       | [], [], [ raw ] =>
         ltac:(M.monadic
           (let raw := M.alloc (| raw |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [
-                Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-                Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
-              ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                  Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ne,
-                                    [
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
                                       M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.path "bytes::bytes::Bytes",
-                                          "len",
-                                          [],
-                                          []
-                                        |),
+                                        Ty.path "bool",
+                                        BinOp.ne,
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "bytes::bytes::Bytes" ],
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, raw |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        ]
-                                      |);
-                                      Value.Integer IntegerKind.Usize 23
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-                                        Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "starts_with",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.path "bytes::bytes::Bytes",
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [ Ty.path "bytes::bytes::Bytes" ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.borrow (| Pointer.Kind.Ref, raw |) ]
-                                                    |)
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.path "bytes::bytes::Bytes",
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "bytes::bytes::Bytes" ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "alloy_primitives::bytes_::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, raw |) ]
                                                   |)
                                                 |)
-                                              ]
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.path "bytes::bytes::Bytes",
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [ Ty.path "bytes::bytes::Bytes" ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
+                                              |)
+                                            ]
+                                          |);
+                                          Value.Integer IntegerKind.Usize 23
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                            Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                          ]
+                                          [
+                                            Value.StructTuple
+                                              "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
+                                              []
+                                              []
+                                              []
+                                          ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      UnOp.not (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "starts_with",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "bytes::bytes::Bytes" ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "bytes::bytes::Bytes" ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES",
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "alloy_primitives::bytes_::Bytes"
-                                                                      ]
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      get_constant (|
+                                                                        "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES",
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloy_primitives::bytes_::Bytes"
+                                                                          ]
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
                                                             |)
-                                                          |)
+                                                          ]
                                                         |)
-                                                      ]
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-                                        Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ne,
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_array_field (|
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.path "bytes::bytes::Bytes",
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [ Ty.path "bytes::bytes::Bytes" ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.borrow (| Pointer.Kind.Ref, raw |) ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.Usize 2
-                                        |)
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "revm_bytecode::eip7702::EIP7702_VERSION",
-                                          Ty.path "u8"
+                                          ]
                                         |)
                                       |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-                                        Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
-                                      ]
-                                      [
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
                                         Value.StructTuple
-                                          "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion"
+                                          "core::result::Result::Err"
                                           []
-                                          []
-                                          []
-                                      ]
+                                          [
+                                            Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                            Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                          ]
+                                          [
+                                            Value.StructTuple
+                                              "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
+                                              []
+                                              []
+                                              []
+                                          ]
+                                      |)
+                                    |)
                                   |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  Value.StructTuple
-                    "core::result::Result::Ok"
-                    []
-                    [
-                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
-                    ]
-                    [
-                      Value.StructRecord
-                        "revm_bytecode::eip7702::Eip7702Bytecode"
-                        []
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_array_field (|
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "bytes::bytes::Bytes" ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 2
+                                            |)
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_bytecode::eip7702::EIP7702_VERSION",
+                                              Ty.path "u8"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                            Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                          ]
+                                          [
+                                            Value.StructTuple
+                                              "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion"
+                                              []
+                                              []
+                                              []
+                                          ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
                         []
                         [
-                          ("delegated_address",
-                            M.call_closure (|
-                              Ty.path "alloy_primitives::bits::address::Address",
-                              M.get_associated_function (|
-                                Ty.path "alloy_primitives::bits::address::Address",
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
+                          Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                          Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                        ]
+                        [
+                          Value.StructRecord
+                            "revm_bytecode::eip7702::Eip7702Bytecode"
+                            []
+                            []
+                            [
+                              ("delegated_address",
                                 M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 20 ]
-                                    [ Ty.path "u8" ],
+                                  Ty.path "alloy_primitives::bits::address::Address",
                                   M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 20 ]
-                                          [ Ty.path "u8" ];
-                                        Ty.path "core::array::TryFromSliceError"
-                                      ],
-                                    "unwrap",
+                                    Ty.path "alloy_primitives::bits::address::Address",
+                                    "new",
                                     [],
                                     []
                                   |),
                                   [
                                     M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 20 ]
-                                            [ Ty.path "u8" ];
-                                          Ty.path "core::array::TryFromSliceError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryInto",
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 20 ]
+                                        [ Ty.path "u8" ],
+                                      M.get_associated_function (|
                                         Ty.apply
-                                          (Ty.path "&")
+                                          (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 20 ]
-                                            [ Ty.path "u8" ]
-                                        ],
-                                        "try_into",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 20 ]
+                                              [ Ty.path "u8" ];
+                                            Ty.path "core::array::TryFromSliceError"
+                                          ],
+                                        "unwrap",
                                         [],
                                         []
                                       |),
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
                                               Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                              M.get_trait_method (|
-                                                "core::ops::index::Index",
-                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                [],
-                                                [
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 20 ]
+                                                [ Ty.path "u8" ];
+                                              Ty.path "core::array::TryFromSliceError"
+                                            ],
+                                          M.get_trait_method (|
+                                            "core::convert::TryInto",
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 20 ]
+                                                [ Ty.path "u8" ]
+                                            ],
+                                            "try_into",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
                                                   Ty.apply
-                                                    (Ty.path "core::ops::range::RangeFrom")
+                                                    (Ty.path "&")
                                                     []
-                                                    [ Ty.path "usize" ]
-                                                ],
-                                                "index",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::index::Index",
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    [],
+                                                    [
                                                       Ty.apply
-                                                        (Ty.path "&")
+                                                        (Ty.path "core::ops::range::RangeFrom")
                                                         []
-                                                        [
+                                                        [ Ty.path "usize" ]
+                                                    ],
+                                                    "index",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path "slice")
+                                                            (Ty.path "&")
                                                             []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
+                                                            [
                                                               Ty.apply
-                                                                (Ty.path "&")
+                                                                (Ty.path "slice")
                                                                 []
-                                                                [ Ty.path "bytes::bytes::Bytes" ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.path
-                                                                  "alloy_primitives::bytes_::Bytes",
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.borrow (| Pointer.Kind.Ref, raw |)
-                                                              ]
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path "bytes::bytes::Bytes",
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "bytes::bytes::Bytes"
+                                                                    ],
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::deref::Deref",
+                                                                    Ty.path
+                                                                      "alloy_primitives::bytes_::Bytes",
+                                                                    [],
+                                                                    [],
+                                                                    "deref",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      raw
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)
                                                             |)
-                                                          |)
+                                                          ]
                                                         |)
+                                                      |)
+                                                    |);
+                                                    Value.StructRecord
+                                                      "core::ops::range::RangeFrom"
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                      [ ("start", Value.Integer IntegerKind.Usize 3)
                                                       ]
-                                                    |)
-                                                  |)
-                                                |);
-                                                Value.StructRecord
-                                                  "core::ops::range::RangeFrom"
-                                                  []
-                                                  [ Ty.path "usize" ]
-                                                  [ ("start", Value.Integer IntegerKind.Usize 3) ]
-                                              ]
+                                                  ]
+                                                |)
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       ]
                                     |)
                                   ]
-                                |)
-                              ]
-                            |));
-                          ("version",
-                            M.read (|
-                              get_constant (|
-                                "revm_bytecode::eip7702::EIP7702_VERSION",
-                                Ty.path "u8"
-                              |)
-                            |));
-                          ("raw", M.read (| raw |))
+                                |));
+                              ("version",
+                                M.read (|
+                                  get_constant (|
+                                    "revm_bytecode::eip7702::EIP7702_VERSION",
+                                    Ty.path "u8"
+                                  |)
+                                |));
+                              ("raw", M.read (| raw |))
+                            ]
                         ]
-                    ]
-                |)
-              |)))
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1786,7 +1804,7 @@ Module eip7702.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -2141,7 +2159,7 @@ Module eip7702.
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>

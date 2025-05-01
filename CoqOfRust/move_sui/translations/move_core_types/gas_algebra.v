@@ -106,342 +106,366 @@ Module gas_algebra.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
+                      let~ __serde_state :
+                          Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct" :=
+                        M.read (|
+                          M.match_operator (|
                             Ty.associated_in_trait
                               "serde::ser::Serializer"
                               []
                               []
                               __S
-                              "SerializeStruct"
-                          ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  __S
-                                  "SerializeStruct";
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::Serializer",
-                              __S,
-                              [],
-                              [],
-                              "serialize_struct",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| __serializer |);
-                              mk_str (| "GasQuantity" |);
+                              "SerializeStruct",
+                            M.alloc (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.add,
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct";
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::Serializer",
+                                  __S,
+                                  [],
+                                  [],
+                                  "serialize_struct",
+                                  [],
+                                  []
+                                |),
                                 [
+                                  M.read (| __serializer |);
+                                  mk_str (| "GasQuantity" |);
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
                                     [
-                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.cast (Ty.path "usize") (Value.Bool false);
+                                          Value.Integer IntegerKind.Usize 1
+                                        ]
+                                      |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple [];
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::SerializeStruct",
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
-                                []
-                                []
-                                __S
-                                "SerializeStruct",
-                              [],
-                              [],
-                              "serialize_field",
-                              [],
-                              [ Ty.path "u64" ]
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                              |);
-                              mk_str (| "val" |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_core_types::gas_algebra::GasQuantity",
-                                      "val"
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "u64" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "val" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::gas_algebra::GasQuantity",
+                                          "val"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple [];
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::SerializeStruct",
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
-                                []
-                                []
-                                __S
-                                "SerializeStruct",
-                              [],
-                              [],
-                              "serialize_field",
-                              [],
-                              [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
+                                ]
+                              |)
                             |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                              |);
-                              mk_str (| "phantom" |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_core_types::gas_algebra::GasQuantity",
-                                      "phantom"
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "phantom" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::gas_algebra::GasQuantity",
+                                          "phantom"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
+                          M.get_trait_method (|
+                            "serde::ser::SerializeStruct",
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
+                            [],
+                            [],
+                            "end",
+                            [],
+                            []
+                          |),
+                          [ M.read (| __serde_state |) ]
+                        |)
                       |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ],
-                      M.get_trait_method (|
-                        "serde::ser::SerializeStruct",
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
-                        [],
-                        [],
-                        "end",
-                        [],
-                        []
-                      |),
-                      [ M.read (| __serde_state |) ]
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -989,7 +1013,7 @@ Module gas_algebra.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     Value.Tuple
                       [
@@ -1014,7 +1038,7 @@ Module gas_algebra.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -1306,7 +1330,7 @@ Module gas_algebra.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     Value.Tuple
                       [
@@ -1325,7 +1349,7 @@ Module gas_algebra.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -1464,10 +1488,7 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ] ],
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
@@ -1563,10 +1584,7 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ] ],
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
@@ -2006,7 +2024,7 @@ Module gas_algebra.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -2428,7 +2446,7 @@ Module gas_algebra.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -2444,7 +2462,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2520,7 +2538,7 @@ Module gas_algebra.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -2536,7 +2554,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2626,7 +2644,7 @@ Module gas_algebra.
               ]
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+            Ty.path "u64",
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2688,7 +2706,7 @@ Module gas_algebra.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -2704,7 +2722,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2780,7 +2798,7 @@ Module gas_algebra.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -2796,7 +2814,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2891,7 +2909,7 @@ Module gas_algebra.
                 |);
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
+                    Ty.path "u128",
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2922,7 +2940,7 @@ Module gas_algebra.
               ]
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+            Ty.path "u64",
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

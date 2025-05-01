@@ -35,7 +35,7 @@ Module panicking.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1537,7 +1537,7 @@ Module panicking.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1671,7 +1671,7 @@ Module panicking.
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1919,7 +1919,7 @@ Module panicking.
         (let fmt := M.alloc (| fmt |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+            Ty.path "never",
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2028,7 +2028,7 @@ Module panicking.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -2278,7 +2278,7 @@ Module panicking.
           let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 kind,
                 [
                   fun γ =>
@@ -2301,7 +2301,7 @@ Module panicking.
               |)
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+            Ty.path "never",
             args,
             [
               fun γ =>

@@ -71,14 +71,9 @@ Module zip_eq.
             |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.apply (Ty.path "p3_util::zip_eq::ZipEq") [] [ AIter; BIter ]; Error ]
-              ],
+              [ Ty.apply (Ty.path "p3_util::zip_eq::ZipEq") [] [ AIter; BIter ]; Error ],
             M.alloc (|
               M.call_closure (|
                 Ty.path "bool",
@@ -179,28 +174,18 @@ Module zip_eq.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::option::Option")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
+                  Ty.tuple
                     [
-                      Ty.tuple
-                        [
-                          Ty.associated_in_trait
-                            "core::iter::traits::iterator::Iterator"
-                            []
-                            []
-                            A
-                            "Item";
-                          Ty.associated_in_trait
-                            "core::iter::traits::iterator::Iterator"
-                            []
-                            []
-                            B
-                            "Item"
-                        ]
+                      Ty.associated_in_trait
+                        "core::iter::traits::iterator::Iterator"
+                        []
+                        []
+                        A
+                        "Item";
+                      Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] B "Item"
                     ]
                 ],
               M.alloc (|
@@ -432,7 +417,7 @@ Module zip_eq.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -442,7 +427,7 @@ Module zip_eq.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -524,7 +509,7 @@ Module zip_eq.
                                     let left_val := M.copy (| γ0_0 |) in
                                     let right_val := M.copy (| γ0_1 |) in
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>

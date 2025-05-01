@@ -142,7 +142,7 @@ Module num.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -153,7 +153,7 @@ Module num.
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -294,7 +294,7 @@ Module num.
                 let~ sign : Ty.path "i8" :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
+                      Ty.path "i8",
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -340,7 +340,7 @@ Module num.
                 let~ mantissa : Ty.path "u32" :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
+                      Ty.path "u32",
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -605,7 +605,7 @@ Module num.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -616,7 +616,7 @@ Module num.
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  Ty.tuple [],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -753,7 +753,7 @@ Module num.
                 let~ sign : Ty.path "i8" :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
+                      Ty.path "i8",
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -799,7 +799,7 @@ Module num.
                 let~ mantissa : Ty.path "u64" :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                      Ty.path "u64",
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

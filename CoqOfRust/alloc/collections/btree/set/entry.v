@@ -65,14 +65,9 @@ Module collections.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "core::result::Result")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                      ],
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -520,14 +515,9 @@ Module collections.
                 M.read (|
                   M.match_operator (|
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::collections::btree::set::entry::OccupiedEntry")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::set::entry::OccupiedEntry")
-                          []
-                          [ T; A ]
-                      ],
+                      [ T; A ],
                     self,
                     [
                       fun γ =>
@@ -599,7 +589,7 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -659,7 +649,7 @@ Module collections.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.deref (| M.read (| self |) |),
                         [
                           fun γ =>

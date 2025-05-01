@@ -93,16 +93,11 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           (M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "alloc::boxed::Box")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
                 ],
               M.alloc (| Value.Tuple [] |),
               [

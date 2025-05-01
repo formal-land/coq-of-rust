@@ -25,22 +25,17 @@ Module array.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "&")
                       []
                       [
                         Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ N ]
-                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                          ]
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                       ]
                   ],
                 M.alloc (| Value.Tuple [] |),
