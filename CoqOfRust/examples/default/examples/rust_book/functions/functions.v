@@ -18,47 +18,54 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
     ltac:(M.monadic
       (let lhs := M.alloc (| lhs |) in
       let rhs := M.alloc (| rhs |) in
-      M.catch_return (Ty.path "bool") (|
-        ltac:(M.monadic
-          (M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [ M.read (| rhs |); Value.Integer IntegerKind.U32 0 ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "bool",
-                BinOp.eq,
-                [
+      M.read (|
+        M.catch_return (Ty.path "bool") (|
+          ltac:(M.monadic
+            (M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| rhs |); Value.Integer IntegerKind.U32 0 ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
                   M.call_closure (|
-                    Ty.path "u32",
-                    BinOp.Wrap.rem,
-                    [ M.read (| lhs |); M.read (| rhs |) ]
-                  |);
-                  Value.Integer IntegerKind.U32 0
-                ]
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.rem,
+                        [ M.read (| lhs |); M.read (| rhs |) ]
+                      |);
+                      Value.Integer IntegerKind.U32 0
+                    ]
+                  |)
+                |)
               |)
-            |)
-          |)))
+            |)))
+        |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -88,7 +95,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let n := M.alloc (| n |) in
       M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -103,9 +110,9 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -132,14 +139,14 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -154,9 +161,9 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (|
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
                               M.call_closure (|
                                 Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -183,14 +190,14 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     ]
                                   |)
                                 ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |) in
+                              |) in
+                            M.alloc (| Value.Tuple [] |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -209,9 +216,9 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.read (|
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -240,15 +247,15 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             ]
                                           |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |) in
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)
+                                  |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                                (let~ _ : Ty.tuple [] :=
+                                  M.read (|
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -311,9 +318,9 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             ]
                                           |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |) in
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)
+                                  |) in
                                 M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
@@ -344,7 +351,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       M.read (|
         M.use
           (M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
@@ -376,58 +383,59 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     ltac:(M.monadic
-                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeInclusive")
+                      (let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeInclusive")
+                                    []
+                                    [ Ty.path "u32" ],
+                                  [],
+                                  [],
+                                  "next",
+                                  [],
                                   []
-                                  [ Ty.path "u32" ],
-                                [],
-                                [],
-                                "next",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let n := M.copy (| γ0_0 |) in
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let n := M.copy (| γ0_0 |) in
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_function (| "functions::fizzbuzz", [], [] |),
                                       [ M.read (| n |) ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                          ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                   |)))
@@ -453,13 +461,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "functions::fizzbuzz_to", [], [] |),
-              [ Value.Integer IntegerKind.U32 100 ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "functions::fizzbuzz_to", [], [] |),
+            [ Value.Integer IntegerKind.U32 100 ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ],
+            Ty.path "conditional_compilation::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -409,104 +409,97 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "conditional_compilation::ConditionalCompilation",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "conditional_compilation::ConditionalCompilation",
-                      "value"
-                    |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "conditional_compilation::ConditionalCompilation",
+                    "value"
                   |)
                 |)
               |)
             |) in
-          let~ caller :
-              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "conditional_compilation::AccountId",
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+            M.call_closure (|
+              Ty.path "conditional_compilation::AccountId",
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "emit_event",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "emit_event",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
-                  |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::Changes"
-                    []
-                    []
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::Changes"
-                        []
-                        []
-                        [
-                          ("new_value",
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "conditional_compilation::ConditionalCompilation",
-                                "value"
-                              |)
-                            |));
-                          ("by_", M.read (| caller |))
-                        ]
-                    ]
-                ]
-              |)
+                  |)
+                |);
+                Value.StructTuple
+                  "conditional_compilation::Event::Changes"
+                  []
+                  []
+                  [
+                    Value.StructRecord
+                      "conditional_compilation::Changes"
+                      []
+                      []
+                      [
+                        ("new_value",
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "conditional_compilation::ConditionalCompilation",
+                              "value"
+                            |)
+                          |));
+                        ("by_", M.read (| caller |))
+                      ]
+                  ]
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -536,134 +529,125 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :
-              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "conditional_compilation::AccountId",
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+            M.call_closure (|
+              Ty.path "conditional_compilation::AccountId",
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
-          let~ block_number : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "block_number",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ block_number : Ty.path "u32" :=
+            M.call_closure (|
+              Ty.path "u32",
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "block_number",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "conditional_compilation::ConditionalCompilation",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "conditional_compilation::ConditionalCompilation",
-                      "value"
-                    |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "conditional_compilation::ConditionalCompilation",
+                    "value"
                   |)
                 |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "emit_event",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "emit_event",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
-                  |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::ChangesDated"
-                    []
-                    []
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::ChangesDated"
-                        []
-                        []
-                        [
-                          ("new_value",
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "conditional_compilation::ConditionalCompilation",
-                                "value"
-                              |)
-                            |));
-                          ("by_", M.read (| caller |));
-                          ("when", M.read (| block_number |))
-                        ]
-                    ]
-                ]
-              |)
+                  |)
+                |);
+                Value.StructTuple
+                  "conditional_compilation::Event::ChangesDated"
+                  []
+                  []
+                  [
+                    Value.StructRecord
+                      "conditional_compilation::ChangesDated"
+                      []
+                      []
+                      [
+                        ("new_value",
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "conditional_compilation::ConditionalCompilation",
+                              "value"
+                            |)
+                          |));
+                        ("by_", M.read (| caller |));
+                        ("when", M.read (| block_number |))
+                      ]
+                  ]
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -690,21 +674,19 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "conditional_compilation::ConditionalCompilation",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "conditional_compilation::ConditionalCompilation",
-                      "value"
-                    |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "conditional_compilation::ConditionalCompilation",
+                    "value"
                   |)
                 |)
               |)
@@ -751,86 +733,79 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ caller :
-              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "conditional_compilation::AccountId",
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+            M.call_closure (|
+              Ty.path "conditional_compilation::AccountId",
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "conditional_compilation::Env",
-                  "emit_event",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "conditional_compilation::Env",
-                        M.get_associated_function (|
-                          Ty.path "conditional_compilation::ConditionalCompilation",
-                          "init_env",
-                          [],
-                          []
-                        |),
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "conditional_compilation::Env",
+                "emit_event",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "conditional_compilation::Env",
+                      M.get_associated_function (|
+                        Ty.path "conditional_compilation::ConditionalCompilation",
+                        "init_env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
-                  |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::Changes"
-                    []
-                    []
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::Changes"
-                        []
-                        []
-                        [ ("new_value", M.read (| value |)); ("by_", M.read (| caller |)) ]
-                    ]
-                ]
-              |)
+                  |)
+                |);
+                Value.StructTuple
+                  "conditional_compilation::Event::Changes"
+                  []
+                  []
+                  [
+                    Value.StructRecord
+                      "conditional_compilation::Changes"
+                      []
+                      []
+                      [ ("new_value", M.read (| value |)); ("by_", M.read (| caller |)) ]
+                  ]
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "conditional_compilation::ConditionalCompilation",
-                  "value"
-                |),
-                M.read (| value |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
+              M.read (| value |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

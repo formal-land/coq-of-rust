@@ -277,30 +277,28 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::escape::EscapeIterInner")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [],
-                    "len",
+            let~ n : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::escape::EscapeIterInner")
+                    [ Value.Integer IntegerKind.Usize 4 ]
                     [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::ascii::EscapeDefault",
-                        0
-                      |)
+                  "len",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ascii::EscapeDefault",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             M.alloc (|
               Value.Tuple

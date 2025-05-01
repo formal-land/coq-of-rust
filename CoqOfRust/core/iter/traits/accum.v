@@ -51,28 +51,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
-                                    (Ty.path "i8")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
+                                (Ty.path "i8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
-                                            (Ty.path "i8")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
+                                        (Ty.path "i8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -144,28 +134,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
-                                    (Ty.path "i8")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
+                                (Ty.path "i8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
-                                            (Ty.path "i8")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ]
+                                        (Ty.path "i8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -239,37 +219,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
-                                    ]
-                                    (Ty.path "i8")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
+                                ]
+                                (Ty.path "i8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i8";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i8" ]
-                                                ]
+                                              Ty.path "i8";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i8" ]
                                             ]
-                                            (Ty.path "i8")
-                                        ],
+                                        ]
+                                        (Ty.path "i8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -351,37 +321,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
-                                    ]
-                                    (Ty.path "i8")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
+                                ]
+                                (Ty.path "i8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i8";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i8" ]
-                                                ]
+                                              Ty.path "i8";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i8" ]
                                             ]
-                                            (Ty.path "i8")
-                                        ],
+                                        ]
+                                        (Ty.path "i8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -461,28 +421,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
-                                    (Ty.path "i16")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
+                                (Ty.path "i16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
-                                            (Ty.path "i16")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
+                                        (Ty.path "i16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -554,28 +504,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
-                                    (Ty.path "i16")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
+                                (Ty.path "i16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
-                                            (Ty.path "i16")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ]
+                                        (Ty.path "i16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -649,38 +589,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i16")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
+                                ]
+                                (Ty.path "i16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i16";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
-                                                ]
+                                              Ty.path "i16";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
                                             ]
-                                            (Ty.path "i16")
-                                        ],
+                                        ]
+                                        (Ty.path "i16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -762,38 +691,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i16")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
+                                ]
+                                (Ty.path "i16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i16";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
-                                                ]
+                                              Ty.path "i16";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i16" ]
                                             ]
-                                            (Ty.path "i16")
-                                        ],
+                                        ]
+                                        (Ty.path "i16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -873,28 +791,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
-                                    (Ty.path "i32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
+                                (Ty.path "i32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
-                                            (Ty.path "i32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
+                                        (Ty.path "i32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -966,28 +874,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
-                                    (Ty.path "i32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
+                                (Ty.path "i32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
-                                            (Ty.path "i32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ]
+                                        (Ty.path "i32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1061,38 +959,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                ]
+                                (Ty.path "i32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
-                                                ]
+                                              Ty.path "i32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
                                             ]
-                                            (Ty.path "i32")
-                                        ],
+                                        ]
+                                        (Ty.path "i32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1174,38 +1061,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                ]
+                                (Ty.path "i32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
-                                                ]
+                                              Ty.path "i32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
                                             ]
-                                            (Ty.path "i32")
-                                        ],
+                                        ]
+                                        (Ty.path "i32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1285,28 +1161,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
-                                    (Ty.path "i64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
+                                (Ty.path "i64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
-                                            (Ty.path "i64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
+                                        (Ty.path "i64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1378,28 +1244,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
-                                    (Ty.path "i64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
+                                (Ty.path "i64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
-                                            (Ty.path "i64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ]
+                                        (Ty.path "i64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1473,38 +1329,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
+                                ]
+                                (Ty.path "i64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
-                                                ]
+                                              Ty.path "i64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
                                             ]
-                                            (Ty.path "i64")
-                                        ],
+                                        ]
+                                        (Ty.path "i64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1586,38 +1431,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
+                                ]
+                                (Ty.path "i64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
-                                                ]
+                                              Ty.path "i64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i64" ]
                                             ]
-                                            (Ty.path "i64")
-                                        ],
+                                        ]
+                                        (Ty.path "i64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1697,28 +1531,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
-                                    (Ty.path "i128")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
+                                (Ty.path "i128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
-                                            (Ty.path "i128")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
+                                        (Ty.path "i128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1790,28 +1614,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
-                                    (Ty.path "i128")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
+                                (Ty.path "i128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
-                                            (Ty.path "i128")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ]
+                                        (Ty.path "i128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -1885,40 +1699,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "i128";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i128")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i128"; Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
+                                ]
+                                (Ty.path "i128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i128";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
-                                                ]
+                                              Ty.path "i128";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
                                             ]
-                                            (Ty.path "i128")
-                                        ],
+                                        ]
+                                        (Ty.path "i128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2000,40 +1801,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "i128";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
-                                        ]
-                                    ]
-                                    (Ty.path "i128")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "i128"; Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
+                                ]
+                                (Ty.path "i128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "i128";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
-                                                ]
+                                              Ty.path "i128";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i128" ]
                                             ]
-                                            (Ty.path "i128")
-                                        ],
+                                        ]
+                                        (Ty.path "i128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2113,28 +1901,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
-                                    (Ty.path "isize")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
+                                (Ty.path "isize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
-                                            (Ty.path "isize")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
+                                        (Ty.path "isize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2206,28 +1984,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
-                                    (Ty.path "isize")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
+                                (Ty.path "isize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
-                                            (Ty.path "isize")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ]
+                                        (Ty.path "isize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2302,40 +2070,28 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "isize";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
-                                        ]
+                                  Ty.tuple
+                                    [ Ty.path "isize"; Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
                                     ]
-                                    (Ty.path "isize")
-                                ],
+                                ]
+                                (Ty.path "isize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "isize";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
-                                                ]
+                                              Ty.path "isize";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
                                             ]
-                                            (Ty.path "isize")
-                                        ],
+                                        ]
+                                        (Ty.path "isize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2418,40 +2174,28 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "isize";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
-                                        ]
+                                  Ty.tuple
+                                    [ Ty.path "isize"; Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
                                     ]
-                                    (Ty.path "isize")
-                                ],
+                                ]
+                                (Ty.path "isize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "isize";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
-                                                ]
+                                              Ty.path "isize";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "isize" ]
                                             ]
-                                            (Ty.path "isize")
-                                        ],
+                                        ]
+                                        (Ty.path "isize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2531,28 +2275,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
-                                    (Ty.path "u8")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                (Ty.path "u8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
-                                            (Ty.path "u8")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                        (Ty.path "u8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2624,28 +2358,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
-                                    (Ty.path "u8")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                (Ty.path "u8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
-                                            (Ty.path "u8")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                        (Ty.path "u8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2719,37 +2443,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                    ]
-                                    (Ty.path "u8")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                ]
+                                (Ty.path "u8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u8";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                                ]
+                                              Ty.path "u8";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                                             ]
-                                            (Ty.path "u8")
-                                        ],
+                                        ]
+                                        (Ty.path "u8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2831,37 +2545,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                    ]
-                                    (Ty.path "u8")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                ]
+                                (Ty.path "u8"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u8";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                                ]
+                                              Ty.path "u8";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                                             ]
-                                            (Ty.path "u8")
-                                        ],
+                                        ]
+                                        (Ty.path "u8"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -2941,28 +2645,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
-                                    (Ty.path "u16")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
+                                (Ty.path "u16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
-                                            (Ty.path "u16")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
+                                        (Ty.path "u16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3034,28 +2728,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
-                                    (Ty.path "u16")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
+                                (Ty.path "u16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
-                                            (Ty.path "u16")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
+                                        (Ty.path "u16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3129,38 +2813,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u16")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                ]
+                                (Ty.path "u16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u16";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
-                                                ]
+                                              Ty.path "u16";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
                                             ]
-                                            (Ty.path "u16")
-                                        ],
+                                        ]
+                                        (Ty.path "u16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3242,38 +2915,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u16")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                ]
+                                (Ty.path "u16"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u16";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
-                                                ]
+                                              Ty.path "u16";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
                                             ]
-                                            (Ty.path "u16")
-                                        ],
+                                        ]
+                                        (Ty.path "u16"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3353,28 +3015,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
-                                    (Ty.path "u32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                                (Ty.path "u32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
-                                            (Ty.path "u32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                                        (Ty.path "u32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3446,28 +3098,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
-                                    (Ty.path "u32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                                (Ty.path "u32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
-                                            (Ty.path "u32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                                        (Ty.path "u32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3541,38 +3183,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                ]
+                                (Ty.path "u32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
-                                                ]
+                                              Ty.path "u32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
                                             ]
-                                            (Ty.path "u32")
-                                        ],
+                                        ]
+                                        (Ty.path "u32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3654,38 +3285,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                ]
+                                (Ty.path "u32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
-                                                ]
+                                              Ty.path "u32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
                                             ]
-                                            (Ty.path "u32")
-                                        ],
+                                        ]
+                                        (Ty.path "u32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3765,28 +3385,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
-                                    (Ty.path "u64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
+                                (Ty.path "u64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
-                                            (Ty.path "u64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
+                                        (Ty.path "u64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3858,28 +3468,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
-                                    (Ty.path "u64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
+                                (Ty.path "u64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
-                                            (Ty.path "u64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
+                                        (Ty.path "u64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3953,38 +3553,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                ]
+                                (Ty.path "u64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                                ]
+                                              Ty.path "u64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             ]
-                                            (Ty.path "u64")
-                                        ],
+                                        ]
+                                        (Ty.path "u64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4066,38 +3655,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                ]
+                                (Ty.path "u64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                                ]
+                                              Ty.path "u64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             ]
-                                            (Ty.path "u64")
-                                        ],
+                                        ]
+                                        (Ty.path "u64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4177,28 +3755,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
-                                    (Ty.path "u128")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
+                                (Ty.path "u128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
-                                            (Ty.path "u128")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
+                                        (Ty.path "u128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4270,28 +3838,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
-                                    (Ty.path "u128")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
+                                (Ty.path "u128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
-                                            (Ty.path "u128")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]
+                                        (Ty.path "u128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4365,40 +3923,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "u128";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u128")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u128"; Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                ]
+                                (Ty.path "u128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u128";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
-                                                ]
+                                              Ty.path "u128";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
                                             ]
-                                            (Ty.path "u128")
-                                        ],
+                                        ]
+                                        (Ty.path "u128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4480,40 +4025,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "u128";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
-                                        ]
-                                    ]
-                                    (Ty.path "u128")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "u128"; Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                ]
+                                (Ty.path "u128"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u128";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
-                                                ]
+                                              Ty.path "u128";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u128" ]
                                             ]
-                                            (Ty.path "u128")
-                                        ],
+                                        ]
+                                        (Ty.path "u128"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4593,28 +4125,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
-                                    (Ty.path "usize")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                (Ty.path "usize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
-                                            (Ty.path "usize")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                        (Ty.path "usize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4686,28 +4208,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
-                                    (Ty.path "usize")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                (Ty.path "usize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
-                                            (Ty.path "usize")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                        (Ty.path "usize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4782,40 +4294,28 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "usize";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                                        ]
+                                  Ty.tuple
+                                    [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
                                     ]
-                                    (Ty.path "usize")
-                                ],
+                                ]
+                                (Ty.path "usize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "usize";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                                                ]
+                                              Ty.path "usize";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
                                             ]
-                                            (Ty.path "usize")
-                                        ],
+                                        ]
+                                        (Ty.path "usize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -4898,40 +4398,28 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "usize";
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                                        ]
+                                  Ty.tuple
+                                    [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
                                     ]
-                                    (Ty.path "usize")
-                                ],
+                                ]
+                                (Ty.path "usize"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "usize";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                                                ]
+                                              Ty.path "usize";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
                                             ]
-                                            (Ty.path "usize")
-                                        ],
+                                        ]
+                                        (Ty.path "usize"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5024,58 +4512,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i8" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i8" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i8" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i8" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5180,58 +4658,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i8" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i8" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i8" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i8" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5344,68 +4812,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i8" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i8" ]
-                                            ]
+                                            [ Ty.path "i8" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i8" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i8" ]
-                                                    ]
+                                                    [ Ty.path "i8" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5528,68 +4986,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i8" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i8" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i8" ]
-                                            ]
+                                            [ Ty.path "i8" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i8" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i8" ]
-                                                    ]
+                                                    [ Ty.path "i8" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5704,58 +5152,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i16" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i16" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i16" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i16" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -5860,58 +5298,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i16" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i16" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i16" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i16" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6024,68 +5452,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i16" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i16" ]
-                                            ]
+                                            [ Ty.path "i16" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i16" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i16" ]
-                                                    ]
+                                                    [ Ty.path "i16" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6208,68 +5626,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i16" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i16" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i16" ]
-                                            ]
+                                            [ Ty.path "i16" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i16" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i16" ]
-                                                    ]
+                                                    [ Ty.path "i16" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6384,58 +5792,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i32" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i32" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i32" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i32" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6540,58 +5938,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i32" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i32" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i32" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i32" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6704,68 +6092,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i32" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i32" ]
-                                            ]
+                                            [ Ty.path "i32" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i32" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i32" ]
-                                                    ]
+                                                    [ Ty.path "i32" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -6888,68 +6266,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i32" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i32" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i32" ]
-                                            ]
+                                            [ Ty.path "i32" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i32" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i32" ]
-                                                    ]
+                                                    [ Ty.path "i32" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7064,58 +6432,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i64" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i64" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i64" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i64" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7220,58 +6578,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i64" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i64" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i64" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i64" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7384,68 +6732,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i64" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i64" ]
-                                            ]
+                                            [ Ty.path "i64" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i64" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i64" ]
-                                                    ]
+                                                    [ Ty.path "i64" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7568,68 +6906,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i64" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i64" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i64" ]
-                                            ]
+                                            [ Ty.path "i64" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i64" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i64" ]
-                                                    ]
+                                                    [ Ty.path "i64" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7747,58 +7075,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i128" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i128" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i128" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i128" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -7906,58 +7224,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i128" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "i128" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i128" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "i128" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8073,68 +7381,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i128" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i128" ]
-                                            ]
+                                            [ Ty.path "i128" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i128" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i128" ]
-                                                    ]
+                                                    [ Ty.path "i128" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8260,68 +7558,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "i128" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "i128" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "i128" ]
-                                            ]
+                                            [ Ty.path "i128" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "i128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "i128" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "i128" ]
-                                                    ]
+                                                    [ Ty.path "i128" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "i128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "i128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8442,58 +7730,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "isize" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "isize" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "isize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "isize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "isize" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "isize" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "isize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "isize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8604,58 +7882,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "isize" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "isize" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "isize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "isize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "isize" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "isize" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "isize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "isize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8771,68 +8039,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "isize" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "isize" ]
-                                            ]
+                                            [ Ty.path "isize" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "isize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "isize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "isize" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "isize" ]
-                                                    ]
+                                                    [ Ty.path "isize" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "isize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "isize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -8958,68 +8216,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "isize" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "isize" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "isize" ]
-                                            ]
+                                            [ Ty.path "isize" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "isize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "isize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "isize" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "isize" ]
-                                                    ]
+                                                    [ Ty.path "isize" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "isize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "isize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9134,58 +8382,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u8" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u8" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u8" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u8" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9290,58 +8528,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u8" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u8" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u8" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u8" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9454,68 +8682,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u8" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u8" ]
-                                            ]
+                                            [ Ty.path "u8" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u8" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u8" ]
-                                                    ]
+                                                    [ Ty.path "u8" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9638,68 +8856,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u8" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u8" ]
-                                            ]
+                                            [ Ty.path "u8" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u8" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u8" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u8" ]
-                                                    ]
+                                                    [ Ty.path "u8" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u8" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u8" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9814,58 +9022,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u16" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u16" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u16" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u16" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -9970,58 +9168,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u16" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u16" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u16" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u16" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10134,68 +9322,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u16" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u16" ]
-                                            ]
+                                            [ Ty.path "u16" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u16" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u16" ]
-                                                    ]
+                                                    [ Ty.path "u16" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10318,68 +9496,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u16" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u16" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u16" ]
-                                            ]
+                                            [ Ty.path "u16" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u16" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u16" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u16" ]
-                                                    ]
+                                                    [ Ty.path "u16" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u16" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u16" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10494,58 +9662,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u32" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u32" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u32" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u32" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10650,58 +9808,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u32" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u32" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u32" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u32" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10814,68 +9962,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u32" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u32" ]
-                                            ]
+                                            [ Ty.path "u32" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u32" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                                    [ Ty.path "u32" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -10998,68 +10136,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u32" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u32" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u32" ]
-                                            ]
+                                            [ Ty.path "u32" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u32" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u32" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u32" ]
-                                                    ]
+                                                    [ Ty.path "u32" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u32" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u32" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -11174,58 +10302,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u64" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u64" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u64" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u64" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -11330,58 +10448,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u64" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u64" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u64" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u64" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -11494,68 +10602,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u64" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u64" ]
-                                            ]
+                                            [ Ty.path "u64" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u64" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u64" ]
-                                                    ]
+                                                    [ Ty.path "u64" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -11678,68 +10776,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u64" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u64" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u64" ]
-                                            ]
+                                            [ Ty.path "u64" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u64" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u64" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u64" ]
-                                                    ]
+                                                    [ Ty.path "u64" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u64" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -11857,58 +10945,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u128" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u128" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u128" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u128" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12016,58 +11094,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u128" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "u128" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u128" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "u128" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12183,68 +11251,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u128" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u128" ]
-                                            ]
+                                            [ Ty.path "u128" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u128" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u128" ]
-                                                    ]
+                                                    [ Ty.path "u128" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12370,68 +11428,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "u128" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "u128" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "u128" ]
-                                            ]
+                                            [ Ty.path "u128" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "u128" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u128" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "u128" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "u128" ]
-                                                    ]
+                                                    [ Ty.path "u128" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "u128" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u128" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12552,58 +11600,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "usize" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "usize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "usize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "usize" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "usize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "usize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12714,58 +11752,48 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "usize" ];
-                                          Ty.apply
-                                            (Ty.path "core::num::wrapping::Wrapping")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ];
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "usize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "usize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "usize" ];
-                                                  Ty.apply
-                                                    (Ty.path "core::num::wrapping::Wrapping")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ];
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "usize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "usize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -12881,68 +11909,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "usize" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ]
+                                            [ Ty.path "usize" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "usize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "usize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "usize" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "usize" ]
-                                                    ]
+                                                    [ Ty.path "usize" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "usize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "usize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13068,68 +12086,58 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::num::wrapping::Wrapping")
+                                        []
+                                        [ Ty.path "usize" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::num::wrapping::Wrapping")
                                             []
-                                            [ Ty.path "usize" ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ]
+                                            [ Ty.path "usize" ]
                                         ]
                                     ]
-                                    (Ty.apply
-                                      (Ty.path "core::num::wrapping::Wrapping")
-                                      []
-                                      [ Ty.path "usize" ])
-                                ],
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "usize" ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
                                                     []
-                                                    [ Ty.path "usize" ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::num::wrapping::Wrapping")
-                                                        []
-                                                        [ Ty.path "usize" ]
-                                                    ]
+                                                    [ Ty.path "usize" ]
                                                 ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "core::num::wrapping::Wrapping")
-                                              []
-                                              [ Ty.path "usize" ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "usize" ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13231,28 +12239,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
-                                    (Ty.path "f32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
+                                (Ty.path "f32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
-                                            (Ty.path "f32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
+                                        (Ty.path "f32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13324,28 +12322,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
-                                    (Ty.path "f32")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
+                                (Ty.path "f32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
-                                            (Ty.path "f32")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ]
+                                        (Ty.path "f32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13419,38 +12407,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "f32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
+                                ]
+                                (Ty.path "f32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "f32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
-                                                ]
+                                              Ty.path "f32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
                                             ]
-                                            (Ty.path "f32")
-                                        ],
+                                        ]
+                                        (Ty.path "f32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13532,38 +12509,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
-                                        ]
-                                    ]
-                                    (Ty.path "f32")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
+                                ]
+                                (Ty.path "f32"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "f32";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
-                                                ]
+                                              Ty.path "f32";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "f32" ]
                                             ]
-                                            (Ty.path "f32")
-                                        ],
+                                        ]
+                                        (Ty.path "f32"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13643,28 +12609,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
-                                    (Ty.path "f64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
+                                (Ty.path "f64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
-                                            (Ty.path "f64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
+                                        (Ty.path "f64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13736,28 +12692,18 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
-                                    (Ty.path "f64")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
+                                (Ty.path "f64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
-                                            (Ty.path "f64")
-                                        ],
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ]
+                                        (Ty.path "f64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13831,38 +12777,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "f64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
+                                ]
+                                (Ty.path "f64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "f64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
-                                                ]
+                                              Ty.path "f64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
                                             ]
-                                            (Ty.path "f64")
-                                        ],
+                                        ]
+                                        (Ty.path "f64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -13944,38 +12879,27 @@ Module iter.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
-                                        ]
-                                    ]
-                                    (Ty.path "f64")
-                                ],
+                                  Ty.tuple
+                                    [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
+                                ]
+                                (Ty.path "f64"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "f64";
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
-                                                ]
+                                              Ty.path "f64";
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "f64" ]
                                             ]
-                                            (Ty.path "f64")
-                                        ],
+                                        ]
+                                        (Ty.path "f64"),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -14073,28 +12997,23 @@ Module iter.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
+                                          I;
                                           Ty.apply
-                                            (Ty.path "core::iter::adapters::GenericShunt")
+                                            (Ty.path "core::result::Result")
                                             []
-                                            [
-                                              I;
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.path "core::convert::Infallible"; E ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible"; E ]
                                         ]
                                     ]
-                                    T
-                                ],
+                                ]
+                                T,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -14205,28 +13124,23 @@ Module iter.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
+                                          I;
                                           Ty.apply
-                                            (Ty.path "core::iter::adapters::GenericShunt")
+                                            (Ty.path "core::result::Result")
                                             []
-                                            [
-                                              I;
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.path "core::convert::Infallible"; E ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible"; E ]
                                         ]
                                     ]
-                                    T
-                                ],
+                                ]
+                                T,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -14331,28 +13245,23 @@ Module iter.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
+                                          I;
                                           Ty.apply
-                                            (Ty.path "core::iter::adapters::GenericShunt")
+                                            (Ty.path "core::option::Option")
                                             []
-                                            [
-                                              I;
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "core::convert::Infallible" ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible" ]
                                         ]
                                     ]
-                                    T
-                                ],
+                                ]
+                                T,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -14457,28 +13366,23 @@ Module iter.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
+                                          I;
                                           Ty.apply
-                                            (Ty.path "core::iter::adapters::GenericShunt")
+                                            (Ty.path "core::option::Option")
                                             []
-                                            [
-                                              I;
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "core::convert::Infallible" ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible" ]
                                         ]
                                     ]
-                                    T
-                                ],
+                                ]
+                                T,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

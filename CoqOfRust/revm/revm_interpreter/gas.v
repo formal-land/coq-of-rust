@@ -27,19 +27,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              Ty.path "revm_interpreter::gas::Gas",
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+                      Ty.path "revm_interpreter::gas::Gas",
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+                              Ty.path "revm_interpreter::gas::Gas",
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -409,19 +409,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -454,98 +454,92 @@ Module gas.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u64",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::Gas",
-                            "limit"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "limit"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u64",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::Gas",
-                            "remaining"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "remaining"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "i64",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::Gas",
-                            "refunded"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "i64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "refunded"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -863,21 +857,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           let returned := M.alloc (| returned |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::gas::Gas",
-                    "remaining"
-                  |) in
-                M.write (|
-                  β,
-                  M.call_closure (|
-                    Ty.path "u64",
-                    BinOp.Wrap.add,
-                    [ M.read (| β |); M.read (| returned |) ]
-                  |)
+            let~ _ : Ty.tuple [] :=
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "remaining"
+                |) in
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| returned |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -901,16 +893,14 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::gas::Gas",
-                    "remaining"
-                  |),
-                  Value.Integer IntegerKind.U64 0
-                |)
+            let~ _ : Ty.tuple [] :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "remaining"
+                |),
+                Value.Integer IntegerKind.U64 0
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -934,21 +924,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::gas::Gas",
-                    "refunded"
-                  |) in
-                M.write (|
-                  β,
-                  M.call_closure (|
-                    Ty.path "i64",
-                    BinOp.Wrap.add,
-                    [ M.read (| β |); M.read (| refund |) ]
-                  |)
+            let~ _ : Ty.tuple [] :=
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "refunded"
+                |) in
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| refund |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -974,10 +962,10 @@ Module gas.
           (let self := M.alloc (| self |) in
           let is_london := M.alloc (| is_london |) in
           M.read (|
-            let~ max_refund_quotient : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.copy (|
+            let~ max_refund_quotient : Ty.path "u64" :=
+              M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                  Ty.path "u64",
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -989,60 +977,50 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::gas::Gas",
-                    "refunded"
-                  |),
-                  M.cast
-                    (Ty.path "i64")
-                    (M.call_closure (|
-                      Ty.path "u64",
-                      M.get_trait_method (|
-                        "core::cmp::Ord",
+            let~ _ : Ty.tuple [] :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "refunded"
+                |),
+                M.cast
+                  (Ty.path "i64")
+                  (M.call_closure (|
+                    Ty.path "u64",
+                    M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "min", [], [] |),
+                    [
+                      M.cast
+                        (Ty.path "u64")
+                        (M.call_closure (|
+                          Ty.path "i64",
+                          M.get_associated_function (|
+                            Ty.path "revm_interpreter::gas::Gas",
+                            "refunded",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |));
+                      M.call_closure (|
                         Ty.path "u64",
-                        [],
-                        [],
-                        "min",
-                        [],
-                        []
-                      |),
-                      [
-                        M.cast
-                          (Ty.path "u64")
-                          (M.call_closure (|
-                            Ty.path "i64",
+                        BinOp.Wrap.div,
+                        [
+                          M.call_closure (|
+                            Ty.path "u64",
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::gas::Gas",
-                              "refunded",
+                              "spent",
                               [],
                               []
                             |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |));
-                        M.call_closure (|
-                          Ty.path "u64",
-                          BinOp.Wrap.div,
-                          [
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_associated_function (|
-                                Ty.path "revm_interpreter::gas::Gas",
-                                "spent",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |);
-                            M.read (| max_refund_quotient |)
-                          ]
-                        |)
-                      ]
-                    |))
-                |)
+                          |);
+                          M.read (| max_refund_quotient |)
+                        ]
+                      |)
+                    ]
+                  |))
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1066,16 +1044,14 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::gas::Gas",
-                    "refunded"
-                  |),
-                  M.read (| refund |)
-                |)
+            let~ _ : Ty.tuple [] :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "refunded"
+                |),
+                M.read (| refund |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1105,7 +1081,7 @@ Module gas.
           let cost := M.alloc (| cost |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "bool" ],
@@ -1129,20 +1105,22 @@ Module gas.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let remaining := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
-                    let~ success : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                      M.alloc (| UnOp.not (| M.read (| overflow |) |) |) in
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.use success in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                M.alloc (|
+                    let~ success : Ty.path "bool" := UnOp.not (| M.read (| overflow |) |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.use success in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.deref (| M.read (| self |) |),
@@ -1150,11 +1128,11 @@ Module gas.
                                       "remaining"
                                     |),
                                     M.read (| remaining |)
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
                       |) in
                     success))
               ]
@@ -1187,106 +1165,109 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
-          M.catch_return (Ty.path "revm_interpreter::gas::MemoryExtensionResult") (|
-            ltac:(M.monadic
-              (M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "revm_interpreter::gas::MemoryExtensionResult" ],
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_interpreter::gas::MemoryGas",
-                        "record_new_len",
-                        [],
-                        []
+          M.read (|
+            M.catch_return (Ty.path "revm_interpreter::gas::MemoryExtensionResult") (|
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.read (|
+                    M.match_operator (|
+                      Ty.path "revm_interpreter::gas::MemoryExtensionResult",
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                          M.get_associated_function (|
+                            Ty.path "revm_interpreter::gas::MemoryGas",
+                            "record_new_len",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::gas::Gas",
+                                "memory"
+                              |)
+                            |);
+                            M.read (| new_len |)
+                          ]
+                        |)
                       |),
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::Gas",
-                            "memory"
-                          |)
-                        |);
-                        M.read (| new_len |)
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let additional_cost := M.copy (| γ0_0 |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "revm_interpreter::gas::Gas",
+                                                    "record_cost",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.read (| additional_cost |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "revm_interpreter::gas::MemoryExtensionResult::OutOfGas"
+                                                  []
+                                                  []
+                                                  []
+                                              |)
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::gas::MemoryExtensionResult::Extended"
+                                []
+                                []
+                                []
+                            |)))
                       ]
                     |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let additional_cost := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::gas::Gas",
-                                              "record_cost",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| self |) |)
-                                              |);
-                                              M.read (| additional_cost |)
-                                            ]
-                                          |)
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          Value.StructTuple
-                                            "revm_interpreter::gas::MemoryExtensionResult::OutOfGas"
-                                            []
-                                            []
-                                            []
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "revm_interpreter::gas::MemoryExtensionResult::Extended"
-                            []
-                            []
-                            []
-                        |)))
-                  ]
-                |)
-              |)))
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1346,13 +1327,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              Ty.path "revm_interpreter::gas::MemoryGas",
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+                      Ty.path "revm_interpreter::gas::MemoryGas",
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -1604,13 +1585,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1641,36 +1622,34 @@ Module gas.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "usize",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::MemoryGas",
-                            "words_num"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "usize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::MemoryGas",
+                          "words_num"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1764,120 +1743,123 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_num := M.alloc (| new_num |) in
-          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [
-                                    M.read (| new_num |);
+          M.read (|
+            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| new_num |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::gas::MemoryGas",
+                                              "words_num"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
                                     M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_interpreter::gas::MemoryGas",
-                                        "words_num"
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "u64" ]
+                                          []
                                       |)
                                     |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::option::Option::None"
-                                    []
-                                    [ Ty.path "u64" ]
-                                    []
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::gas::MemoryGas",
-                        "words_num"
-                      |),
-                      M.read (| new_num |)
-                    |)
-                  |) in
-                let~ cost : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_function (| "revm_interpreter::gas::calc::memory_gas", [], [] |),
-                      [ M.read (| new_num |) ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "core::mem::swap", [], [ Ty.path "u64" ] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_interpreter::gas::MemoryGas",
-                                "expansion_cost"
-                              |)
-                            |)
-                          |)
-                        |);
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, cost |) |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
                         |)
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    []
-                    [ Ty.path "u64" ]
-                    [
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::MemoryGas",
+                          "words_num"
+                        |),
+                        M.read (| new_num |)
+                      |) in
+                    let~ cost : Ty.path "u64" :=
                       M.call_closure (|
                         Ty.path "u64",
-                        BinOp.Wrap.sub,
+                        M.get_function (| "revm_interpreter::gas::calc::memory_gas", [], [] |),
+                        [ M.read (| new_num |) ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "core::mem::swap", [], [ Ty.path "u64" ] |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::gas::MemoryGas",
-                              "expansion_cost"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::gas::MemoryGas",
+                                  "expansion_cost"
+                                |)
+                              |)
                             |)
                           |);
-                          M.read (| cost |)
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, cost |) |)
+                          |)
                         ]
-                      |)
-                    ]
-                |)
-              |)))
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "u64" ]
+                        [
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.sub,
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::gas::MemoryGas",
+                                  "expansion_cost"
+                                |)
+                              |);
+                              M.read (| cost |)
+                            ]
+                          |)
+                        ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

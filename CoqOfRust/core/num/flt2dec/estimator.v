@@ -24,28 +24,26 @@ Module num.
             (let mant := M.alloc (| mant |) in
             let exp := M.alloc (| exp |) in
             M.read (|
-              let~ nbits : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    BinOp.Wrap.sub,
-                    [
-                      Value.Integer IntegerKind.I64 64;
-                      M.cast
-                        (Ty.path "i64")
-                        (M.call_closure (|
-                          Ty.path "u32",
-                          M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "u64",
-                              BinOp.Wrap.sub,
-                              [ M.read (| mant |); Value.Integer IntegerKind.U64 1 ]
-                            |)
-                          ]
-                        |))
-                    ]
-                  |)
+              let~ nbits : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.sub,
+                  [
+                    Value.Integer IntegerKind.I64 64;
+                    M.cast
+                      (Ty.path "i64")
+                      (M.call_closure (|
+                        Ty.path "u32",
+                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
+                        [
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.sub,
+                            [ M.read (| mant |); Value.Integer IntegerKind.U64 1 ]
+                          |)
+                        ]
+                      |))
+                  ]
                 |) in
               M.alloc (|
                 M.cast

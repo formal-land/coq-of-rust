@@ -32,61 +32,58 @@ Module panicking.
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::intrinsics::abort", [], [] |),
-                          []
-                        |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
-            |) in
-          let~ pi : Ty.apply (Ty.path "*") [] [ Ty.path "core::panic::panic_info::PanicInfo" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "core::panic::panic_info::PanicInfo",
-                M.get_associated_function (|
-                  Ty.path "core::panic::panic_info::PanicInfo",
-                  "new",
-                  [],
-                  []
-                |),
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Value.Tuple [] |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, fmt |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
-                        M.get_associated_function (|
-                          Ty.path "core::panic::location::Location",
-                          "caller",
-                          [],
-                          []
-                        |),
-                        []
-                      |)
-                    |)
-                  |);
-                  Value.Bool true;
-                  Value.Bool false
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            Ty.path "never",
+                            M.get_function (| "core::intrinsics::abort", [], [] |),
+                            []
+                          |)
+                        |)
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |)
+            |) in
+          let~ pi : Ty.path "core::panic::panic_info::PanicInfo" :=
+            M.call_closure (|
+              Ty.path "core::panic::panic_info::PanicInfo",
+              M.get_associated_function (|
+                Ty.path "core::panic::panic_info::PanicInfo",
+                "new",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, fmt |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                      M.get_associated_function (|
+                        Ty.path "core::panic::location::Location",
+                        "caller",
+                        [],
+                        []
+                      |),
+                      []
+                    |)
+                  |)
+                |);
+                Value.Bool true;
+                Value.Bool false
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1537,26 +1534,28 @@ Module panicking.
         (let index := M.alloc (| index |) in
         let len := M.alloc (| len |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::intrinsics::abort", [], [] |),
-                          []
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            Ty.path "never",
+                            M.get_function (| "core::intrinsics::abort", [], [] |),
+                            []
+                          |)
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1669,26 +1668,28 @@ Module panicking.
         (let required := M.alloc (| required |) in
         let found := M.alloc (| found |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::intrinsics::abort", [], [] |),
-                          []
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            Ty.path "never",
+                            M.get_function (| "core::intrinsics::abort", [], [] |),
+                            []
+                          |)
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1918,7 +1919,7 @@ Module panicking.
         (let fmt := M.alloc (| fmt |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+            Ty.path "never",
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -1960,14 +1961,12 @@ Module panicking.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
-                          []
-                        |)
+                  (let~ _ : Ty.tuple [] :=
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
+                        []
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)))
@@ -2029,7 +2028,7 @@ Module panicking.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -2276,10 +2275,10 @@ Module panicking.
         let right := M.alloc (| right |) in
         let args := M.alloc (| args |) in
         M.read (|
-          let~ op : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-            M.copy (|
+          let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+            M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 kind,
                 [
                   fun γ =>
@@ -2302,7 +2301,7 @@ Module panicking.
               |)
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+            Ty.path "never",
             args,
             [
               fun γ =>

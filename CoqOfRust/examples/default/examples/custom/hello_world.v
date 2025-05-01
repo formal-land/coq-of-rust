@@ -52,9 +52,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -117,238 +117,235 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ number :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "i32" ]
-              [ Value.Integer IntegerKind.I32 7 ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
-        let~ letter :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
-        let~ emoticon :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := number in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let i := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "std::io::stdio::_print", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "core::fmt::Arguments",
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                [
-                                  Value.Integer IntegerKind.Usize 2;
-                                  Value.Integer IntegerKind.Usize 1
-                                ],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ mk_str (| "Matched " |); mk_str (| "!
-" |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_debug",
-                                                [],
-                                                [ Ty.path "i32" ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
+        let~ number : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "i32" ]
+            [ Value.Integer IntegerKind.I32 7 ] in
+        let~ letter : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] in
+        let~ emoticon : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := number in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    let i := M.copy (| γ0_0 |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 1
+                                  ],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ mk_str (| "Matched " |); mk_str (| "!
+" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := letter in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let j := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "std::io::stdio::_print", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "core::fmt::Arguments",
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                [
-                                  Value.Integer IntegerKind.Usize 2;
-                                  Value.Integer IntegerKind.Usize 1
-                                ],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ mk_str (| "Matched " |); mk_str (| "!
-" |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_debug",
-                                                [],
-                                                [ Ty.path "i32" ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, j |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := letter in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "std::io::stdio::_print", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "core::fmt::Arguments",
-                              M.get_associated_function (|
+                    let j := M.copy (| γ0_0 |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
+                            [
+                              M.call_closure (|
                                 Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                [ Value.Integer IntegerKind.Usize 1 ],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            mk_str (|
-                                              "Didn't match a number. Let's go with a letter!
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 1
+                                  ],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ mk_str (| "Matched " |); mk_str (| "!
+" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, j |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  [ Value.Integer IntegerKind.Usize 1 ],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              mk_str (|
+                                                "Didn't match a number. Let's go with a letter!
 "
-                                            |)
-                                          ]
+                                              |)
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)))
-            ]
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
-        let~ i_like_letters : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-          M.alloc (| Value.Bool false |) in
+        let~ i_like_letters : Ty.path "bool" := Value.Bool false in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -357,9 +354,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let i := M.copy (| γ0_0 |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -417,23 +414,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use i_like_letters in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (|
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
                               M.call_closure (|
                                 Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -467,15 +464,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |)
                                 ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |) in
+                              |) in
+                            M.alloc (| Value.Tuple [] |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (|
+                        (let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
                               M.call_closure (|
                                 Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -509,9 +506,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |)
                                 ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |) in
+                              |) in
+                            M.alloc (| Value.Tuple [] |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |)))

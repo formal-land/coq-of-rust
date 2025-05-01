@@ -55,21 +55,19 @@ Module vec.
             (let self := M.alloc (| self |) in
             let increment := M.alloc (| increment |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                      "local_len"
-                    |) in
-                  M.write (|
-                    β,
-                    M.call_closure (|
-                      Ty.path "usize",
-                      BinOp.Wrap.add,
-                      [ M.read (| β |); M.read (| increment |) ]
-                    |)
+              let~ _ : Ty.tuple [] :=
+                let β :=
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::vec::set_len_on_drop::SetLenOnDrop",
+                    "local_len"
+                  |) in
+                M.write (|
+                  β,
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); M.read (| increment |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -122,24 +120,22 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                          "len"
-                        |)
-                      |)
-                    |),
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                        "local_len"
+                        "len"
                       |)
+                    |)
+                  |),
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
+                      "local_len"
                     |)
                   |)
                 |) in

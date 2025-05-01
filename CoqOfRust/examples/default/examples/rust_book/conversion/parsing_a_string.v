@@ -15,63 +15,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "12" |) |) |) ]
-            |)
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+            M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "12" |) |) |) ]
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ],
-              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "bool" ] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "true" |) |) |) ]
-            |)
+              [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ],
+            M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "bool" ] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "true" |) |) |) ]
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
-              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "unparsable" |) |) |) ]
-            |)
+              [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
+            M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "unparsable" |) |) |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

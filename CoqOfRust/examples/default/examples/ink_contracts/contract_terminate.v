@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "contract_terminate::AccountId" ],
+            Ty.path "contract_terminate::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -238,60 +238,58 @@ Module Impl_contract_terminate_JustTerminate.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "contract_terminate::Env",
-                  "terminate_contract",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "contract_terminate::Env",
-                        M.get_associated_function (|
-                          Ty.path "contract_terminate::JustTerminate",
-                          "env",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |)
-                  |);
-                  M.call_closure (|
-                    Ty.path "contract_terminate::AccountId",
-                    M.get_associated_function (|
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "contract_terminate::Env",
+                "terminate_contract",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
                       Ty.path "contract_terminate::Env",
-                      "caller",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "contract_terminate::Env",
-                            M.get_associated_function (|
-                              Ty.path "contract_terminate::JustTerminate",
-                              "env",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |)
+                      M.get_associated_function (|
+                        Ty.path "contract_terminate::JustTerminate",
+                        "env",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
+                |);
+                M.call_closure (|
+                  Ty.path "contract_terminate::AccountId",
+                  M.get_associated_function (|
+                    Ty.path "contract_terminate::Env",
+                    "caller",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "contract_terminate::Env",
+                          M.get_associated_function (|
+                            Ty.path "contract_terminate::JustTerminate",
+                            "env",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)
-                    ]
-                  |)
-                ]
-              |)
+                    |)
+                  ]
+                |)
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

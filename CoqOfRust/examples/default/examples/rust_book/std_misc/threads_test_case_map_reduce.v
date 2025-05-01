@@ -93,10 +93,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ data : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            mk_str (|
-              "86967897737416471853297327050364959
+        let~ data : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          mk_str (|
+            "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
 38397966707106094172783238747669219
@@ -104,23 +103,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668"
-            |)
           |) in
         let~ children :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::vec::Vec")
               []
               [
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+                Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                Ty.path "alloc::alloc::Global"
               ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [
+                Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 []
@@ -128,291 +128,276 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
                   Ty.path "alloc::alloc::Global"
                 ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                "new",
-                [],
-                []
-              |),
+              "new",
+              [],
               []
-            |)
+            |),
+            []
           |) in
-        let~ chunked_data :
-            Ty.apply (Ty.path "*") [] [ Ty.path "core::str::iter::SplitWhitespace" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "core::str::iter::SplitWhitespace",
-              M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
-            |)
+        let~ chunked_data : Ty.path "core::str::iter::SplitWhitespace" :=
+          M.call_closure (|
+            Ty.path "core::str::iter::SplitWhitespace",
+            M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.use
-            (M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                    []
-                    [ Ty.path "core::str::iter::SplitWhitespace" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.use
+              (M.match_operator (|
+                Ty.tuple [],
+                M.alloc (|
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::enumerate::Enumerate")
                       []
                       [ Ty.path "core::str::iter::SplitWhitespace" ],
-                    [],
-                    [],
-                    "into_iter",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::enumerate::Enumerate")
                         []
                         [ Ty.path "core::str::iter::SplitWhitespace" ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.path "core::str::iter::SplitWhitespace",
-                        [],
-                        [],
-                        "enumerate",
-                        [],
-                        []
-                      |),
-                      [ M.read (| chunked_data |) ]
-                    |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
-                    M.loop (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.tuple
-                                      [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
-                                      ]
-                                  ],
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                    []
-                                    [ Ty.path "core::str::iter::SplitWhitespace" ],
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
+                      [],
+                      [],
+                      "into_iter",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [ Ty.path "core::str::iter::SplitWhitespace" ],
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.path "core::str::iter::SplitWhitespace",
+                          [],
+                          [],
+                          "enumerate",
+                          [],
+                          []
+                        |),
+                        [ M.read (| chunked_data |) ]
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let iter := M.copy (| γ |) in
+                      M.loop (|
+                        Ty.tuple [],
+                        ltac:(M.monadic
+                          (let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                          ]
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [ Ty.path "core::str::iter::SplitWhitespace" ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |),
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                  let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                  let i := M.copy (| γ1_0 |) in
-                                  let data_segment := M.copy (| γ1_1 |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
-                                        M.call_closure (|
-                                          Ty.tuple [],
-                                          M.get_function (| "std::io::stdio::_print", [], [] |),
-                                          [
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                      let i := M.copy (| γ1_0 |) in
+                                      let data_segment := M.copy (| γ1_1 |) in
+                                      let~ _ : Ty.tuple [] :=
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
-                                              Ty.path "core::fmt::Arguments",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 3;
-                                                  Value.Integer IntegerKind.Usize 2
-                                                ],
-                                                []
-                                              |),
+                                              Ty.tuple [],
+                                              M.get_function (| "std::io::stdio::_print", [], [] |),
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::Arguments",
+                                                    "new_v1",
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 3;
+                                                      Value.Integer IntegerKind.Usize 2
+                                                    ],
+                                                    []
+                                                  |),
+                                                  [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            mk_str (| "data segment " |);
-                                                            mk_str (| " is """ |);
-                                                            mk_str (| """
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                mk_str (| "data segment " |);
+                                                                mk_str (| " is """ |);
+                                                                mk_str (| """
 " |)
-                                                          ]
+                                                              ]
+                                                          |)
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
+                                                    |);
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [ Ty.path "usize" ]
-                                                              |),
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
+                                                                M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [],
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
-                                                                      i
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          i
+                                                                        |)
+                                                                      |)
                                                                     |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [ Ty.path "str" ]
-                                                                ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ]
+                                                                    ]
+                                                                  |),
+                                                                  [
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
-                                                                      data_segment
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          data_segment
+                                                                        |)
+                                                                      |)
                                                                     |)
-                                                                  |)
+                                                                  ]
                                                                 |)
                                                               ]
-                                                            |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
                                               ]
-                                            |)
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "std::thread::JoinHandle")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "push",
+                                            [],
                                             []
-                                            [
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, children |);
+                                            M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "std::thread::JoinHandle")
                                                 []
-                                                [ Ty.path "u32" ];
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "push",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (| Pointer.Kind.MutRef, children |);
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "std::thread::JoinHandle")
-                                              []
-                                              [ Ty.path "u32" ],
-                                            M.get_function (|
-                                              "std::thread::spawn",
-                                              [],
+                                                [ Ty.path "u32" ],
+                                              M.get_function (|
+                                                "std::thread::spawn",
+                                                [],
+                                                [
+                                                  Ty.function [ Ty.tuple [] ] (Ty.path "u32");
+                                                  Ty.path "u32"
+                                                ]
+                                              |),
                                               [
-                                                Ty.function [ Ty.tuple [] ] (Ty.path "u32");
-                                                Ty.path "u32"
-                                              ]
-                                            |),
-                                            [
-                                              M.closure
-                                                (fun γ =>
-                                                  ltac:(M.monadic
-                                                    match γ with
-                                                    | [ α0 ] =>
-                                                      ltac:(M.monadic
-                                                        (M.match_operator (|
-                                                          Ty.apply
-                                                            (Ty.path "*")
-                                                            []
+                                                M.closure
+                                                  (fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ α0 ] =>
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            Ty.function
+                                                              [ Ty.tuple [] ]
+                                                              (Ty.path "u32"),
+                                                            M.alloc (| α0 |),
                                                             [
-                                                              Ty.function
-                                                                [ Ty.tuple [] ]
-                                                                (Ty.path "u32")
-                                                            ],
-                                                          M.alloc (| α0 |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.read (|
-                                                                  let~ result :
-                                                                      Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [ Ty.path "u32" ] :=
-                                                                    M.alloc (|
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.read (|
+                                                                    let~ result : Ty.path "u32" :=
                                                                       M.call_closure (|
                                                                         Ty.path "u32",
                                                                         M.get_trait_method (|
@@ -506,22 +491,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                     | [ α0 ] =>
                                                                                       ltac:(M.monadic
                                                                                         (M.match_operator (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "*")
-                                                                                            []
+                                                                                          Ty.function
                                                                                             [
-                                                                                              Ty.function
+                                                                                              Ty.tuple
                                                                                                 [
-                                                                                                  Ty.tuple
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "char"
-                                                                                                    ]
+                                                                                                  Ty.path
+                                                                                                    "char"
                                                                                                 ]
-                                                                                                (Ty.path
-                                                                                                  "u32")
-                                                                                            ],
+                                                                                            ]
+                                                                                            (Ty.path
+                                                                                              "u32"),
                                                                                           M.alloc (|
                                                                                             α0
                                                                                           |),
@@ -594,161 +573,177 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             ]
                                                                           |)
                                                                         ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ _ :
-                                                                      Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [ Ty.tuple [] ] :=
-                                                                    let~ _ :
-                                                                        Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.tuple [] ] :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          Ty.tuple [],
-                                                                          M.get_function (|
-                                                                            "std::io::stdio::_print",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              M.get_associated_function (|
+                                                                      |) in
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.read (|
+                                                                        let~ _ : Ty.tuple [] :=
+                                                                          M.call_closure (|
+                                                                            Ty.tuple [],
+                                                                            M.get_function (|
+                                                                              "std::io::stdio::_print",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
-                                                                                "new_v1",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_v1",
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      3;
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  ],
+                                                                                  []
+                                                                                |),
                                                                                 [
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    3;
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    2
-                                                                                ],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            mk_str (|
-                                                                                              "processed segment "
-                                                                                            |);
-                                                                                            mk_str (|
-                                                                                              ", result="
-                                                                                            |);
-                                                                                            mk_str (|
-                                                                                              "
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              mk_str (|
+                                                                                                "processed segment "
+                                                                                              |);
+                                                                                              mk_str (|
+                                                                                                ", result="
+                                                                                              |);
+                                                                                              mk_str (|
+                                                                                                "
 "
-                                                                                            |)
-                                                                                          ]
+                                                                                              |)
+                                                                                            ]
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_display",
+                                                                                                  [],
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        i
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_display",
+                                                                                                  [],
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u32"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.deref (|
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        result
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                        |)
                                                                                       |)
                                                                                     |)
                                                                                   |)
-                                                                                |);
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::rt::Argument",
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_display",
-                                                                                                [],
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "usize"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.deref (|
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.Ref,
-                                                                                                      i
-                                                                                                    |)
-                                                                                                  |)
-                                                                                                |)
-                                                                                              ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::rt::Argument",
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_display",
-                                                                                                [],
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u32"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.deref (|
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.Ref,
-                                                                                                      result
-                                                                                                    |)
-                                                                                                  |)
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |) in
+                                                                        M.alloc (| Value.Tuple [] |)
                                                                       |) in
-                                                                    M.alloc (| Value.Tuple [] |) in
-                                                                  result
-                                                                |)))
-                                                          ]
-                                                        |)))
-                                                    | _ => M.impossible "wrong number of arguments"
-                                                    end))
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)))
-                    |)))
-              ]
-            |)) in
-        let~ final_result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "u32",
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
+                                                                    result
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
+                                                      end))
+                                              ]
+                                            |)
+                                          ]
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)))
+                      |)))
+                ]
+              |))
+          |) in
+        let~ final_result : Ty.path "u32" :=
+          M.call_closure (|
+            Ty.path "u32",
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    []
+                    [
+                      Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
+                    ]
+                    (Ty.path "u32")
+                ],
+              [],
+              [],
+              "sum",
+              [],
+              [ Ty.path "u32" ]
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
                   []
@@ -767,34 +762,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                       (Ty.path "u32")
                   ],
-                [],
-                [],
-                "sum",
-                [],
-                [ Ty.path "u32" ]
-              |),
-              [
-                M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
                   Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
                     []
                     [
-                      Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                        []
-                        [
-                          Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
-                          Ty.path "alloc::alloc::Global"
-                        ];
-                      Ty.function
-                        [
-                          Ty.tuple
-                            [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
-                        ]
-                        (Ty.path "u32")
+                      Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                      Ty.path "alloc::alloc::Global"
                     ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
+                  [],
+                  [],
+                  "map",
+                  [],
+                  [
+                    Ty.path "u32";
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
+                      ]
+                      (Ty.path "u32")
+                  ]
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
                       []
@@ -802,77 +794,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
                         Ty.path "alloc::alloc::Global"
                       ],
-                    [],
-                    [],
-                    "map",
-                    [],
-                    [
-                      Ty.path "u32";
-                      Ty.function
-                        [
-                          Ty.tuple
-                            [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
-                        ]
-                        (Ty.path "u32")
-                    ]
-                  |),
-                  [
-                    M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
                       Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        (Ty.path "alloc::vec::Vec")
                         []
                         [
                           Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [ M.read (| children |) ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "std::thread::JoinHandle")
-                                              []
-                                              [ Ty.path "u32" ]
-                                          ]
-                                      ]
-                                      (Ty.path "u32")
-                                  ],
-                                M.alloc (| α0 |),
+                      [],
+                      [],
+                      "into_iter",
+                      [],
+                      []
+                    |),
+                    [ M.read (| children |) ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.function
                                 [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let c := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        M.get_associated_function (|
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "std::thread::JoinHandle")
+                                        []
+                                        [ Ty.path "u32" ]
+                                    ]
+                                ]
+                                (Ty.path "u32"),
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let c := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      Ty.path "u32",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u32";
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.dyn
+                                                  [
+                                                    ("core::any::Any::Trait", []);
+                                                    ("core::marker::Send::AutoTrait", [])
+                                                  ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ],
+                                        "unwrap",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
@@ -890,54 +877,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   Ty.path "alloc::alloc::Global"
                                                 ]
                                             ],
-                                          "unwrap",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
+                                          M.get_associated_function (|
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "std::thread::JoinHandle")
                                               []
-                                              [
-                                                Ty.path "u32";
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.dyn
-                                                      [
-                                                        ("core::any::Any::Trait", []);
-                                                        ("core::marker::Send::AutoTrait", [])
-                                                      ];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "std::thread::JoinHandle")
-                                                []
-                                                [ Ty.path "u32" ],
-                                              "join",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| c |) ]
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)
-              ]
-            |)
+                                              [ Ty.path "u32" ],
+                                            "join",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| c |) ]
+                                        |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -994,9 +957,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

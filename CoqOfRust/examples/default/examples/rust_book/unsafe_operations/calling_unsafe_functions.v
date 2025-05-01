@@ -22,31 +22,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ some_vector :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::vec::Vec")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
-                "into_vec",
-                [],
-                [ Ty.path "alloc::alloc::Global" ]
-              |),
-              [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
+              "into_vec",
+              [],
+              [ Ty.path "alloc::alloc::Global" ]
+            |),
+            [
+              (* Unsize *)
+              M.pointer_coercion
+                (M.read (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -57,231 +62,205 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "u32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
+                      "new",
+                      [],
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
                           [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        [],
-                        []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U32 1;
-                              Value.Integer IntegerKind.U32 2;
-                              Value.Integer IntegerKind.U32 3;
-                              Value.Integer IntegerKind.U32 4
-                            ]
-                        |)
-                      ]
-                    |)
-                  |))
-              ]
-            |)
+                            Value.Integer IntegerKind.U32 1;
+                            Value.Integer IntegerKind.U32 2;
+                            Value.Integer IntegerKind.U32 3;
+                            Value.Integer IntegerKind.U32 4
+                          ]
+                      |)
+                    ]
+                  |)
+                |))
+            ]
           |) in
-        let~ pointer :
-            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                "as_ptr",
-                [],
+        let~ pointer : Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ] :=
+          M.call_closure (|
+            Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
                 []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
-            |)
+                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+              "as_ptr",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
           |) in
-        let~ length : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                "len",
-                [],
+        let~ length : Ty.path "usize" :=
+          M.call_closure (|
+            Ty.path "usize",
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
                 []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
-            |)
+                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+              "len",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
           |) in
         let~ my_slice :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ] ] :=
-          M.alloc (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
-                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
-                  [ M.read (| pointer |); M.read (| length |) ]
-                |)
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ] :=
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
+                [ M.read (| pointer |); M.read (| length |) ]
               |)
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            M.alloc (|
-              Value.Tuple
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
-                        M.get_associated_function (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (|
+                Value.Tuple
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
                           Ty.apply
-                            (Ty.path "alloc::vec::Vec")
+                            (Ty.path "&")
                             []
-                            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                          "as_slice",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                            "as_slice",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
+                        |)
                       |)
-                    |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, my_slice |)
-                ]
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let left_val := M.copy (| γ0_0 |) in
-                  let right_val := M.copy (| γ0_1 |) in
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, my_slice |)
+                  ]
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let left_val := M.copy (| γ0_0 |) in
+                    let right_val := M.copy (| γ0_1 |) in
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
+                                        ],
+                                        "eq",
+                                        [],
                                         []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
-                                      [],
+                                      |),
                                       [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| left_val |) |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| right_val |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ kind :
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.path "core::panicking::AssertKind" ] :=
-                                  M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
-                                  |) in
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (|
-                                      "core::panicking::assert_failed",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ];
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| left_val |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| right_val |) |)
+                                        |)
                                       ]
-                                    |),
-                                    [
-                                      M.read (| kind |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| left_val |) |)
+                                    |)
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "never",
+                                      M.get_function (|
+                                        "core::panicking::assert_failed",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ];
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
+                                        ]
+                                      |),
+                                      [
+                                        M.read (| kind |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| right_val |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      Value.StructTuple
-                                        "core::option::Option::None"
-                                        []
-                                        [ Ty.path "core::fmt::Arguments" ]
-                                        []
-                                    ]
+                                        |);
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)))
-            ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

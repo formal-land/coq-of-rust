@@ -41,18 +41,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-              []
-              []
-              []
-          |) in
+        let~ x : Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers" :=
+          Value.StructTuple
+            "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+            []
+            []
+            [] in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

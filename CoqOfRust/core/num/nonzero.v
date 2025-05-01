@@ -29,10 +29,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroU8Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroU8Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -92,10 +89,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroU16Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroU16Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -155,10 +149,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroU32Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroU32Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -218,10 +209,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroU64Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroU64Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -281,10 +269,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroU128Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroU128Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -344,10 +329,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroUsizeInner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroUsizeInner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -407,10 +389,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroI8Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroI8Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -470,10 +449,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroI16Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroI16Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -533,10 +509,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroI32Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroI32Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -596,10 +569,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroI64Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroI64Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -659,10 +629,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroI128Inner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroI128Inner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -722,10 +689,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "core::num::nonzero::private::NonZeroIsizeInner" ],
+                  Ty.path "core::num::nonzero::private::NonZeroIsizeInner",
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -2647,23 +2611,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2704,23 +2666,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                        [],
-                        [ T ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                      [],
+                      [ T ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2813,10 +2773,7 @@ Module num.
             (let n := M.alloc (| n |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -2846,33 +2803,33 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_function (|
-                                          "core::ub_checks::check_language_ub",
-                                          [],
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_function (|
+                                            "core::ub_checks::check_language_ub",
+                                            [],
+                                            []
+                                          |),
                                           []
-                                        |),
-                                        []
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_associated_function (|
@@ -2882,11 +2839,11 @@ Module num.
                                         []
                                       |),
                                       []
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
                         |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -2927,55 +2884,48 @@ Module num.
             M.read (|
               let~ opt_n :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&mut")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "core::option::Option")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
-                        ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
-                              ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "cast",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
-                              ]
-                            |),
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
                             [
-                              M.call_closure (|
-                                Ty.apply (Ty.path "*mut") [] [ T ],
-                                M.get_function (| "core::ptr::from_mut", [], [ T ] |),
-                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |) ]
-                              |)
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
+                            "cast",
+                            [],
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
                             ]
-                          |)
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_function (| "core::ptr::from_mut", [], [ T ] |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |) ]
+                            |)
+                          ]
                         |)
                       |)
                     |)
@@ -3052,14 +3002,9 @@ Module num.
                     M.read (|
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "&mut")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3101,34 +3046,33 @@ Module num.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.read (|
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        M.get_function (|
-                                                          "core::intrinsics::ub_checks",
-                                                          [],
+                                      let~ _ : Ty.tuple [] :=
+                                        M.read (|
+                                          M.match_operator (|
+                                            Ty.tuple [],
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          M.get_function (|
+                                                            "core::intrinsics::ub_checks",
+                                                            [],
+                                                            []
+                                                          |),
                                                           []
-                                                        |),
-                                                        []
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ :
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                  M.alloc (|
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.call_closure (|
                                                       Ty.tuple [],
                                                       M.get_associated_function (|
@@ -3138,11 +3082,12 @@ Module num.
                                                         []
                                                       |),
                                                       []
-                                                    |)
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |)
                                         |) in
                                       M.alloc (|
                                         M.never_to_any (|
@@ -3389,25 +3334,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3444,25 +3387,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3498,24 +3439,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3551,24 +3490,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3604,24 +3541,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3656,24 +3591,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3708,24 +3641,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3760,24 +3691,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3900,14 +3829,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4108,14 +4032,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4399,24 +4318,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -4463,14 +4380,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4704,14 +4616,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4855,34 +4762,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -4926,183 +4831,191 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "u8"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u8",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "u8",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "u8"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "u8",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "u8" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "u8" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "u8" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5182,23 +5095,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u8",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "u8",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "u8",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5281,23 +5192,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u8",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "u8",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "u8",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5480,25 +5389,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5535,25 +5442,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5589,24 +5494,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5642,24 +5545,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5695,24 +5596,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5747,24 +5646,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5799,24 +5696,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5851,24 +5746,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5991,14 +5884,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6199,14 +6087,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6490,24 +6373,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -6554,14 +6435,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6795,14 +6671,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6946,34 +6817,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (| Ty.path "u16", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "u16" :=
+                M.call_closure (|
+                  Ty.path "u16",
+                  M.get_associated_function (| Ty.path "u16", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7017,183 +6886,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "u16"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u16",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "u16",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "u16"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "u16",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "u16" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "u16" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "u16" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "u16" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7273,23 +7151,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u16",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "u16",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "u16",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7372,23 +7248,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u16",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "u16",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "u16",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7571,25 +7445,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7626,25 +7498,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7680,24 +7550,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7733,24 +7601,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7786,24 +7652,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7838,24 +7702,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7890,24 +7752,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -7942,24 +7802,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -8082,14 +7940,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -8290,14 +8143,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -8581,24 +8429,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -8645,14 +8491,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -8886,14 +8727,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -9037,34 +8873,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "u32", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "u32" :=
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9108,183 +8942,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "u32"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u32",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "u32",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "u32"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "u32",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "u32" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "u32" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "u32" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "u32" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9364,23 +9207,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u32",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "u32",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "u32",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9463,23 +9304,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u32",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "u32",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "u32",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9662,25 +9501,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9717,25 +9554,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9771,24 +9606,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9824,24 +9657,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9877,24 +9708,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9929,24 +9758,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9981,24 +9808,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10033,24 +9858,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10173,14 +9996,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -10381,14 +10199,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -10672,24 +10485,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10736,14 +10547,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -10977,14 +10783,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -11128,34 +10929,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11199,183 +10998,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "u64"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u64",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "u64",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "u64"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "u64",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "u64" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "u64" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "u64" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "u64" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11455,23 +11263,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u64",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "u64",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "u64",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11554,23 +11360,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u64",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "u64",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "u64",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11753,25 +11557,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11808,25 +11610,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11862,24 +11662,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11915,24 +11713,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11968,24 +11764,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -12020,24 +11814,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -12072,24 +11864,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -12124,24 +11914,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -12265,14 +12053,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -12476,14 +12259,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -12770,24 +12548,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -12834,14 +12610,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -13078,14 +12849,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -13232,34 +12998,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (| Ty.path "u128", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "u128" :=
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -13303,183 +13067,195 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ]
+                          ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "u128"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "u128"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "u128",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "u128"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u128"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "u128",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "u128" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "u128" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "u128" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "u128" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13559,23 +13335,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "u128",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "u128",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13658,23 +13432,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "u128",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "u128",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13857,25 +13629,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -13912,25 +13682,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -13966,24 +13734,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14019,24 +13785,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14072,24 +13836,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14124,24 +13886,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14176,24 +13936,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14228,24 +13986,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14372,14 +14128,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -14585,14 +14336,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -14881,24 +14627,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "isqrt", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "isqrt", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -14945,14 +14689,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -15191,14 +14930,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -15347,34 +15081,32 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ v : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| rhs |) ]
-                      |)
-                    ]
-                  |)
+              let~ v : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| rhs |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -15418,184 +15150,199 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "usize"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "usize",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError"
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "usize"
                                       ],
-                                    M.get_associated_function (|
-                                      Ty.path "usize",
-                                      "from_str_radix",
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "usize";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "usize",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "usize" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "usize" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "usize" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "usize" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15675,23 +15422,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.path "usize",
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.path "usize",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15774,23 +15519,21 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.path "usize",
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.path "usize",
-                        [],
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15967,25 +15710,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16022,25 +15763,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16076,24 +15815,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16129,24 +15866,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16182,24 +15917,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16234,24 +15967,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16286,24 +16017,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16338,24 +16067,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -16516,14 +16243,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -16615,15 +16337,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -16900,100 +16617,109 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
-                                  M.get_associated_function (|
-                                    Ty.path "i8",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i8",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "i8" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "i8",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "i8" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "i8" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "i8",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i8" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "i8" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i8" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "i8" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17017,15 +16743,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -17095,59 +16816,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "i8" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "i8" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "i8" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i8" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17170,24 +16900,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i8",
-                    M.get_associated_function (| Ty.path "i8", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i8",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i8" :=
+                M.call_closure (|
+                  Ty.path "i8",
+                  M.get_associated_function (| Ty.path "i8", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -17235,14 +16963,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -17476,14 +17199,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -17635,183 +17353,191 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "i8"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i8",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "i8",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "i8"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError" ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "i8",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "i8" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "i8" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "i8" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "i8" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18051,25 +17777,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18106,25 +17830,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18160,24 +17882,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18213,24 +17933,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18266,24 +17984,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18318,24 +18034,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18370,24 +18084,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18422,24 +18134,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18600,14 +18310,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -18699,15 +18404,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -18984,100 +18684,109 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
-                                  M.get_associated_function (|
-                                    Ty.path "i16",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i16",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "i16" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "i16",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "i16" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "i16" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "i16",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i16" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "i16" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i16" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "i16" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19101,15 +18810,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -19179,60 +18883,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "i16" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "i16" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "i16" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i16" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19255,24 +18967,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i16",
-                    M.get_associated_function (| Ty.path "i16", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i16",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i16" :=
+                M.call_closure (|
+                  Ty.path "i16",
+                  M.get_associated_function (| Ty.path "i16", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -19320,14 +19030,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -19561,14 +19266,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -19720,183 +19420,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i16" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "i16"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i16",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "i16",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "i16"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "i16",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "i16" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "i16" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "i16" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "i16" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -20136,25 +19845,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20191,25 +19898,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20245,24 +19950,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20298,24 +20001,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20351,24 +20052,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20403,24 +20102,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20455,24 +20152,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20507,24 +20202,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -20685,14 +20378,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -20784,15 +20472,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -21069,100 +20752,109 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                                  M.get_associated_function (|
-                                    Ty.path "i32",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i32",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "i32" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "i32",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "i32" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "i32" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "i32",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i32" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "i32" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i32" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "i32" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -21186,15 +20878,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -21264,60 +20951,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "i32" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "i32" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "i32" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i32" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -21340,24 +21035,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i32",
-                    M.get_associated_function (| Ty.path "i32", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i32" :=
+                M.call_closure (|
+                  Ty.path "i32",
+                  M.get_associated_function (| Ty.path "i32", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -21405,14 +21098,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -21646,14 +21334,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -21805,183 +21488,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "i32"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i32",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "i32",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "i32"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "i32",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "i32" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "i32" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "i32" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "i32" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -22221,25 +21913,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22276,25 +21966,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22330,24 +22018,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22383,24 +22069,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22436,24 +22120,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22488,24 +22170,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22540,24 +22220,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22592,24 +22270,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -22770,14 +22446,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -22869,15 +22540,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -23154,100 +22820,109 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
-                                  M.get_associated_function (|
-                                    Ty.path "i64",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i64",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "i64" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "i64",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "i64" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "i64" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "i64",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i64" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "i64" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i64" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "i64" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -23271,15 +22946,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -23349,60 +23019,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "i64" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "i64" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "i64" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i64" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -23425,24 +23103,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i64",
-                    M.get_associated_function (| Ty.path "i64", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i64",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i64" :=
+                M.call_closure (|
+                  Ty.path "i64",
+                  M.get_associated_function (| Ty.path "i64", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -23490,14 +23166,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -23731,14 +23402,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -23890,183 +23556,192 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i64" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "i64"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i64",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "i64",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "i64"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "i64",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "i64" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "i64" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "i64" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "i64" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -24306,25 +23981,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24361,25 +24034,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24415,24 +24086,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24468,24 +24137,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24521,24 +24188,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24573,24 +24238,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24625,24 +24288,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24677,24 +24338,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -24857,14 +24516,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -24959,15 +24613,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -25247,100 +24896,109 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
-                                  M.get_associated_function (|
-                                    Ty.path "i128",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i128",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "i128" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "i128",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "i128" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "i128" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "i128",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i128" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "i128" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "i128" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i128" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "i128" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -25364,15 +25022,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -25445,60 +25098,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "i128" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "i128" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "i128" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i128" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -25521,24 +25182,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "i128",
-                    M.get_associated_function (| Ty.path "i128", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i128",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "i128" :=
+                M.call_closure (|
+                  Ty.path "i128",
+                  M.get_associated_function (| Ty.path "i128", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -25586,14 +25245,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -25830,14 +25484,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -25992,183 +25641,195 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]
+                          ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i128"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "i128"; Ty.path "core::num::error::ParseIntError" ],
-                                    M.get_associated_function (|
-                                      Ty.path "i128",
-                                      "from_str_radix",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "i128"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i128"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "i128",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "i128" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "i128" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "i128" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "i128" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -26408,25 +26069,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "rotate_left", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "rotate_left", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26463,25 +26122,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "rotate_right", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "rotate_right", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26517,24 +26174,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "swap_bytes", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "swap_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26570,24 +26225,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "reverse_bits", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "reverse_bits", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26623,24 +26276,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "from_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "from_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26675,24 +26326,22 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "from_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| x |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "from_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| x |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26727,24 +26376,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "to_be", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "to_be", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26779,24 +26426,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "to_le", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "to_le", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -26965,14 +26610,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -27069,15 +26709,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -27357,100 +26992,110 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
-                                  M.get_associated_function (|
-                                    Ty.path "isize",
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "isize",
-                                      M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "isize" ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::num::nonzero::NonZero")
+                                        M.get_associated_function (|
+                                          Ty.path "isize",
+                                          "checked_neg",
+                                          [],
                                           []
-                                          [ Ty.path "isize" ]
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "isize" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "isize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "isize" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "isize" ],
-                                            "new_unchecked",
-                                            [],
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
                                             []
-                                          |),
-                                          [ M.read (| result |) ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "isize" ]
+                                            ]
+                                            [
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "isize" ],
+                                                  "new_unchecked",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| result |) ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
-                      []
-                  |)
-                |)))
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -27474,15 +27119,10 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.tuple
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
-                        Ty.path "bool"
-                      ]
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "bool"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -27555,60 +27195,68 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "isize" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "isize" ],
-                                    "checked_neg",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let result := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| result |) |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  get_associated_constant (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                    "MAX",
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
-                  |)
-                |)))
+            M.read (|
+              M.catch_return
+                (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "isize" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "isize" ],
+                                          "checked_neg",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let result := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| M.read (| result |) |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "MAX",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -27631,24 +27279,22 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_associated_function (| Ty.path "isize", "wrapping_neg", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "isize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |)
+              let~ result : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_associated_function (| Ty.path "isize", "wrapping_neg", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "isize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -27696,14 +27342,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -27942,14 +27583,9 @@ Module num.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -28106,184 +27742,199 @@ Module num.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
-                      Ty.path "core::num::error::ParseIntError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
-                    "ok_or",
-                    [],
-                    [ Ty.path "core::num::error::ParseIntError" ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
+                      []
+                      []
+                      (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "core::result::Result")
                         []
-                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
+                        [
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                          Ty.path "core::num::error::ParseIntError"
+                        ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                        "new",
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ],
+                        "ok_or",
                         [],
-                        []
+                        [ Ty.path "core::num::error::ParseIntError" ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "isize" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::num::error::ParseIntError"
-                                      ];
-                                    Ty.path "isize"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "isize"; Ty.path "core::num::error::ParseIntError" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "isize",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      [ Ty.path "isize"; Ty.path "core::num::error::ParseIntError"
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ];
+                                        Ty.path "isize"
                                       ],
-                                    M.get_associated_function (|
-                                      Ty.path "isize",
-                                      "from_str_radix",
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "isize"; Ty.path "core::num::error::ParseIntError"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "isize";
+                                            Ty.path "core::num::error::ParseIntError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.path "isize",
+                                          "from_str_radix",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |);
+                                          Value.Integer IntegerKind.U32 10
+                                        ]
+                                      |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::num::nonzero::NonZero")
-                                                  []
-                                                  [ Ty.path "isize" ];
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
-                                                    []
-                                                    [ Ty.path "isize" ];
-                                                  Ty.path "core::num::error::ParseIntError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "isize" ];
                                                     Ty.path "core::num::error::ParseIntError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "isize" ];
+                                                      Ty.path "core::num::error::ParseIntError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "core::num::error::ParseIntError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        Value.StructRecord
+                          "core::num::error::ParseIntError"
+                          []
+                          []
+                          [
+                            ("kind",
+                              Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                          ]
                       ]
-                    |);
-                    Value.StructRecord
-                      "core::num::error::ParseIntError"
-                      []
-                      []
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
-                      ]
-                  ]
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

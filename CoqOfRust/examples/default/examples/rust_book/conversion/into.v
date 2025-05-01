@@ -45,21 +45,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "into::Number" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "into::Number",
-              M.get_trait_method (|
-                "core::convert::Into",
-                Ty.path "i32",
-                [],
-                [ Ty.path "into::Number" ],
-                "into",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.I32 5 ]
-            |)
+        let~ _ : Ty.path "into::Number" :=
+          M.call_closure (|
+            Ty.path "into::Number",
+            M.get_trait_method (|
+              "core::convert::Into",
+              Ty.path "i32",
+              [],
+              [ Ty.path "into::Number" ],
+              "into",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.I32 5 ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

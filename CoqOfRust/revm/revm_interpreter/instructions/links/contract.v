@@ -97,7 +97,7 @@ Proof.
   destruct Impl_Clone_for_Bytes.run.
   destruct links.mod.Impl_Deref_for_Bytes.run.
   destruct bytes.Impl_Deref_for_Bytes.run.
-  do 100 try run_symbolic_one_step_immediate.
+  do 100 try run_symbolic_one_step.
   (* Too slow. Maybe a non-linear part in the proof. *)
 Admitted.
 

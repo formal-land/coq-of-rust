@@ -29,10 +29,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] ],
+                Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -204,7 +201,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -364,309 +361,308 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                      ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple
-                          [
-                            Ty.path "alloy_primitives::signed::sign::Sign";
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                          ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [],
-                          "into_sign_and_abs",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let sign := M.copy (| γ0_0 |) in
-                          let abs := M.copy (| γ0_1 |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "core::convert::Infallible";
-                                          Ty.path "core::fmt::Error"
-                                        ];
-                                      Ty.tuple []
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                    [],
-                                    [],
-                                    "branch",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      M.get_trait_method (|
-                                        "core::fmt::Display",
-                                        Ty.path "alloy_primitives::signed::sign::Sign",
-                                        [],
-                                        [],
-                                        "fmt",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, sign |);
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| f |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |),
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.tuple
                               [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::fmt::Error"
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
-                            |) in
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
+                                Ty.path "alloy_primitives::signed::sign::Sign";
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [],
+                              "into_sign_and_abs",
+                              [],
                               []
-                              [
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let sign := M.copy (| γ0_0 |) in
+                              let abs := M.copy (| γ0_1 |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::fmt::Error"
+                                              ];
+                                            Ty.tuple []
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                            M.get_trait_method (|
+                                              "core::fmt::Display",
+                                              Ty.path "alloy_primitives::signed::sign::Sign",
+                                              [],
+                                              [],
+                                              "fmt",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, sign |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| f |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "core::fmt::Error"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)
+                                |) in
+                              M.match_operator (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                              ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Formatter",
+                                                "sign_plus",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| f |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
                                         M.call_closure (|
-                                          Ty.path "bool",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
-                                            "sign_plus",
+                                            "write_fmt",
                                             [],
                                             []
                                           |),
                                           [
                                             M.borrow (|
-                                              Pointer.Kind.Ref,
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| f |) |)
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                [
+                                                  Value.Integer IntegerKind.Usize 1;
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [ BITS; LIMBS ]
+                                                                    []
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      abs
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                          M.get_trait_method (|
+                                            "core::fmt::Display",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            [],
+                                            [],
+                                            "fmt",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, abs |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
                                               M.deref (| M.read (| f |) |)
                                             |)
                                           ]
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "write_fmt",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| f |) |)
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            [
-                                              Value.Integer IntegerKind.Usize 1;
-                                              Value.Integer IntegerKind.Usize 1
-                                            ],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "ruint::Uint")
-                                                                [ BITS; LIMBS ]
-                                                                []
-                                                            ]
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (| Pointer.Kind.Ref, abs |)
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      M.get_trait_method (|
-                                        "core::fmt::Display",
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                        [],
-                                        [],
-                                        "fmt",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, abs |);
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| f |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |)
-                |)))
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1389,130 +1385,139 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "alloy_primitives::signed::sign::Sign") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                    "last",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ LIMBS ]
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                              "as_limbs",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "alloy_primitives::signed::int::Signed",
-                                                  0
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      |))
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let limb := M.copy (| γ0_0 |) in
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [
-                                              M.read (| M.deref (| M.read (| limb |) |) |);
-                                              M.read (|
-                                                get_associated_constant (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloy_primitives::signed::int::Signed")
-                                                    [ BITS; LIMBS ]
-                                                    [],
-                                                  "SIGN_BIT",
-                                                  Ty.path "u64"
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
+            M.read (|
+              M.catch_return (Ty.path "alloy_primitives::signed::sign::Sign") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
                                     M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "alloy_primitives::signed::sign::Sign::Negative"
-                                              []
-                                              []
-                                              []
-                                          |)
-                                        |)
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                          "last",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ LIMBS ]
+                                                        [ Ty.path "u64" ]
+                                                    ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      [],
+                                                    "as_limbs",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloy_primitives::signed::int::Signed",
+                                                        0
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |))
+                                        ]
                                       |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
-                  |)
-                |)))
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let limb := M.copy (| γ0_0 |) in
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.read (| M.deref (| M.read (| limb |) |) |);
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [ BITS; LIMBS ]
+                                                          [],
+                                                        "SIGN_BIT",
+                                                        Ty.path "u64"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)) in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "alloy_primitives::signed::sign::Sign::Negative"
+                                                    []
+                                                    []
+                                                    []
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1545,7 +1550,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1742,7 +1747,7 @@ Module signed.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                    Ty.path "bool",
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "alloy_primitives::signed::sign::Sign",
@@ -1799,7 +1804,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "alloy_primitives::signed::sign::Sign",
@@ -2187,40 +2192,32 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ unsigned :
-                  Ty.apply
-                    (Ty.path "*")
+              let~ unsigned : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "unsigned_abs",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                M.alloc (|
-                  M.call_closure (|
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                |) in
+              let~ unsigned_bits : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "unsigned_abs",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                    "bit_len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, unsigned |) ]
                 |) in
-              let~ unsigned_bits : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "bit_len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, unsigned |) ]
-                  |)
-                |) in
-              let~ bits : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.copy (|
+              let~ bits : Ty.path "usize" :=
+                M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+                    Ty.path "usize",
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2321,56 +2318,47 @@ Module signed.
             let abs := M.alloc (| abs |) in
             M.read (|
               let~ value :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ] :=
-                M.alloc (|
-                  Value.StructTuple
-                    "alloy_primitives::signed::int::Signed"
-                    [ BITS; LIMBS ]
-                    []
-                    [
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                          sign,
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ :=
-                                  M.is_struct_tuple (|
-                                    γ,
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                  |) in
-                                abs));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ :=
-                                  M.is_struct_tuple (|
-                                    γ,
-                                    "alloy_primitives::signed::sign::Sign::Negative"
-                                  |) in
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                    M.get_function (|
-                                      "alloy_primitives::signed::utils::twos_complement",
-                                      [ BITS; LIMBS ],
-                                      []
-                                    |),
-                                    [ M.read (| abs |) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
+                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] :=
+                Value.StructTuple
+                  "alloy_primitives::signed::int::Signed"
+                  [ BITS; LIMBS ]
+                  []
+                  [
+                    M.read (|
+                      M.match_operator (|
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                        sign,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ :=
+                                M.is_struct_tuple (|
+                                  γ,
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                |) in
+                              abs));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ :=
+                                M.is_struct_tuple (|
+                                  γ,
+                                  "alloy_primitives::signed::sign::Sign::Negative"
+                                |) in
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  M.get_function (|
+                                    "alloy_primitives::signed::utils::twos_complement",
+                                    [ BITS; LIMBS ],
+                                    []
+                                  |),
+                                  [ M.read (| abs |) ]
+                                |)
+                              |)))
+                        ]
                       |)
-                    ]
-                |) in
+                    |)
+                  ] in
               M.alloc (|
                 Value.Tuple
                   [
@@ -2488,19 +2476,9 @@ Module signed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          []
-                      ]
-                  ],
+                  [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -2529,18 +2507,13 @@ Module signed.
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::option::Option")
                           []
                           [
                             Ty.apply
-                              (Ty.path "core::option::Option")
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                  [ BITS; LIMBS ]
-                                  []
-                              ]
                           ],
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -2614,21 +2587,19 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.path "alloy_primitives::signed::errors::ParseSignedError"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -2638,390 +2609,384 @@ Module signed.
                               [ BITS; LIMBS ]
                               [];
                             Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                          ]
-                      ],
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+                          ],
+                        M.match_operator (|
                           Ty.tuple
                             [
                               Ty.path "alloy_primitives::signed::sign::Sign";
                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
-                            ]
-                        ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "first",
-                            [],
-                            []
+                            ],
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                "first",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "as_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value |) |)
-                                    |)
-                                  ]
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 43
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 45
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Negative"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.read (| value |)
-                                ]
-                            |)))
-                      ]
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let sign := M.copy (| γ0_0 |) in
-                          let value := M.copy (| γ0_1 |) in
-                          let~ abs :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                            M.copy (|
-                              M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 43
+                                  |) in
                                 M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "ruint::string::ParseError"
-                                          ];
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                          Ty.path "ruint::string::ParseError"
-                                        ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
-                                      []
-                                    |),
+                                  Value.Tuple
                                     [
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                            Ty.path "ruint::string::ParseError"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                          "from_str_radix",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.Integer IntegerKind.U64 10
-                                        ]
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual := M.copy (| γ0_0 |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 45
+                                  |) in
+                                M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Negative"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
                                                 Ty.apply
-                                                  (Ty.path "core::result::Result")
+                                                  (Ty.path "core::ops::range::RangeFrom")
                                                   []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloy_primitives::signed::int::Signed")
-                                                      [ BITS; LIMBS ]
-                                                      [];
-                                                    Ty.path
-                                                      "alloy_primitives::signed::errors::ParseSignedError"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloy_primitives::signed::int::Signed")
-                                                        [ BITS; LIMBS ]
-                                                        [];
-                                                      Ty.path
-                                                        "alloy_primitives::signed::errors::ParseSignedError"
-                                                    ],
-                                                  [],
-                                                  [
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.read (| value |)
+                                    ]
+                                |)))
+                          ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let sign := M.copy (| γ0_0 |) in
+                              let value := M.copy (| γ0_1 |) in
+                              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "ruint::string::ParseError"
+                                              ];
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.path "ruint::string::ParseError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                                Ty.path "ruint::string::ParseError"
+                                              ],
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                              "from_str_radix",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.Integer IntegerKind.U64 10
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "ruint::string::ParseError"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [ BITS; LIMBS ]
+                                                          [];
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::ParseSignedError"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::signed::int::Signed")
+                                                            [ BITS; LIMBS ]
+                                                            [];
+                                                          Ty.path
+                                                            "alloy_primitives::signed::errors::ParseSignedError"
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "ruint::string::ParseError"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| γ0_0 |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::signed::int::Signed")
-                                    [ BITS; LIMBS ]
-                                    [];
-                                  Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      []
-                                  ],
-                                "ok_or",
-                                [],
-                                [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
-                              |),
-                              [
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::option::Option")
+                                    (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply
                                         (Ty.path "alloy_primitives::signed::int::Signed")
                                         [ BITS; LIMBS ]
-                                        []
+                                        [];
+                                      Ty.path "alloy_primitives::signed::errors::ParseSignedError"
                                     ],
                                   M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [],
-                                    "checked_from_sign_and_abs",
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      ],
+                                    "ok_or",
                                     [],
-                                    []
+                                    [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
                                   |),
-                                  [ M.read (| sign |); M.read (| abs |) ]
-                                |);
-                                Value.StructTuple
-                                  "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
-                                  []
-                                  []
-                                  []
-                              ]
-                            |)
-                          |)))
-                    ]
-                  |)
-                |)))
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "checked_from_sign_and_abs",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| sign |); M.read (| abs |) ]
+                                    |);
+                                    Value.StructTuple
+                                      "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                      []
+                                      []
+                                      []
+                                  ]
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3052,36 +3017,27 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ sign :
-                  Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "alloy_primitives::signed::sign::Sign",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "sign",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                |) in
-              let~ abs :
-                  Ty.apply
-                    (Ty.path "*")
+              let~ sign : Ty.path "alloy_primitives::signed::sign::Sign" :=
+                M.call_closure (|
+                  Ty.path "alloy_primitives::signed::sign::Sign",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "sign",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "unsigned_abs",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |) in
+              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "unsigned_abs",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3093,91 +3049,85 @@ Module signed.
                   |),
                   [
                     M.read (|
-                      let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "alloc::string::String",
-                            M.get_function (| "alloc::fmt::format", [], [] |),
-                            [
-                              M.call_closure (|
+                      let~ res : Ty.path "alloc::string::String" :=
+                        M.call_closure (|
+                          Ty.path "alloc::string::String",
+                          M.get_function (| "alloc::fmt::format", [], [] |),
+                          [
+                            M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
+                              M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  [
-                                    Value.Integer IntegerKind.Usize 2;
-                                    Value.Integer IntegerKind.Usize 2
-                                  ],
-                                  []
-                                |),
+                                "new_v1",
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ mk_str (| "" |); mk_str (| "" |) ]
-                                        |)
-                                      |)
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 2
+                                ],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "" |) ] |)
                                     |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [ Ty.path "alloy_primitives::signed::sign::Sign" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, sign |)
-                                                    |)
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "alloy_primitives::signed::sign::Sign" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, sign |)
                                                   |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [ BITS; LIMBS ]
-                                                      []
-                                                  ]
-                                                |),
+                                                "new_display",
+                                                [],
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, abs |)
-                                                    |)
-                                                  |)
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
                                                 ]
-                                              |)
-                                            ]
-                                        |)
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, abs |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                       |)
                                     |)
                                   |)
-                                ]
-                              |)
-                            ]
-                          |)
+                                |)
+                              ]
+                            |)
+                          ]
                         |) in
                       res
                     |)
@@ -3223,21 +3173,19 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.path "alloy_primitives::signed::errors::ParseSignedError"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -3247,396 +3195,272 @@ Module signed.
                               [ BITS; LIMBS ]
                               [];
                             Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                          ]
-                      ],
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+                          ],
+                        M.match_operator (|
                           Ty.tuple
                             [
                               Ty.path "alloy_primitives::signed::sign::Sign";
                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
-                            ]
-                        ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "first",
-                            [],
-                            []
+                            ],
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                "first",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "as_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 43
+                                  |) in
+                                M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 45
+                                  |) in
+                                M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Negative"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.read (| value |)
+                                    ]
+                                |)))
+                          ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let sign := M.copy (| γ0_0 |) in
+                              let value := M.copy (| γ0_1 |) in
+                              let~ value : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
                                 M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                    "unwrap_or",
+                                    [],
                                     []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                                  |),
                                   [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "strip_prefix",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value |) |)
+                                        |);
+                                        mk_str (| "0x" |)
+                                      ]
+                                    |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| value |) |)
                                     |)
                                   ]
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 43
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 45
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Negative"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.read (| value |)
-                                ]
-                            |)))
-                      ]
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let sign := M.copy (| γ0_0 |) in
-                          let value := M.copy (| γ0_1 |) in
-                          let~ value :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                  "unwrap_or",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "strip_prefix",
-                                      [],
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                    |),
+                                |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Value.Tuple [] |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value |) |)
-                                      |);
-                                      mk_str (| "0x" |)
-                                    ]
-                                  |);
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
-                                ]
-                              |)
-                            |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.gt,
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| value |) |)
-                                                  |)
-                                                ]
-                                              |);
-                                              Value.Integer IntegerKind.Usize 64
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                                  [ BITS; LIMBS ]
-                                                  [];
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::ParseSignedError"
-                                              ]
-                                              [
-                                                Value.StructTuple
-                                                  "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
-                                                  []
-                                                  []
-                                                  []
-                                              ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          let~ abs :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                            M.copy (|
-                              M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "ruint::string::ParseError"
-                                          ];
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                          Ty.path "ruint::string::ParseError"
-                                        ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                            Ty.path "ruint::string::ParseError"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                          "from_str_radix",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value |) |)
-                                          |);
-                                          Value.Integer IntegerKind.U64 16
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual := M.copy (| γ0_0 |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.gt,
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloy_primitives::signed::int::Signed")
-                                                      [ BITS; LIMBS ]
-                                                      [];
-                                                    Ty.path
-                                                      "alloy_primitives::signed::errors::ParseSignedError"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "str",
+                                                        "len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| value |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.Usize 64
+                                                  ]
+                                                |)
+                                              |)) in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
                                                     []
                                                     [
                                                       Ty.apply
@@ -3646,99 +3470,217 @@ Module signed.
                                                         [];
                                                       Ty.path
                                                         "alloy_primitives::signed::errors::ParseSignedError"
-                                                    ],
-                                                  [],
-                                                  [
+                                                    ]
+                                                    [
+                                                      Value.StructTuple
+                                                        "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                                        []
+                                                        []
+                                                        []
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |)
+                                |) in
+                              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "ruint::string::ParseError"
+                                              ];
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.path "ruint::string::ParseError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                                Ty.path "ruint::string::ParseError"
+                                              ],
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                              "from_str_radix",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |);
+                                              Value.Integer IntegerKind.U64 16
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "ruint::string::ParseError"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [ BITS; LIMBS ]
+                                                          [];
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::ParseSignedError"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::signed::int::Signed")
+                                                            [ BITS; LIMBS ]
+                                                            [];
+                                                          Ty.path
+                                                            "alloy_primitives::signed::errors::ParseSignedError"
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "ruint::string::ParseError"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| γ0_0 |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::signed::int::Signed")
-                                    [ BITS; LIMBS ]
-                                    [];
-                                  Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      []
-                                  ],
-                                "ok_or",
-                                [],
-                                [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
-                              |),
-                              [
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::option::Option")
+                                    (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply
                                         (Ty.path "alloy_primitives::signed::int::Signed")
                                         [ BITS; LIMBS ]
-                                        []
+                                        [];
+                                      Ty.path "alloy_primitives::signed::errors::ParseSignedError"
                                     ],
                                   M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [],
-                                    "checked_from_sign_and_abs",
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      ],
+                                    "ok_or",
                                     [],
-                                    []
+                                    [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
                                   |),
-                                  [ M.read (| sign |); M.read (| abs |) ]
-                                |);
-                                Value.StructTuple
-                                  "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
-                                  []
-                                  []
-                                  []
-                              ]
-                            |)
-                          |)))
-                    ]
-                  |)
-                |)))
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "checked_from_sign_and_abs",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| sign |); M.read (| abs |) ]
+                                    |);
+                                    Value.StructTuple
+                                      "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                      []
+                                      []
+                                      []
+                                  ]
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3769,36 +3711,27 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ sign :
-                  Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "alloy_primitives::signed::sign::Sign",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "sign",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                |) in
-              let~ abs :
-                  Ty.apply
-                    (Ty.path "*")
+              let~ sign : Ty.path "alloy_primitives::signed::sign::Sign" :=
+                M.call_closure (|
+                  Ty.path "alloy_primitives::signed::sign::Sign",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "sign",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "unsigned_abs",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |) in
+              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "unsigned_abs",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -3810,91 +3743,87 @@ Module signed.
                   |),
                   [
                     M.read (|
-                      let~ res : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "alloc::string::String",
-                            M.get_function (| "alloc::fmt::format", [], [] |),
-                            [
-                              M.call_closure (|
+                      let~ res : Ty.path "alloc::string::String" :=
+                        M.call_closure (|
+                          Ty.path "alloc::string::String",
+                          M.get_function (| "alloc::fmt::format", [], [] |),
+                          [
+                            M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
+                              M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  [
-                                    Value.Integer IntegerKind.Usize 2;
-                                    Value.Integer IntegerKind.Usize 2
-                                  ],
-                                  []
-                                |),
+                                "new_v1",
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ mk_str (| "" |); mk_str (| "0x" |) ]
-                                        |)
-                                      |)
-                                    |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [],
-                                                  [ Ty.path "alloy_primitives::signed::sign::Sign" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, sign |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_lower_hex",
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [ BITS; LIMBS ]
-                                                      []
-                                                  ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, abs |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                        |)
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 2
+                                ],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array [ mk_str (| "" |); mk_str (| "0x" |) ]
                                       |)
                                     |)
                                   |)
-                                ]
-                              |)
-                            ]
-                          |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "alloy_primitives::signed::sign::Sign" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, sign |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_lower_hex",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, abs |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
                         |) in
                       res
                     |)
@@ -3933,31 +3862,21 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ sign :
-                  Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "alloy_primitives::signed::sign::Sign",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                      "sign",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                |) in
-              let~ abs :
-                  Ty.apply
-                    (Ty.path "*")
+              let~ sign : Ty.path "alloy_primitives::signed::sign::Sign" :=
+                M.call_closure (|
+                  Ty.path "alloy_primitives::signed::sign::Sign",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "sign",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                M.copy (|
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |) in
+              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                M.read (|
                   M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                     sign,
                     [
                       fun γ =>
@@ -4469,157 +4388,164 @@ Module signed.
           ltac:(M.monadic
             (let base := M.alloc (| base |) in
             let digits := M.alloc (| digits |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.path "ruint::base_convert::BaseConvertError"
-                ]) (|
-              ltac:(M.monadic
-                (Value.StructTuple
-                  "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
                     Ty.path "ruint::base_convert::BaseConvertError"
-                  ]
-                  [
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     Value.StructTuple
-                      "alloy_primitives::signed::int::Signed"
-                      [ BITS; LIMBS ]
+                      "core::result::Result::Ok"
                       []
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "ruint::base_convert::BaseConvertError"
-                                      ];
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.path "ruint::base_convert::BaseConvertError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "ruint::base_convert::BaseConvertError"
+                      ]
+                      [
+                        Value.StructTuple
+                          "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.path "ruint::base_convert::BaseConvertError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "ruint::base_convert::BaseConvertError"
+                                          ];
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                       ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      "from_base_be",
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.path "ruint::base_convert::BaseConvertError"
+                                        ],
                                       [],
-                                      [ I ]
+                                      [],
+                                      "branch",
+                                      [],
+                                      []
                                     |),
-                                    [ M.read (| base |); M.read (| digits |) ]
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.path "ruint::base_convert::BaseConvertError"
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "from_base_be",
+                                          [],
+                                          [ I ]
+                                        |),
+                                        [ M.read (| base |); M.read (| digits |) ]
+                                      |)
+                                    ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                                  [ BITS; LIMBS ]
-                                                  [];
-                                                Ty.path "ruint::base_convert::BaseConvertError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloy_primitives::signed::int::Signed")
-                                                    [ BITS; LIMBS ]
-                                                    [];
-                                                  Ty.path "ruint::base_convert::BaseConvertError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::signed::int::Signed")
+                                                      [ BITS; LIMBS ]
+                                                      [];
                                                     Ty.path "ruint::base_convert::BaseConvertError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::signed::int::Signed")
+                                                        [ BITS; LIMBS ]
+                                                        [];
+                                                      Ty.path
+                                                        "ruint::base_convert::BaseConvertError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "ruint::base_convert::BaseConvertError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
                       ]
-                  ]))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -16,31 +16,24 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       (M.read (|
         let~ _box1 :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::boxed::Box")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.I32 3 ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.I32 3 ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
@@ -81,44 +74,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _box2 :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::boxed::Box")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
+              "new",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.I32 5 ]
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _box3 :
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
                   []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.I32 5 ]
-            |)
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _box3 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                ] :=
-            M.alloc (|
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -134,12 +115,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |),
                 [ Value.Integer IntegerKind.I32 4 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.use
           (M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -169,54 +150,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     ltac:(M.monadic
-                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
-                                [],
-                                [],
-                                "next",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                      (let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
+                                  [],
+                                  [],
+                                  "next",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_function (| "scoping_rules_raii::create_box", [], [] |),
                                       []
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                          ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                   |)))

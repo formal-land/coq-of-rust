@@ -54,10 +54,7 @@ Module fmt.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String") ],
+                        Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String"),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -106,72 +103,66 @@ Module fmt.
         ltac:(M.monadic
           (let args := M.alloc (| args |) in
           M.read (|
-            let~ capacity : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Arguments",
-                    "estimated_capacity",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, args |) ]
-                |)
+            let~ capacity : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "estimated_capacity",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, args |) ]
               |) in
-            let~ output : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
-              M.alloc (|
-                M.call_closure (|
+            let~ output : Ty.path "alloc::string::String" :=
+              M.call_closure (|
+                Ty.path "alloc::string::String",
+                M.get_associated_function (|
                   Ty.path "alloc::string::String",
-                  M.get_associated_function (|
-                    Ty.path "alloc::string::String",
-                    "with_capacity",
-                    [],
-                    []
-                  |),
-                  [ M.read (| capacity |) ]
-                |)
+                  "with_capacity",
+                  [],
+                  []
+                |),
+                [ M.read (| capacity |) ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (|
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  "expect",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
                       []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    "expect",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.get_trait_method (|
-                        "core::fmt::Write",
-                        Ty.path "alloc::string::String",
-                        [],
-                        [],
-                        "write_fmt",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.MutRef, output |); M.read (| args |) ]
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        mk_str (|
-                          "a formatting trait implementation returned an error when the underlying stream did not"
-                        |)
+                    M.get_trait_method (|
+                      "core::fmt::Write",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [],
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, output |); M.read (| args |) ]
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      mk_str (|
+                        "a formatting trait implementation returned an error when the underlying stream did not"
                       |)
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             output
           |)))

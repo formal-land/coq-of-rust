@@ -918,12 +918,13 @@ fn compile_function_body(
             }),
             args: vec![Rc::new(Expr::Lambda {
                 args: vec![],
-                body: body_without_bindings,
+                body: body_without_bindings.alloc(),
                 is_for_match: false,
                 form: LambdaForm::Function,
             })],
             kind: CallKind::Effectful,
         })
+        .read()
     } else {
         body_without_bindings
     };
@@ -935,7 +936,7 @@ fn compile_function_body(
                 |body, (name, _, pattern)| match pattern {
                     None => body,
                     Some(pattern) => crate::thir_expression::build_match(
-                        ret_ty.clone().make_raw_ref(),
+                        ret_ty.clone(),
                         Expr::local_var(name),
                         vec![MatchArm {
                             pattern: pattern.clone(),
@@ -1435,8 +1436,8 @@ impl FunDefinition {
                                 ty: Some(coq::Expression::just_name("M")),
                                 body: if !generics.is_empty() && !with_extra_self_ty {
                                     Rc::new(coq::Expression::Let {
+                                        suffix: "".to_string(),
                                         name: Some("Self".to_string()),
-                                        is_user: false,
                                         ty: Some(coq::Expression::just_name("Ty.t")),
                                         init: coq::Expression::just_name("Self").apply_many(
                                             &generics
@@ -1523,8 +1524,8 @@ impl ImplItemKind {
                                 ty: Some(coq::Expression::just_name("M")),
                                 body: if !generics.is_empty() {
                                     Rc::new(coq::Expression::Let {
+                                        suffix: "".to_string(),
                                         name: Some("Self".to_string()),
-                                        is_user: false,
                                         ty: Some(coq::Expression::just_name("Ty.t")),
                                         init: coq::Expression::just_name("Self").apply_many(
                                             &generics

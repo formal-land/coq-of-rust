@@ -694,9 +694,13 @@ impl Expr {
                 init,
                 body,
             } => Rc::new(coq::Expression::Let {
-                is_user: ty.is_some(),
+                suffix: if ty.is_some() {
+                    "~".to_string()
+                } else {
+                    "".to_string()
+                },
                 name: name.to_owned(),
-                ty: ty.as_ref().map(|ty| ty.clone().make_raw_ref().to_coq()),
+                ty: ty.as_ref().map(|ty| ty.to_coq()),
                 init: init.to_coq(),
                 body: body.to_coq(),
             }),
@@ -711,10 +715,8 @@ impl Expr {
                     exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
                 }),
             ]),
-            Expr::Loop { ty, body } => coq::Expression::just_name("M.loop").monadic_apply_many(&[
-                ty.clone().make_raw_ref().to_coq(),
-                coq::Expression::monadic(body.to_coq()),
-            ]),
+            Expr::Loop { ty, body } => coq::Expression::just_name("M.loop")
+                .monadic_apply_many(&[ty.to_coq(), coq::Expression::monadic(body.to_coq())]),
             Expr::Index { base, index } => {
                 coq::Expression::just_name("M.SubPointer.get_array_field")
                     .monadic_apply_many(&[base.to_coq(), index.to_coq()])

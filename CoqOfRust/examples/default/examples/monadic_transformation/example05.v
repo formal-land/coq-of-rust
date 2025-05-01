@@ -49,17 +49,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ foo : Ty.apply (Ty.path "*") [] [ Ty.path "example05::Foo" ] :=
-          M.alloc (|
-            Value.StructTuple "example05::Foo" [] [] [ Value.Integer IntegerKind.U32 0 ]
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "u32",
-              M.get_associated_function (| Ty.path "example05::Foo", "plus1", [], [] |),
-              [ M.read (| foo |) ]
-            |)
+        let~ foo : Ty.path "example05::Foo" :=
+          Value.StructTuple "example05::Foo" [] [] [ Value.Integer IntegerKind.U32 0 ] in
+        let~ _ : Ty.path "u32" :=
+          M.call_closure (|
+            Ty.path "u32",
+            M.get_associated_function (| Ty.path "example05::Foo", "plus1", [], [] |),
+            [ M.read (| foo |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

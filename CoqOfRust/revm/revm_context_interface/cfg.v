@@ -1696,7 +1696,7 @@ Module cfg.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              Ty.path "revm_context_interface::cfg::AnalysisKind",
               self,
               [
                 fun γ =>
@@ -1778,7 +1778,7 @@ Module cfg.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -1870,29 +1870,25 @@ Module cfg.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1925,17 +1921,15 @@ Module cfg.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -2018,7 +2012,7 @@ Module cfg.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              Ty.path "revm_context_interface::cfg::CreateScheme",
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -2060,14 +2054,9 @@ Module cfg.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               self,
               [
                 fun γ =>
@@ -2161,7 +2150,7 @@ Module cfg.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2202,29 +2191,25 @@ Module cfg.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               LogicalOp.and (|
@@ -2236,7 +2221,7 @@ Module cfg.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                      Ty.path "bool",
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -2331,42 +2316,38 @@ Module cfg.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "isize",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               self,
               [
                 fun γ =>
