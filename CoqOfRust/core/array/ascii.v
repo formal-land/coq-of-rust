@@ -161,45 +161,31 @@ Module array.
             M.read (|
               let~ byte_ptr :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "*const")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "*const")
-                        []
-                        [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
-                    ] :=
-                M.alloc (|
-                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
-                |) in
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] :=
+                M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |) in
               let~ ascii_ptr :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "*const")
                     []
                     [
                       Ty.apply
-                        (Ty.path "*const")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ N ]
-                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                        ]
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     ] :=
-                M.alloc (|
-                  M.cast
-                    (Ty.apply
-                      (Ty.path "*const")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ N ]
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                      ])
-                    (M.read (| byte_ptr |))
-                |) in
+                M.cast
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    ])
+                  (M.read (| byte_ptr |)) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,

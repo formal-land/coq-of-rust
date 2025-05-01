@@ -67,9 +67,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -103,172 +103,172 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ upper : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 1000 |) in
-        let~ acc : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.use
-            (M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ upper : Ty.path "u32" := Value.Integer IntegerKind.U32 1000 in
+        let~ acc : Ty.path "u32" := Value.Integer IntegerKind.U32 0 in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.use
+              (M.match_operator (|
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                M.alloc (|
+                  M.call_closure (|
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
-                    [],
-                    [],
-                    "into_iter",
-                    [],
-                    []
-                  |),
-                  [
-                    Value.StructRecord
-                      "core::ops::range::RangeFrom"
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
+                      Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
+                      [],
+                      [],
+                      "into_iter",
+                      [],
                       []
-                      [ Ty.path "u32" ]
-                      [ ("start", Value.Integer IntegerKind.U32 0) ]
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
-                    M.loop (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeFrom")
-                                    []
-                                    [ Ty.path "u32" ],
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
+                    |),
+                    [
+                      Value.StructRecord
+                        "core::ops::range::RangeFrom"
+                        []
+                        [ Ty.path "u32" ]
+                        [ ("start", Value.Integer IntegerKind.U32 0) ]
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let iter := M.copy (| γ |) in
+                      M.loop (|
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        ltac:(M.monadic
+                          (let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeFrom")
+                                        []
+                                        [ Ty.path "u32" ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |),
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                  |)
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let n := M.copy (| γ0_0 |) in
+                                      let~ n_squared : Ty.path "u32" :=
+                                        M.call_closure (|
+                                          Ty.path "u32",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| n |); M.read (| n |) ]
+                                        |) in
+                                      M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| n_squared |); M.read (| upper |) ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              M.get_function (|
+                                                                "higher_order_functions::is_odd",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| n_squared |) ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      let~ _ : Ty.tuple [] :=
+                                                        let β := acc in
+                                                        M.write (|
+                                                          β,
+                                                          M.call_closure (|
+                                                            Ty.path "u32",
+                                                            BinOp.Wrap.add,
+                                                            [ M.read (| β |); M.read (| n_squared |)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
                                 ]
                               |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let n := M.copy (| γ0_0 |) in
-                                  let~ n_squared : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        BinOp.Wrap.mul,
-                                        [ M.read (| n |); M.read (| n |) ]
-                                      |)
-                                    |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ge,
-                                                  [ M.read (| n_squared |); M.read (| upper |) ]
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          M.get_function (|
-                                                            "higher_order_functions::is_odd",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| n_squared |) ]
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.alloc (|
-                                                      let β := acc in
-                                                      M.write (|
-                                                        β,
-                                                        M.call_closure (|
-                                                          Ty.path "u32",
-                                                          BinOp.Wrap.add,
-                                                          [ M.read (| β |); M.read (| n_squared |) ]
-                                                        |)
-                                                      |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)))
-                    |)))
-              ]
-            |)) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+                            |) in
+                          M.alloc (| Value.Tuple [] |)))
+                      |)))
+                ]
+              |))
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -325,15 +325,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ sum_of_squared_odd_numbers : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "u32",
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ sum_of_squared_odd_numbers : Ty.path "u32" :=
+          M.call_closure (|
+            Ty.path "u32",
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::iter::adapters::filter::Filter")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                        ];
+                      Ty.function
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                        (Ty.path "bool")
+                    ];
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                    (Ty.path "bool")
+                ],
+              [],
+              [],
+              "sum",
+              [],
+              [ Ty.path "u32" ]
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::iter::adapters::filter::Filter")
                   []
@@ -357,39 +387,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                       (Ty.path "bool")
                   ],
-                [],
-                [],
-                "sum",
-                [],
-                [ Ty.path "u32" ]
-              |),
-              [
-                M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
                   Ty.apply
-                    (Ty.path "core::iter::adapters::filter::Filter")
+                    (Ty.path "core::iter::adapters::take_while::TakeWhile")
                     []
                     [
                       Ty.apply
-                        (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                        (Ty.path "core::iter::adapters::map::Map")
                         []
                         [
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::map::Map")
-                            []
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                            ];
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                            (Ty.path "bool")
+                          Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                         ];
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                         (Ty.path "bool")
                     ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
+                  [],
+                  [],
+                  "filter",
+                  [],
+                  [
+                    Ty.function
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                      (Ty.path "bool")
+                  ]
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::take_while::TakeWhile")
                       []
@@ -405,35 +431,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                           (Ty.path "bool")
                       ],
-                    [],
-                    [],
-                    "filter",
-                    [],
-                    [
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                        (Ty.path "bool")
-                    ]
-                  |),
-                  [
-                    M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
                       Ty.apply
-                        (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                        (Ty.path "core::iter::adapters::map::Map")
                         []
                         [
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::map::Map")
-                            []
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                            ];
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                            (Ty.path "bool")
+                          Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                         ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
+                      [],
+                      [],
+                      "take_while",
+                      [],
+                      [
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                          (Ty.path "bool")
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
                           []
@@ -441,149 +459,121 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
                             Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ],
-                        [],
-                        [],
-                        "take_while",
-                        [],
-                        [
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                            (Ty.path "bool")
-                        ]
-                      |),
-                      [
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::map::Map")
-                            []
-                            [
-                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
-                            [],
-                            [],
-                            "map",
-                            [],
-                            [
-                              Ty.path "u32";
-                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                            ]
-                          |),
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
+                          [],
+                          [],
+                          "map",
+                          [],
                           [
-                            Value.StructRecord
-                              "core::ops::range::RangeFrom"
-                              []
-                              [ Ty.path "u32" ]
-                              [ ("start", Value.Integer IntegerKind.U32 0) ];
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "u32" ] ]
-                                              (Ty.path "u32")
-                                          ],
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let n := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                Ty.path "u32",
-                                                BinOp.Wrap.mul,
-                                                [ M.read (| n |); M.read (| n |) ]
-                                              |)))
-                                        ]
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                            Ty.path "u32";
+                            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ]
-                        |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
+                        |),
+                        [
+                          Value.StructRecord
+                            "core::ops::range::RangeFrom"
+                            []
+                            [ Ty.path "u32" ]
+                            [ ("start", Value.Integer IntegerKind.U32 0) ];
+                          M.closure
+                            (fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [ α0 ] =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                        ],
+                                      M.alloc (| α0 |),
                                       [
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                          ]
-                                          (Ty.path "bool")
-                                      ],
-                                    M.alloc (| α0 |),
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let n := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| n |); M.read (| n |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end))
+                        ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
                                     [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ := M.read (| γ |) in
-                                          let n_squared := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.lt,
-                                            [ M.read (| n_squared |); M.read (| upper |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                                        (Ty.path "bool")
+                                    ],
+                                  M.alloc (| α0 |),
                                   [
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                                      (Ty.path "bool")
-                                  ],
-                                M.alloc (| α0 |),
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let n_squared := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.lt,
+                                          [ M.read (| n_squared |); M.read (| upper |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.apply
+                                (Ty.path "*")
+                                []
                                 [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let n_squared := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_function (|
-                                          "higher_order_functions::is_odd",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| n_squared |) ]
-                                      |)))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)
-              ]
-            |)
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                                    (Ty.path "bool")
+                                ],
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ := M.read (| γ |) in
+                                    let n_squared := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (| "higher_order_functions::is_odd", [], [] |),
+                                      [ M.read (| n_squared |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -645,9 +635,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -24,155 +24,153 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ output : Ty.apply (Ty.path "*") [] [ Ty.path "std::process::Output" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "std::process::Output",
-              M.get_associated_function (|
+        let~ output : Ty.path "std::process::Output" :=
+          M.call_closure (|
+            Ty.path "std::process::Output",
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
+              "unwrap_or_else",
+              [],
+              [
+                Ty.function
+                  [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                  (Ty.path "std::process::Output")
+              ]
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
-                "unwrap_or_else",
-                [],
+                M.get_associated_function (| Ty.path "std::process::Command", "output", [], [] |),
                 [
-                  Ty.function
-                    [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                    (Ty.path "std::process::Output")
-                ]
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
-                  M.get_associated_function (| Ty.path "std::process::Command", "output", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
-                          M.get_associated_function (|
-                            Ty.path "std::process::Command",
-                            "arg",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.alloc (|
-                                M.call_closure (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
+                        M.get_associated_function (|
+                          Ty.path "std::process::Command",
+                          "arg",
+                          [],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.path "std::process::Command",
+                                M.get_associated_function (|
                                   Ty.path "std::process::Command",
-                                  M.get_associated_function (|
-                                    Ty.path "std::process::Command",
-                                    "new",
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [ mk_str (| "rustc" |) ]
-                                |)
+                                  "new",
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str (| "rustc" |) ]
                               |)
-                            |);
-                            mk_str (| "--version" |)
-                          ]
-                        |)
+                            |)
+                          |);
+                          mk_str (| "--version" |)
+                        ]
                       |)
                     |)
-                  ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                  (Ty.path "std::process::Output")
-                              ],
-                            M.alloc (| α0 |),
+                  |)
+                ]
+              |);
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          Ty.apply
+                            (Ty.path "*")
+                            []
                             [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                                      [
-                                        M.call_closure (|
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                (Ty.path "std::process::Output")
+                            ],
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.never_to_any (|
+                                  M.call_closure (|
+                                    Ty.path "never",
+                                    M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
+                                        M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            [
-                                              Value.Integer IntegerKind.Usize 1;
-                                              Value.Integer IntegerKind.Usize 1
-                                            ],
-                                            []
-                                          |),
+                                          "new_v1",
                                           [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [ mk_str (| "failed to execute process: " |) ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [],
-                                                            [ Ty.path "std::io::error::Error" ]
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (| Pointer.Kind.Ref, e |)
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
+                                            Value.Integer IntegerKind.Usize 1;
+                                            Value.Integer IntegerKind.Usize 1
+                                          ],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [ mk_str (| "failed to execute process: " |) ]
                                                 |)
                                               |)
                                             |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)))
-                      | _ => M.impossible "wrong number of arguments"
-                      end))
-              ]
-            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [ Ty.path "std::io::error::Error" ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, e |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
+                    end))
+            ]
           |) in
         M.match_operator (|
           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -204,65 +202,59 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ s :
-                    Ty.apply
-                      (Ty.path "*")
+                let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
+                  M.call_closure (|
+                    Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    M.get_associated_function (|
+                      Ty.path "alloc::string::String",
+                      "from_utf8_lossy",
+                      [],
                       []
-                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      M.get_associated_function (|
-                        Ty.path "alloc::string::String",
-                        "from_utf8_lossy",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        output,
-                                        "std::process::Output",
-                                        "stdout"
-                                      |)
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      output,
+                                      "std::process::Output",
+                                      "stdout"
                                     |)
                                   |)
                                 |)
-                              ]
-                            |)
+                              |)
+                            ]
                           |)
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -326,71 +318,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ s :
-                    Ty.apply
-                      (Ty.path "*")
+                (let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
+                  M.call_closure (|
+                    Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    M.get_associated_function (|
+                      Ty.path "alloc::string::String",
+                      "from_utf8_lossy",
+                      [],
                       []
-                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      M.get_associated_function (|
-                        Ty.path "alloc::string::String",
-                        "from_utf8_lossy",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        output,
-                                        "std::process::Output",
-                                        "stderr"
-                                      |)
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      output,
+                                      "std::process::Output",
+                                      "stderr"
                                     |)
                                   |)
                                 |)
-                              ]
-                            |)
+                              |)
+                            ]
                           |)
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -453,9 +439,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)

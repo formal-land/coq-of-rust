@@ -402,67 +402,63 @@ Module legacy.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "bytecode"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "alloy_primitives::bytes_::Bytes",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "bytecode"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "usize",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "original_len"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "original_len"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|

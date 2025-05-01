@@ -25,78 +25,78 @@ Module instructions.
           M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_interpreter::gas::Gas",
-                                      "record_cost",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "revm_interpreter::gas::Gas" ],
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated_in_trait
-                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::gas::Gas",
+                                        "record_cost",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
                                                 []
+                                                [ Ty.path "revm_interpreter::gas::Gas" ],
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::LoopControl",
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
+                                                [],
+                                                [],
+                                                "gas",
+                                                [],
                                                 []
-                                                WIRE
-                                                "Control",
-                                              [],
-                                              [],
-                                              "gas",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::BASE",
+                                            Ty.path "u64"
                                           |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "revm_interpreter::gas::constants::BASE",
-                                          Ty.path "u64"
-                                        |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -128,110 +128,101 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ basefee : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_trait_method (|
-                        "revm_context_interface::block::Block",
-                        Ty.associated_in_trait
-                          "revm_context_interface::block::BlockGetter"
-                          []
-                          []
-                          H
-                          "Block",
-                        [],
-                        [],
-                        "basefee",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "revm_context_interface::block::BlockGetter"
-                                    []
-                                    []
-                                    H
-                                    "Block"
-                                ],
-                              M.get_trait_method (|
-                                "revm_context_interface::block::BlockGetter",
-                                H,
-                                [],
-                                [],
-                                "block",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| host |) |) |) ]
-                            |)
-                          |)
-                        |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
+                let~ basefee : Ty.path "u64" :=
+                  M.call_closure (|
+                    Ty.path "u64",
+                    M.get_trait_method (|
+                      "revm_context_interface::block::Block",
+                      Ty.associated_in_trait
+                        "revm_context_interface::block::BlockGetter"
+                        []
+                        []
+                        H
+                        "Block",
+                      [],
+                      [],
+                      "basefee",
+                      [],
+                      []
+                    |),
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated_in_trait
-                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "revm_context_interface::block::BlockGetter"
+                                  []
+                                  []
+                                  H
+                                  "Block"
+                              ],
+                            M.get_trait_method (|
+                              "revm_context_interface::block::BlockGetter",
+                              H,
+                              [],
+                              [],
+                              "block",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| host |) |) |) ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "revm_interpreter::interpreter_types::StackTrait",
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Stack",
+                                        [],
+                                        [],
+                                        "push",
+                                        [],
                                         []
-                                        []
-                                        WIRE
-                                        "Stack",
-                                      [],
-                                      [],
-                                      "push",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| interpreter |) |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "stack"
-                                        |)
-                                      |);
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [],
-                                        M.get_associated_function (|
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "stack"
+                                          |)
+                                        |);
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
                                             [
@@ -239,77 +230,84 @@ Module instructions.
                                               Value.Integer IntegerKind.Usize 4
                                             ]
                                             [],
-                                          "from",
-                                          [],
-                                          [ Ty.path "u128" ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "u128",
-                                            M.get_trait_method (|
-                                              "revm_context_interface::transaction::Transaction",
-                                              Ty.associated_in_trait
-                                                "revm_context_interface::transaction::TransactionGetter"
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            "from",
+                                            [],
+                                            [ Ty.path "u128" ]
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "revm_context_interface::transaction::Transaction",
+                                                Ty.associated_in_trait
+                                                  "revm_context_interface::transaction::TransactionGetter"
+                                                  []
+                                                  []
+                                                  H
+                                                  "Transaction",
+                                                [],
+                                                [],
+                                                "effective_gas_price",
+                                                [],
                                                 []
-                                                []
-                                                H
-                                                "Transaction",
-                                              [],
-                                              [],
-                                              "effective_gas_price",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "revm_context_interface::transaction::TransactionGetter"
+                                                            []
+                                                            []
+                                                            H
+                                                            "Transaction"
+                                                        ],
+                                                      M.get_trait_method (|
+                                                        "revm_context_interface::transaction::TransactionGetter",
+                                                        H,
+                                                        [],
+                                                        [],
+                                                        "tx",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
-                                                        Ty.associated_in_trait
-                                                          "revm_context_interface::transaction::TransactionGetter"
-                                                          []
-                                                          []
-                                                          H
-                                                          "Transaction"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "revm_context_interface::transaction::TransactionGetter",
-                                                      H,
-                                                      [],
-                                                      [],
-                                                      "tx",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| host |) |)
-                                                      |)
-                                                    ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| host |) |)
+                                                        |)
+                                                      ]
+                                                    |)
                                                   |)
-                                                |)
-                                              |);
-                                              M.cast (Ty.path "u128") (M.read (| basefee |))
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
+                                                |);
+                                                M.cast (Ty.path "u128") (M.read (| basefee |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -341,14 +339,14 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -382,78 +380,78 @@ Module instructions.
           M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_interpreter::gas::Gas",
-                                      "record_cost",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "revm_interpreter::gas::Gas" ],
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated_in_trait
-                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::gas::Gas",
+                                        "record_cost",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
                                                 []
+                                                [ Ty.path "revm_interpreter::gas::Gas" ],
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::LoopControl",
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
+                                                [],
+                                                [],
+                                                "gas",
+                                                [],
                                                 []
-                                                WIRE
-                                                "Control",
-                                              [],
-                                              [],
-                                              "gas",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::BASE",
+                                            Ty.path "u64"
                                           |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "revm_interpreter::gas::constants::BASE",
-                                          Ty.path "u64"
-                                        |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -485,199 +483,200 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated_in_trait
-                                        "revm_interpreter::interpreter_types::InterpreterTypes"
-                                        []
-                                        []
-                                        WIRE
-                                        "Stack",
-                                      [],
-                                      [],
-                                      "push",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| interpreter |) |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "stack"
-                                        |)
-                                      |);
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [],
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ],
-                                          "into",
-                                          [],
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "revm_interpreter::interpreter_types::StackTrait",
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
                                           []
-                                        |),
-                                        [
-                                          M.call_closure (|
+                                          []
+                                          WIRE
+                                          "Stack",
+                                        [],
+                                        [],
+                                        "push",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "stack"
+                                          |)
+                                        |);
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                               [ Value.Integer IntegerKind.Usize 32 ]
                                               [],
-                                            M.get_associated_function (|
-                                              Ty.path "alloy_primitives::bits::address::Address",
-                                              "into_word",
-                                              [],
-                                              []
-                                            |),
+                                            [],
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.path
-                                                      "alloy_primitives::bits::address::Address",
-                                                    M.get_trait_method (|
-                                                      "revm_context_interface::transaction::common::CommonTxFields",
-                                                      Ty.dyn
-                                                        [
-                                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
-                                                            [])
-                                                        ],
-                                                      [],
-                                                      [],
-                                                      "caller",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.dyn
-                                                                  [
-                                                                    ("revm_context_interface::transaction::common::CommonTxFields::Trait",
-                                                                      [])
-                                                                  ]
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "revm_context_interface::transaction::Transaction",
-                                                              Ty.associated_in_trait
-                                                                "revm_context_interface::transaction::TransactionGetter"
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                                []
+                                            ],
+                                            "into",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [],
+                                              M.get_associated_function (|
+                                                Ty.path "alloy_primitives::bits::address::Address",
+                                                "into_word",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.path
+                                                        "alloy_primitives::bits::address::Address",
+                                                      M.get_trait_method (|
+                                                        "revm_context_interface::transaction::common::CommonTxFields",
+                                                        Ty.dyn
+                                                          [
+                                                            ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                                              [])
+                                                          ],
+                                                        [],
+                                                        [],
+                                                        "caller",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
                                                                 []
-                                                                []
-                                                                H
-                                                                "Transaction",
-                                                              [],
-                                                              [],
-                                                              "common_fields",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.call_closure (|
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.associated_in_trait
-                                                                          "revm_context_interface::transaction::TransactionGetter"
-                                                                          []
-                                                                          []
-                                                                          H
-                                                                          "Transaction"
-                                                                      ],
-                                                                    M.get_trait_method (|
-                                                                      "revm_context_interface::transaction::TransactionGetter",
-                                                                      H,
-                                                                      [],
-                                                                      [],
-                                                                      "tx",
-                                                                      [],
-                                                                      []
-                                                                    |),
+                                                                [
+                                                                  Ty.dyn
                                                                     [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (| host |)
-                                                                        |)
-                                                                      |)
+                                                                      ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                                                        [])
                                                                     ]
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "revm_context_interface::transaction::Transaction",
+                                                                Ty.associated_in_trait
+                                                                  "revm_context_interface::transaction::TransactionGetter"
+                                                                  []
+                                                                  []
+                                                                  H
+                                                                  "Transaction",
+                                                                [],
+                                                                [],
+                                                                "common_fields",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "revm_context_interface::transaction::TransactionGetter"
+                                                                            []
+                                                                            []
+                                                                            H
+                                                                            "Transaction"
+                                                                        ],
+                                                                      M.get_trait_method (|
+                                                                        "revm_context_interface::transaction::TransactionGetter",
+                                                                        H,
+                                                                        [],
+                                                                        [],
+                                                                        "tx",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| host |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |)
-                                                            ]
+                                                              ]
+                                                            |)
                                                           |)
                                                         |)
-                                                      |)
-                                                    ]
+                                                      ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -709,14 +708,14 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -760,69 +759,69 @@ Module instructions.
           M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_specification::hardfork::SpecId",
-                                      "is_enabled_in",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated_in_trait
-                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        "is_enabled_in",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "revm_specification::hardfork::SpecId",
+                                          M.get_trait_method (|
+                                            "revm_interpreter::interpreter_types::RuntimeFlag",
+                                            Ty.associated_in_trait
+                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                              []
+                                              []
+                                              WIRE
+                                              "RuntimeFlag",
+                                            [],
+                                            [],
+                                            "spec_id",
+                                            [],
                                             []
-                                            []
-                                            WIRE
-                                            "RuntimeFlag",
-                                          [],
-                                          [],
-                                          "spec_id",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| interpreter |) |),
-                                              "revm_interpreter::interpreter::Interpreter",
-                                              "runtime_flag"
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| interpreter |) |),
+                                                "revm_interpreter::interpreter::Interpreter",
+                                                "runtime_flag"
+                                              |)
                                             |)
-                                          |)
-                                        ]
-                                      |);
-                                      Value.StructTuple
-                                        "revm_specification::hardfork::SpecId::CANCUN"
-                                        []
-                                        []
-                                        []
-                                    ]
+                                          ]
+                                        |);
+                                        Value.StructTuple
+                                          "revm_specification::hardfork::SpecId::CANCUN"
+                                          []
+                                          []
+                                          []
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -854,87 +853,87 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_interpreter::gas::Gas",
-                                      "record_cost",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "revm_interpreter::gas::Gas" ],
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated_in_trait
-                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::gas::Gas",
+                                        "record_cost",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
                                                 []
+                                                [ Ty.path "revm_interpreter::gas::Gas" ],
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::LoopControl",
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
+                                                [],
+                                                [],
+                                                "gas",
+                                                [],
                                                 []
-                                                WIRE
-                                                "Control",
-                                              [],
-                                              [],
-                                              "gas",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "revm_interpreter::gas::constants::VERYLOW",
+                                            Ty.path "u64"
                                           |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW",
-                                          Ty.path "u64"
-                                        |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -966,14 +965,14 @@ Module instructions.
                                           []
                                           []
                                       ]
-                                    |)
-                                  |) in
-                                M.return_ (| Value.Tuple [] |)
+                                    |) in
+                                  M.return_ (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -1049,286 +1048,294 @@ Module instructions.
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                         let index := M.copy (| γ1_1 |) in
-                        let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
+                        let~ i : Ty.path "usize" :=
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
+                              "unwrap_or",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::convert::TryFrom",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u64" ],
-                                    "try_from",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [],
-                                              "as_limbs",
-                                              [],
-                                              []
-                                            |),
+                                M.get_trait_method (|
+                                  "core::convert::TryFrom",
+                                  Ty.path "usize",
+                                  [],
+                                  [ Ty.path "u64" ],
+                                  "try_from",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.match_operator (|
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| index |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
-                                              M.match_operator (|
-                                                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use
-                                                          (M.alloc (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.Wrap.bit_and,
-                                                              [
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  BinOp.Wrap.bit_and,
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      BinOp.eq,
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_array_field (|
-                                                                            M.deref (|
-                                                                              M.read (| x |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
-                                                                          |)
-                                                                        |);
-                                                                        Value.Integer
-                                                                          IntegerKind.U64
-                                                                          0
-                                                                      ]
-                                                                    |);
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      BinOp.eq,
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_array_field (|
-                                                                            M.deref (|
-                                                                              M.read (| x |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              2
-                                                                          |)
-                                                                        |);
-                                                                        Value.Integer
-                                                                          IntegerKind.U64
-                                                                          0
-                                                                      ]
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ Ty.path "u64" ]
+                                            ],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            "as_limbs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| index |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.match_operator (|
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.Wrap.bit_and,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.Wrap.bit_and,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.eq,
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_array_field (|
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        0
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.eq,
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_array_field (|
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        |)
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        0
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_array_field (|
+                                                                      M.deref (| M.read (| x |) |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        3
                                                                     |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  BinOp.eq,
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_array_field (|
-                                                                        M.deref (|
-                                                                          M.read (| x |)
-                                                                        |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          3
-                                                                      |)
-                                                                    |);
-                                                                    Value.Integer IntegerKind.U64 0
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |)) in
-                                                      let _ :=
-                                                        is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| x |) |),
-                                                        Value.Integer IntegerKind.Usize 0
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (get_associated_constant (|
-                                                        Ty.path "u64",
-                                                        "MAX",
-                                                        Ty.path "u64"
-                                                      |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
+                                                                  |);
+                                                                  Value.Integer IntegerKind.U64 0
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| x |) |),
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (get_associated_constant (|
+                                                      Ty.path "u64",
+                                                      "MAX",
+                                                      Ty.path "u64"
+                                                    |)))
+                                              ]
+                                            |)))
+                                      ]
                                     |)
-                                  ]
-                                |);
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "usize",
-                                    "MAX",
-                                    Ty.path "usize"
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
                                 |)
-                              ]
-                            |)
+                              |)
+                            ]
                           |) in
                         let~ tx :
                             Ty.apply
-                              (Ty.path "*")
+                              (Ty.path "&")
                               []
                               [
                                 Ty.apply
                                   (Ty.path "&")
                                   []
                                   [
-                                    Ty.apply
-                                      (Ty.path "&")
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::TransactionGetter"
                                       []
-                                      [
-                                        Ty.associated_in_trait
-                                          "revm_context_interface::transaction::TransactionGetter"
-                                          []
-                                          []
-                                          H
-                                          "Transaction"
-                                      ]
+                                      []
+                                      H
+                                      "Transaction"
                                   ]
                               ] :=
-                          M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "revm_context_interface::transaction::TransactionGetter"
-                                        []
-                                        []
-                                        H
-                                        "Transaction"
-                                    ],
-                                  M.get_trait_method (|
-                                    "revm_context_interface::transaction::TransactionGetter",
-                                    H,
-                                    [],
-                                    [],
-                                    "tx",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| host |) |) |)
-                                  ]
-                                |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::TransactionGetter"
+                                      []
+                                      []
+                                      H
+                                      "Transaction"
+                                  ],
+                                M.get_trait_method (|
+                                  "revm_context_interface::transaction::TransactionGetter",
+                                  H,
+                                  [],
+                                  [],
+                                  "tx",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| host |) |) |) ]
                               |)
                             |)
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.write (|
-                              M.deref (| M.read (| index |) |),
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ]
-                                        []
-                                    ],
-                                  M.alloc (| Value.Tuple [] |),
+                        let~ _ : Ty.tuple [] :=
+                          M.write (|
+                            M.deref (| M.read (| index |) |),
+                            M.read (|
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_trait_method (|
-                                                  "core::cmp::PartialEq",
-                                                  Ty.path
-                                                    "revm_context_interface::transaction::transaction_type::TransactionType",
-                                                  [],
-                                                  [
-                                                    Ty.path
-                                                      "revm_context_interface::transaction::transaction_type::TransactionType"
-                                                  ],
-                                                  "eq",
-                                                  [],
-                                                  []
-                                                |),
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_trait_method (|
+                                                "core::cmp::PartialEq",
+                                                Ty.path
+                                                  "revm_context_interface::transaction::transaction_type::TransactionType",
+                                                [],
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path
-                                                          "revm_context_interface::transaction::transaction_type::TransactionType",
-                                                        M.get_trait_method (|
-                                                          "core::convert::Into",
+                                                  Ty.path
+                                                    "revm_context_interface::transaction::transaction_type::TransactionType"
+                                                ],
+                                                "eq",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.path
+                                                        "revm_context_interface::transaction::transaction_type::TransactionType",
+                                                      M.get_trait_method (|
+                                                        "core::convert::Into",
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::transaction::Transaction"
+                                                          []
+                                                          []
+                                                          (Ty.associated_in_trait
+                                                            "revm_context_interface::transaction::TransactionGetter"
+                                                            []
+                                                            []
+                                                            H
+                                                            "Transaction")
+                                                          "TransactionType",
+                                                        [],
+                                                        [
+                                                          Ty.path
+                                                            "revm_context_interface::transaction::transaction_type::TransactionType"
+                                                        ],
+                                                        "into",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
                                                           Ty.associated_in_trait
                                                             "revm_context_interface::transaction::Transaction"
                                                             []
@@ -1340,86 +1347,82 @@ Module instructions.
                                                               H
                                                               "Transaction")
                                                             "TransactionType",
-                                                          [],
+                                                          M.get_trait_method (|
+                                                            "revm_context_interface::transaction::Transaction",
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "revm_context_interface::transaction::TransactionGetter"
+                                                                  []
+                                                                  []
+                                                                  H
+                                                                  "Transaction"
+                                                              ],
+                                                            [],
+                                                            [],
+                                                            "tx_type",
+                                                            [],
+                                                            []
+                                                          |),
                                                           [
-                                                            Ty.path
-                                                              "revm_context_interface::transaction::transaction_type::TransactionType"
-                                                          ],
-                                                          "into",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            Ty.associated_in_trait
-                                                              "revm_context_interface::transaction::Transaction"
-                                                              []
-                                                              []
-                                                              (Ty.associated_in_trait
-                                                                "revm_context_interface::transaction::TransactionGetter"
-                                                                []
-                                                                []
-                                                                H
-                                                                "Transaction")
-                                                              "TransactionType",
-                                                            M.get_trait_method (|
-                                                              "revm_context_interface::transaction::Transaction",
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "revm_context_interface::transaction::TransactionGetter"
-                                                                    []
-                                                                    []
-                                                                    H
-                                                                    "Transaction"
-                                                                ],
-                                                              [],
-                                                              [],
-                                                              "tx_type",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| tx |) |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
-                                                        []
-                                                        []
-                                                        []
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| tx |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)
-                                                ]
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
+                                                      []
+                                                      []
+                                                      []
+                                                  |)
+                                                |)
                                               ]
-                                              [],
-                                            M.get_associated_function (|
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ],
+                                            "unwrap_or",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
@@ -1432,25 +1435,49 @@ Module instructions.
                                                     ]
                                                     []
                                                 ],
-                                              "unwrap_or",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
+                                              M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [
                                                     Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      []
+                                                  ],
+                                                "map",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [];
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            []
+                                                        ]
+                                                    ]
+                                                    (Ty.apply
                                                       (Ty.path "ruint::Uint")
                                                       [
                                                         Value.Integer IntegerKind.Usize 256;
                                                         Value.Integer IntegerKind.Usize 4
                                                       ]
-                                                      []
-                                                  ],
-                                                M.get_associated_function (|
+                                                      [])
+                                                ]
+                                              |),
+                                              [
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
@@ -1461,19 +1488,14 @@ Module instructions.
                                                         [ Value.Integer IntegerKind.Usize 32 ]
                                                         []
                                                     ],
-                                                  "map",
-                                                  [],
-                                                  [
+                                                  M.get_associated_function (|
                                                     Ty.apply
-                                                      (Ty.path "ruint::Uint")
+                                                      (Ty.path "core::option::Option")
+                                                      []
                                                       [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ]
-                                                      [];
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
@@ -1481,29 +1503,13 @@ Module instructions.
                                                               [ Value.Integer IntegerKind.Usize 32 ]
                                                               []
                                                           ]
-                                                      ]
-                                                      (Ty.apply
-                                                        (Ty.path "ruint::Uint")
-                                                        [
-                                                          Value.Integer IntegerKind.Usize 256;
-                                                          Value.Integer IntegerKind.Usize 4
-                                                        ]
-                                                        [])
-                                                  ]
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          []
                                                       ],
-                                                    M.get_associated_function (|
+                                                    "cloned",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
@@ -1520,59 +1526,138 @@ Module instructions.
                                                                 []
                                                             ]
                                                         ],
-                                                      "cloned",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
+                                                      M.get_associated_function (|
                                                         Ty.apply
-                                                          (Ty.path "core::option::Option")
+                                                          (Ty.path "slice")
                                                           []
                                                           [
                                                             Ty.apply
-                                                              (Ty.path "&")
+                                                              (Ty.path
+                                                                "alloy_primitives::bits::fixed::FixedBytes")
+                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                              []
+                                                          ],
+                                                        "get",
+                                                        [],
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            32
+                                                                        ]
+                                                                        []
+                                                                    ]
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "revm_context_interface::transaction::eip4844::Eip4844Tx",
+                                                                Ty.associated_in_trait
+                                                                  "revm_context_interface::transaction::Transaction"
+                                                                  []
+                                                                  []
+                                                                  (Ty.associated_in_trait
+                                                                    "revm_context_interface::transaction::TransactionGetter"
+                                                                    []
+                                                                    []
+                                                                    H
+                                                                    "Transaction")
+                                                                  "Eip4844",
+                                                                [],
+                                                                [],
+                                                                "blob_versioned_hashes",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "revm_context_interface::transaction::Transaction"
+                                                                            []
+                                                                            []
+                                                                            (Ty.associated_in_trait
+                                                                              "revm_context_interface::transaction::TransactionGetter"
+                                                                              []
+                                                                              []
+                                                                              H
+                                                                              "Transaction")
+                                                                            "Eip4844"
+                                                                        ],
+                                                                      M.get_trait_method (|
+                                                                        "revm_context_interface::transaction::Transaction",
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.associated_in_trait
+                                                                              "revm_context_interface::transaction::TransactionGetter"
+                                                                              []
+                                                                              []
+                                                                              H
+                                                                              "Transaction"
+                                                                          ],
+                                                                        [],
+                                                                        [],
+                                                                        "eip4844",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| tx |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.read (| i |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.closure
+                                                  (fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ α0 ] =>
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            Ty.apply
+                                                              (Ty.path "*")
                                                               []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                                Ty.function
                                                                   [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      32
-                                                                  ]
-                                                                  []
-                                                              ]
-                                                          ],
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloy_primitives::bits::fixed::FixedBytes")
-                                                                [ Value.Integer IntegerKind.Usize 32
-                                                                ]
-                                                                []
-                                                            ],
-                                                          "get",
-                                                          [],
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
+                                                                    Ty.tuple
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1584,113 +1669,26 @@ Module instructions.
                                                                           ]
                                                                           []
                                                                       ]
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "revm_context_interface::transaction::eip4844::Eip4844Tx",
-                                                                  Ty.associated_in_trait
-                                                                    "revm_context_interface::transaction::Transaction"
-                                                                    []
-                                                                    []
-                                                                    (Ty.associated_in_trait
-                                                                      "revm_context_interface::transaction::TransactionGetter"
-                                                                      []
-                                                                      []
-                                                                      H
-                                                                      "Transaction")
-                                                                    "Eip4844",
-                                                                  [],
-                                                                  [],
-                                                                  "blob_versioned_hashes",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.call_closure (|
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.associated_in_trait
-                                                                              "revm_context_interface::transaction::Transaction"
-                                                                              []
-                                                                              []
-                                                                              (Ty.associated_in_trait
-                                                                                "revm_context_interface::transaction::TransactionGetter"
-                                                                                []
-                                                                                []
-                                                                                H
-                                                                                "Transaction")
-                                                                              "Eip4844"
-                                                                          ],
-                                                                        M.get_trait_method (|
-                                                                          "revm_context_interface::transaction::Transaction",
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.associated_in_trait
-                                                                                "revm_context_interface::transaction::TransactionGetter"
-                                                                                []
-                                                                                []
-                                                                                H
-                                                                                "Transaction"
-                                                                            ],
-                                                                          [],
-                                                                          [],
-                                                                          "eip4844",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.read (| tx |)
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          |);
-                                                          M.read (| i |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |);
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ α0 ] =>
-                                                          ltac:(M.monadic
-                                                            (M.match_operator (|
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [
-                                                                  Ty.function
+                                                                  ]
+                                                                  (Ty.apply
+                                                                    (Ty.path "ruint::Uint")
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloy_primitives::bits::fixed::FixedBytes")
-                                                                            [
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                32
-                                                                            ]
-                                                                            []
-                                                                        ]
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
                                                                     ]
-                                                                    (Ty.apply
+                                                                    [])
+                                                              ],
+                                                            M.alloc (| α0 |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let b := M.copy (| γ |) in
+                                                                  M.call_closure (|
+                                                                    Ty.apply
                                                                       (Ty.path "ruint::Uint")
                                                                       [
                                                                         Value.Integer
@@ -1700,14 +1698,8 @@ Module instructions.
                                                                           IntegerKind.Usize
                                                                           4
                                                                       ]
-                                                                      [])
-                                                                ],
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let b := M.copy (| γ |) in
-                                                                    M.call_closure (|
+                                                                      [],
+                                                                    M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "ruint::Uint")
                                                                         [
@@ -1719,122 +1711,108 @@ Module instructions.
                                                                             4
                                                                         ]
                                                                         [],
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "ruint::Uint")
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              256;
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              4
-                                                                          ]
-                                                                          [],
-                                                                        "from_be_bytes",
-                                                                        [
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            32
-                                                                        ],
-                                                                        []
-                                                                      |),
+                                                                      "from_be_bytes",
                                                                       [
-                                                                        M.read (|
-                                                                          M.deref (|
-                                                                            M.call_closure (|
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "array")
-                                                                                    [
-                                                                                      Value.Integer
-                                                                                        IntegerKind.Usize
-                                                                                        32
-                                                                                    ]
-                                                                                    [ Ty.path "u8" ]
-                                                                                ],
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::deref::Deref",
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          32
+                                                                      ],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
                                                                                 Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                                                  (Ty.path "array")
                                                                                   [
                                                                                     Value.Integer
                                                                                       IntegerKind.Usize
                                                                                       32
                                                                                   ]
-                                                                                  [],
+                                                                                  [ Ty.path "u8" ]
+                                                                              ],
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    32
+                                                                                ]
                                                                                 [],
-                                                                                [],
-                                                                                "deref",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  b
-                                                                                |)
-                                                                              ]
-                                                                            |)
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                b
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |)
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)))
-                                                        | _ =>
-                                                          M.impossible "wrong number of arguments"
-                                                        end))
-                                                ]
-                                              |);
-                                              M.read (|
-                                                get_associated_constant (|
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ]
-                                                    [],
-                                                  "ZERO",
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ]
-                                                    []
-                                                |)
+                                                                      |)
+                                                                    ]
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
+                                                      end))
+                                              ]
+                                            |);
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  [],
+                                                "ZERO",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
                                               |)
-                                            ]
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (get_associated_constant (|
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ]
-                                            [],
-                                          "ZERO",
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ]
-                                            []
-                                        |)))
-                                  ]
-                                |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "ZERO",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      |)))
+                                ]
                               |)
                             |)
                           |) in

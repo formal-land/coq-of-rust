@@ -37,11 +37,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-          M.alloc (| Value.Integer IntegerKind.I32 13 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ number : Ty.path "i32" := Value.Integer IntegerKind.I32 13 in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -98,23 +97,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            number,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    is_constant_or_break_match (|
-                      M.read (| γ |),
-                      Value.Integer IntegerKind.I32 1
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              number,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.I32 1
+                      |) in
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -141,62 +140,60 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.I32 2
-                            |) in
-                          Value.Tuple []));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.I32 3
-                            |) in
-                          Value.Tuple []));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.I32 5
-                            |) in
-                          Value.Tuple []));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.I32 7
-                            |) in
-                          Value.Tuple []));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.I32 11
-                            |) in
-                          Value.Tuple []))
-                    ],
-                    fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [] =>
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern (Ty.tuple []) (|
+                      γ,
+                      [
+                        fun γ =>
                           ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.I32 2
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.I32 3
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.I32 5
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.I32 7
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.I32 11
+                              |) in
+                            Value.Tuple []))
+                      ],
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (let~ _ : Ty.tuple [] :=
                                 M.call_closure (|
                                   Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -225,16 +222,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       ]
                                     |)
                                   ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -261,13 +256,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -294,15 +287,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |)))
-            ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
-        let~ boolean : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-          M.alloc (| Value.Bool true |) in
-        let~ binary : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-          M.copy (|
+        let~ boolean : Ty.path "bool" := Value.Bool true in
+        let~ binary : Ty.path "i32" :=
+          M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
               boolean,
@@ -318,9 +310,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -392,9 +384,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -589,106 +589,96 @@ Module panic.
             let cx := M.alloc (| cx |) in
             M.read (|
               let~ pinned_field :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::pin::Pin")
-                        []
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::pin::Pin")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ]
+                          ]
+                      ],
+                    "map_unchecked_mut",
+                    [],
+                    [
+                      F;
+                      Ty.function
                         [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
+                          Ty.tuple
                             [
                               Ty.apply
-                                (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                (Ty.path "&mut")
                                 []
-                                [ F ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                    []
+                                    [ F ]
+                                ]
                             ]
-                        ],
-                      "map_unchecked_mut",
-                      [],
-                      [
-                        F;
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
+                        ]
+                        (Ty.apply (Ty.path "&mut") [] [ F ])
+                    ]
+                  |),
+                  [
+                    M.read (| self |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
                                 Ty.apply
-                                  (Ty.path "&mut")
+                                  (Ty.path "*")
                                   []
                                   [
-                                    Ty.apply
-                                      (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
-                                      []
-                                      [ F ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply (Ty.path "&mut") [] [ F ])
-                      ]
-                    |),
-                    [
-                      M.read (| self |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "core::panic::unwind_safe::AssertUnwindSafe")
-                                                    []
-                                                    [ F ]
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.apply (Ty.path "&mut") [] [ F ])
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                M.deref (| M.read (| x |) |),
-                                                "core::panic::unwind_safe::AssertUnwindSafe",
-                                                0
-                                              |)
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "core::panic::unwind_safe::AssertUnwindSafe")
+                                                  []
+                                                  [ F ]
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply (Ty.path "&mut") [] [ F ])
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (| M.read (| x |) |),
+                                              "core::panic::unwind_safe::AssertUnwindSafe",
+                                              0
                                             |)
                                           |)
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|

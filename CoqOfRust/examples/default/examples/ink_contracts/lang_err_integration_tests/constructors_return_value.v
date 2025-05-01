@@ -473,24 +473,19 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         M.read (|
           let~ value :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
                 [
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.path "constructors_return_value::AccountId";
-                          Ty.path "constructors_return_value::ConstructorError"
-                        ];
-                      Ty.path "constructors_return_value::LangError"
-                    ]
+                      Ty.path "constructors_return_value::AccountId";
+                      Ty.path "constructors_return_value::ConstructorError"
+                    ];
+                  Ty.path "constructors_return_value::LangError"
                 ] :=
-            M.copy (|
+            M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "*")

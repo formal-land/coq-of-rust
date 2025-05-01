@@ -237,8 +237,8 @@ Module iter.
               M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ A ]) (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ f : Ty.apply (Ty.path "*") [] [ F ] :=
-                      M.copy (|
+                    let~ f : F :=
+                      M.read (|
                         M.match_operator (|
                           Ty.apply (Ty.path "*") [] [ F ],
                           M.alloc (|

@@ -85,30 +85,20 @@ Module escape.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            get_constant (| "core::escape::backslash_discriminant", Ty.tuple [] |) in
+          let~ _ : Ty.tuple [] :=
+            M.read (| get_constant (| "core::escape::backslash_discriminant", Ty.tuple [] |) |) in
           let~ output :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                ] :=
-            M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
+            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 1 |),
-                M.read (| a |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 1 |),
+              M.read (| a |)
             |) in
           M.alloc (|
             Value.Tuple
@@ -156,19 +146,13 @@ Module escape.
       ltac:(M.monadic
         (let byte := M.alloc (| byte |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            get_constant (| "core::escape::hex_escape_discriminant", Ty.tuple [] |) in
+          let~ _ : Ty.tuple [] :=
+            M.read (| get_constant (| "core::escape::hex_escape_discriminant", Ty.tuple [] |) |) in
           let~ output :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                ] :=
-            M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
-            |) in
-          let~ hi : Ty.apply (Ty.path "*") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            M.copy (|
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
+            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+          let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+            M.read (|
               M.SubPointer.get_array_field (|
                 get_constant (|
                   "core::escape::HEX_DIGITS",
@@ -186,8 +170,8 @@ Module escape.
                   |))
               |)
             |) in
-          let~ lo : Ty.apply (Ty.path "*") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            M.copy (|
+          let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+            M.read (|
               M.SubPointer.get_array_field (|
                 get_constant (|
                   "core::escape::HEX_DIGITS",
@@ -205,33 +189,25 @@ Module escape.
                   |))
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 1 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" [] [] []
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 1 |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" [] [] []
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 2 |),
-                M.read (| hi |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 2 |),
+              M.read (| hi |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
-                M.read (| lo |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
+              M.read (| lo |)
             |) in
           M.alloc (|
             Value.Tuple
@@ -273,23 +249,15 @@ Module escape.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            get_constant (| "core::escape::verbatim_discriminant", Ty.tuple [] |) in
+          let~ _ : Ty.tuple [] :=
+            M.read (| get_constant (| "core::escape::verbatim_discriminant", Ty.tuple [] |) |) in
           let~ output :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                ] :=
-            M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
-                M.read (| a |)
-              |)
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
+            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
+              M.read (| a |)
             |) in
           M.alloc (|
             Value.Tuple
@@ -394,10 +362,12 @@ Module escape.
       ltac:(M.monadic
         (let byte := M.alloc (| byte |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            get_constant (| "core::escape::escape_ascii_discriminant", Ty.tuple [] |) in
-          let~ lookup : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-            M.copy (|
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              get_constant (| "core::escape::escape_ascii_discriminant", Ty.tuple [] |)
+            |) in
+          let~ lookup : Ty.path "u8" :=
+            M.read (|
               M.SubPointer.get_array_field (|
                 get_constant (|
                   "core::escape::escape_ascii::LOOKUP",
@@ -409,40 +379,35 @@ Module escape.
                 M.cast (Ty.path "usize") (M.read (| byte |))
               |)
             |) in
-          let~ lookup_escaped : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "bool",
-                BinOp.ne,
-                [
-                  M.call_closure (|
-                    Ty.path "u8",
-                    BinOp.Wrap.bit_and,
-                    [ M.read (| lookup |); Value.Integer IntegerKind.U8 128 ]
-                  |);
-                  Value.Integer IntegerKind.U8 0
-                ]
-              |)
+          let~ lookup_escaped : Ty.path "bool" :=
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_and,
+                  [ M.read (| lookup |); Value.Integer IntegerKind.U8 128 ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |) in
-          let~ lookup_ascii :
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ lookup_ascii : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+            M.call_closure (|
+              Ty.path "core::ascii::ascii_char::AsciiChar",
+              M.get_associated_function (|
                 Ty.path "core::ascii::ascii_char::AsciiChar",
-                M.get_associated_function (|
-                  Ty.path "core::ascii::ascii_char::AsciiChar",
-                  "from_u8_unchecked",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.path "u8",
-                    BinOp.Wrap.bit_and,
-                    [ M.read (| lookup |); Value.Integer IntegerKind.U8 127 ]
-                  |)
-                ]
-              |)
+                "from_u8_unchecked",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_and,
+                  [ M.read (| lookup |); Value.Integer IntegerKind.U8 127 ]
+                |)
+              ]
             |) in
           M.match_operator (|
             Ty.apply
@@ -564,38 +529,31 @@ Module escape.
     Definition value_LOOKUP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (let~ arr :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ]
-              ] :=
-          M.alloc (|
-            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |)
-          |) in
-        let~ idx : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-          M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.loop (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            ltac:(M.monadic
-              (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.le,
-                              [ M.read (| idx |); Value.Integer IntegerKind.Usize 255 ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ] :=
+          repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |) in
+        let~ idx : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.loop (|
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              ltac:(M.monadic
+                (M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [ M.read (| idx |); Value.Integer IntegerKind.Usize 255 ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ : Ty.tuple [] :=
                           M.write (|
                             M.SubPointer.get_array_field (| arr, M.read (| idx |) |),
                             M.read (|
@@ -738,10 +696,8 @@ Module escape.
                                 ]
                               |)
                             |)
-                          |)
-                        |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
+                          |) in
+                        let~ _ : Ty.tuple [] :=
                           let β := idx in
                           M.write (|
                             β,
@@ -750,22 +706,22 @@ Module escape.
                               BinOp.Wrap.add,
                               [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                             |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.never_to_any (| M.read (| M.break (||) |) |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)
                           |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.never_to_any (|
-                          M.read (|
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                            M.alloc (| Value.Tuple [] |)
-                          |)
-                        |)
-                      |)))
-                ]
-              |)))
+                        |)))
+                  ]
+                |)))
+            |)
           |) in
         arr)).
     
@@ -806,283 +762,256 @@ Module escape.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            get_constant (| "core::escape::escape_unicode_discriminant", Ty.tuple [] |) in
-          let~ c : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-            M.alloc (| M.cast (Ty.path "u32") (M.read (| c |)) |) in
-          let~ start : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                BinOp.Wrap.sub,
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    BinOp.Wrap.div,
-                    [
-                      M.cast
-                        (Ty.path "usize")
-                        (M.call_closure (|
-                          Ty.path "u32",
-                          M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "u32",
-                              BinOp.Wrap.bit_or,
-                              [ M.read (| c |); Value.Integer IntegerKind.U32 1 ]
-                            |)
-                          ]
-                        |));
-                      Value.Integer IntegerKind.Usize 4
-                    ]
-                  |);
-                  Value.Integer IntegerKind.Usize 2
-                ]
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              get_constant (| "core::escape::escape_unicode_discriminant", Ty.tuple [] |)
+            |) in
+          let~ c : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| c |)) in
+          let~ start : Ty.path "usize" :=
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.div,
+                  [
+                    M.cast
+                      (Ty.path "usize")
+                      (M.call_closure (|
+                        Ty.path "u32",
+                        M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
+                        [
+                          M.call_closure (|
+                            Ty.path "u32",
+                            BinOp.Wrap.bit_or,
+                            [ M.read (| c |); Value.Integer IntegerKind.U32 1 ]
+                          |)
+                        ]
+                      |));
+                    Value.Integer IntegerKind.Usize 4
+                  ]
+                |);
+                Value.Integer IntegerKind.Usize 2
+              ]
             |) in
           let~ output :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                ] :=
-            M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 20 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 4 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 16 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 5 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 12 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 6 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 8 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 7 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 4 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 8 |),
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    get_constant (|
-                      "core::escape::HEX_DIGITS",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 16 ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    M.cast
-                      (Ty.path "usize")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.bit_and,
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.shr,
-                            [ M.read (| c |); Value.Integer IntegerKind.I32 0 ]
-                          |);
-                          Value.Integer IntegerKind.U32 15
-                        ]
-                      |))
-                  |)
-                |)
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 9 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" [] [] []
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
+            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
+              M.read (|
                 M.SubPointer.get_array_field (|
-                  output,
-                  M.call_closure (|
-                    Ty.path "usize",
-                    BinOp.Wrap.add,
-                    [ M.read (| start |); Value.Integer IntegerKind.Usize 0 ]
-                  |)
-                |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 20 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 4 |),
+              M.read (|
                 M.SubPointer.get_array_field (|
-                  output,
-                  M.call_closure (|
-                    Ty.path "usize",
-                    BinOp.Wrap.add,
-                    [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
-                  |)
-                |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallU" [] [] []
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 16 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
               |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 5 |),
+              M.read (|
                 M.SubPointer.get_array_field (|
-                  output,
-                  M.call_closure (|
-                    Ty.path "usize",
-                    BinOp.Wrap.add,
-                    [ M.read (| start |); Value.Integer IntegerKind.Usize 2 ]
-                  |)
-                |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" [] [] []
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 12 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
               |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 6 |),
+              M.read (|
+                M.SubPointer.get_array_field (|
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 8 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 7 |),
+              M.read (|
+                M.SubPointer.get_array_field (|
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 4 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 8 |),
+              M.read (|
+                M.SubPointer.get_array_field (|
+                  get_constant (|
+                    "core::escape::HEX_DIGITS",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  M.cast
+                    (Ty.path "usize")
+                    (M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u32",
+                          BinOp.Wrap.shr,
+                          [ M.read (| c |); Value.Integer IntegerKind.I32 0 ]
+                        |);
+                        Value.Integer IntegerKind.U32 15
+                      ]
+                    |))
+                |)
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 9 |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" [] [] []
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (|
+                output,
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [ M.read (| start |); Value.Integer IntegerKind.Usize 0 ]
+                |)
+              |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (|
+                output,
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
+                |)
+              |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallU" [] [] []
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_array_field (|
+                output,
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [ M.read (| start |); Value.Integer IntegerKind.Usize 2 ]
+                |)
+              |),
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" [] [] []
             |) in
           M.alloc (|
             Value.Tuple
@@ -1753,8 +1682,8 @@ Module escape.
           M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                  M.copy (|
+                let~ i : Ty.path "u8" :=
+                  M.read (|
                     M.match_operator (|
                       Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                       M.alloc (|
@@ -1947,8 +1876,8 @@ Module escape.
           M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                  M.copy (|
+                let~ i : Ty.path "u8" :=
+                  M.read (|
                     M.match_operator (|
                       Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                       M.alloc (|

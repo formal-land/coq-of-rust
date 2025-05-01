@@ -131,7 +131,9 @@ Module Pointer.
 
   Module Core.
     Inductive t (Value : Set) : Set :=
-    | Immediate (value : Value)
+    (** The immediate value is optional in case with have a sub-pointer of an immediate pointer for
+        an enum case that is not the current one. *)
+    | Immediate (value : option Value)
     | Mutable {Address : Set} (address : Address) (path : Path.t).
     Arguments Immediate {_}.
     Arguments Mutable {_ _}.
@@ -317,6 +319,7 @@ Module LowM.
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | CallLogicalOp (op : LogicalOp.t) (lhs : Value.t) (rhs : t A) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
+  | LetAlloc (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | MatchTuple (tuple : Value.t) (k : list Value.t -> t A)
   | Impossible (message : string).
@@ -325,6 +328,7 @@ Module LowM.
   Arguments CallClosure {_}.
   Arguments CallLogicalOp {_}.
   Arguments Let {_}.
+  Arguments LetAlloc {_}.
   Arguments Loop {_}.
   Arguments MatchTuple {_}.
   Arguments Impossible {_}.
@@ -342,6 +346,8 @@ Module LowM.
       Let ty e (fun v => let_ (k v) e2)
     | Loop ty body k =>
       Loop ty body (fun v => let_ (k v) e2)
+    | LetAlloc ty e k =>
+      LetAlloc ty e (fun v => let_ (k v) e2)
     | MatchTuple tuple k =>
       MatchTuple tuple (fun fields => let_ (k fields) e2)
     | Impossible message => Impossible message
@@ -384,7 +390,7 @@ Definition let_user (ty : Ty.t) (e1 : Value.t) (e2 : Value.t -> Value.t) : Value
   e2 e1.
 
 Definition let_user_monadic (ty : Ty.t) (e1 : M) (e2 : Value.t -> M) : M :=
-  LowM.Let ty e1 (fun v1 =>
+  LowM.LetAlloc ty e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)

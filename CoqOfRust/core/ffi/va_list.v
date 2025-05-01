@@ -318,56 +318,52 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ ap : Ty.apply (Ty.path "*") [] [ Ty.path "core::ffi::va_list::VaListImpl" ] :=
-                M.alloc (|
-                  M.call_closure (|
+              let~ ap : Ty.path "core::ffi::va_list::VaListImpl" :=
+                M.call_closure (|
+                  Ty.path "core::ffi::va_list::VaListImpl",
+                  M.get_trait_method (|
+                    "core::clone::Clone",
                     Ty.path "core::ffi::va_list::VaListImpl",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::ffi::va_list::VaListImpl",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ ret : Ty.apply (Ty.path "*") [] [ R ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (|
-                      "core::ops::function::FnOnce",
-                      F,
-                      [],
-                      [ Ty.tuple [ Ty.path "core::ffi::va_list::VaList" ] ],
-                      "call_once",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| f |);
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            Ty.path "core::ffi::va_list::VaList",
-                            M.get_associated_function (|
-                              Ty.path "core::ffi::va_list::VaListImpl",
-                              "as_va_list",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, ap |) ]
-                          |)
-                        ]
-                    ]
-                  |)
+              let~ ret : R :=
+                M.call_closure (|
+                  R,
+                  M.get_trait_method (|
+                    "core::ops::function::FnOnce",
+                    F,
+                    [],
+                    [ Ty.tuple [ Ty.path "core::ffi::va_list::VaList" ] ],
+                    "call_once",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| f |);
+                    Value.Tuple
+                      [
+                        M.call_closure (|
+                          Ty.path "core::ffi::va_list::VaList",
+                          M.get_associated_function (|
+                            Ty.path "core::ffi::va_list::VaListImpl",
+                            "as_va_list",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, ap |) ]
+                        |)
+                      ]
+                  ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (| "core::ffi::va_list::va_end", [], [] |),
@@ -377,9 +373,9 @@ Module ffi.
                           M.deref (| M.borrow (| Pointer.Kind.MutRef, ap |) |)
                         |)
                       ]
-                    |)
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |) in
               ret
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -669,54 +665,45 @@ Module ffi.
             M.read (|
               let~ dest :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::ffi::va_list::VaListImpl" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    [ Ty.path "core::ffi::va_list::VaListImpl" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                       []
                       [ Ty.path "core::ffi::va_list::VaListImpl" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::ffi::va_list::VaListImpl" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
-                  |)
+                  |),
+                  []
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (| "core::ffi::va_list::va_copy", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "core::ffi::va_list::VaListImpl" ],
-                          "as_mut_ptr",
-                          [],
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_function (| "core::ffi::va_list::va_copy", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                           []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, dest |) ]
-                      |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                    ]
-                  |)
+                          [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                        "as_mut_ptr",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, dest |) ]
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|

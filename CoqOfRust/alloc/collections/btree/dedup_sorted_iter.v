@@ -103,8 +103,8 @@ Module collections.
                       M.loop (|
                         Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
-                          (let~ next : Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ] :=
-                            M.copy (|
+                          (let~ next : Ty.tuple [ K; V ] :=
+                            M.read (|
                               M.match_operator (|
                                 Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ],
                                 M.alloc (|
@@ -168,12 +168,8 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let~ peeked :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] :=
-                            M.copy (|
+                          let~ peeked : Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] :=
+                            M.read (|
                               M.match_operator (|
                                 Ty.apply
                                   (Ty.path "*")

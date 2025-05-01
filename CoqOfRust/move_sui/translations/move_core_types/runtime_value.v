@@ -798,29 +798,25 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::runtime_value::MoveValue" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::runtime_value::MoveValue" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               LogicalOp.and (|
@@ -3659,325 +3655,322 @@ Module runtime_value.
               (M.read (|
                 let~ vec_u8 :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::vec::Vec")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                      ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        "with_capacity",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [
-                                Ty.path "move_core_types::runtime_value::MoveValue";
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, vec |) ]
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
+                      "with_capacity",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::vec::into_iter::IntoIter")
+                            (Ty.path "alloc::vec::Vec")
                             []
                             [
                               Ty.path "move_core_types::runtime_value::MoveValue";
                               Ty.path "alloc::alloc::Global"
                             ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, vec |) ]
+                      |)
+                    ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.use
+                      (M.match_operator (|
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        M.alloc (|
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                              (Ty.path "alloc::vec::into_iter::IntoIter")
                               []
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.path "alloc::alloc::Global"
                               ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
-                          [ M.read (| vec |) ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              ltac:(M.monadic
-                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::into_iter::IntoIter")
-                                            []
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_core_types::runtime_value::MoveValue";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "into_iter",
+                              [],
+                              []
+                            |),
+                            [ M.read (| vec |) ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                ltac:(M.monadic
+                                  (let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "move_core_types::runtime_value::MoveValue"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveValue";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [],
+                                              "next",
+                                              [],
+                                              []
+                                            |),
                                             [
-                                              Ty.path "move_core_types::runtime_value::MoveValue";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          [],
-                                          [],
-                                          "next",
-                                          [],
-                                          []
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let byte := M.copy (| γ0_0 |) in
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            byte,
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "move_core_types::runtime_value::MoveValue::U8",
-                                                      0
-                                                    |) in
-                                                  let u8 := M.copy (| γ0_0 |) in
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.tuple [],
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "alloc::vec::Vec")
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let byte := M.copy (| γ0_0 |) in
+                                              M.match_operator (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                byte,
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "move_core_types::runtime_value::MoveValue::U8",
+                                                          0
+                                                        |) in
+                                                      let u8 := M.copy (| γ0_0 |) in
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.call_closure (|
+                                                          Ty.tuple [],
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path "u8";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            "push",
+                                                            [],
                                                             []
-                                                            [
-                                                              Ty.path "u8";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ],
-                                                          "push",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            vec_u8
-                                                          |);
-                                                          M.read (| u8 |)
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              vec_u8
+                                                            |);
+                                                            M.read (| u8 |)
+                                                          ]
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
                                                                 []
                                                                 [
-                                                                  Ty.path "u8";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ];
-                                                              Ty.path "anyhow::Error"
-                                                            ]
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.path "anyhow::Error",
-                                                                M.get_function (|
-                                                                  "anyhow::__private::must_use",
-                                                                  [],
-                                                                  []
-                                                                |),
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "u8";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ];
+                                                                  Ty.path "anyhow::Error"
+                                                                ]
                                                                 [
-                                                                  M.read (|
-                                                                    let~ error :
-                                                                        Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "anyhow::Error"
-                                                                          ] :=
-                                                                      M.copy (|
-                                                                        M.match_operator (|
-                                                                          Ty.apply
-                                                                            (Ty.path "*")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "anyhow::Error"
-                                                                            ],
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              Ty.path
-                                                                                "alloc::string::String",
-                                                                              M.get_trait_method (|
-                                                                                "alloc::string::ToString",
-                                                                                Ty.path "str",
-                                                                                [],
-                                                                                [],
-                                                                                "to_string",
-                                                                                [],
+                                                                  M.call_closure (|
+                                                                    Ty.path "anyhow::Error",
+                                                                    M.get_function (|
+                                                                      "anyhow::__private::must_use",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (|
+                                                                        let~ error :
+                                                                            Ty.path
+                                                                              "anyhow::Error" :=
+                                                                          M.read (|
+                                                                            M.match_operator (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
                                                                                 []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "anyhow::Error"
+                                                                                ],
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "alloc::string::String",
+                                                                                  M.get_trait_method (|
+                                                                                    "alloc::string::ToString",
+                                                                                    Ty.path "str",
+                                                                                    [],
+                                                                                    [],
+                                                                                    "to_string",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        mk_str (|
+                                                                                          "Expected inner MoveValue in Vec<MoveValue> to be a MoveValue::U8"
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
                                                                               |),
                                                                               [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    mk_str (|
-                                                                                      "Expected inner MoveValue in Vec<MoveValue> to be a MoveValue::U8"
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let error :=
-                                                                                  M.copy (| γ |) in
-                                                                                M.alloc (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "anyhow::Error",
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "anyhow::kind::Adhoc",
-                                                                                      "new",
-                                                                                      [],
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "alloc::string::String"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let error :=
+                                                                                      M.copy (|
+                                                                                        γ
+                                                                                      |) in
+                                                                                    M.alloc (|
                                                                                       M.call_closure (|
                                                                                         Ty.path
-                                                                                          "anyhow::kind::Adhoc",
-                                                                                        M.get_trait_method (|
-                                                                                          "anyhow::kind::AdhocKind",
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "alloc::string::String"
-                                                                                            ],
+                                                                                          "anyhow::Error",
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "anyhow::kind::Adhoc",
+                                                                                          "new",
                                                                                           [],
-                                                                                          [],
-                                                                                          "anyhow_kind",
-                                                                                          [],
-                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "alloc::string::String"
+                                                                                          ]
                                                                                         |),
                                                                                         [
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            M.alloc (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "anyhow::kind::Adhoc",
+                                                                                            M.get_trait_method (|
+                                                                                              "anyhow::kind::AdhocKind",
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "alloc::string::String"
+                                                                                                ],
+                                                                                              [],
+                                                                                              [],
+                                                                                              "anyhow_kind",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
                                                                                               M.borrow (|
                                                                                                 Pointer.Kind.Ref,
-                                                                                                error
+                                                                                                M.alloc (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    error
+                                                                                                  |)
+                                                                                                |)
                                                                                               |)
-                                                                                            |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            error
                                                                                           |)
                                                                                         ]
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        error
                                                                                       |)
-                                                                                    ]
-                                                                                  |)
-                                                                                |)))
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    error
+                                                                                    |)))
+                                                                              ]
+                                                                            |)
+                                                                          |) in
+                                                                        error
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 ]
-                                                              |)
-                                                            ]
+                                                            |)
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |))
+                  |) in
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
@@ -6880,19 +6873,21 @@ Module runtime_value.
               (M.read (|
                 let~ vals :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::vec::Vec")
                       []
                       [
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.path "move_core_types::runtime_value::MoveValue";
-                            Ty.path "alloc::alloc::Global"
-                          ]
+                        Ty.path "move_core_types::runtime_value::MoveValue";
+                        Ty.path "alloc::alloc::Global"
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_core_types::runtime_value::MoveValue";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -6900,91 +6895,60 @@ Module runtime_value.
                           Ty.path "move_core_types::runtime_value::MoveValue";
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.path "move_core_types::runtime_value::MoveValue";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        [],
-                        []
-                      |),
+                      "new",
+                      [],
                       []
-                    |)
+                    |),
+                    []
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                    ],
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::ops::control_flow::ControlFlow")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.associated_in_trait
-                                                "serde::de::SeqAccess"
-                                                []
-                                                []
-                                                A
-                                                "Error"
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::Try",
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.loop (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "move_core_types::runtime_value::MoveValue" ]
+                                      ],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
                                           []
                                           [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.associated_in_trait
+                                                  "serde::de::SeqAccess"
+                                                  []
+                                                  []
+                                                  A
+                                                  "Error"
+                                              ];
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "move_core_types::runtime_value::MoveValue"
-                                              ];
-                                            Ty.associated_in_trait
-                                              "serde::de::SeqAccess"
-                                              []
-                                              []
-                                              A
-                                              "Error"
+                                              ]
                                           ],
-                                        [],
-                                        [],
-                                        "branch",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
@@ -7003,73 +6967,78 @@ Module runtime_value.
                                                 A
                                                 "Error"
                                             ],
-                                          M.get_trait_method (|
-                                            "serde::de::SeqAccess",
-                                            A,
-                                            [],
-                                            [],
-                                            "next_element_seed",
-                                            [],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveValue"
+                                                  ];
+                                                Ty.associated_in_trait
+                                                  "serde::de::SeqAccess"
+                                                  []
+                                                  []
+                                                  A
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "serde::de::SeqAccess",
+                                              A,
+                                              [],
+                                              [],
+                                              "next_element_seed",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveTypeLayout"
+                                                  ]
+                                              ]
+                                            |),
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout"
-                                                ]
-                                            ]
-                                          |),
-                                          [
-                                            M.borrow (| Pointer.Kind.MutRef, seq |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                self,
-                                                "move_core_types::runtime_value::VectorElementVisitor",
-                                                0
+                                              M.borrow (| Pointer.Kind.MutRef, seq |);
+                                              M.read (|
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  self,
+                                                  "move_core_types::runtime_value::VectorElementVisitor",
+                                                  0
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Break",
-                                            0
-                                          |) in
-                                        let residual := M.copy (| γ0_0 |) in
-                                        M.alloc (|
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::runtime_value::MoveValue";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ];
-                                                      Ty.associated_in_trait
-                                                        "serde::de::SeqAccess"
-                                                        []
-                                                        []
-                                                        A
-                                                        "Error"
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::FromResidual",
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
@@ -7089,83 +7058,103 @@ Module runtime_value.
                                                           A
                                                           "Error"
                                                       ],
-                                                    [],
-                                                    [
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::runtime_value::MoveValue";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ];
                                                           Ty.associated_in_trait
                                                             "serde::de::SeqAccess"
                                                             []
                                                             []
                                                             A
                                                             "Error"
-                                                        ]
-                                                    ],
-                                                    "from_residual",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| residual |) ]
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.associated_in_trait
+                                                              "serde::de::SeqAccess"
+                                                              []
+                                                              []
+                                                              A
+                                                              "Error"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Continue",
-                                            0
-                                          |) in
-                                        let val := M.copy (| γ0_0 |) in
-                                        val))
-                                  ]
-                                |) in
-                              let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::option::Option::Some",
-                                  0
-                                |) in
-                              let elem := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |) in
+                                let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let elem := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.tuple [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::runtime_value::MoveValue";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "push",
+                                      [],
                                       []
-                                      [
-                                        Ty.path "move_core_types::runtime_value::MoveValue";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "push",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.MutRef, vals |); M.read (| elem |) ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.MutRef, vals |); M.read (| elem |) ]
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)))
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.never_to_any (| M.read (| M.break (||) |) |) in
+                                      M.alloc (| Value.Tuple [] |)
+                                    |)
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    |)
                   |) in
                 M.alloc (|
                   Value.StructTuple
@@ -7294,19 +7283,21 @@ Module runtime_value.
               (M.read (|
                 let~ val :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::vec::Vec")
                       []
                       [
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.path "move_core_types::runtime_value::MoveValue";
-                            Ty.path "alloc::alloc::Global"
-                          ]
+                        Ty.path "move_core_types::runtime_value::MoveValue";
+                        Ty.path "alloc::alloc::Global"
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_core_types::runtime_value::MoveValue";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -7314,38 +7305,19 @@ Module runtime_value.
                           Ty.path "move_core_types::runtime_value::MoveValue";
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.path "move_core_types::runtime_value::MoveValue";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        [],
-                        []
-                      |),
+                      "new",
+                      [],
                       []
-                    |)
+                    |),
+                    []
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::slice::iter::Iter")
-                                []
-                                [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.use
+                      (M.match_operator (|
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        M.alloc (|
+                          M.call_closure (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::enumerate::Enumerate")
                               []
@@ -7355,14 +7327,8 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                               ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                 []
@@ -7372,165 +7338,163 @@ Module runtime_value.
                                     []
                                     [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                                 ],
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
+                              [],
+                              [],
+                              "into_iter",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
+                                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                   []
-                                  [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
-                                [],
-                                [],
-                                "enumerate",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                                  ],
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
                                     []
                                     [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
-                                  M.get_associated_function (|
+                                  [],
+                                  [],
+                                  "enumerate",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "slice")
+                                      (Ty.path "core::slice::iter::Iter")
                                       []
                                       [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
-                                    "iter",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            self,
-                                            "move_core_types::runtime_value::StructFieldVisitor",
-                                            0
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                                        ],
+                                      "iter",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              self,
+                                              "move_core_types::runtime_value::StructFieldVisitor",
+                                              0
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              ltac:(M.monadic
-                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [
-                                            Ty.tuple
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                ltac:(M.monadic
+                                  (let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
                                               [
-                                                Ty.path "usize";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
+                                                Ty.tuple
                                                   [
-                                                    Ty.path
-                                                      "move_core_types::runtime_value::MoveTypeLayout"
+                                                    Ty.path "usize";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::runtime_value::MoveTypeLayout"
+                                                      ]
                                                   ]
-                                              ]
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.apply
-                                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                            []
-                                            [
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "core::slice::iter::Iter")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout"
-                                                ]
-                                            ],
-                                          [],
-                                          [],
-                                          "next",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let i := M.copy (| γ1_0 |) in
-                                          let field_type := M.copy (| γ1_1 |) in
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
+                                                (Ty.path
+                                                  "core::iter::adapters::enumerate::Enumerate")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "core::option::Option")
+                                                    (Ty.path "core::slice::iter::Iter")
                                                     []
                                                     [
                                                       Ty.path
-                                                        "move_core_types::runtime_value::MoveValue"
+                                                        "move_core_types::runtime_value::MoveTypeLayout"
                                                     ]
                                                 ],
+                                              [],
+                                              [],
+                                              "next",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
                                               M.alloc (|
-                                                M.call_closure (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                              let γ1_1 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                              let i := M.copy (| γ1_0 |) in
+                                              let field_type := M.copy (| γ1_1 |) in
+                                              M.match_operator (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                M.match_operator (|
                                                   Ty.apply
-                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    (Ty.path "*")
                                                     []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.associated_in_trait
-                                                            "serde::de::SeqAccess"
-                                                            []
-                                                            []
-                                                            A
-                                                            "Error"
-                                                        ];
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
@@ -7539,94 +7503,247 @@ Module runtime_value.
                                                             "move_core_types::runtime_value::MoveValue"
                                                         ]
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::Try",
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_core_types::runtime_value::MoveValue"
-                                                          ];
-                                                        Ty.associated_in_trait
-                                                          "serde::de::SeqAccess"
-                                                          []
-                                                          []
-                                                          A
-                                                          "Error"
-                                                      ],
-                                                    [],
-                                                    [],
-                                                    "branch",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
+                                                  M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path "core::result::Result")
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
                                                         []
                                                         [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.associated_in_trait
+                                                                "serde::de::SeqAccess"
+                                                                []
+                                                                []
+                                                                A
+                                                                "Error"
+                                                            ];
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [
                                                               Ty.path
                                                                 "move_core_types::runtime_value::MoveValue"
-                                                            ];
-                                                          Ty.associated_in_trait
-                                                            "serde::de::SeqAccess"
-                                                            []
-                                                            []
-                                                            A
-                                                            "Error"
+                                                            ]
                                                         ],
                                                       M.get_trait_method (|
-                                                        "serde::de::SeqAccess",
-                                                        A,
+                                                        "core::ops::try_trait::Try",
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::runtime_value::MoveValue"
+                                                              ];
+                                                            Ty.associated_in_trait
+                                                              "serde::de::SeqAccess"
+                                                              []
+                                                              []
+                                                              A
+                                                              "Error"
+                                                          ],
                                                         [],
                                                         [],
-                                                        "next_element_seed",
+                                                        "branch",
                                                         [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_core_types::runtime_value::MoveTypeLayout"
-                                                            ]
-                                                        ]
+                                                        []
                                                       |),
                                                       [
-                                                        M.borrow (| Pointer.Kind.MutRef, seq |);
-                                                        M.read (| field_type |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::runtime_value::MoveValue"
+                                                                ];
+                                                              Ty.associated_in_trait
+                                                                "serde::de::SeqAccess"
+                                                                []
+                                                                []
+                                                                A
+                                                                "Error"
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "serde::de::SeqAccess",
+                                                            A,
+                                                            [],
+                                                            [],
+                                                            "next_element_seed",
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::runtime_value::MoveTypeLayout"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.borrow (| Pointer.Kind.MutRef, seq |);
+                                                            M.read (| field_type |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                            0
+                                                          |) in
+                                                        let residual := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::runtime_value::MoveValue";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ];
+                                                                      Ty.associated_in_trait
+                                                                        "serde::de::SeqAccess"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Error"
+                                                                    ],
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::FromResidual",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::runtime_value::MoveValue";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ];
+                                                                        Ty.associated_in_trait
+                                                                          "serde::de::SeqAccess"
+                                                                          []
+                                                                          []
+                                                                          A
+                                                                          "Error"
+                                                                      ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.associated_in_trait
+                                                                            "serde::de::SeqAccess"
+                                                                            []
+                                                                            []
+                                                                            A
+                                                                            "Error"
+                                                                        ]
+                                                                    ],
+                                                                    "from_residual",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| residual |) ]
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                            0
+                                                          |) in
+                                                        let val := M.copy (| γ0_0 |) in
+                                                        val))
                                                   ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                        0
-                                                      |) in
-                                                    let residual := M.copy (| γ0_0 |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::option::Option::Some",
+                                                          0
+                                                        |) in
+                                                      let elem := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.tuple [],
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::runtime_value::MoveValue";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            "push",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (| Pointer.Kind.MutRef, val |);
+                                                            M.read (| elem |)
+                                                          ]
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
                                                                 []
                                                                 [
                                                                   Ty.apply
@@ -7643,179 +7760,59 @@ Module runtime_value.
                                                                     []
                                                                     A
                                                                     "Error"
-                                                                ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::try_trait::FromResidual",
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::vec::Vec")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_core_types::runtime_value::MoveValue";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ];
+                                                                ]
+                                                                [
+                                                                  M.call_closure (|
                                                                     Ty.associated_in_trait
                                                                       "serde::de::SeqAccess"
                                                                       []
                                                                       []
                                                                       A
-                                                                      "Error"
-                                                                  ],
-                                                                [],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "core::convert::Infallible";
+                                                                      "Error",
+                                                                    M.get_trait_method (|
+                                                                      "serde::de::Error",
                                                                       Ty.associated_in_trait
                                                                         "serde::de::SeqAccess"
                                                                         []
                                                                         []
                                                                         A
-                                                                        "Error"
+                                                                        "Error",
+                                                                      [],
+                                                                      [],
+                                                                      "invalid_length",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (| i |);
+                                                                      (* Unsize *)
+                                                                      M.pointer_coercion
+                                                                        (M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              self
+                                                                            |)
+                                                                          |)
+                                                                        |))
                                                                     ]
-                                                                ],
-                                                                "from_residual",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.read (| residual |) ]
+                                                                  |)
+                                                                ]
                                                             |)
                                                           |)
                                                         |)
-                                                      |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                        0
-                                                      |) in
-                                                    let val := M.copy (| γ0_0 |) in
-                                                    val))
-                                              ]
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::option::Option::Some",
-                                                      0
-                                                    |) in
-                                                  let elem := M.copy (| γ0_0 |) in
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      Ty.tuple [],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_core_types::runtime_value::MoveValue";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "push",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (| Pointer.Kind.MutRef, val |);
-                                                        M.read (| elem |)
-                                                      ]
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let _ :=
-                                                    M.is_struct_tuple (|
-                                                      γ,
-                                                      "core::option::Option::None"
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::runtime_value::MoveValue";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ];
-                                                              Ty.associated_in_trait
-                                                                "serde::de::SeqAccess"
-                                                                []
-                                                                []
-                                                                A
-                                                                "Error"
-                                                            ]
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.associated_in_trait
-                                                                  "serde::de::SeqAccess"
-                                                                  []
-                                                                  []
-                                                                  A
-                                                                  "Error",
-                                                                M.get_trait_method (|
-                                                                  "serde::de::Error",
-                                                                  Ty.associated_in_trait
-                                                                    "serde::de::SeqAccess"
-                                                                    []
-                                                                    []
-                                                                    A
-                                                                    "Error",
-                                                                  [],
-                                                                  [],
-                                                                  "invalid_length",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| i |);
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          self
-                                                                        |)
-                                                                      |)
-                                                                    |))
-                                                                ]
-                                                              |)
-                                                            ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |))
+                  |) in
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
@@ -8570,18 +8567,13 @@ Module runtime_value.
                           |) in
                         let v := M.alloc (| γ1_0 |) in
                         let~ t :
-                            Ty.apply
-                              (Ty.path "*")
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
                               []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  S
-                                  "SerializeSeq"
-                              ] :=
-                          M.copy (|
+                              []
+                              S
+                              "SerializeSeq" :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -8796,298 +8788,314 @@ Module runtime_value.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.use
-                            (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    []
-                                    [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::collect::IntoIterator",
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.use
+                              (M.match_operator (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "&")
+                                      (Ty.path "core::slice::iter::Iter")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::runtime_value::MoveValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ],
-                                    [],
-                                    [],
-                                    "into_iter",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let iter := M.copy (| γ |) in
-                                    M.loop (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      ltac:(M.monadic
-                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [
+                                      [ Ty.path "move_core_types::runtime_value::MoveValue" ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::collect::IntoIterator",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::runtime_value::MoveValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
+                                      [],
+                                      [],
+                                      "into_iter",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let iter := M.copy (| γ |) in
+                                      M.loop (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        ltac:(M.monadic
+                                          (let~ _ : Ty.tuple [] :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                M.alloc (|
+                                                  M.call_closure (|
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path "core::option::Option")
                                                       []
                                                       [
-                                                        Ty.path
-                                                          "move_core_types::runtime_value::MoveValue"
-                                                      ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::iterator::Iterator",
-                                                  Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
-                                                    []
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::runtime_value::MoveValue"
+                                                          ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::runtime_value::MoveValue"
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "next",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      Ty.path
-                                                        "move_core_types::runtime_value::MoveValue"
-                                                    ],
-                                                  [],
-                                                  [],
-                                                  "next",
-                                                  [],
-                                                  []
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |),
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                    |)
-                                                  |)
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (| M.break (||) |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::option::Option::Some",
+                                                          0
+                                                        |) in
+                                                      let val := M.copy (| γ0_0 |) in
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.read (|
+                                                          M.match_operator (|
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::control_flow::ControlFlow")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::convert::Infallible";
+                                                                        Ty.associated_in_trait
+                                                                          "serde::ser::Serializer"
+                                                                          []
+                                                                          []
+                                                                          S
+                                                                          "Error"
+                                                                      ];
+                                                                    Ty.tuple []
+                                                                  ],
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::Try",
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.associated_in_trait
+                                                                        "serde::ser::Serializer"
+                                                                        []
+                                                                        []
+                                                                        S
+                                                                        "Error"
+                                                                    ],
+                                                                  [],
+                                                                  [],
+                                                                  "branch",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.associated_in_trait
+                                                                          "serde::ser::Serializer"
+                                                                          []
+                                                                          []
+                                                                          S
+                                                                          "Error"
+                                                                      ],
+                                                                    M.get_trait_method (|
+                                                                      "serde::ser::SerializeSeq",
+                                                                      Ty.associated_in_trait
+                                                                        "serde::ser::Serializer"
+                                                                        []
+                                                                        []
+                                                                        S
+                                                                        "SerializeSeq",
+                                                                      [],
+                                                                      [],
+                                                                      "serialize_element",
+                                                                      [],
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::runtime_value::MoveValue"
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        t
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| val |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ0_0 :=
+                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                      γ,
+                                                                      "core::ops::control_flow::ControlFlow::Break",
+                                                                      0
+                                                                    |) in
+                                                                  let residual :=
+                                                                    M.copy (| γ0_0 |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.associated_in_trait
+                                                                                  "serde::ser::Serializer"
+                                                                                  []
+                                                                                  []
+                                                                                  S
+                                                                                  "Ok";
+                                                                                Ty.associated_in_trait
+                                                                                  "serde::ser::Serializer"
+                                                                                  []
+                                                                                  []
+                                                                                  S
+                                                                                  "Error"
+                                                                              ],
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::try_trait::FromResidual",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.associated_in_trait
+                                                                                    "serde::ser::Serializer"
+                                                                                    []
+                                                                                    []
+                                                                                    S
+                                                                                    "Ok";
+                                                                                  Ty.associated_in_trait
+                                                                                    "serde::ser::Serializer"
+                                                                                    []
+                                                                                    []
+                                                                                    S
+                                                                                    "Error"
+                                                                                ],
+                                                                              [],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::convert::Infallible";
+                                                                                    Ty.associated_in_trait
+                                                                                      "serde::ser::Serializer"
+                                                                                      []
+                                                                                      []
+                                                                                      S
+                                                                                      "Error"
+                                                                                  ]
+                                                                              ],
+                                                                              "from_residual",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| residual |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ0_0 :=
+                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                      γ,
+                                                                      "core::ops::control_flow::ControlFlow::Continue",
+                                                                      0
+                                                                    |) in
+                                                                  let val := M.copy (| γ0_0 |) in
+                                                                  val))
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)))
                                                 ]
                                               |)
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let _ :=
-                                                    M.is_struct_tuple (|
-                                                      γ,
-                                                      "core::option::Option::None"
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (| M.read (| M.break (||) |) |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::option::Option::Some",
-                                                      0
-                                                    |) in
-                                                  let val := M.copy (| γ0_0 |) in
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.match_operator (|
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::ops::control_flow::ControlFlow")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.associated_in_trait
-                                                                    "serde::ser::Serializer"
-                                                                    []
-                                                                    []
-                                                                    S
-                                                                    "Error"
-                                                                ];
-                                                              Ty.tuple []
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.associated_in_trait
-                                                                  "serde::ser::Serializer"
-                                                                  []
-                                                                  []
-                                                                  S
-                                                                  "Error"
-                                                              ],
-                                                            [],
-                                                            [],
-                                                            "branch",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.tuple [];
-                                                                  Ty.associated_in_trait
-                                                                    "serde::ser::Serializer"
-                                                                    []
-                                                                    []
-                                                                    S
-                                                                    "Error"
-                                                                ],
-                                                              M.get_trait_method (|
-                                                                "serde::ser::SerializeSeq",
-                                                                Ty.associated_in_trait
-                                                                  "serde::ser::Serializer"
-                                                                  []
-                                                                  []
-                                                                  S
-                                                                  "SerializeSeq",
-                                                                [],
-                                                                [],
-                                                                "serialize_element",
-                                                                [],
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::runtime_value::MoveValue"
-                                                                ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.MutRef,
-                                                                  t
-                                                                |);
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| val |) |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.associated_in_trait
-                                                                            "serde::ser::Serializer"
-                                                                            []
-                                                                            []
-                                                                            S
-                                                                            "Ok";
-                                                                          Ty.associated_in_trait
-                                                                            "serde::ser::Serializer"
-                                                                            []
-                                                                            []
-                                                                            S
-                                                                            "Error"
-                                                                        ],
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.associated_in_trait
-                                                                              "serde::ser::Serializer"
-                                                                              []
-                                                                              []
-                                                                              S
-                                                                              "Ok";
-                                                                            Ty.associated_in_trait
-                                                                              "serde::ser::Serializer"
-                                                                              []
-                                                                              []
-                                                                              S
-                                                                              "Error"
-                                                                          ],
-                                                                        [],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.associated_in_trait
-                                                                                "serde::ser::Serializer"
-                                                                                []
-                                                                                []
-                                                                                S
-                                                                                "Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                    |)))
-                              ]
-                            |)) in
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                      |)))
+                                ]
+                              |))
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -9158,13 +9166,8 @@ Module runtime_value.
               ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ t :
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeTuple"
-                      ] :=
-                  M.copy (|
+                let~ t : Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeTuple" :=
+                  M.read (|
                     M.match_operator (|
                       Ty.apply
                         (Ty.path "*")
@@ -9355,333 +9358,351 @@ Module runtime_value.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.use
-                    (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::slice::iter::Iter")
-                            []
-                            [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.use
+                      (M.match_operator (|
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        M.alloc (|
+                          M.call_closure (|
                             Ty.apply
                               (Ty.path "core::slice::iter::Iter")
                               []
                               [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                            [],
-                            [],
-                            "into_iter",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::slice::iter::Iter")
                                 []
                                 [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                              M.get_associated_function (|
+                              [],
+                              [],
+                              "into_iter",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "slice")
+                                  (Ty.path "core::slice::iter::Iter")
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveValue" ],
-                                "iter",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::runtime_value::MoveValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_core_types::runtime_value::MoveStruct",
-                                            0
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              ltac:(M.monadic
-                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_core_types::runtime_value::MoveValue" ],
+                                  "iter",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "&")
                                           []
                                           [
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "slice")
                                               []
                                               [ Ty.path "move_core_types::runtime_value::MoveValue"
                                               ]
                                           ],
                                         M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
+                                          "core::ops::deref::Deref",
                                           Ty.apply
-                                            (Ty.path "core::slice::iter::Iter")
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                            [ Ty.path "move_core_types::runtime_value::MoveValue" ],
+                                            [
+                                              Ty.path "move_core_types::runtime_value::MoveValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
                                           [],
                                           [],
-                                          "next",
+                                          "deref",
                                           [],
                                           []
                                         |),
                                         [
                                           M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_core_types::runtime_value::MoveStruct",
+                                              0
+                                            |)
                                           |)
                                         ]
                                       |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let v := M.copy (| γ0_0 |) in
-                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                            M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.associated_in_trait
-                                                            "serde::ser::Serializer"
-                                                            []
-                                                            []
-                                                            S
-                                                            "Error"
-                                                        ];
-                                                      Ty.tuple []
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::Try",
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.tuple [];
-                                                        Ty.associated_in_trait
-                                                          "serde::ser::Serializer"
-                                                          []
-                                                          []
-                                                          S
-                                                          "Error"
-                                                      ],
-                                                    [],
-                                                    [],
-                                                    "branch",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.tuple [];
-                                                          Ty.associated_in_trait
-                                                            "serde::ser::Serializer"
-                                                            []
-                                                            []
-                                                            S
-                                                            "Error"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "serde::ser::SerializeTuple",
-                                                        Ty.associated_in_trait
-                                                          "serde::ser::Serializer"
-                                                          []
-                                                          []
-                                                          S
-                                                          "SerializeTuple",
-                                                        [],
-                                                        [],
-                                                        "serialize_element",
-                                                        [],
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::runtime_value::MoveValue"
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.borrow (| Pointer.Kind.MutRef, t |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| v |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              |),
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                ltac:(M.monadic
+                                  (let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
                                               [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                        0
-                                                      |) in
-                                                    let residual := M.copy (| γ0_0 |) in
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveValue"
+                                                  ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveValue"
+                                                ],
+                                              [],
+                                              [],
+                                              "next",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let v := M.copy (| γ0_0 |) in
+                                              let~ _ : Ty.tuple [] :=
+                                                M.read (|
+                                                  M.match_operator (|
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "serde::ser::Serializer"
-                                                                    []
-                                                                    []
-                                                                    S
-                                                                    "Ok";
-                                                                  Ty.associated_in_trait
-                                                                    "serde::ser::Serializer"
-                                                                    []
-                                                                    []
-                                                                    S
-                                                                    "Error"
-                                                                ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::try_trait::FromResidual",
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.associated_in_trait
+                                                                  "serde::ser::Serializer"
                                                                   []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "serde::ser::Serializer"
-                                                                      []
-                                                                      []
-                                                                      S
-                                                                      "Ok";
-                                                                    Ty.associated_in_trait
-                                                                      "serde::ser::Serializer"
-                                                                      []
-                                                                      []
-                                                                      S
-                                                                      "Error"
-                                                                  ],
-                                                                [],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "core::convert::Infallible";
-                                                                      Ty.associated_in_trait
-                                                                        "serde::ser::Serializer"
-                                                                        []
-                                                                        []
-                                                                        S
-                                                                        "Error"
-                                                                    ]
-                                                                ],
-                                                                "from_residual",
-                                                                [],
+                                                                  []
+                                                                  S
+                                                                  "Error"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.associated_in_trait
+                                                                "serde::ser::Serializer"
                                                                 []
-                                                              |),
-                                                              [ M.read (| residual |) ]
-                                                            |)
+                                                                []
+                                                                S
+                                                                "Error"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "branch",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.associated_in_trait
+                                                                  "serde::ser::Serializer"
+                                                                  []
+                                                                  []
+                                                                  S
+                                                                  "Error"
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "serde::ser::SerializeTuple",
+                                                              Ty.associated_in_trait
+                                                                "serde::ser::Serializer"
+                                                                []
+                                                                []
+                                                                S
+                                                                "SerializeTuple",
+                                                              [],
+                                                              [],
+                                                              "serialize_element",
+                                                              [],
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::runtime_value::MoveValue"
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (| Pointer.Kind.MutRef, t |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| v |) |)
+                                                              |)
+                                                            ]
                                                           |)
-                                                        |)
+                                                        ]
                                                       |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                        0
-                                                      |) in
-                                                    let val := M.copy (| γ0_0 |) in
-                                                    val))
-                                              ]
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual := M.copy (| γ0_0 |) in
+                                                          M.alloc (|
+                                                            M.never_to_any (|
+                                                              M.read (|
+                                                                M.return_ (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "serde::ser::Serializer"
+                                                                          []
+                                                                          []
+                                                                          S
+                                                                          "Ok";
+                                                                        Ty.associated_in_trait
+                                                                          "serde::ser::Serializer"
+                                                                          []
+                                                                          []
+                                                                          S
+                                                                          "Error"
+                                                                      ],
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::FromResidual",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "serde::ser::Serializer"
+                                                                            []
+                                                                            []
+                                                                            S
+                                                                            "Ok";
+                                                                          Ty.associated_in_trait
+                                                                            "serde::ser::Serializer"
+                                                                            []
+                                                                            []
+                                                                            S
+                                                                            "Error"
+                                                                        ],
+                                                                      [],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.associated_in_trait
+                                                                              "serde::ser::Serializer"
+                                                                              []
+                                                                              []
+                                                                              S
+                                                                              "Error"
+                                                                          ]
+                                                                      ],
+                                                                      "from_residual",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| residual |) ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val := M.copy (| γ0_0 |) in
+                                                          val))
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |))
+                  |) in
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -10985,255 +11006,63 @@ Module runtime_value.
               [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
-                            Ty.tuple []
-                          ],
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          [],
-                          [],
-                          "branch",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "write_fmt",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ mk_str (| "struct " |) ] |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "core::fmt::Error"
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
-                                  |)
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |) in
-                let~ map : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugMap" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "core::fmt::builders::DebugMap",
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_map",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.use
-                    (M.match_operator (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            (Ty.path "core::ops::control_flow::ControlFlow")
                             []
                             [
                               Ty.apply
-                                (Ty.path "core::slice::iter::Iter")
+                                (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
                             ],
                           M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
+                            "core::ops::try_trait::Try",
                             Ty.apply
-                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
-                                  []
-                                  [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
-                              ],
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             [],
-                            "into_iter",
+                            "branch",
                             [],
                             []
                           |),
                           [
                             M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                (Ty.path "core::result::Result")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    []
-                                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
-                                ],
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
-                                Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
-                                  []
-                                  [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
-                                [],
-                                [],
-                                "enumerate",
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_fmt",
                                 [],
                                 []
                               |),
                               [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    []
-                                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
-                                    "iter",
-                                    [],
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout"
-                                                ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_core_types::runtime_value::MoveTypeLayout";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "move_core_types::runtime_value::MoveStructLayout",
-                                                0
-                                              |)
-                                            |)
-                                          ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| Value.Array [ mk_str (| "struct " |) ] |)
                                         |)
                                       |)
                                     |)
@@ -11247,159 +11076,354 @@ Module runtime_value.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              ltac:(M.monadic
-                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.tuple
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::fmt::Error"
+                                            ]
+                                        ],
+                                        "from_residual",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
+                      ]
+                    |)
+                  |) in
+                let~ map : Ty.path "core::fmt::builders::DebugMap" :=
+                  M.call_closure (|
+                    Ty.path "core::fmt::builders::DebugMap",
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_map",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.use
+                      (M.match_operator (|
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                              ],
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                                ],
+                              [],
+                              [],
+                              "into_iter",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                                  ],
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
+                                  [],
+                                  [],
+                                  "enumerate",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                                        ],
+                                      "iter",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.path "usize";
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "slice")
                                                   []
                                                   [
                                                     Ty.path
                                                       "move_core_types::runtime_value::MoveTypeLayout"
                                                   ]
-                                              ]
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.apply
-                                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                            []
-                                            [
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
                                               Ty.apply
-                                                (Ty.path "core::slice::iter::Iter")
+                                                (Ty.path "alloc::vec::Vec")
                                                 []
                                                 [
                                                   Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout"
-                                                ]
-                                            ],
-                                          [],
-                                          [],
-                                          "next",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                                    "move_core_types::runtime_value::MoveTypeLayout";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_core_types::runtime_value::MoveStructLayout",
+                                                  0
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let i := M.copy (| γ1_0 |) in
-                                          let l := M.copy (| γ1_1 |) in
-                                          let~ _ :
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                ltac:(M.monadic
+                                  (let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "usize";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::runtime_value::MoveTypeLayout"
+                                                      ]
+                                                  ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "*")
+                                                (Ty.path
+                                                  "core::iter::adapters::enumerate::Enumerate")
                                                 []
                                                 [
                                                   Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::runtime_value::MoveTypeLayout"
+                                                    ]
+                                                ],
+                                              [],
+                                              [],
+                                              "next",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                              let γ1_1 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                              let i := M.copy (| γ1_0 |) in
+                                              let l := M.copy (| γ1_1 |) in
+                                              let~ _ :
+                                                  Ty.apply
                                                     (Ty.path "&mut")
                                                     []
-                                                    [ Ty.path "core::fmt::builders::DebugMap" ]
-                                                ] :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
-                                                  [ Ty.path "core::fmt::builders::DebugMap" ],
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::builders::DebugMap",
-                                                  "entry",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (| Pointer.Kind.MutRef, map |);
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.Ref, i |)
-                                                      |)
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "move_core_types::runtime_value::DebugAsDisplay"
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_core_types::runtime_value::MoveTypeLayout"
-                                                                  ]
-                                                              ]
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      l
+                                                    [ Ty.path "core::fmt::builders::DebugMap" ] :=
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [ Ty.path "core::fmt::builders::DebugMap" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::builders::DebugMap",
+                                                    "entry",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, map |);
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, i |)
+                                                        |)
+                                                      |));
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "move_core_types::runtime_value::DebugAsDisplay"
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::runtime_value::MoveTypeLayout"
+                                                                    ]
+                                                                ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        l
+                                                                      |)
                                                                     |)
                                                                   |)
-                                                                |)
-                                                              ]
+                                                                ]
+                                                            |)
                                                           |)
                                                         |)
-                                                      |)
-                                                    |))
-                                                ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
+                                                      |))
+                                                  ]
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |))
+                  |) in
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

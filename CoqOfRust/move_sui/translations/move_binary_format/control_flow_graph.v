@@ -96,9 +96,9 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let entry := M.alloc (| entry |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -127,12 +127,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -190,12 +190,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -224,12 +224,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -300,12 +300,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -334,12 +334,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -406,12 +406,12 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -440,9 +440,9 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -614,219 +614,217 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
-            let~ code_len : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-              M.alloc (|
-                M.cast
-                  (Ty.path "u16")
-                  (M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.path "move_binary_format::file_format::Bytecode" ],
-                      "len",
-                      [],
+            let~ code_len : Ty.path "u16" :=
+              M.cast
+                (Ty.path "u16")
+                (M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "slice")
                       []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
-                  |))
-              |) in
+                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
+                |)) in
             let~ block_ids :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::set::BTreeSet")
                     []
                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "insert",
-                    [],
+            let~ _ : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
                     []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, block_ids |);
-                    M.read (|
-                      get_constant (|
-                        "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
-                        Ty.path "u16"
-                      |)
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                  "insert",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, block_ids |);
+                  M.read (|
+                    get_constant (|
+                      "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+                      Ty.path "u16"
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.use
-                (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.use
+                  (M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (|
+                      M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        Value.StructRecord
-                          "core::ops::range::Range"
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                          [],
+                          [],
+                          "into_iter",
+                          [],
                           []
-                          [ Ty.path "usize" ]
-                          [
-                            ("start", Value.Integer IntegerKind.Usize 0);
-                            ("end_",
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "slice")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
-                              |))
-                          ]
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (|
-                                  M.call_closure (|
+                        |),
+                        [
+                          Value.StructRecord
+                            "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 0);
+                              ("end_",
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "core::option::Option")
+                                      (Ty.path "slice")
                                       []
-                                      [ Ty.path "usize" ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
+                                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
+                                  ]
+                                |))
+                            ]
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            ltac:(M.monadic
+                              (let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          [],
+                                          [],
+                                          "next",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let pc := M.copy (| γ0_0 |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                                "record_block_ids",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.cast (Ty.path "u16") (M.read (| pc |));
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| code |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, block_ids |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let pc := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                              "record_block_ids",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.cast (Ty.path "u16") (M.read (| pc |));
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| code |) |)
-                                              |);
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, block_ids |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |)) in
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |))
+              |) in
             let~ blocks :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.path "move_binary_format::control_flow_graph::BasicBlock";
-                        Ty.path "alloc::alloc::Global"
-                      ]
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                    Ty.path "alloc::alloc::Global"
                   ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
@@ -835,163 +833,231 @@ Module control_flow_graph.
                       Ty.path "move_binary_format::control_flow_graph::BasicBlock";
                       Ty.path "alloc::alloc::Global"
                     ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.path "move_binary_format::control_flow_graph::BasicBlock";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
-            let~ entry : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-              M.alloc (| Value.Integer IntegerKind.U16 0 |) in
+            let~ entry : Ty.path "u16" := Value.Integer IntegerKind.U16 0 in
             let~ exit_to_entry :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.use
-                (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.use
+                  (M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (|
+                      M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        Value.StructRecord
-                          "core::ops::range::Range"
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                          [],
+                          [],
+                          "into_iter",
+                          [],
                           []
-                          [ Ty.path "usize" ]
-                          [
-                            ("start", Value.Integer IntegerKind.Usize 0);
-                            ("end_",
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "slice")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
-                              |))
-                          ]
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (|
-                                  M.call_closure (|
+                        |),
+                        [
+                          Value.StructRecord
+                            "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 0);
+                              ("end_",
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "core::option::Option")
+                                      (Ty.path "slice")
                                       []
-                                      [ Ty.path "usize" ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
+                                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
+                                  ]
+                                |))
+                            ]
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            ltac:(M.monadic
+                              (let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          [],
+                                          [],
+                                          "next",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let pc := M.copy (| γ0_0 |) in
-                                      let~ co_pc : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                                        M.alloc (| M.cast (Ty.path "u16") (M.read (| pc |)) |) in
-                                      M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
-                                                  (M.alloc (|
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let pc := M.copy (| γ0_0 |) in
+                                          let~ co_pc : Ty.path "u16" :=
+                                            M.cast (Ty.path "u16") (M.read (| pc |)) in
+                                          M.match_operator (|
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                                            "is_end_of_block",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| co_pc |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| code |) |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  block_ids
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  let~ exit : Ty.path "u16" := M.read (| co_pc |) in
+                                                  let~ _ :
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u16" ] :=
                                                     M.call_closure (|
-                                                      Ty.path "bool",
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u16" ],
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::btree::map::BTreeMap")
+                                                          []
+                                                          [
+                                                            Ty.path "u16";
+                                                            Ty.path "u16";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        "insert",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          exit_to_entry
+                                                        |);
+                                                        M.read (| exit |);
+                                                        M.read (| entry |)
+                                                      ]
+                                                    |) in
+                                                  let~ successors :
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "u16";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ] :=
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "u16";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
-                                                          "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                                        "is_end_of_block",
+                                                          "move_binary_format::file_format::Bytecode",
+                                                        "get_successors",
                                                         [],
                                                         []
                                                       |),
@@ -1000,316 +1066,208 @@ Module control_flow_graph.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| code |) |)
-                                                        |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              block_ids
-                                                            |)
-                                                          |)
                                                         |)
                                                       ]
-                                                    |)
-                                                  |)) in
-                                              let _ :=
-                                                is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              let~ exit :
-                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                                                M.copy (| co_pc |) in
-                                              let~ _ :
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [ Ty.path "u16" ]
-                                                    ] :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
+                                                    |) in
+                                                  let~ bb :
+                                                      Ty.path
+                                                        "move_binary_format::control_flow_graph::BasicBlock" :=
+                                                    Value.StructRecord
+                                                      "move_binary_format::control_flow_graph::BasicBlock"
                                                       []
-                                                      [ Ty.path "u16" ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
-                                                        []
-                                                        [
-                                                          Ty.path "u16";
-                                                          Ty.path "u16";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      "insert",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        exit_to_entry
-                                                      |);
-                                                      M.read (| exit |);
-                                                      M.read (| entry |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              let~ successors :
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.path "u16";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
-                                                    ] :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
                                                       []
                                                       [
-                                                        Ty.path "u16";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::file_format::Bytecode",
-                                                      "get_successors",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| co_pc |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| code |) |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              let~ bb :
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::control_flow_graph::BasicBlock"
-                                                    ] :=
-                                                M.alloc (|
-                                                  Value.StructRecord
-                                                    "move_binary_format::control_flow_graph::BasicBlock"
-                                                    []
-                                                    []
-                                                    [
-                                                      ("exit", M.read (| exit |));
-                                                      ("successors", M.read (| successors |))
-                                                    ]
-                                                |) in
-                                              let~ _ :
-                                                  Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
+                                                        ("exit", M.read (| exit |));
+                                                        ("successors", M.read (| successors |))
+                                                      ] in
+                                                  let~ _ :
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [
                                                           Ty.path
                                                             "move_binary_format::control_flow_graph::BasicBlock"
-                                                        ]
-                                                    ] :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::control_flow_graph::BasicBlock"
-                                                      ],
-                                                    M.get_associated_function (|
+                                                        ] :=
+                                                    M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        (Ty.path "core::option::Option")
                                                         []
                                                         [
-                                                          Ty.path "u16";
                                                           Ty.path
-                                                            "move_binary_format::control_flow_graph::BasicBlock";
-                                                          Ty.path "alloc::alloc::Global"
+                                                            "move_binary_format::control_flow_graph::BasicBlock"
                                                         ],
-                                                      "insert",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (| Pointer.Kind.MutRef, blocks |);
-                                                      M.read (| entry |);
-                                                      M.read (| bb |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                M.alloc (|
-                                                  M.write (|
-                                                    entry,
-                                                    M.call_closure (|
-                                                      Ty.path "u16",
-                                                      BinOp.Wrap.add,
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::btree::map::BTreeMap")
+                                                          []
+                                                          [
+                                                            Ty.path "u16";
+                                                            Ty.path
+                                                              "move_binary_format::control_flow_graph::BasicBlock";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        "insert",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
-                                                        M.read (| co_pc |);
-                                                        Value.Integer IntegerKind.U16 1
+                                                        M.borrow (| Pointer.Kind.MutRef, blocks |);
+                                                        M.read (| entry |);
+                                                        M.read (| bb |)
                                                       ]
-                                                    |)
-                                                  |)
-                                                |) in
-                                              M.alloc (| Value.Tuple [] |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                        ]
-                                      |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |)) in
+                                                    |) in
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.write (|
+                                                      entry,
+                                                      M.call_closure (|
+                                                        Ty.path "u16",
+                                                        BinOp.Wrap.add,
+                                                        [
+                                                          M.read (| co_pc |);
+                                                          Value.Integer IntegerKind.U16 1
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |))
+              |) in
             let~ blocks :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.path "move_binary_format::control_flow_graph::BasicBlock";
-                        Ty.path "alloc::alloc::Global"
-                      ]
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                    Ty.path "alloc::alloc::Global"
                   ] :=
-              M.copy (| blocks |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (|
-                  Value.Tuple
-                    [
-                      M.borrow (| Pointer.Kind.Ref, entry |);
-                      M.borrow (| Pointer.Kind.Ref, code_len |)
-                    ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [
-                                          M.read (| M.deref (| M.read (| left_val |) |) |);
-                                          M.read (| M.deref (| M.read (| right_val |) |) |)
-                                        ]
+              M.read (| blocks |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (|
+                    Value.Tuple
+                      [
+                        M.borrow (| Pointer.Kind.Ref, entry |);
+                        M.borrow (| Pointer.Kind.Ref, code_len |)
+                      ]
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let left_val := M.copy (| γ0_0 |) in
+                        let right_val := M.copy (| γ0_1 |) in
+                        M.match_operator (|
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      UnOp.not (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.read (| M.deref (| M.read (| left_val |) |) |);
+                                            M.read (| M.deref (| M.read (| right_val |) |) |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ kind :
-                                        Ty.apply
-                                          (Ty.path "*")
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                        Value.StructTuple
+                                          "core::panicking::AssertKind::Eq"
                                           []
-                                          [ Ty.path "core::panicking::AssertKind" ] :=
+                                          []
+                                          [] in
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
-                                      |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (|
-                                          "core::panicking::assert_failed",
-                                          [],
-                                          [ Ty.path "u16"; Ty.path "u16" ]
-                                        |),
-                                        [
-                                          M.read (| kind |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| left_val |) |)
+                                        M.call_closure (|
+                                          Ty.path "never",
+                                          M.get_function (|
+                                            "core::panicking::assert_failed",
+                                            [],
+                                            [ Ty.path "u16"; Ty.path "u16" ]
+                                          |),
+                                          [
+                                            M.read (| kind |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| left_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| right_val |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| right_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          Value.StructTuple
-                                            "core::option::Option::None"
-                                            []
-                                            [ Ty.path "core::fmt::Arguments" ]
-                                            []
-                                        ]
+                                            |);
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)))
-                ]
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                  ]
+                |)
               |) in
             let~ exploration :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.path "move_binary_format::control_flow_graph::new::Exploration";
-                        Ty.path "alloc::alloc::Global"
-                      ]
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::new::Exploration";
+                    Ty.path "alloc::alloc::Global"
                   ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::new::Exploration";
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
@@ -1318,49 +1276,44 @@ Module control_flow_graph.
                       Ty.path "move_binary_format::control_flow_graph::new::Exploration";
                       Ty.path "alloc::alloc::Global"
                     ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.path "move_binary_format::control_flow_graph::new::Exploration";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
             let~ stack :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::vec::Vec")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                    "into_vec",
-                    [],
-                    [ Ty.path "alloc::alloc::Global" ]
-                  |),
-                  [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                  "into_vec",
+                  [],
+                  [ Ty.path "alloc::alloc::Global" ]
+                |),
+                [
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.read (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -1371,58 +1324,52 @@ Module control_flow_graph.
                                 [ Ty.path "u16" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
+                          "new",
+                          [],
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
                               [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "u16" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
-                            [],
-                            []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    get_constant (|
-                                      "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
-                                      Ty.path "u16"
-                                    |)
+                                M.read (|
+                                  get_constant (|
+                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+                                    Ty.path "u16"
                                   |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
-                  ]
-                |)
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |))
+                ]
               |) in
             let~ loop_heads :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
                   [
+                    Ty.path "u16";
                     Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
                       []
-                      [
-                        Ty.path "u16";
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::set::BTreeSet")
-                          []
-                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
-                        Ty.path "alloc::alloc::Global"
-                      ]
+                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::alloc::Global"
                   ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
@@ -1434,120 +1381,91 @@ Module control_flow_graph.
                         [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
                       Ty.path "alloc::alloc::Global"
                     ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "u16";
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::set::BTreeSet")
-                          []
-                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
             let~ post_order :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::vec::Vec")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "with_capacity",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::map::BTreeMap")
-                          []
-                          [
-                            Ty.path "u16";
-                            Ty.path "move_binary_format::control_flow_graph::BasicBlock";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "len",
-                        [],
+                  "with_capacity",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
                         []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, blocks |) ]
-                    |)
-                  ]
-                |)
+                        [
+                          Ty.path "u16";
+                          Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, blocks |) ]
+                  |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.loop (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.loop (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                    "pop",
+                                    [],
                                     []
-                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                  "pop",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.MutRef, stack |) ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let block := M.copy (| γ0_0 |) in
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::map::entry::Entry")
-                                  []
-                                  [
-                                    Ty.path "u16";
-                                    Ty.path
-                                      "move_binary_format::control_flow_graph::new::Exploration";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                M.get_associated_function (|
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, stack |) ]
+                                |)
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let block := M.copy (| γ0_0 |) in
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                    (Ty.path "alloc::collections::btree::map::entry::Entry")
                                     []
                                     [
                                       Ty.path "u16";
@@ -1555,40 +1473,44 @@ Module control_flow_graph.
                                         "move_binary_format::control_flow_graph::new::Exploration";
                                       Ty.path "alloc::alloc::Global"
                                     ],
-                                  "entry",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.MutRef, exploration |);
-                                  M.read (| block |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "alloc::collections::btree::map::entry::Entry::Vacant",
-                                      0
-                                    |) in
-                                  let entry := M.copy (| γ0_0 |) in
-                                  let~ _ :
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::control_flow_graph::new::Exploration"
-                                            ]
-                                        ] :=
-                                    M.alloc (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                      []
+                                      [
+                                        Ty.path "u16";
+                                        Ty.path
+                                          "move_binary_format::control_flow_graph::new::Exploration";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "entry",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, exploration |);
+                                    M.read (| block |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "alloc::collections::btree::map::entry::Entry::Vacant",
+                                        0
+                                      |) in
+                                    let entry := M.copy (| γ0_0 |) in
+                                    let~ _ :
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration"
+                                          ] :=
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "&mut")
@@ -1620,10 +1542,8 @@ Module control_flow_graph.
                                             []
                                             []
                                         ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -1639,335 +1559,291 @@ Module control_flow_graph.
                                           M.borrow (| Pointer.Kind.MutRef, stack |);
                                           M.read (| block |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.use
-                                    (M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::slice::iter::Iter")
-                                            []
-                                            [ Ty.path "u16" ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::collect::IntoIterator",
+                                      |) in
+                                    M.use
+                                      (M.match_operator (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        M.alloc (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "core::slice::iter::Iter")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                              ],
-                                            [],
-                                            [],
-                                            "into_iter",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::control_flow_graph::BasicBlock"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::index::Index",
+                                              [ Ty.path "u16" ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::collect::IntoIterator",
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ],
+                                              [],
+                                              [],
+                                              "into_iter",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (|
+                                                    M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        (Ty.path "&")
                                                         []
                                                         [
-                                                          Ty.path "u16";
                                                           Ty.path
-                                                            "move_binary_format::control_flow_graph::BasicBlock";
-                                                          Ty.path "alloc::alloc::Global"
+                                                            "move_binary_format::control_flow_graph::BasicBlock"
                                                         ],
-                                                      [],
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
-                                                      ],
-                                                      "index",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (| Pointer.Kind.Ref, blocks |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.Ref, block |)
-                                                        |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                "move_binary_format::control_flow_graph::BasicBlock",
-                                                "successors"
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let iter := M.copy (| γ |) in
-                                            M.loop (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                              ltac:(M.monadic
-                                                (let~ _ :
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                  M.match_operator (|
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                    M.alloc (|
-                                                      M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::index::Index",
                                                         Ty.apply
-                                                          (Ty.path "core::option::Option")
+                                                          (Ty.path
+                                                            "alloc::collections::btree::map::BTreeMap")
                                                           []
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u16" ]
+                                                            Ty.path "u16";
+                                                            Ty.path
+                                                              "move_binary_format::control_flow_graph::BasicBlock";
+                                                            Ty.path "alloc::alloc::Global"
                                                           ],
-                                                        M.get_trait_method (|
-                                                          "core::iter::traits::iterator::Iterator",
-                                                          Ty.apply
-                                                            (Ty.path "core::slice::iter::Iter")
-                                                            []
-                                                            [ Ty.path "u16" ],
-                                                          [],
-                                                          [],
-                                                          "next",
-                                                          [],
-                                                          []
-                                                        |),
+                                                        [],
                                                         [
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
+                                                        ],
+                                                        "index",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (| Pointer.Kind.Ref, blocks |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.Ref, block |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |),
+                                                  "move_binary_format::control_flow_graph::BasicBlock",
+                                                  "successors"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let iter := M.copy (| γ |) in
+                                              M.loop (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                ltac:(M.monadic
+                                                  (let~ _ : Ty.tuple [] :=
+                                                    M.read (|
+                                                      M.match_operator (|
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u16" ]
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::iter::traits::iterator::Iterator",
+                                                              Ty.apply
+                                                                (Ty.path "core::slice::iter::Iter")
+                                                                []
+                                                                [ Ty.path "u16" ],
+                                                              [],
+                                                              [],
+                                                              "next",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
                                                               M.borrow (|
                                                                 Pointer.Kind.MutRef,
-                                                                iter
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let _ :=
-                                                            M.is_struct_tuple (|
-                                                              γ,
-                                                              "core::option::Option::None"
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (| M.break (||) |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::option::Option::Some",
-                                                              0
-                                                            |) in
-                                                          let succ := M.copy (| γ0_0 |) in
-                                                          let~ _ :
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.tuple [] ] :=
-                                                            M.match_operator (|
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.tuple [] ],
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::control_flow_graph::new::Exploration"
-                                                                        ]
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloc::collections::btree::map::BTreeMap")
-                                                                      []
-                                                                      [
-                                                                        Ty.path "u16";
-                                                                        Ty.path
-                                                                          "move_binary_format::control_flow_graph::new::Exploration";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ],
-                                                                    "get",
-                                                                    [],
-                                                                    [ Ty.path "u16" ]
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      exploration
-                                                                    |);
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| succ |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    iter
+                                                                  |)
                                                                 |)
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let _ :=
-                                                                      M.is_struct_tuple (|
-                                                                        γ,
-                                                                        "core::option::Option::None"
-                                                                      |) in
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ,
+                                                                  "core::option::Option::None"
+                                                                |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (| M.break (||) |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::option::Option::Some",
+                                                                  0
+                                                                |) in
+                                                              let succ := M.copy (| γ0_0 |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.read (|
+                                                                  M.match_operator (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
-                                                                        Ty.tuple [],
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::control_flow_graph::new::Exploration"
+                                                                              ]
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "alloc::vec::Vec")
+                                                                              "alloc::collections::btree::map::BTreeMap")
                                                                             []
                                                                             [
                                                                               Ty.path "u16";
                                                                               Ty.path
+                                                                                "move_binary_format::control_flow_graph::new::Exploration";
+                                                                              Ty.path
                                                                                 "alloc::alloc::Global"
                                                                             ],
-                                                                          "push",
+                                                                          "get",
                                                                           [],
-                                                                          []
+                                                                          [ Ty.path "u16" ]
                                                                         |),
                                                                         [
                                                                           M.borrow (|
-                                                                            Pointer.Kind.MutRef,
-                                                                            stack
+                                                                            Pointer.Kind.Ref,
+                                                                            exploration
                                                                           |);
-                                                                          M.read (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.read (| succ |)
                                                                             |)
                                                                           |)
                                                                         ]
                                                                       |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::option::Option::Some",
-                                                                        0
-                                                                      |) in
-                                                                    let γ0_0 := M.read (| γ0_0 |) in
-                                                                    let _ :=
-                                                                      M.is_struct_tuple (|
-                                                                        γ0_0,
-                                                                        "move_binary_format::control_flow_graph::new::Exploration::InProgress"
-                                                                      |) in
-                                                                    let~ _ :
-                                                                        Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ] :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::set::BTreeSet")
-                                                                              []
-                                                                              [
-                                                                                Ty.path "u16";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            "insert",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.MutRef,
-                                                                              M.deref (|
-                                                                                M.call_closure (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&mut")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::collections::btree::set::BTreeSet")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u16";
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ]
-                                                                                    ],
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::collections::btree::map::entry::Entry")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "u16";
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::collections::btree::set::BTreeSet")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u16";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    "or_default",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let _ :=
+                                                                            M.is_struct_tuple (|
+                                                                              γ,
+                                                                              "core::option::Option::None"
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              Ty.tuple [],
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
                                                                                   [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "push",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  stack
+                                                                                |);
+                                                                                M.read (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      succ
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::option::Option::Some",
+                                                                              0
+                                                                            |) in
+                                                                          let γ0_0 :=
+                                                                            M.read (| γ0_0 |) in
+                                                                          let _ :=
+                                                                            M.is_struct_tuple (|
+                                                                              γ0_0,
+                                                                              "move_binary_format::control_flow_graph::new::Exploration::InProgress"
+                                                                            |) in
+                                                                          let~ _ : Ty.path "bool" :=
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::collections::btree::set::BTreeSet")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                "insert",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  M.deref (|
                                                                                     M.call_closure (|
                                                                                       Ty.apply
                                                                                         (Ty.path
-                                                                                          "alloc::collections::btree::map::entry::Entry")
+                                                                                          "&mut")
                                                                                         []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "u16";
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::collections::btree::set::BTreeSet")
@@ -1977,14 +1853,12 @@ Module control_flow_graph.
                                                                                                 "u16";
                                                                                               Ty.path
                                                                                                 "alloc::alloc::Global"
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
+                                                                                            ]
                                                                                         ],
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
-                                                                                            "alloc::collections::btree::map::BTreeMap")
+                                                                                            "alloc::collections::btree::map::entry::Entry")
                                                                                           []
                                                                                           [
                                                                                             Ty.path
@@ -2002,117 +1876,169 @@ Module control_flow_graph.
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
                                                                                           ],
-                                                                                        "entry",
+                                                                                        "or_default",
                                                                                         [],
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.MutRef,
-                                                                                          loop_heads
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          M.deref (|
+                                                                                        M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::collections::btree::map::entry::Entry")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "alloc::collections::btree::set::BTreeSet")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u16";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ],
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::collections::btree::map::BTreeMap")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u16";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "alloc::collections::btree::set::BTreeSet")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u16";
+                                                                                                    Ty.path
+                                                                                                      "alloc::alloc::Global"
+                                                                                                  ];
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ],
+                                                                                            "entry",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.MutRef,
+                                                                                              loop_heads
+                                                                                            |);
                                                                                             M.read (|
-                                                                                              succ
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  succ
+                                                                                                |)
+                                                                                              |)
                                                                                             |)
-                                                                                          |)
+                                                                                          ]
                                                                                         |)
                                                                                       ]
                                                                                     |)
-                                                                                  ]
-                                                                                |)
-                                                                              |)
-                                                                            |);
-                                                                            M.read (| block |)
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    M.alloc (| Value.Tuple [] |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::option::Option::Some",
-                                                                        0
-                                                                      |) in
-                                                                    let γ0_0 := M.read (| γ0_0 |) in
-                                                                    let _ :=
-                                                                      M.is_struct_tuple (|
-                                                                        γ0_0,
-                                                                        "move_binary_format::control_flow_graph::new::Exploration::Done"
-                                                                      |) in
-                                                                    M.alloc (| Value.Tuple [] |)))
-                                                              ]
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)))
-                                            |)))
-                                      ]
-                                    |))));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "alloc::collections::btree::map::entry::Entry::Occupied",
-                                      0
-                                    |) in
-                                  let entry := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::control_flow_graph::new::Exploration"
-                                          ],
-                                        M.get_associated_function (|
+                                                                                  |)
+                                                                                |);
+                                                                                M.read (| block |)
+                                                                              ]
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::option::Option::Some",
+                                                                              0
+                                                                            |) in
+                                                                          let γ0_0 :=
+                                                                            M.read (| γ0_0 |) in
+                                                                          let _ :=
+                                                                            M.is_struct_tuple (|
+                                                                              γ0_0,
+                                                                              "move_binary_format::control_flow_graph::new::Exploration::Done"
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |)))
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)))
+                                              |)))
+                                        ]
+                                      |))));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "alloc::collections::btree::map::entry::Entry::Occupied",
+                                        0
+                                      |) in
+                                    let entry := M.copy (| γ0_0 |) in
+                                    M.match_operator (|
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      M.alloc (|
+                                        M.call_closure (|
                                           Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::map::entry::OccupiedEntry")
+                                            (Ty.path "&")
                                             []
                                             [
-                                              Ty.path "u16";
                                               Ty.path
-                                                "move_binary_format::control_flow_graph::new::Exploration";
-                                              Ty.path "alloc::alloc::Global"
+                                                "move_binary_format::control_flow_graph::new::Exploration"
                                             ],
-                                          "get",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, entry |) ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ := M.read (| γ |) in
-                                          let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "move_binary_format::control_flow_graph::new::Exploration::Done"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.continue (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ := M.read (| γ |) in
-                                          let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "move_binary_format::control_flow_graph::new::Exploration::InProgress"
-                                            |) in
-                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::btree::map::entry::OccupiedEntry")
+                                              []
+                                              [
+                                                Ty.path "u16";
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::new::Exploration";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "get",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, entry |) ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ := M.read (| γ |) in
+                                            let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "move_binary_format::control_flow_graph::new::Exploration::Done"
+                                              |) in
                                             M.alloc (|
+                                              M.never_to_any (| M.read (| M.continue (||) |) |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ := M.read (| γ |) in
+                                            let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "move_binary_format::control_flow_graph::new::Exploration::InProgress"
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
                                               M.call_closure (|
                                                 Ty.tuple [],
                                                 M.get_associated_function (|
@@ -2129,17 +2055,10 @@ Module control_flow_graph.
                                                   M.borrow (| Pointer.Kind.MutRef, post_order |);
                                                   M.read (| block |)
                                                 ]
-                                              |)
-                                            |) in
-                                          let~ _ :
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::control_flow_graph::new::Exploration"
-                                                ] :=
-                                            M.alloc (|
+                                              |) in
+                                            let~ _ :
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::new::Exploration" :=
                                               M.call_closure (|
                                                 Ty.path
                                                   "move_binary_format::control_flow_graph::new::Exploration",
@@ -2166,96 +2085,113 @@ Module control_flow_graph.
                                                     []
                                                     []
                                                 ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)))
-                    ]
-                  |)))
+                            |)))
+                      ]
+                    |)))
+                |)
               |) in
             let~ traversal_order :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::vec::Vec")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                      "reverse",
+                      [],
                       []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.copy (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                        "reverse",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, post_order |) ]
-                            |)
+                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, post_order |) ]
                           |)
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |) in
                 post_order
               |) in
             let~ traversal_successors :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
                   []
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
+                            ]
+                        ]
+                        (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
+                    ],
+                  [],
+                  [],
+                  "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
                       []
                       [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::collections::btree::map::BTreeMap")
-                    []
-                    [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
+                  ]
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
                       []
@@ -2273,126 +2209,96 @@ Module control_flow_graph.
                           ]
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ],
-                    [],
-                    [],
-                    "collect",
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::collections::btree::map::BTreeMap")
-                        []
-                        [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                    ]
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::iter::adapters::map::Map")
-                        []
-                        [
-                          Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                                ]
-                            ]
-                            (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
-                        ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
-                        [],
-                        [],
-                        "map",
-                        [],
-                        [
-                          Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                                ]
-                            ]
-                            (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
-                        ]
-                      |),
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
+                      [],
+                      [],
+                      "map",
+                      [],
                       [
-                        M.call_closure (|
-                          Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                            "windows",
-                            [],
-                            []
-                          |),
+                        Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                        Ty.function
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, traversal_order |) ]
-                                |)
-                              |)
-                            |);
-                            Value.Integer IntegerKind.Usize 2
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
+                              ]
                           ]
-                        |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
-                                      ],
-                                    M.alloc (| α0 |),
+                          (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                          "windows",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, traversal_order |) ]
+                              |)
+                            |)
+                          |);
+                          Value.Integer IntegerKind.Usize 2
+                        ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
                                     [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let window := M.copy (| γ |) in
-                                          M.read (|
-                                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
+                                            ]
+                                        ]
+                                        (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
+                                    ],
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let window := M.copy (| γ |) in
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
+                                            M.read (|
                                               M.match_operator (|
                                                 Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 M.alloc (| Value.Tuple [] |),
@@ -2406,112 +2312,115 @@ Module control_flow_graph.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :
-                                                          Ty.apply
-                                                            (Ty.path "*")
-                                                            []
-                                                            [ Ty.tuple [] ] :=
-                                                        M.match_operator (|
-                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.use
-                                                                    (M.alloc (|
-                                                                      UnOp.not (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          BinOp.eq,
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              Ty.path "usize",
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path "slice")
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.read (|
+                                                          M.match_operator (|
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
+                                                            M.alloc (| Value.Tuple [] |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.use
+                                                                      (M.alloc (|
+                                                                        UnOp.not (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.eq,
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u16"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
                                                                                   []
-                                                                                  [ Ty.path "u16" ],
-                                                                                "len",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      window
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        window
+                                                                                      |)
                                                                                     |)
                                                                                   |)
-                                                                                |)
-                                                                              ]
-                                                                            |);
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              2
-                                                                          ]
+                                                                                ]
+                                                                              |);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                          |)
                                                                         |)
+                                                                      |)) in
+                                                                  let _ :=
+                                                                    is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.call_closure (|
+                                                                        Ty.path "never",
+                                                                        M.get_function (|
+                                                                          "core::panicking::panic",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          mk_str (|
+                                                                            "assertion failed: window.len() == 2"
+                                                                          |)
+                                                                        ]
                                                                       |)
-                                                                    |)) in
-                                                                let _ :=
-                                                                  is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  M.never_to_any (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "never",
-                                                                      M.get_function (|
-                                                                        "core::panicking::panic",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        mk_str (|
-                                                                          "assertion failed: window.len() == 2"
-                                                                        |)
-                                                                      ]
                                                                     |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
-                                                          ]
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                            ]
+                                                          |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
                                                   fun γ =>
                                                     ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                                 ]
-                                              |) in
-                                            M.alloc (|
-                                              Value.Tuple
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.deref (| M.read (| window |) |),
-                                                      Value.Integer IntegerKind.Usize 0
-                                                    |)
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.deref (| M.read (| window |) |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |)
+                                              |)
+                                            |) in
+                                          M.alloc (|
+                                            Value.Tuple
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (| M.read (| window |) |),
+                                                    Value.Integer IntegerKind.Usize 0
                                                   |)
-                                                ]
-                                            |)
-                                          |)))
-                                    ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
-                      ]
-                    |)
-                  ]
-                |)
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (| M.read (| window |) |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
+                                                |)
+                                              ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                ]
               |) in
             M.alloc (|
               Value.StructRecord
@@ -2546,154 +2455,159 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.use
-                (M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "alloc::collections::btree::map::Iter")
-                        []
-                        [
-                          Ty.path "u16";
-                          Ty.path "move_binary_format::control_flow_graph::BasicBlock"
-                        ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.use
+                  (M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (|
+                      M.call_closure (|
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "alloc::collections::btree::map::Iter")
                           []
                           [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::map::BTreeMap")
-                              []
-                              [
-                                Ty.path "u16";
-                                Ty.path "move_binary_format::control_flow_graph::BasicBlock";
-                                Ty.path "alloc::alloc::Global"
-                              ]
+                            Ty.path "u16";
+                            Ty.path "move_binary_format::control_flow_graph::BasicBlock"
                           ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                            "blocks"
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                []
+                                [
+                                  Ty.path "u16";
+                                  Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          [],
+                          [],
+                          "into_iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                              "blocks"
+                            |)
                           |)
-                        |)
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.tuple
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            ltac:(M.monadic
+                              (let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
+                                            Ty.tuple
                                               [
-                                                Ty.path
-                                                  "move_binary_format::control_flow_graph::BasicBlock"
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::control_flow_graph::BasicBlock"
+                                                  ]
                                               ]
-                                          ]
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::Iter")
-                                        []
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Iter")
+                                            []
+                                            [
+                                              Ty.path "u16";
+                                              Ty.path
+                                                "move_binary_format::control_flow_graph::BasicBlock"
+                                            ],
+                                          [],
+                                          [],
+                                          "next",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          Ty.path "u16";
-                                          Ty.path
-                                            "move_binary_format::control_flow_graph::BasicBlock"
-                                        ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                          let entry := M.copy (| γ1_0 |) in
+                                          let block := M.copy (| γ1_1 |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::BasicBlock",
+                                                "display",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| block |) |)
+                                                |);
+                                                M.read (| M.deref (| M.read (| entry |) |) |)
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                      let entry := M.copy (| γ1_0 |) in
-                                      let block := M.copy (| γ1_1 |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::control_flow_graph::BasicBlock",
-                                              "display",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| block |) |)
-                                              |);
-                                              M.read (| M.deref (| M.read (| entry |) |) |)
-                                            ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |)) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |))
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -2826,9 +2740,9 @@ Module control_flow_graph.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2939,56 +2853,47 @@ Module control_flow_graph.
           let block_ids := M.alloc (| block_ids |) in
           M.read (|
             let~ bytecode :
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "move_binary_format::file_format::Bytecode" ]
-                  ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_array_field (|
-                    M.deref (| M.read (| code |) |),
-                    M.cast (Ty.path "usize") (M.read (| pc |))
-                  |)
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ] :=
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_array_field (|
+                  M.deref (| M.read (| code |) |),
+                  M.cast (Ty.path "usize") (M.read (| pc |))
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
-                            M.get_associated_function (|
-                              Ty.path "move_binary_format::file_format::Bytecode",
-                              "offset",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytecode |) |) |) ]
-                          |)
-                        |) in
-                      let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let offset := M.copy (| γ0_0 |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                        M.alloc (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                              M.get_associated_function (|
+                                Ty.path "move_binary_format::file_format::Bytecode",
+                                "offset",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytecode |) |) |)
+                              ]
+                            |)
+                          |) in
+                        let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
+                        let offset := M.copy (| γ0_0 |) in
+                        let~ _ : Ty.path "bool" :=
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (|
@@ -3007,11 +2912,11 @@ Module control_flow_graph.
                               |);
                               M.read (| M.deref (| M.read (| offset |) |) |)
                             ]
-                          |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |)
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -3069,31 +2974,26 @@ Module control_flow_graph.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::set::BTreeSet")
-                              []
-                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                            "insert",
-                            [],
+                    let~ _ : Ty.path "bool" :=
+                      M.call_closure (|
+                        Ty.path "bool",
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::BTreeSet")
                             []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.read (| block_ids |) |)
-                            |);
-                            M.call_closure (|
-                              Ty.path "u16",
-                              BinOp.Wrap.add,
-                              [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
-                            |)
-                          ]
-                        |)
+                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                          "insert",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| block_ids |) |) |);
+                          M.call_closure (|
+                            Ty.path "u16",
+                            BinOp.Wrap.add,
+                            [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
+                          |)
+                        ]
                       |) in
                     M.alloc (| Value.Tuple [] |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3143,159 +3043,137 @@ Module control_flow_graph.
           M.read (|
             let~ ret :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::vec::Vec")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
-            let~ index : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ index : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
             let~ seen :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
-                      ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::set::BTreeSet")
                     []
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
-                      ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                    "push",
-                    [],
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
                     []
-                  |),
-                  [ M.borrow (| Pointer.Kind.MutRef, ret |); M.read (| block_id |) ]
-                |)
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                  "push",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.MutRef, ret |); M.read (| block_id |) ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
-                      ],
-                    "insert",
-                    [],
+            let~ _ : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
                     []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, seen |);
-                    M.borrow (| Pointer.Kind.Ref, block_id |)
-                  ]
-                |)
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ],
+                  "insert",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, seen |);
+                  M.borrow (| Pointer.Kind.Ref, block_id |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.loop (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.lt,
-                                  [
-                                    M.read (| index |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.loop (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.read (| index |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                        "len",
-                                        [],
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, ret |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ block_id : Ty.path "u16" :=
+                              M.read (|
+                                M.deref (|
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
                                         []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, ret |) ]
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ block_id : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                            M.copy (|
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                      [],
+                                      [ Ty.path "usize" ],
+                                      "index",
+                                      [],
                                       []
-                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                    [],
-                                    [ Ty.path "usize" ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, ret |); M.read (| index |) ]
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, ret |); M.read (| index |) ]
+                                  |)
                                 |)
-                              |)
-                            |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (|
+                              |) in
+                            let~ _ : Ty.tuple [] :=
                               let β := index in
                               M.write (|
                                 β,
@@ -3304,24 +3182,17 @@ Module control_flow_graph.
                                   BinOp.Wrap.add,
                                   [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
-                              |)
-                            |) in
-                          let~ successors :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                    ]
-                                ] :=
-                            M.alloc (|
+                              |) in
+                            let~ successors :
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                  ] :=
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -3346,284 +3217,284 @@ Module control_flow_graph.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                   M.read (| block_id |)
                                 ]
-                              |)
-                            |) in
-                          M.use
-                            (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::collect::IntoIterator",
+                              |) in
+                            M.use
+                              (M.match_operator (|
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Iter")
                                       []
                                       [ Ty.path "u16" ],
-                                    [],
-                                    [],
-                                    "into_iter",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::slice::iter::Iter")
                                         []
                                         [ Ty.path "u16" ],
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                                        "iter",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| successors |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let iter := M.copy (| γ |) in
-                                    M.loop (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      ltac:(M.monadic
-                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.alloc (|
+                                      [],
+                                      [],
+                                      "into_iter",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "u16" ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                                          "iter",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
                                               M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "core::option::Option")
+                                                  (Ty.path "&")
                                                   []
-                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ]
+                                                  ],
                                                 M.get_trait_method (|
-                                                  "core::iter::traits::iterator::Iterator",
+                                                  "core::ops::deref::Deref",
                                                   Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
+                                                    (Ty.path "alloc::vec::Vec")
                                                     []
-                                                    [ Ty.path "u16" ],
+                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   [],
                                                   [],
-                                                  "next",
+                                                  "deref",
                                                   [],
                                                   []
                                                 |),
                                                 [
                                                   M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                    |)
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| successors |) |)
                                                   |)
                                                 ]
                                               |)
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let _ :=
-                                                    M.is_struct_tuple (|
-                                                      γ,
-                                                      "core::option::Option::None"
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (| M.read (| M.break (||) |) |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::option::Option::Some",
-                                                      0
-                                                    |) in
-                                                  let block_id := M.copy (| γ0_0 |) in
-                                                  M.match_operator (|
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                    M.alloc (| Value.Tuple [] |),
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let iter := M.copy (| γ |) in
+                                      M.loop (|
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        ltac:(M.monadic
+                                          (let~ _ : Ty.tuple [] :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [ Ty.path "u16" ],
+                                                      [],
+                                                      [],
+                                                      "next",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::set::BTreeSet")
-                                                                        []
-                                                                        [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (| M.break (||) |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::option::Option::Some",
+                                                          0
+                                                        |) in
+                                                      let block_id := M.copy (| γ0_0 |) in
+                                                      M.match_operator (|
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    UnOp.not (|
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        M.get_associated_function (|
                                                                           Ty.apply
-                                                                            (Ty.path "&")
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::set::BTreeSet")
                                                                             []
-                                                                            [ Ty.path "u16" ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      "contains",
-                                                                      [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ];
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "contains",
+                                                                          [],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "u16" ]
+                                                                          ]
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            seen
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                block_id
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)) in
+                                                              let _ :=
+                                                                is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.call_closure (|
+                                                                  Ty.tuple [],
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path "u16";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "push",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      ret
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| block_id |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |) in
+                                                              let~ _ : Ty.path "bool" :=
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::set::BTreeSet")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
                                                                           []
-                                                                          [ Ty.path "u16" ]
-                                                                      ]
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        seen
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            block_id
-                                                                          |)
-                                                                        |)
+                                                                          [ Ty.path "u16" ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "insert",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      seen
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| block_id |)
                                                                       |)
-                                                                    ]
-                                                                  |)
-                                                                |)
-                                                              |)) in
-                                                          let _ :=
-                                                            is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          let~ _ :
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.tuple [] ] :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.tuple [],
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "alloc::vec::Vec")
-                                                                    []
-                                                                    [
-                                                                      Ty.path "u16";
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ],
-                                                                  "push",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    ret
-                                                                  |);
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| block_id |)
                                                                     |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          let~ _ :
-                                                              Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [ Ty.path "bool" ] :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "alloc::collections::btree::set::BTreeSet")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "u16" ];
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ],
-                                                                  "insert",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    seen
-                                                                  |);
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| block_id |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                    |)))
-                              ]
-                            |))));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                                                  ]
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                      |)))
+                                ]
+                              |))));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)
                               |)
-                            |)
-                          |)))
-                    ]
-                  |)))
+                            |)))
+                      ]
+                    |)))
+                |)
               |) in
             ret
           |)))
@@ -3824,85 +3695,90 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                              []
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          UnOp.not (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::BTreeMap")
+                                                  []
+                                                  [
+                                                    Ty.path "u16";
+                                                    Ty.path
+                                                      "move_binary_format::control_flow_graph::BasicBlock";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "contains_key",
+                                                [],
+                                                [ Ty.path "u16" ]
+                                              |),
                                               [
-                                                Ty.path "u16";
-                                                Ty.path
-                                                  "move_binary_format::control_flow_graph::BasicBlock";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            "contains_key",
-                                            [],
-                                            [ Ty.path "u16" ]
-                                          |),
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                                    "blocks"
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, block_id |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.call_closure (|
+                                          Ty.path "never",
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                                "blocks"
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (| Pointer.Kind.Ref, block_id |)
-                                              |)
+                                            mk_str (|
+                                              "assertion failed: self.blocks.contains_key(&block_id)"
                                             |)
                                           ]
                                         |)
                                       |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        mk_str (|
-                                          "assertion failed: self.blocks.contains_key(&block_id)"
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|

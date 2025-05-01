@@ -213,107 +213,111 @@ Module utils.
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
                                       M.read (|
-                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.match_operator (|
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  UnOp.not (|
-                                                                    LogicalOp.or (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        M.get_trait_method (|
-                                                                          "p3_field::field::Field",
-                                                                          F,
-                                                                          [],
-                                                                          [],
-                                                                          "is_zero",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.read (| x |)
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |),
-                                                                      ltac:(M.monadic
-                                                                        (M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          M.get_trait_method (|
-                                                                            "p3_field::field::Field",
-                                                                            F,
-                                                                            [],
-                                                                            [],
-                                                                            "is_one",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.read (| x |)
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use (M.alloc (| Value.Bool true |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ _ : Ty.tuple [] :=
+                                                      M.read (|
+                                                        M.match_operator (|
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                          M.alloc (| Value.Tuple [] |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ :=
+                                                                  M.use
+                                                                    (M.alloc (|
+                                                                      UnOp.not (|
+                                                                        LogicalOp.or (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            M.get_trait_method (|
+                                                                              "p3_field::field::Field",
+                                                                              F,
+                                                                              [],
+                                                                              [],
+                                                                              "is_zero",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| x |)
+                                                                                |)
                                                                               |)
-                                                                            |)
-                                                                          ]
-                                                                        |)))
+                                                                            ]
+                                                                          |),
+                                                                          ltac:(M.monadic
+                                                                            (M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              M.get_trait_method (|
+                                                                                "p3_field::field::Field",
+                                                                                F,
+                                                                                [],
+                                                                                [],
+                                                                                "is_one",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (| x |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
+                                                                            |)))
+                                                                        |)
+                                                                      |)
+                                                                    |)) in
+                                                                let _ :=
+                                                                  is_constant_or_break_match (|
+                                                                    M.read (| γ |),
+                                                                    Value.Bool true
+                                                                  |) in
+                                                                M.alloc (|
+                                                                  M.never_to_any (|
+                                                                    M.call_closure (|
+                                                                      Ty.path "never",
+                                                                      M.get_function (|
+                                                                        "core::panicking::panic",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        mk_str (|
+                                                                          "assertion failed: x.is_zero() || x.is_one()"
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.call_closure (|
-                                                                  Ty.path "never",
-                                                                  M.get_function (|
-                                                                    "core::panicking::panic",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    mk_str (|
-                                                                      "assertion failed: x.is_zero() || x.is_one()"
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
+                                                                |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (| Value.Tuple [] |)))
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
@@ -367,143 +371,159 @@ Module utils.
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    UnOp.not (|
-                                      LogicalOp.or (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "p3_field::field::Field",
-                                            F,
-                                            [],
-                                            [],
-                                            "is_zero",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, x |) ]
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_trait_method (|
-                                              "p3_field::field::Field",
-                                              F,
-                                              [],
-                                              [],
-                                              "is_one",
-                                              [],
-                                              []
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        UnOp.not (|
+                                          LogicalOp.or (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_trait_method (|
+                                                "p3_field::field::Field",
+                                                F,
+                                                [],
+                                                [],
+                                                "is_zero",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, x |) ]
                                             |),
-                                            [ M.borrow (| Pointer.Kind.Ref, x |) ]
-                                          |)))
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_trait_method (|
+                                                  "p3_field::field::Field",
+                                                  F,
+                                                  [],
+                                                  [],
+                                                  "is_one",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, x |) ]
+                                              |)))
+                                          |)
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (| "core::panicking::panic", [], [] |),
+                                        [ mk_str (| "assertion failed: x.is_zero() || x.is_one()" |)
+                                        ]
                                       |)
                                     |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ mk_str (| "assertion failed: x.is_zero() || x.is_one()" |) ]
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    UnOp.not (|
-                                      LogicalOp.or (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "p3_field::field::Field",
-                                            F,
-                                            [],
-                                            [],
-                                            "is_zero",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, y |) ]
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_trait_method (|
-                                              "p3_field::field::Field",
-                                              F,
-                                              [],
-                                              [],
-                                              "is_one",
-                                              [],
-                                              []
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        UnOp.not (|
+                                          LogicalOp.or (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_trait_method (|
+                                                "p3_field::field::Field",
+                                                F,
+                                                [],
+                                                [],
+                                                "is_zero",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, y |) ]
                                             |),
-                                            [ M.borrow (| Pointer.Kind.Ref, y |) ]
-                                          |)))
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_trait_method (|
+                                                  "p3_field::field::Field",
+                                                  F,
+                                                  [],
+                                                  [],
+                                                  "is_one",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, y |) ]
+                                              |)))
+                                          |)
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (| "core::panicking::panic", [], [] |),
+                                        [ mk_str (| "assertion failed: y.is_zero() || y.is_one()" |)
+                                        ]
                                       |)
                                     |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ mk_str (| "assertion failed: y.is_zero() || y.is_one()" |) ]
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -836,26 +856,37 @@ Module utils.
         let d := M.alloc (| d |) in
         M.read (|
           let~ two_16 :
-              Ty.apply
-                (Ty.path "*")
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
                 []
-                [
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
-                    []
-                    []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield"
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait
-                  "p3_field::field::PrimeCharacteristicRing"
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield" :=
+            M.call_closure (|
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
+                []
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
                   []
-                  []
-                  (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  "PrimeSubfield",
-                M.get_associated_function (|
+                  [
+                    Ty.associated_in_trait
+                      "p3_field::field::PrimeCharacteristicRing"
+                      []
+                      []
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                      "PrimeSubfield"
+                  ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
@@ -867,481 +898,440 @@ Module utils.
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                         "PrimeSubfield"
                     ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
+                  M.get_trait_method (|
+                    "p3_field::integers::QuotientMap",
+                    Ty.associated_in_trait
+                      "p3_field::field::PrimeCharacteristicRing"
                       []
-                      [
-                        Ty.associated_in_trait
-                          "p3_field::field::PrimeCharacteristicRing"
-                          []
-                          []
-                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                          "PrimeSubfield"
-                      ],
-                    M.get_trait_method (|
-                      "p3_field::integers::QuotientMap",
-                      Ty.associated_in_trait
-                        "p3_field::field::PrimeCharacteristicRing"
-                        []
-                        []
-                        (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                        "PrimeSubfield",
-                      [],
-                      [ Ty.path "i32" ],
-                      "from_canonical_checked",
-                      [],
                       []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        BinOp.Wrap.shl,
-                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 16 ]
-                      |)
-                    ]
-                  |)
-                ]
-              |)
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                      "PrimeSubfield",
+                    [],
+                    [ Ty.path "i32" ],
+                    "from_canonical_checked",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      BinOp.Wrap.shl,
+                      [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 16 ]
+                    |)
+                  ]
+                |)
+              ]
             |) in
           let~ two_32 :
-              Ty.apply
-                (Ty.path "*")
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
                 []
-                [
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
-                    []
-                    []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield"
-                ] :=
-            M.alloc (|
-              M.call_closure (|
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield" :=
+            M.call_closure (|
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
+                []
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield",
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 Ty.associated_in_trait
                   "p3_field::field::PrimeCharacteristicRing"
                   []
                   []
                   (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                   "PrimeSubfield",
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
+            |) in
+          let~ acc_16 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Sub",
+                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "sub",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::ops::arith::Sub",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                    "sub",
+                    [],
                     []
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Sub",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "sub",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| a |) |),
+                            Value.Integer IntegerKind.Usize 0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| b |) |),
+                            Value.Integer IntegerKind.Usize 0
+                          |)
+                        |)
+                      ]
+                    |);
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| c |) |),
+                            Value.Integer IntegerKind.Usize 0
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [],
+                    "clone",
+                    [],
                     []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield",
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
-              |)
-            |) in
-          let~ acc_16 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Sub",
-                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "sub",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::ops::arith::Sub",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                      "sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Sub",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                          "sub",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| a |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |);
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| b |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)
-                        ]
-                      |);
-                      M.call_closure (|
-                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::clone::Clone",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [],
-                          "clone",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| c |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)
-                        ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| d |) |),
+                        Value.Integer IntegerKind.Usize 0
                       |)
-                    ]
-                  |);
-                  M.call_closure (|
+                    |)
+                  ]
+                |)
+              ]
+            |) in
+          let~ acc_32 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Sub",
+                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "sub",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::ops::arith::Sub",
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
+                    [],
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                    "sub",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
                       Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| d |) |),
-                          Value.Integer IntegerKind.Usize 0
+                      M.get_trait_method (|
+                        "core::ops::arith::Sub",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "sub",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| a |) |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| b |) |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)
                         |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ acc_32 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Sub",
-                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "sub",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::ops::arith::Sub",
+                      ]
+                    |);
+                    M.call_closure (|
                       Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                      "sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
                         Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Sub",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                          "sub",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| a |) |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)
-                          |);
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| b |) |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| c |) |),
+                            Value.Integer IntegerKind.Usize 1
                           |)
-                        ]
-                      |);
-                      M.call_closure (|
-                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::clone::Clone",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [],
-                          "clone",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| c |) |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)
-                          |)
-                        ]
-                      |)
-                    ]
-                  |);
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| d |) |),
-                          Value.Integer IntegerKind.Usize 1
                         |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ acc :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Add",
+                      ]
+                    |)
+                  ]
+                |);
+                M.call_closure (|
                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "add",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
+                  M.get_trait_method (|
+                    "core::clone::Clone",
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
-                  |);
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "p3_field::field::PrimeCharacteristicRing",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "mul_2exp_u64",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, acc_32 |); Value.Integer IntegerKind.U64 16 ]
-                  |)
-                ]
-              |)
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| d |) |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
+                    |)
+                  ]
+                |)
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "p3_air::air::AirBuilder",
-                  AB,
-                  [],
-                  [],
-                  "assert_zeros",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
-                  Value.Array
-                    [
-                      M.call_closure (|
+          let~ acc : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Add",
+                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "add",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
+                |);
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "p3_field::field::PrimeCharacteristicRing",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [],
+                    "mul_2exp_u64",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, acc_32 |); Value.Integer IntegerKind.U64 16 ]
+                |)
+              ]
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "p3_air::air::AirBuilder",
+                AB,
+                [],
+                [],
+                "assert_zeros",
+                [ Value.Integer IntegerKind.Usize 2 ],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
+              |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
+                Value.Array
+                  [
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Mul",
                         Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Mul",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "mul",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
                           Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "mul",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::arith::Mul",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Mul",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "mul",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "mul",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "core::clone::Clone",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, acc |) ]
-                              |);
-                              M.call_closure (|
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, acc |) ]
+                            |);
+                            M.call_closure (|
+                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                              M.get_trait_method (|
+                                "core::ops::arith::Add",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "core::ops::arith::Add",
+                                [],
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
+                                ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
                                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
-                                  ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
                                     Ty.associated_in_trait
                                       "p3_air::air::AirBuilder"
                                       []
                                       []
                                       AB
                                       "Expr",
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      [],
-                                      [],
-                                      "clone",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, acc |) ]
-                                  |);
-                                  M.call_closure (|
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, acc |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                                  M.get_trait_method (|
+                                    "p3_field::field::PrimeCharacteristicRing",
                                     Ty.associated_in_trait
                                       "p3_air::air::AirBuilder"
                                       []
                                       []
                                       AB
                                       "Expr",
-                                    M.get_trait_method (|
-                                      "p3_field::field::PrimeCharacteristicRing",
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      [],
-                                      [],
-                                      "from_prime_subfield",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| two_32 |) ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
+                                    [],
+                                    [],
+                                    "from_prime_subfield",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| two_32 |) ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                          M.get_trait_method (|
+                            "core::ops::arith::Add",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Add",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| acc |);
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "add",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| acc |);
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "p3_field::field::PrimeCharacteristicRing",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "p3_field::field::PrimeCharacteristicRing",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "from_prime_subfield",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                                [],
+                                [],
+                                "from_prime_subfield",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.associated_in_trait
+                                    "p3_field::field::PrimeCharacteristicRing"
+                                    []
+                                    []
+                                    (Ty.associated_in_trait
+                                      "p3_air::air::AirBuilder"
+                                      []
+                                      []
+                                      AB
+                                      "Expr")
+                                    "PrimeSubfield",
+                                  M.get_trait_method (|
+                                    "p3_field::field::PrimeCharacteristicRing",
                                     Ty.associated_in_trait
                                       "p3_field::field::PrimeCharacteristicRing"
                                       []
@@ -1353,159 +1343,149 @@ Module utils.
                                         AB
                                         "Expr")
                                       "PrimeSubfield",
-                                    M.get_trait_method (|
-                                      "p3_field::field::PrimeCharacteristicRing",
-                                      Ty.associated_in_trait
-                                        "p3_field::field::PrimeCharacteristicRing"
-                                        []
-                                        []
-                                        (Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr")
-                                        "PrimeSubfield",
-                                      [],
-                                      [],
-                                      "double",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, two_32 |) ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |);
-                      M.call_closure (|
+                                    [],
+                                    [],
+                                    "double",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, two_32 |) ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |);
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Mul",
                         Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Mul",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "mul",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
                           Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "mul",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::arith::Mul",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Mul",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "mul",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "mul",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "core::clone::Clone",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
-                              |);
-                              M.call_closure (|
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
+                            |);
+                            M.call_closure (|
+                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                              M.get_trait_method (|
+                                "core::ops::arith::Add",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "core::ops::arith::Add",
+                                [],
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
+                                ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
                                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
-                                  ],
-                                  "add",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
                                     Ty.associated_in_trait
                                       "p3_air::air::AirBuilder"
                                       []
                                       []
                                       AB
                                       "Expr",
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      [],
-                                      [],
-                                      "clone",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
-                                  |);
-                                  M.call_closure (|
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                                  M.get_trait_method (|
+                                    "p3_field::field::PrimeCharacteristicRing",
                                     Ty.associated_in_trait
                                       "p3_air::air::AirBuilder"
                                       []
                                       []
                                       AB
                                       "Expr",
-                                    M.get_trait_method (|
-                                      "p3_field::field::PrimeCharacteristicRing",
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      [],
-                                      [],
-                                      "from_prime_subfield",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| two_16 |) ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
+                                    [],
+                                    [],
+                                    "from_prime_subfield",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| two_16 |) ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                          M.get_trait_method (|
+                            "core::ops::arith::Add",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Add",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| acc_16 |);
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "add",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| acc_16 |);
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "p3_field::field::PrimeCharacteristicRing",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "p3_field::field::PrimeCharacteristicRing",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "from_prime_subfield",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                                [],
+                                [],
+                                "from_prime_subfield",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.associated_in_trait
+                                    "p3_field::field::PrimeCharacteristicRing"
+                                    []
+                                    []
+                                    (Ty.associated_in_trait
+                                      "p3_air::air::AirBuilder"
+                                      []
+                                      []
+                                      AB
+                                      "Expr")
+                                    "PrimeSubfield",
+                                  M.get_trait_method (|
+                                    "p3_field::field::PrimeCharacteristicRing",
                                     Ty.associated_in_trait
                                       "p3_field::field::PrimeCharacteristicRing"
                                       []
@@ -1517,36 +1497,22 @@ Module utils.
                                         AB
                                         "Expr")
                                       "PrimeSubfield",
-                                    M.get_trait_method (|
-                                      "p3_field::field::PrimeCharacteristicRing",
-                                      Ty.associated_in_trait
-                                        "p3_field::field::PrimeCharacteristicRing"
-                                        []
-                                        []
-                                        (Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr")
-                                        "PrimeSubfield",
-                                      [],
-                                      [],
-                                      "double",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    ]
-                ]
-              |)
+                                    [],
+                                    [],
+                                    "double",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  ]
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -1617,26 +1583,37 @@ Module utils.
         let c := M.alloc (| c |) in
         M.read (|
           let~ two_16 :
-              Ty.apply
-                (Ty.path "*")
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
                 []
-                [
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
-                    []
-                    []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield"
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait
-                  "p3_field::field::PrimeCharacteristicRing"
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield" :=
+            M.call_closure (|
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
+                []
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
                   []
-                  []
-                  (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  "PrimeSubfield",
-                M.get_associated_function (|
+                  [
+                    Ty.associated_in_trait
+                      "p3_field::field::PrimeCharacteristicRing"
+                      []
+                      []
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                      "PrimeSubfield"
+                  ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
@@ -1648,398 +1625,353 @@ Module utils.
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                         "PrimeSubfield"
                     ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
+                  M.get_trait_method (|
+                    "p3_field::integers::QuotientMap",
+                    Ty.associated_in_trait
+                      "p3_field::field::PrimeCharacteristicRing"
                       []
-                      [
-                        Ty.associated_in_trait
-                          "p3_field::field::PrimeCharacteristicRing"
-                          []
-                          []
-                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                          "PrimeSubfield"
-                      ],
-                    M.get_trait_method (|
-                      "p3_field::integers::QuotientMap",
-                      Ty.associated_in_trait
-                        "p3_field::field::PrimeCharacteristicRing"
-                        []
-                        []
-                        (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                        "PrimeSubfield",
-                      [],
-                      [ Ty.path "i32" ],
-                      "from_canonical_checked",
-                      [],
                       []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        BinOp.Wrap.shl,
-                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 16 ]
-                      |)
-                    ]
-                  |)
-                ]
-              |)
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                      "PrimeSubfield",
+                    [],
+                    [ Ty.path "i32" ],
+                    "from_canonical_checked",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.path "i32",
+                      BinOp.Wrap.shl,
+                      [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 16 ]
+                    |)
+                  ]
+                |)
+              ]
             |) in
           let~ two_32 :
-              Ty.apply
-                (Ty.path "*")
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
                 []
-                [
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
-                    []
-                    []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield"
-                ] :=
-            M.alloc (|
-              M.call_closure (|
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield" :=
+            M.call_closure (|
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
+                []
+                []
+                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                "PrimeSubfield",
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 Ty.associated_in_trait
                   "p3_field::field::PrimeCharacteristicRing"
                   []
                   []
                   (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                   "PrimeSubfield",
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  Ty.associated_in_trait
-                    "p3_field::field::PrimeCharacteristicRing"
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
+            |) in
+          let~ acc_16 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Sub",
+                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "sub",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::ops::arith::Sub",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                    [],
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                    "sub",
+                    [],
                     []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| a |) |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| b |) |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [],
+                    "clone",
+                    [],
                     []
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                    "PrimeSubfield",
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, two_16 |) ]
-              |)
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| c |) |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |)
+                  ]
+                |)
+              ]
             |) in
-          let~ acc_16 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ acc_32 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Sub",
                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Sub",
-                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "sub",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::ops::arith::Sub",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      "sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| a |) |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| b |) |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |)
-                    ]
-                  |);
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| c |) |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ acc_32 :
-              Ty.apply
-                (Ty.path "*")
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "sub",
+                [],
                 []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Sub",
+              |),
+              [
+                M.call_closure (|
                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "sub",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::ops::arith::Sub",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      "sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| a |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| b |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                  M.get_trait_method (|
+                    "core::ops::arith::Sub",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                    [],
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                    "sub",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| a |) |),
+                        Value.Integer IntegerKind.Usize 1
                       |)
-                    ]
-                  |);
-                  M.call_closure (|
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| c |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| b |) |),
+                        Value.Integer IntegerKind.Usize 1
                       |)
-                    ]
-                  |)
-                ]
-              |)
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| c |) |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
+                    |)
+                  ]
+                |)
+              ]
             |) in
-          let~ acc :
-              Ty.apply
-                (Ty.path "*")
+          let~ acc : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_trait_method (|
+                "core::ops::arith::Add",
+                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                [],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                "add",
+                [],
                 []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_trait_method (|
-                  "core::ops::arith::Add",
+              |),
+              [
+                M.call_closure (|
                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                  [],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                  "add",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
+                  M.get_trait_method (|
+                    "core::clone::Clone",
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "clone",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
-                  |);
-                  M.call_closure (|
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
+                |);
+                M.call_closure (|
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                  M.get_trait_method (|
+                    "p3_field::field::PrimeCharacteristicRing",
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                    M.get_trait_method (|
-                      "p3_field::field::PrimeCharacteristicRing",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                      [],
-                      [],
-                      "mul_2exp_u64",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, acc_32 |); Value.Integer IntegerKind.U64 16 ]
-                  |)
-                ]
-              |)
+                    [],
+                    [],
+                    "mul_2exp_u64",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, acc_32 |); Value.Integer IntegerKind.U64 16 ]
+                |)
+              ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "p3_air::air::AirBuilder",
-                  AB,
-                  [],
-                  [],
-                  "assert_zeros",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
-                  Value.Array
-                    [
-                      M.call_closure (|
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "p3_air::air::AirBuilder",
+                AB,
+                [],
+                [],
+                "assert_zeros",
+                [ Value.Integer IntegerKind.Usize 2 ],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
+              |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
+                Value.Array
+                  [
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Mul",
                         Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Mul",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "mul",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
                           Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "mul",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, acc |) ]
-                          |);
-                          M.call_closure (|
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, acc |) ]
+                        |);
+                        M.call_closure (|
+                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                          M.get_trait_method (|
+                            "core::ops::arith::Add",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Add",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| acc |);
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "add",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| acc |);
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "p3_field::field::PrimeCharacteristicRing",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "p3_field::field::PrimeCharacteristicRing",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "from_prime_subfield",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| two_32 |) ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |);
-                      M.call_closure (|
+                                [],
+                                [],
+                                "from_prime_subfield",
+                                [],
+                                []
+                              |),
+                              [ M.read (| two_32 |) ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |);
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Mul",
                         Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Mul",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "mul",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
                           Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "mul",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
-                          |);
-                          M.call_closure (|
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, acc_16 |) ]
+                        |);
+                        M.call_closure (|
+                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                          M.get_trait_method (|
+                            "core::ops::arith::Add",
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                            M.get_trait_method (|
-                              "core::ops::arith::Add",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| acc_16 |);
+                            M.call_closure (|
                               Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                              [],
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                              "add",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| acc_16 |);
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "p3_field::field::PrimeCharacteristicRing",
                                 Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                M.get_trait_method (|
-                                  "p3_field::field::PrimeCharacteristicRing",
-                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                                  [],
-                                  [],
-                                  "from_prime_subfield",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| two_16 |) ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    ]
-                ]
-              |)
+                                [],
+                                [],
+                                "from_prime_subfield",
+                                [],
+                                []
+                              |),
+                              [ M.read (| two_16 |) ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  ]
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2089,30 +2021,395 @@ Module utils.
         let c := M.alloc (| c |) in
         let shift := M.alloc (| shift |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "p3_air::air::AirBuilder",
-                  AB,
-                  [],
-                  [],
-                  "assert_bools",
-                  [ Value.Integer IntegerKind.Usize 32 ],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
-                  M.read (| M.deref (| M.read (| c |) |) |)
-                ]
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "p3_air::air::AirBuilder",
+                AB,
+                [],
+                [],
+                "assert_bools",
+                [ Value.Integer IntegerKind.Usize 32 ],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+              |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
+                M.read (| M.deref (| M.read (| c |) |) |)
+              ]
             |) in
           let~ xor_shift_c_0_16 :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::iter::adapters::map::Map")
                 []
                 [
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ];
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ] :=
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ];
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ],
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.apply
+                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                  ],
+                [],
+                [],
+                "map",
+                [],
+                [
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ]
+              |),
+              [
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ],
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                    [],
+                    [],
+                    "enumerate",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "iter",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Var"
+                                    ]
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
+                                  ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
+                                "index",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
+                                  [ ("end_", Value.Integer IntegerKind.Usize 16) ]
+                              ]
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Var"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                              ],
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let i := M.copy (| γ0_0 |) in
+                                  let elem := M.copy (| γ0_1 |) in
+                                  M.call_closure (|
+                                    Ty.associated_in_trait
+                                      "p3_air::air::AirBuilder"
+                                      []
+                                      []
+                                      AB
+                                      "Expr",
+                                    M.get_trait_method (|
+                                      "p3_field::field::PrimeCharacteristicRing",
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Expr",
+                                      [],
+                                      [],
+                                      "xor",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Expr",
+                                            M.get_trait_method (|
+                                              "core::convert::Into",
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var",
+                                              [],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Expr"
+                                              ],
+                                              "into",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| M.deref (| M.read (| elem |) |) |) ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Expr",
+                                                M.get_trait_method (|
+                                                  "core::convert::Into",
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var",
+                                                  [],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Expr"
+                                                  ],
+                                                  "into",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| c |) |),
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.rem,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    32;
+                                                                  M.read (| i |)
+                                                                ]
+                                                              |);
+                                                              M.read (| shift |)
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 32
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |) in
+          let~ sum_0_16 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_function (|
+                "p3_air::utils::pack_bits_le",
+                [],
+                [
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -2149,415 +2446,391 @@ Module utils.
                         ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                     ]
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::iter::adapters::map::Map")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      ];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "usize";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
-                                  ]
-                              ]
-                          ]
-                      ]
-                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  ],
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                    ],
-                  [],
-                  [],
-                  "map",
-                  [],
-                  [
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "usize";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
-                                  ]
-                              ]
-                          ]
-                      ]
-                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      [],
-                      [],
-                      "enumerate",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                          "iter",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Var"
-                                    ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
-                                    []
-                                    [ Ty.path "usize" ]
-                                    [ ("end_", Value.Integer IntegerKind.Usize 16) ]
-                                ]
-                              |)
-                            |)
-                          |)
-                        ]
-                      |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "usize";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Var"
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.associated_in_trait
-                                      "p3_air::air::AirBuilder"
-                                      []
-                                      []
-                                      AB
-                                      "Expr")
-                                ],
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let i := M.copy (| γ0_0 |) in
-                                    let elem := M.copy (| γ0_1 |) in
-                                    M.call_closure (|
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      M.get_trait_method (|
-                                        "p3_field::field::PrimeCharacteristicRing",
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr",
-                                        [],
-                                        [],
-                                        "xor",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.associated_in_trait
-                                                "p3_air::air::AirBuilder"
-                                                []
-                                                []
-                                                AB
-                                                "Expr",
-                                              M.get_trait_method (|
-                                                "core::convert::Into",
-                                                Ty.associated_in_trait
-                                                  "p3_air::air::AirBuilder"
-                                                  []
-                                                  []
-                                                  AB
-                                                  "Var",
-                                                [],
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Expr"
-                                                ],
-                                                "into",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| M.deref (| M.read (| elem |) |) |) ]
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Expr",
-                                                  M.get_trait_method (|
-                                                    "core::convert::Into",
-                                                    Ty.associated_in_trait
-                                                      "p3_air::air::AirBuilder"
-                                                      []
-                                                      []
-                                                      AB
-                                                      "Var",
-                                                    [],
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_air::air::AirBuilder"
-                                                        []
-                                                        []
-                                                        AB
-                                                        "Expr"
-                                                    ],
-                                                    "into",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| c |) |),
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          BinOp.Wrap.rem,
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              BinOp.Wrap.sub,
-                                                              [
-                                                                M.call_closure (|
-                                                                  Ty.path "usize",
-                                                                  BinOp.Wrap.add,
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      32;
-                                                                    M.read (| i |)
-                                                                  ]
-                                                                |);
-                                                                M.read (| shift |)
-                                                              ]
-                                                            |);
-                                                            Value.Integer IntegerKind.Usize 32
-                                                          ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
                 ]
-              |)
-            |) in
-          let~ sum_0_16 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_function (|
-                  "p3_air::utils::pack_bits_le",
-                  [],
-                  [
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::map::Map")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::slice::iter::Iter")
-                              []
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                          ];
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.path "usize";
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                      ]
-                  ]
-                |),
-                [ M.read (| xor_shift_c_0_16 |) ]
-              |)
+              |),
+              [ M.read (| xor_shift_c_0_16 |) ]
             |) in
           let~ xor_shift_c_16_32 :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::iter::adapters::map::Map")
                 []
                 [
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ];
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ] :=
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ];
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ],
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.apply
+                  (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                  ],
+                [],
+                [],
+                "map",
+                [],
+                [
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ]
+                        ]
+                    ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                ]
+              |),
+              [
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    ],
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                    [],
+                    [],
+                    "enumerate",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "iter",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Var"
+                                    ]
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
+                                  ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeFrom")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
+                                "index",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeFrom"
+                                  []
+                                  [ Ty.path "usize" ]
+                                  [ ("start", Value.Integer IntegerKind.Usize 16) ]
+                              ]
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Var"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                              ],
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let i := M.copy (| γ0_0 |) in
+                                  let elem := M.copy (| γ0_1 |) in
+                                  M.call_closure (|
+                                    Ty.associated_in_trait
+                                      "p3_air::air::AirBuilder"
+                                      []
+                                      []
+                                      AB
+                                      "Expr",
+                                    M.get_trait_method (|
+                                      "p3_field::field::PrimeCharacteristicRing",
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Expr",
+                                      [],
+                                      [],
+                                      "xor",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Expr",
+                                            M.get_trait_method (|
+                                              "core::convert::Into",
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var",
+                                              [],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Expr"
+                                              ],
+                                              "into",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| M.deref (| M.read (| elem |) |) |) ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Expr",
+                                                M.get_trait_method (|
+                                                  "core::convert::Into",
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var",
+                                                  [],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Expr"
+                                                  ],
+                                                  "into",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| c |) |),
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.rem,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    32;
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [
+                                                                      M.read (| i |);
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        16
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.read (| shift |)
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 32
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |) in
+          let~ sum_16_32 : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+              M.get_function (|
+                "p3_air::utils::pack_bits_le",
+                [],
+                [
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
+                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -2594,481 +2867,70 @@ Module utils.
                         ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
                     ]
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::iter::adapters::map::Map")
-                  []
+                ]
+              |),
+              [ M.read (| xor_shift_c_16_32 |) ]
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "p3_air::air::AirBuilder",
+                AB,
+                [],
+                [],
+                "assert_zeros",
+                [ Value.Integer IntegerKind.Usize 2 ],
+                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
+              |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
+                Value.Array
                   [
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      ];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "usize";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
-                                  ]
-                              ]
-                          ]
-                      ]
-                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  ],
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Sub",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "sub",
+                        [],
                         []
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                    ],
-                  [],
-                  [],
-                  "map",
-                  [],
-                  [
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.function
+                      |),
                       [
-                        Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "usize";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
-                                  ]
-                              ]
-                          ]
-                      ]
-                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      [],
-                      [],
-                      "enumerate",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                          "iter",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Var"
-                                    ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    []
-                                    [ Ty.path "usize" ]
-                                    [ ("start", Value.Integer IntegerKind.Usize 16) ]
-                                ]
-                              |)
-                            |)
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| a |) |),
+                            Value.Integer IntegerKind.Usize 0
                           |)
-                        ]
-                      |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "usize";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Var"
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.associated_in_trait
-                                      "p3_air::air::AirBuilder"
-                                      []
-                                      []
-                                      AB
-                                      "Expr")
-                                ],
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let i := M.copy (| γ0_0 |) in
-                                    let elem := M.copy (| γ0_1 |) in
-                                    M.call_closure (|
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Expr",
-                                      M.get_trait_method (|
-                                        "p3_field::field::PrimeCharacteristicRing",
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr",
-                                        [],
-                                        [],
-                                        "xor",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.associated_in_trait
-                                                "p3_air::air::AirBuilder"
-                                                []
-                                                []
-                                                AB
-                                                "Expr",
-                                              M.get_trait_method (|
-                                                "core::convert::Into",
-                                                Ty.associated_in_trait
-                                                  "p3_air::air::AirBuilder"
-                                                  []
-                                                  []
-                                                  AB
-                                                  "Var",
-                                                [],
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Expr"
-                                                ],
-                                                "into",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| M.deref (| M.read (| elem |) |) |) ]
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.associated_in_trait
-                                                    "p3_air::air::AirBuilder"
-                                                    []
-                                                    []
-                                                    AB
-                                                    "Expr",
-                                                  M.get_trait_method (|
-                                                    "core::convert::Into",
-                                                    Ty.associated_in_trait
-                                                      "p3_air::air::AirBuilder"
-                                                      []
-                                                      []
-                                                      AB
-                                                      "Var",
-                                                    [],
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_air::air::AirBuilder"
-                                                        []
-                                                        []
-                                                        AB
-                                                        "Expr"
-                                                    ],
-                                                    "into",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| c |) |),
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          BinOp.Wrap.rem,
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              BinOp.Wrap.sub,
-                                                              [
-                                                                M.call_closure (|
-                                                                  Ty.path "usize",
-                                                                  BinOp.Wrap.add,
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      32;
-                                                                    M.call_closure (|
-                                                                      Ty.path "usize",
-                                                                      BinOp.Wrap.add,
-                                                                      [
-                                                                        M.read (| i |);
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          16
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.read (| shift |)
-                                                              ]
-                                                            |);
-                                                            Value.Integer IntegerKind.Usize 32
-                                                          ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            |) in
-          let~ sum_16_32 :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                M.get_function (|
-                  "p3_air::utils::pack_bits_le",
-                  [],
-                  [
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::map::Map")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::slice::iter::Iter")
-                              []
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                          ];
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.path "usize";
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
+                        |);
+                        M.read (| sum_0_16 |)
                       ]
+                    |);
+                    M.call_closure (|
+                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
+                      M.get_trait_method (|
+                        "core::ops::arith::Sub",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                        "sub",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| a |) |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)
+                        |);
+                        M.read (| sum_16_32 |)
+                      ]
+                    |)
                   ]
-                |),
-                [ M.read (| xor_shift_c_16_32 |) ]
-              |)
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "p3_air::air::AirBuilder",
-                  AB,
-                  [],
-                  [],
-                  "assert_zeros",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| builder |) |) |);
-                  Value.Array
-                    [
-                      M.call_closure (|
-                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Sub",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "sub",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| a |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |);
-                          M.read (| sum_0_16 |)
-                        ]
-                      |);
-                      M.call_closure (|
-                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
-                        M.get_trait_method (|
-                          "core::ops::arith::Sub",
-                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var",
-                          [],
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          "sub",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| a |) |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)
-                          |);
-                          M.read (| sum_16_32 |)
-                        ]
-                      |)
-                    ]
-                ]
-              |)
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

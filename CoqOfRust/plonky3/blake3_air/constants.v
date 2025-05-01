@@ -101,152 +101,153 @@ Module constants.
       ltac:(M.monadic
         (let m := M.alloc (| m |) in
         M.read (|
-          let~ permuted :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ] ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ permuted : Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ] :=
+            M.call_closure (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ],
+              M.get_trait_method (|
+                "core::clone::Clone",
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ],
-                M.get_trait_method (|
-                  "core::clone::Clone",
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ],
-                  [],
-                  [],
-                  "clone",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
-              |)
+                [],
+                [],
+                "clone",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.use
-              (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    M.get_trait_method (|
-                      "core::iter::traits::collect::IntoIterator",
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.use
+                (M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (|
+                    M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      [],
-                      [],
-                      "into_iter",
-                      [],
-                      []
-                    |),
-                    [
-                      Value.StructRecord
-                        "core::ops::range::Range"
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::IntoIterator",
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                        [],
+                        [],
+                        "into_iter",
+                        [],
                         []
-                        [ Ty.path "usize" ]
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_", Value.Integer IntegerKind.Usize 16)
-                        ]
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    [],
-                                    [],
-                                    "next",
-                                    [],
-                                    []
+                      |),
+                      [
+                        Value.StructRecord
+                          "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
+                          [
+                            ("start", Value.Integer IntegerKind.Usize 0);
+                            ("end_", Value.Integer IntegerKind.Usize 16)
+                          ]
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let iter := M.copy (| γ |) in
+                        M.loop (|
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          ltac:(M.monadic
+                            (let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "next",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let i := M.copy (| γ0_0 |) in
-                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                      M.alloc (|
-                                        M.write (|
-                                          M.SubPointer.get_array_field (|
-                                            permuted,
-                                            M.read (| i |)
-                                          |),
-                                          M.call_closure (|
-                                            T,
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              T,
-                                              [],
-                                              [],
-                                              "clone",
-                                              [],
-                                              []
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let i := M.copy (| γ0_0 |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.write (|
+                                            M.SubPointer.get_array_field (|
+                                              permuted,
+                                              M.read (| i |)
                                             |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_array_field (|
-                                                  M.deref (| M.read (| m |) |),
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      get_constant (|
-                                                        "p3_blake3_air::constants::MSG_PERMUTATION",
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 16 ]
-                                                          [ Ty.path "usize" ]
-                                                      |),
-                                                      M.read (| i |)
+                                            M.call_closure (|
+                                              T,
+                                              M.get_trait_method (|
+                                                "core::clone::Clone",
+                                                T,
+                                                [],
+                                                [],
+                                                "clone",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (| M.read (| m |) |),
+                                                    M.read (|
+                                                      M.SubPointer.get_array_field (|
+                                                        get_constant (|
+                                                          "p3_blake3_air::constants::MSG_PERMUTATION",
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                                            [ Ty.path "usize" ]
+                                                        |),
+                                                        M.read (| i |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)))
-                      |)))
-                ]
-              |)) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (| M.write (| M.deref (| M.read (| m |) |), M.read (| permuted |) |) |) in
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                        |)))
+                  ]
+                |))
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.write (| M.deref (| M.read (| m |) |), M.read (| permuted |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

@@ -329,21 +329,19 @@ Module Impl_contract_ref_FlipperRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "contract_ref::FlipperRef",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "contract_ref::FlipperRef",
-                      "value"
-                    |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "contract_ref::FlipperRef",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "contract_ref::FlipperRef",
+                    "value"
                   |)
                 |)
               |)
@@ -413,30 +411,22 @@ Module Impl_contract_ref_ContractRef.
         let flipper_code_hash := M.alloc (| flipper_code_hash |) in
         M.read (|
           let~ salt :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
-                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
-                [ M.read (| version |) ]
-              |)
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+            M.call_closure (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+              M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
+              [ M.read (| version |) ]
             |) in
-          let~ flipper : Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::FlipperRef" ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ flipper : Ty.path "contract_ref::FlipperRef" :=
+            M.call_closure (|
+              Ty.path "contract_ref::FlipperRef",
+              M.get_associated_function (|
                 Ty.path "contract_ref::FlipperRef",
-                M.get_associated_function (|
-                  Ty.path "contract_ref::FlipperRef",
-                  "new_default",
-                  [],
-                  []
-                |),
+                "new_default",
+                [],
                 []
-              |)
+              |),
+              []
             |) in
           M.alloc (|
             Value.StructRecord
@@ -480,47 +470,39 @@ Module Impl_contract_ref_ContractRef.
         let succeed := M.alloc (| succeed |) in
         M.read (|
           let~ salt :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
-                ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
-                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
-                [ M.read (| version |) ]
-              |)
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+            M.call_closure (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+              M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
+              [ M.read (| version |) ]
             |) in
-          let~ flipper : Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::FlipperRef" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "contract_ref::FlipperRef",
-                M.get_associated_function (|
+          let~ flipper : Ty.path "contract_ref::FlipperRef" :=
+            M.call_closure (|
+              Ty.path "contract_ref::FlipperRef",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-                    M.get_associated_function (|
-                      Ty.path "contract_ref::FlipperRef",
-                      "try_new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| succeed |) ]
-                  |)
-                ]
-              |)
+                  M.get_associated_function (|
+                    Ty.path "contract_ref::FlipperRef",
+                    "try_new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| succeed |) ]
+                |)
+              ]
             |) in
           M.alloc (|
             Value.StructRecord
@@ -548,22 +530,20 @@ Module Impl_contract_ref_ContractRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "flip", [], [] |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "contract_ref::ContractRef",
-                      "flipper"
-                    |)
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "flip", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "contract_ref::ContractRef",
+                    "flipper"
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

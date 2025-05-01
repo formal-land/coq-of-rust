@@ -396,18 +396,13 @@ Module extension.
                 ltac:(M.monadic
                   (M.read (|
                     let~ __serde_state :
-                        Ty.apply
-                          (Ty.path "*")
+                        Ty.associated_in_trait
+                          "serde::ser::Serializer"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct"
-                          ] :=
-                      M.copy (|
+                          []
+                          __S
+                          "SerializeStruct" :=
+                      M.read (|
                         M.match_operator (|
                           Ty.apply
                             (Ty.path "*")
@@ -603,46 +598,32 @@ Module extension.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.associated_in_trait
-                                      "serde::ser::Serializer"
-                                      []
-                                      []
-                                      __S
-                                      "Error"
-                                  ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          M.alloc (|
+                            M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
+                                (Ty.path "core::ops::control_flow::ControlFlow")
                                 []
                                 [
-                                  Ty.tuple [];
-                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ];
+                                  Ty.tuple []
                                 ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
@@ -655,116 +636,119 @@ Module extension.
                                       __S
                                       "Error"
                                   ],
-                                M.get_trait_method (|
-                                  "serde::ser::SerializeStruct",
-                                  Ty.associated_in_trait
-                                    "serde::ser::Serializer"
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
                                     []
-                                    []
-                                    __S
-                                    "SerializeStruct",
-                                  [],
-                                  [],
-                                  "serialize_field",
-                                  [],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
+                                  M.get_trait_method (|
+                                    "serde::ser::SerializeStruct",
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
+                                    [],
+                                    [],
+                                    "serialize_field",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path
+                                          "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith")
+                                        [ D ]
+                                        [ F; PF ]
+                                    ]
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path
-                                        "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith")
-                                      [ D ]
-                                      [ F; PF ]
-                                  ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                                  |);
-                                  mk_str (| "value" |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.StructRecord
-                                            "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith"
-                                            [ D ]
-                                            [ F; PF ]
-                                            [
-                                              ("values",
-                                                Value.Tuple
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                                            "value"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
+                                    mk_str (| "value" |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.StructRecord
+                                              "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith"
+                                              [ D ]
+                                              [ F; PF ]
+                                              [
+                                                ("values",
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                                                              "value"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]);
-                                              ("phantom",
-                                                Value.StructTuple
-                                                  "core::marker::PhantomData"
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                                      [ D ]
-                                                      [ F; PF ]
-                                                  ]
-                                                  [])
-                                            ]
+                                                    ]);
+                                                ("phantom",
+                                                  Value.StructTuple
+                                                    "core::marker::PhantomData"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                                        [ D ]
+                                                        [ F; PF ]
+                                                    ]
+                                                    [])
+                                              ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "serde::ser::Serializer"
-                                              []
-                                              []
-                                              __S
-                                              "Ok";
-                                            Ty.associated_in_trait
-                                              "serde::ser::Serializer"
-                                              []
-                                              []
-                                              __S
-                                              "Error"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
@@ -782,42 +766,62 @@ Module extension.
                                                 __S
                                                 "Error"
                                             ],
-                                          [],
-                                          [
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
                                                 Ty.associated_in_trait
                                                   "serde::ser::Serializer"
                                                   []
                                                   []
                                                   __S
                                                   "Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Error"
+                                                ]
+                                            ],
+                                            "from_residual",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| residual |) ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| γ0_0 |) in
+                                val))
+                          ]
+                        |)
                       |) in
                     M.alloc (|
                       M.call_closure (|
@@ -1722,9 +1726,8 @@ Module extension.
                           M.read (| γ |),
                           Value.Integer IntegerKind.Usize 2
                         |) in
-                      let~ a :
-                          Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                        M.copy (|
+                      let~ a : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
@@ -1733,179 +1736,168 @@ Module extension.
                         |) in
                       let~ res :
                           Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ]
-                            ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ] :=
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ],
+                          M.get_trait_method (|
+                            "core::default::Default",
                             Ty.apply
                               (Ty.path
                                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                               [ D ]
                               [ F; PF ],
+                            [],
+                            [],
+                            "default",
+                            [],
+                            []
+                          |),
+                          []
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.write (|
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              res,
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                              "value"
+                            |),
+                            Value.Integer IntegerKind.Usize 0
+                          |),
+                          M.call_closure (|
+                            PF,
                             M.get_trait_method (|
-                              "core::default::Default",
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ],
+                              "core::ops::arith::Add",
+                              PF,
                               [],
-                              [],
-                              "default",
+                              [ PF ],
+                              "add",
                               [],
                               []
                             |),
-                            []
-                          |)
-                        |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.write (|
-                            M.SubPointer.get_array_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                res,
-                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                "value"
-                              |),
-                              Value.Integer IntegerKind.Usize 0
-                            |),
-                            M.call_closure (|
-                              PF,
-                              M.get_trait_method (|
-                                "core::ops::arith::Add",
+                            [
+                              M.call_closure (|
                                 PF,
-                                [],
-                                [ PF ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
+                                M.get_trait_method (|
+                                  "p3_field::field::PrimeCharacteristicRing",
                                   PF,
-                                  M.get_trait_method (|
-                                    "p3_field::field::PrimeCharacteristicRing",
-                                    PF,
-                                    [],
-                                    [],
-                                    "square",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_array_field (|
-                                        a,
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)
+                                  [],
+                                  [],
+                                  "square",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_array_field (|
+                                      a,
+                                      Value.Integer IntegerKind.Usize 0
                                     |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  PF,
-                                  M.get_trait_method (|
-                                    "core::ops::arith::Mul",
-                                    PF,
-                                    [],
-                                    [ F ],
-                                    "mul",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      PF,
-                                      M.get_trait_method (|
-                                        "p3_field::field::PrimeCharacteristicRing",
-                                        PF,
-                                        [],
-                                        [],
-                                        "square",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_array_field (|
-                                            a,
-                                            Value.Integer IntegerKind.Usize 1
-                                          |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::extension::BinomiallyExtendable::W",
-                                        F
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)
-                        |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.write (|
-                            M.SubPointer.get_array_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                res,
-                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                "value"
-                              |),
-                              Value.Integer IntegerKind.Usize 1
-                            |),
-                            M.call_closure (|
-                              PF,
-                              M.get_trait_method (|
-                                "core::ops::arith::Mul",
-                                PF,
-                                [],
-                                [ PF ],
-                                "mul",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_array_field (|
-                                    a,
-                                    Value.Integer IntegerKind.Usize 0
                                   |)
-                                |);
-                                M.call_closure (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                PF,
+                                M.get_trait_method (|
+                                  "core::ops::arith::Mul",
                                   PF,
-                                  M.get_trait_method (|
-                                    "p3_field::field::PrimeCharacteristicRing",
+                                  [],
+                                  [ F ],
+                                  "mul",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
                                     PF,
-                                    [],
-                                    [],
-                                    "double",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_array_field (|
-                                        a,
-                                        Value.Integer IntegerKind.Usize 1
+                                    M.get_trait_method (|
+                                      "p3_field::field::PrimeCharacteristicRing",
+                                      PF,
+                                      [],
+                                      [],
+                                      "square",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_array_field (|
+                                          a,
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "p3_field::extension::BinomiallyExtendable::W",
+                                      F
                                     |)
-                                  ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.write (|
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              res,
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                              "value"
+                            |),
+                            Value.Integer IntegerKind.Usize 1
+                          |),
+                          M.call_closure (|
+                            PF,
+                            M.get_trait_method (|
+                              "core::ops::arith::Mul",
+                              PF,
+                              [],
+                              [ PF ],
+                              "mul",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_array_field (|
+                                  a,
+                                  Value.Integer IntegerKind.Usize 0
                                 |)
-                              ]
-                            |)
+                              |);
+                              M.call_closure (|
+                                PF,
+                                M.get_trait_method (|
+                                  "p3_field::field::PrimeCharacteristicRing",
+                                  PF,
+                                  [],
+                                  [],
+                                  "double",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_array_field (|
+                                      a,
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
                           |)
                         |) in
                       res));
@@ -1918,76 +1910,67 @@ Module extension.
                         |) in
                       let~ res :
                           Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ]
-                            ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ] :=
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ],
+                          M.get_trait_method (|
+                            "core::default::Default",
                             Ty.apply
                               (Ty.path
                                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                               [ D ]
                               [ F; PF ],
-                            M.get_trait_method (|
-                              "core::default::Default",
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ],
-                              [],
-                              [],
-                              "default",
-                              [],
-                              []
-                            |),
+                            [],
+                            [],
+                            "default",
+                            [],
                             []
-                          |)
+                          |),
+                          []
                         |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (|
-                              "p3_field::extension::binomial_extension::cubic_square",
-                              [ D ],
-                              [ F; PF ]
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                      "value"
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      res,
-                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                      "value"
-                                    |)
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_function (|
+                            "p3_field::extension::binomial_extension::cubic_square",
+                            [ D ],
+                            [ F; PF ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                                    "value"
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    res,
+                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                                    "value"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |) in
                       res));
                   fun γ =>
@@ -2527,260 +2510,249 @@ Module extension.
           ltac:(M.monadic
             (let ext_slice := M.alloc (| ext_slice |) in
             M.read (|
-              let~ width : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.copy (|
+              let~ width : Ty.path "usize" :=
+                M.read (|
                   get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (|
-                    Value.Tuple
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path
+                                          "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                        [ D ]
+                                        [ F; F ]
+                                    ],
+                                  "len",
+                                  [],
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path
-                                        "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                      [ D ]
-                                      [ F; F ]
-                                  ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| ext_slice |) |)
-                                |)
-                              ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| ext_slice |) |)
+                                  |)
+                                ]
+                              |)
                             |)
-                          |)
-                        |);
-                        M.borrow (| Pointer.Kind.Ref, width |)
-                      ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.eq,
-                                          [
-                                            M.read (| M.deref (| M.read (| left_val |) |) |);
-                                            M.read (| M.deref (| M.read (| right_val |) |) |)
-                                          ]
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, width |)
+                        ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let left_val := M.copy (| γ0_0 |) in
+                          let right_val := M.copy (| γ0_1 |) in
+                          M.match_operator (|
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        UnOp.not (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
+                                              M.read (| M.deref (| M.read (| left_val |) |) |);
+                                              M.read (| M.deref (| M.read (| right_val |) |) |)
+                                            ]
+                                          |)
                                         |)
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      let~ kind :
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "core::panicking::AssertKind" ] :=
-                                        M.alloc (|
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        let~ kind : Ty.path "core::panicking::AssertKind" :=
                                           Value.StructTuple
                                             "core::panicking::AssertKind::Eq"
                                             []
                                             []
-                                            []
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (|
-                                            "core::panicking::assert_failed",
-                                            [],
-                                            [ Ty.path "usize"; Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.read (| kind |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| left_val |) |)
+                                            [] in
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (|
+                                              "core::panicking::assert_failed",
+                                              [],
+                                              [ Ty.path "usize"; Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.read (| kind |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| left_val |) |)
+                                                  |)
                                                 |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| right_val |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| right_val |) |)
+                                                  |)
                                                 |)
-                                              |)
-                                            |);
-                                            Value.StructTuple
-                                              "core::option::Option::None"
-                                              []
-                                              [ Ty.path "core::fmt::Arguments" ]
-                                              []
-                                          ]
+                                              |);
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.path "core::fmt::Arguments" ]
+                                                []
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)))
-                  ]
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)))
+                    ]
+                  |)
                 |) in
               let~ res :
                   Ty.apply
-                    (Ty.path "*")
-                    []
+                    (Ty.path "array")
+                    [ D ]
+                    [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ D ]
+                    [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
+                  M.get_function (|
+                    "core::array::from_fn",
+                    [ D ],
                     [
-                      Ty.apply
-                        (Ty.path "array")
-                        [ D ]
-                        [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ D ]
-                      [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
-                    M.get_function (|
-                      "core::array::from_fn",
-                      [ D ],
-                      [
-                        Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing";
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing")
-                      ]
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
+                      Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing";
+                      Ty.function
+                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        (Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing")
+                    ]
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      (Ty.associated_in_trait
+                                        "p3_field::field::Field"
+                                        []
+                                        []
+                                        F
+                                        "Packing")
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let i := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        Ty.associated_in_trait
                                           "p3_field::field::Field"
                                           []
                                           []
                                           F
-                                          "Packing")
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let i := M.copy (| γ |) in
-                                        M.call_closure (|
+                                          "Packing",
+                                        M.get_trait_method (|
+                                          "p3_field::packed::PackedValue",
                                           Ty.associated_in_trait
                                             "p3_field::field::Field"
                                             []
                                             []
                                             F
                                             "Packing",
-                                          M.get_trait_method (|
-                                            "p3_field::packed::PackedValue",
-                                            Ty.associated_in_trait
-                                              "p3_field::field::Field"
-                                              []
-                                              []
-                                              F
-                                              "Packing",
-                                            [],
-                                            [],
-                                            "from_fn",
-                                            [],
-                                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
-                                          |),
-                                          [
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [ α0 ] =>
-                                                    ltac:(M.monadic
-                                                      (M.match_operator (|
-                                                        Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.function
-                                                              [ Ty.tuple [ Ty.path "usize" ] ]
-                                                              F
-                                                          ],
-                                                        M.alloc (| α0 |),
+                                          [],
+                                          [],
+                                          "from_fn",
+                                          [],
+                                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                                        |),
+                                        [
+                                          M.closure
+                                            (fun γ =>
+                                              ltac:(M.monadic
+                                                match γ with
+                                                | [ α0 ] =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
                                                         [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let j := M.copy (| γ |) in
-                                                              M.read (|
-                                                                M.SubPointer.get_array_field (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.SubPointer.get_array_field (|
-                                                                      M.deref (|
-                                                                        M.read (| ext_slice |)
-                                                                      |),
-                                                                      M.read (| j |)
+                                                          Ty.function
+                                                            [ Ty.tuple [ Ty.path "usize" ] ]
+                                                            F
+                                                        ],
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let j := M.copy (| γ |) in
+                                                            M.read (|
+                                                              M.SubPointer.get_array_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.SubPointer.get_array_field (|
+                                                                    M.deref (|
+                                                                      M.read (| ext_slice |)
                                                                     |),
-                                                                    "p3_field::extension::binomial_extension::BinomialExtensionField",
-                                                                    "value"
+                                                                    M.read (| j |)
                                                                   |),
-                                                                  M.read (| i |)
-                                                                |)
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                  | _ => M.impossible "wrong number of arguments"
-                                                  end))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
+                                                                  "p3_field::extension::binomial_extension::BinomialExtensionField",
+                                                                  "value"
+                                                                |),
+                                                                M.read (| i |)
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
+                                                end))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -2832,8 +2804,8 @@ Module extension.
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.read (|
-              let~ width : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.copy (|
+              let~ width : Ty.path "usize" :=
+                M.read (|
                   get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
                 |) in
               M.alloc (|
@@ -3093,124 +3065,117 @@ Module extension.
                                                             M.read (|
                                                               let~ values :
                                                                   Ty.apply
-                                                                    (Ty.path "*")
-                                                                    []
+                                                                    (Ty.path "array")
+                                                                    [ D ]
+                                                                    [ F ] :=
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [ D ]
+                                                                    [ F ],
+                                                                  M.get_function (|
+                                                                    "core::array::from_fn",
+                                                                    [ D ],
                                                                     [
-                                                                      Ty.apply
-                                                                        (Ty.path "array")
-                                                                        [ D ]
-                                                                        [ F ]
-                                                                    ] :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [ D ]
-                                                                      [ F ],
-                                                                    M.get_function (|
-                                                                      "core::array::from_fn",
-                                                                      [ D ],
-                                                                      [
-                                                                        F;
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [ Ty.path "usize" ]
-                                                                          ]
-                                                                          F
-                                                                      ]
-                                                                    |),
-                                                                    [
-                                                                      M.closure
-                                                                        (fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            match γ with
-                                                                            | [ α0 ] =>
-                                                                              ltac:(M.monadic
-                                                                                (M.match_operator (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path "*")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "usize"
-                                                                                            ]
-                                                                                        ]
-                                                                                        F
-                                                                                    ],
-                                                                                  M.alloc (| α0 |),
+                                                                      F;
+                                                                      Ty.function
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [ Ty.path "usize" ]
+                                                                        ]
+                                                                        F
+                                                                    ]
+                                                                  |),
+                                                                  [
+                                                                    M.closure
+                                                                      (fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          match γ with
+                                                                          | [ α0 ] =>
+                                                                            ltac:(M.monadic
+                                                                              (M.match_operator (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
                                                                                   [
-                                                                                    fun γ =>
-                                                                                      ltac:(M.monadic
-                                                                                        (let j :=
-                                                                                          M.copy (|
-                                                                                            γ
-                                                                                          |) in
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_array_field (|
-                                                                                            M.deref (|
-                                                                                              M.call_closure (|
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "&")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "slice")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        F
-                                                                                                      ]
-                                                                                                  ],
-                                                                                                M.get_trait_method (|
-                                                                                                  "p3_field::packed::PackedValue",
-                                                                                                  Ty.associated_in_trait
-                                                                                                    "p3_field::field::Field"
-                                                                                                    []
-                                                                                                    []
-                                                                                                    F
-                                                                                                    "Packing",
-                                                                                                  [],
-                                                                                                  [],
-                                                                                                  "as_slice",
-                                                                                                  [],
-                                                                                                  []
-                                                                                                |),
+                                                                                    Ty.function
+                                                                                      [
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
+                                                                                      ]
+                                                                                      F
+                                                                                  ],
+                                                                                M.alloc (| α0 |),
+                                                                                [
+                                                                                  fun γ =>
+                                                                                    ltac:(M.monadic
+                                                                                      (let j :=
+                                                                                        M.copy (|
+                                                                                          γ
+                                                                                        |) in
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_array_field (|
+                                                                                          M.deref (|
+                                                                                            M.call_closure (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
                                                                                                 [
-                                                                                                  M.borrow (|
-                                                                                                    Pointer.Kind.Ref,
-                                                                                                    M.SubPointer.get_array_field (|
-                                                                                                      M.SubPointer.get_struct_record_field (|
-                                                                                                        x,
-                                                                                                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                                                                                                        "value"
-                                                                                                      |),
-                                                                                                      M.read (|
-                                                                                                        j
-                                                                                                      |)
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "slice")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      F
+                                                                                                    ]
+                                                                                                ],
+                                                                                              M.get_trait_method (|
+                                                                                                "p3_field::packed::PackedValue",
+                                                                                                Ty.associated_in_trait
+                                                                                                  "p3_field::field::Field"
+                                                                                                  []
+                                                                                                  []
+                                                                                                  F
+                                                                                                  "Packing",
+                                                                                                [],
+                                                                                                [],
+                                                                                                "as_slice",
+                                                                                                [],
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.SubPointer.get_array_field (|
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      x,
+                                                                                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                                                                                                      "value"
+                                                                                                    |),
+                                                                                                    M.read (|
+                                                                                                      j
                                                                                                     |)
                                                                                                   |)
-                                                                                                ]
-                                                                                              |)
-                                                                                            |),
-                                                                                            M.read (|
-                                                                                              i
+                                                                                                |)
+                                                                                              ]
                                                                                             |)
+                                                                                          |),
+                                                                                          M.read (|
+                                                                                            i
                                                                                           |)
-                                                                                        |)))
-                                                                                  ]
-                                                                                |)))
-                                                                            | _ =>
-                                                                              M.impossible
-                                                                                "wrong number of arguments"
-                                                                            end))
-                                                                    ]
-                                                                  |)
+                                                                                        |)
+                                                                                      |)))
+                                                                                ]
+                                                                              |)))
+                                                                          | _ =>
+                                                                            M.impossible
+                                                                              "wrong number of arguments"
+                                                                          end))
+                                                                  ]
                                                                 |) in
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -3279,42 +3244,57 @@ Module extension.
           ltac:(M.monadic
             (let base := M.alloc (| base |) in
             M.read (|
-              let~ width : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.copy (|
+              let~ width : Ty.path "usize" :=
+                M.read (|
                   get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
                 |) in
               let~ powers :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "alloc::vec::Vec")
                     []
                     [
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path
-                              "p3_field::extension::binomial_extension::BinomialExtensionField")
-                            [ D ]
-                            [ F; F ];
-                          Ty.path "alloc::alloc::Global"
-                        ]
+                        (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                        [ D ]
+                        [ F; F ];
+                      Ty.path "alloc::alloc::Global"
                     ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                        [ D ]
+                        [ F; F ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  M.get_trait_method (|
+                    "itertools::Itertools",
                     Ty.apply
-                      (Ty.path "alloc::vec::Vec")
+                      (Ty.path "core::iter::adapters::take::Take")
                       []
                       [
                         Ty.apply
-                          (Ty.path
-                            "p3_field::extension::binomial_extension::BinomialExtensionField")
-                          [ D ]
-                          [ F; F ];
-                        Ty.path "alloc::alloc::Global"
+                          (Ty.path "p3_field::field::Powers")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path
+                                "p3_field::extension::binomial_extension::BinomialExtensionField")
+                              [ D ]
+                              [ F; F ]
+                          ]
                       ],
-                    M.get_trait_method (|
-                      "itertools::Itertools",
+                    [],
+                    [],
+                    "collect_vec",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::iter::adapters::take::Take")
                         []
@@ -3330,31 +3310,26 @@ Module extension.
                                 [ F; F ]
                             ]
                         ],
-                      [],
-                      [],
-                      "collect_vec",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
                         Ty.apply
-                          (Ty.path "core::iter::adapters::take::Take")
+                          (Ty.path "p3_field::field::Powers")
                           []
                           [
                             Ty.apply
-                              (Ty.path "p3_field::field::Powers")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path
-                                    "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                  [ D ]
-                                  [ F; F ]
-                              ]
+                              (Ty.path
+                                "p3_field::extension::binomial_extension::BinomialExtensionField")
+                              [ D ]
+                              [ F; F ]
                           ],
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
+                        [],
+                        [],
+                        "take",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "p3_field::field::Powers")
                             []
@@ -3365,225 +3340,191 @@ Module extension.
                                 [ D ]
                                 [ F; F ]
                             ],
-                          [],
-                          [],
-                          "take",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "p3_field::field::PrimeCharacteristicRing",
                             Ty.apply
-                              (Ty.path "p3_field::field::Powers")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path
-                                    "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                  [ D ]
-                                  [ F; F ]
-                              ],
-                            M.get_trait_method (|
-                              "p3_field::field::PrimeCharacteristicRing",
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                [ D ]
-                                [ F; F ],
-                              [],
-                              [],
-                              "powers",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, base |) ]
-                          |);
-                          M.call_closure (|
-                            Ty.path "usize",
-                            BinOp.Wrap.add,
-                            [ M.read (| width |); Value.Integer IntegerKind.Usize 1 ]
-                          |)
-                        ]
-                      |)
-                    ]
-                  |)
+                              (Ty.path
+                                "p3_field::extension::binomial_extension::BinomialExtensionField")
+                              [ D ]
+                              [ F; F ],
+                            [],
+                            [],
+                            "powers",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, base |) ]
+                        |);
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.add,
+                          [ M.read (| width |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
+                      ]
+                    |)
+                  ]
                 |) in
               let~ current :
                   Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
+                  M.get_trait_method (|
+                    "p3_field::packed::PackedFieldExtension",
                     Ty.apply
                       (Ty.path
                         "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                       [ D ]
                       [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
-                    M.get_trait_method (|
-                      "p3_field::packed::PackedFieldExtension",
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
-                      [],
-                      [
-                        F;
-                        Ty.apply
-                          (Ty.path
-                            "p3_field::extension::binomial_extension::BinomialExtensionField")
-                          [ D ]
-                          [ F; F ]
-                      ],
-                      "from_ext_slice",
-                      [],
-                      []
-                    |),
+                    [],
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                          [ D ]
-                                          [ F; F ]
-                                      ]
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
+                      F;
+                      Ty.apply
+                        (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                        [ D ]
+                        [ F; F ]
+                    ],
+                    "from_ext_slice",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
                                   Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
+                                    (Ty.path "slice")
                                     []
                                     [
                                       Ty.apply
                                         (Ty.path
                                           "p3_field::extension::binomial_extension::BinomialExtensionField")
                                         [ D ]
-                                        [ F; F ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
+                                        [ F; F ]
+                                    ]
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
-                                      []
-                                      [ Ty.path "usize" ]
+                                      (Ty.path
+                                        "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                      [ D ]
+                                      [ F; F ];
+                                    Ty.path "alloc::alloc::Global"
                                   ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
+                                [],
                                 [
-                                  M.borrow (| Pointer.Kind.Ref, powers |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
                                     []
                                     [ Ty.path "usize" ]
-                                    [ ("end_", M.read (| width |)) ]
-                                ]
-                              |)
+                                ],
+                                "index",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, powers |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
+                                  [ ("end_", M.read (| width |)) ]
+                              ]
                             |)
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               let~ multiplier :
                   Ty.apply
-                    (Ty.path "*")
-                    []
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
+                  M.get_trait_method (|
+                    "core::convert::Into",
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ D ]
+                      [ F; F ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path
-                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                      [ D ]
-                      [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
-                    M.get_trait_method (|
-                      "core::convert::Into",
-                      Ty.apply
-                        (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
-                        [ D ]
-                        [ F; F ],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                          [ D ]
-                          [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
-                      ],
-                      "into",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.deref (|
-                          M.call_closure (|
+                    ],
+                    "into",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path
+                                  "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                [ D ]
+                                [ F; F ]
+                            ],
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "alloc::vec::Vec")
                               []
                               [
                                 Ty.apply
                                   (Ty.path
                                     "p3_field::extension::binomial_extension::BinomialExtensionField")
                                   [ D ]
-                                  [ F; F ]
+                                  [ F; F ];
+                                Ty.path "alloc::alloc::Global"
                               ],
-                            M.get_trait_method (|
-                              "core::ops::index::Index",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path
-                                      "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                    [ D ]
-                                    [ F; F ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              [],
-                              [ Ty.path "usize" ],
-                              "index",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, powers |); M.read (| width |) ]
-                          |)
+                            [],
+                            [ Ty.path "usize" ],
+                            "index",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, powers |); M.read (| width |) ]
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -3739,44 +3680,42 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ value : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "array") [ D ] [ PF ],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::vector_add",
-                      [ D ],
-                      [ PF; PF ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              rhs,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
+              let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "array") [ D ] [ PF ],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::vector_add",
+                    [ D ],
+                    [ PF; PF ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            rhs,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -3844,44 +3783,42 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ value : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "array") [ D ] [ PF ],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::vector_add",
-                      [ D ],
-                      [ PF; F ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              rhs,
-                              "p3_field::extension::binomial_extension::BinomialExtensionField",
-                              "value"
-                            |)
+              let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "array") [ D ] [ PF ],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::vector_add",
+                    [ D ],
+                    [ PF; F ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            rhs,
+                            "p3_field::extension::binomial_extension::BinomialExtensionField",
+                            "value"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -3948,34 +3885,32 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::arith::AddAssign",
-                      PF,
-                      [],
-                      [ PF ],
-                      "add_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_array_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                            "value"
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |);
-                      M.read (| rhs |)
-                    ]
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::arith::AddAssign",
+                    PF,
+                    [],
+                    [ PF ],
+                    "add_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_array_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                          "value"
+                        |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |);
+                    M.read (| rhs |)
+                  ]
                 |) in
               self
             |)))
@@ -4055,54 +3990,54 @@ Module extension.
                         M.loop (|
                           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
+                            (let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::ops::range::Range")
+                                        (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "usize" ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let i := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "next",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let i := M.copy (| γ0_0 |) in
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -4137,10 +4072,10 @@ Module extension.
                                                 |)
                                               |)
                                             ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                         |)))
@@ -4226,54 +4161,54 @@ Module extension.
                         M.loop (|
                           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
+                            (let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::ops::range::Range")
+                                        (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "usize" ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let i := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        [],
+                                        [],
+                                        "next",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let i := M.copy (| γ0_0 |) in
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -4308,10 +4243,10 @@ Module extension.
                                                 |)
                                               |)
                                             ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                         |)))
@@ -4363,34 +4298,32 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::arith::AddAssign",
-                      PF,
-                      [],
-                      [ PF ],
-                      "add_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_array_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                            "value"
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |);
-                      M.read (| rhs |)
-                    ]
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::arith::AddAssign",
+                    PF,
+                    [],
+                    [ PF ],
+                    "add_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_array_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                          "value"
+                        |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |);
+                    M.read (| rhs |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -4668,44 +4601,42 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ value : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "array") [ D ] [ PF ],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::vector_sub",
-                      [ D ],
-                      [ PF; PF ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              rhs,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
+              let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "array") [ D ] [ PF ],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::vector_sub",
+                    [ D ],
+                    [ PF; PF ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            rhs,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -4773,44 +4704,42 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ value : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "array") [ D ] [ PF ],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::vector_sub",
-                      [ D ],
-                      [ PF; F ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              rhs,
-                              "p3_field::extension::binomial_extension::BinomialExtensionField",
-                              "value"
-                            |)
+              let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "array") [ D ] [ PF ],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::vector_sub",
+                    [ D ],
+                    [ PF; F ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            rhs,
+                            "p3_field::extension::binomial_extension::BinomialExtensionField",
+                            "value"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -4878,35 +4807,33 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ res : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.copy (|
+              let~ res : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     self,
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
                     "value"
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::arith::SubAssign",
-                      PF,
-                      [],
-                      [ PF ],
-                      "sub_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_array_field (| res, Value.Integer IntegerKind.Usize 0 |)
-                      |);
-                      M.read (| rhs |)
-                    ]
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::arith::SubAssign",
+                    PF,
+                    [],
+                    [ PF ],
+                    "sub_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_array_field (| res, Value.Integer IntegerKind.Usize 0 |)
+                    |);
+                    M.read (| rhs |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -4959,37 +4886,35 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path
                             "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                           [ D ]
-                          [ F; PF ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                            [ D ]
-                            [ F; PF ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                          [ F; PF ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5040,37 +4965,35 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            "p3_field::extension::binomial_extension::BinomialExtensionField")
                           [ D ]
-                          [ F; PF ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path
-                              "p3_field::extension::binomial_extension::BinomialExtensionField")
-                            [ D ]
-                            [ F; F ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                          [ F; F ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5120,31 +5043,29 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply
-                          (Ty.path
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                          [ D ]
-                          [ F; PF ],
-                        [],
-                        [ PF ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                      [],
+                      [ PF ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5202,16 +5123,16 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ a : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.copy (|
+              let~ a : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     self,
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
                     "value"
                   |)
                 |) in
-              let~ b : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.copy (|
+              let~ b : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     rhs,
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
@@ -5220,74 +5141,65 @@ Module extension.
                 |) in
               let~ res :
                   Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; PF ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; PF ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; PF ],
+                  M.get_trait_method (|
+                    "core::default::Default",
                     Ty.apply
                       (Ty.path
                         "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                       [ D ]
                       [ F; PF ],
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; PF ],
-                      [],
-                      [],
-                      "default",
-                      [],
-                      []
-                    |),
+                    [],
+                    [],
+                    "default",
+                    [],
                     []
-                  |)
+                  |),
+                  []
                 |) in
-              let~ w : Ty.apply (Ty.path "*") [] [ F ] :=
-                M.copy (| get_constant (| "p3_field::extension::BinomiallyExtendable::W", F |) |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::binomial_mul",
-                      [ D ],
-                      [ F; PF; PF ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, a |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              res,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
+              let~ w : F :=
+                M.read (| get_constant (| "p3_field::extension::BinomiallyExtendable::W", F |) |) in
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::binomial_mul",
+                    [ D ],
+                    [ F; PF; PF ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, a |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            res,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
-                      |);
-                      M.read (| w |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.read (| w |)
+                  ]
                 |) in
               res
             |)))
@@ -5355,16 +5267,16 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ a : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ] :=
-                M.copy (|
+              let~ a : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     self,
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
                     "value"
                   |)
                 |) in
-              let~ b : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "array") [ D ] [ F ] ] :=
-                M.copy (|
+              let~ b : Ty.apply (Ty.path "array") [ D ] [ F ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     rhs,
                     "p3_field::extension::binomial_extension::BinomialExtensionField",
@@ -5373,74 +5285,65 @@ Module extension.
                 |) in
               let~ res :
                   Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; PF ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; PF ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; PF ],
+                  M.get_trait_method (|
+                    "core::default::Default",
                     Ty.apply
                       (Ty.path
                         "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                       [ D ]
                       [ F; PF ],
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path
-                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                        [ D ]
-                        [ F; PF ],
-                      [],
-                      [],
-                      "default",
-                      [],
-                      []
-                    |),
+                    [],
+                    [],
+                    "default",
+                    [],
                     []
-                  |)
+                  |),
+                  []
                 |) in
-              let~ w : Ty.apply (Ty.path "*") [] [ F ] :=
-                M.copy (| get_constant (| "p3_field::extension::BinomiallyExtendable::W", F |) |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (|
-                      "p3_field::extension::binomial_extension::binomial_mul",
-                      [ D ],
-                      [ F; PF; F ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, a |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              res,
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
-                              "value"
-                            |)
+              let~ w : F :=
+                M.read (| get_constant (| "p3_field::extension::BinomiallyExtendable::W", F |) |) in
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_function (|
+                    "p3_field::extension::binomial_extension::binomial_mul",
+                    [ D ],
+                    [ F; PF; F ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, a |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            res,
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField",
+                            "value"
                           |)
                         |)
-                      |);
-                      M.read (| w |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.read (| w |)
+                  ]
                 |) in
               res
             |)))
@@ -5826,37 +5729,35 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path
                             "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                           [ D ]
-                          [ F; PF ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path
-                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                            [ D ]
-                            [ F; PF ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                          [ F; PF ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5907,37 +5808,35 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            "p3_field::extension::binomial_extension::BinomialExtensionField")
                           [ D ]
-                          [ F; PF ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path
-                              "p3_field::extension::binomial_extension::BinomialExtensionField")
-                            [ D ]
-                            [ F; F ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                          [ F; F ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5987,31 +5886,29 @@ Module extension.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply
                         (Ty.path
                           "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                         [ D ]
                         [ F; PF ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply
-                          (Ty.path
-                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                          [ D ]
-                          [ F; PF ],
-                        [],
-                        [ PF ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                    |)
+                      [],
+                      [ PF ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

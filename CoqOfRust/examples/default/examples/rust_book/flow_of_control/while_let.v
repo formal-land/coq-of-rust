@@ -28,18 +28,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ optional :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "i32" ]
-              [ Value.Integer IntegerKind.I32 0 ]
-          |) in
+        let~ optional : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "i32" ]
+            [ Value.Integer IntegerKind.I32 0 ] in
         M.loop (|
           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           ltac:(M.monadic
@@ -74,9 +68,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                M.alloc (|
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -106,26 +100,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                       |)
                                     ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.write (|
-                                  optional,
-                                  Value.StructTuple
-                                    "core::option::Option::None"
-                                    []
-                                    [ Ty.path "i32" ]
-                                    []
-                                |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                optional,
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [ Ty.path "i32" ]
+                                  []
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                M.alloc (|
+                            (let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -191,25 +183,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                       |)
                                     ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.write (|
-                                  optional,
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "i32" ]
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "i32",
-                                        BinOp.Wrap.add,
-                                        [ M.read (| i |); Value.Integer IntegerKind.I32 1 ]
-                                      |)
-                                    ]
-                                |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                optional,
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "i32" ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "i32",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| i |); Value.Integer IntegerKind.I32 1 ]
+                                    |)
+                                  ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -219,8 +209,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                          let~ _ : Ty.tuple [] := M.never_to_any (| M.read (| M.break (||) |) |) in
                           M.alloc (| Value.Tuple [] |)
                         |)
                       |)

@@ -633,40 +633,40 @@ Module extension.
               ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "p3_matrix::extension::FlatIter",
-                                        "idx"
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_matrix::extension::FlatIter",
+                                          "idx"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::field::BasedVectorSpace::DIMENSION",
+                                          Ty.path "usize"
+                                        |)
                                       |)
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::field::BasedVectorSpace::DIMENSION",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.alloc (|
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (| M.read (| self |) |),
@@ -674,14 +674,8 @@ Module extension.
                                   "idx"
                                 |),
                                 Value.Integer IntegerKind.Usize 0
-                              |)
-                            |) in
-                          let~ _ :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "core::option::Option") [] [ EF ] ] :=
-                            M.alloc (|
+                              |) in
+                            let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ EF ] :=
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ EF ],
                                 M.get_trait_method (|
@@ -706,14 +700,14 @@ Module extension.
                                     |)
                                   |)
                                 ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ value : Ty.apply (Ty.path "*") [] [ F ] :=
-                  M.copy (|
+                let~ value : F :=
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.deref (|
                         M.call_closure (|
@@ -856,21 +850,19 @@ Module extension.
                       |)
                     |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    let β :=
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_matrix::extension::FlatIter",
-                        "idx"
-                      |) in
-                    M.write (|
-                      β,
-                      M.call_closure (|
-                        Ty.path "usize",
-                        BinOp.Wrap.add,
-                        [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
-                      |)
+                let~ _ : Ty.tuple [] :=
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "p3_matrix::extension::FlatIter",
+                      "idx"
+                    |) in
+                  M.write (|
+                    β,
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                     |)
                   |) in
                 M.alloc (|

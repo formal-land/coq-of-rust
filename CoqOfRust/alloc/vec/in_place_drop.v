@@ -80,49 +80,47 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (|
-                      "core::ptr::drop_in_place",
-                      [],
-                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutPointer,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::vec::in_place_drop::InPlaceDrop",
-                                  "inner"
-                                |)
-                              |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
-                                    []
-                                    [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_function (|
+                    "core::ptr::drop_in_place",
+                    [],
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutPointer,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::vec::in_place_drop::InPlaceDrop",
+                                "inner"
                               |)
-                            ]
-                          |)
+                            |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                  []
+                                  [ T ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          ]
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -173,18 +171,13 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                let~ _drop_allocation :
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::raw_vec::RawVec")
-                          []
-                          [ Src; Ty.path "alloc::alloc::Global" ]
-                      ] :=
-                  M.alloc (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  let~ _drop_allocation :
+                      Ty.apply
+                        (Ty.path "alloc::raw_vec::RawVec")
+                        []
+                        [ Src; Ty.path "alloc::alloc::Global" ] :=
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::raw_vec::RawVec")
@@ -227,10 +220,8 @@ Module vec.
                         |);
                         Value.StructTuple "alloc::alloc::Global" [] [] []
                       ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
+                    |) in
+                  let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (|
@@ -271,9 +262,9 @@ Module vec.
                           ]
                         |)
                       ]
-                    |)
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

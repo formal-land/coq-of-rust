@@ -98,29 +98,25 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.and (|
@@ -308,39 +304,35 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "isize",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -428,29 +420,25 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
                 Ty.apply
@@ -597,29 +585,25 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::net::socket_addr::SocketAddr" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1226,36 +1210,34 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "core::net::ip_addr::Ipv4Addr",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::socket_addr::SocketAddrV4",
-                              "ip"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "core::net::ip_addr::Ipv4Addr",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV4",
+                            "ip"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -2077,98 +2059,92 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::socket_addr::SocketAddrV6",
-                              "ip"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "core::net::ip_addr::Ipv6Addr",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV6",
+                            "ip"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "u16",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::socket_addr::SocketAddrV6",
-                              "port"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV6",
+                            "port"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "u32",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::socket_addr::SocketAddrV6",
-                              "flowinfo"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::socket_addr::SocketAddrV6",
+                            "flowinfo"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -2820,16 +2796,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV4",
-                      "ip"
-                    |),
-                    M.read (| new_ip |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "ip"
+                  |),
+                  M.read (| new_ip |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2876,16 +2850,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV4",
-                      "port"
-                    |),
-                    M.read (| new_port |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "port"
+                  |),
+                  M.read (| new_port |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2973,16 +2945,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV6",
-                      "ip"
-                    |),
-                    M.read (| new_ip |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "ip"
+                  |),
+                  M.read (| new_ip |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3029,16 +2999,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV6",
-                      "port"
-                    |),
-                    M.read (| new_port |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "port"
+                  |),
+                  M.read (| new_port |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3087,16 +3055,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_flowinfo := M.alloc (| new_flowinfo |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV6",
-                      "flowinfo"
-                    |),
-                    M.read (| new_flowinfo |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "flowinfo"
+                  |),
+                  M.read (| new_flowinfo |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3145,16 +3111,14 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_scope_id := M.alloc (| new_scope_id |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::socket_addr::SocketAddrV6",
-                      "scope_id"
-                    |),
-                    M.read (| new_scope_id |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "scope_id"
+                  |),
+                  M.read (| new_scope_id |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3691,192 +3655,183 @@ Module net.
                     ltac:(M.monadic
                       (let~ buf :
                           Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer IntegerKind.Usize 21 ]
-                                []
-                            ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 21 ]
+                            [] :=
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 21 ]
+                            [],
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::net::display_buffer::DisplayBuffer")
                               [ Value.Integer IntegerKind.Usize 21 ]
                               [],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer IntegerKind.Usize 21 ]
-                                [],
-                              "new",
-                              [],
-                              []
-                            |),
+                            "new",
+                            [],
                             []
-                          |)
+                          |),
+                          []
                         |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_associated_function (|
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            "unwrap",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                              "unwrap",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "core::fmt::Write",
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                M.get_trait_method (|
-                                  "core::fmt::Write",
-                                  Ty.apply
-                                    (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                    [ Value.Integer IntegerKind.Usize 21 ]
-                                    [],
+                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                  [ Value.Integer IntegerKind.Usize 21 ]
                                   [],
-                                  [],
-                                  "write_fmt",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.MutRef, buf |);
-                                  M.call_closure (|
+                                [],
+                                [],
+                                "write_fmt",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, buf |);
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_v1",
-                                      [
-                                        Value.Integer IntegerKind.Usize 2;
-                                        Value.Integer IntegerKind.Usize 2
-                                      ],
-                                      []
-                                    |),
+                                    "new_v1",
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                                      ]
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::net::ip_addr::Ipv4Addr"
-                                                                  ],
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV4",
-                                                                  "ip",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| self |) |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [ Ty.path "u16" ]
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path "u16",
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::net::socket_addr::SocketAddrV4",
-                                                                  "port",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| self |) |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                            |)
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.Integer IntegerKind.Usize 2
+                                    ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
                                           |)
                                         |)
                                       |)
-                                    ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                    ]
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv4Addr"
+                                                                ],
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "core::net::socket_addr::SocketAddrV4",
+                                                                "ip",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [],
+                                                    [ Ty.path "u16" ]
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.path "u16",
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "core::net::socket_addr::SocketAddrV4",
+                                                                "port",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -4461,422 +4416,413 @@ Module net.
                     ltac:(M.monadic
                       (let~ buf :
                           Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer IntegerKind.Usize 58 ]
-                                []
-                            ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 58 ]
+                            [] :=
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 58 ]
+                            [],
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::net::display_buffer::DisplayBuffer")
                               [ Value.Integer IntegerKind.Usize 58 ]
                               [],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer IntegerKind.Usize 58 ]
-                                [],
-                              "new",
-                              [],
-                              []
-                            |),
+                            "new",
+                            [],
                             []
-                          |)
+                          |),
+                          []
                         |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                              "unwrap",
-                              [],
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
                               []
-                            |),
-                            [
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                                    ],
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "u32",
-                                      M.get_associated_function (|
-                                        Ty.path "core::net::socket_addr::SocketAddrV6",
-                                        "scope_id",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |),
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            "unwrap",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U32 0
-                                          |) in
-                                        M.alloc (|
-                                          M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                                  ],
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    M.get_associated_function (|
+                                      Ty.path "core::net::socket_addr::SocketAddrV6",
+                                      "scope_id",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U32 0
+                                        |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                          M.get_trait_method (|
+                                            "core::fmt::Write",
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                            M.get_trait_method (|
-                                              "core::fmt::Write",
-                                              Ty.apply
-                                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                                [ Value.Integer IntegerKind.Usize 58 ]
-                                                [],
+                                              (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                              [ Value.Integer IntegerKind.Usize 58 ]
                                               [],
-                                              [],
-                                              "write_fmt",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (| Pointer.Kind.MutRef, buf |);
-                                              M.call_closure (|
+                                            [],
+                                            [],
+                                            "write_fmt",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, buf |);
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
+                                              M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_v1",
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 2;
-                                                    Value.Integer IntegerKind.Usize 2
-                                                  ],
-                                                  []
-                                                |),
+                                                "new_v1",
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [ mk_str (| "[" |); mk_str (| "]:" |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::net::ip_addr::Ipv6Addr"
-                                                                      ]
-                                                                  ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::net::ip_addr::Ipv6Addr"
-                                                                              ],
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::net::socket_addr::SocketAddrV6",
-                                                                              "ip",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u16" ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "u16",
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::net::socket_addr::SocketAddrV6",
-                                                                              "port",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                        |)
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 2
+                                                ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [ mk_str (| "[" |); mk_str (| "]:" |) ]
                                                       |)
                                                     |)
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let scope_id := M.copy (| γ |) in
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                            M.get_trait_method (|
-                                              "core::fmt::Write",
-                                              Ty.apply
-                                                (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                                [ Value.Integer IntegerKind.Usize 58 ]
-                                                [],
-                                              [],
-                                              [],
-                                              "write_fmt",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (| Pointer.Kind.MutRef, buf |);
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::Arguments",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_v1",
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 3;
-                                                    Value.Integer IntegerKind.Usize 3
-                                                  ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              mk_str (| "[" |);
-                                                              mk_str (| "%" |);
-                                                              mk_str (| "]:" |)
-                                                            ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::net::ip_addr::Ipv6Addr"
-                                                                      ]
-                                                                  ]
-                                                                |),
+                                                                "new_display",
+                                                                [],
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::net::ip_addr::Ipv6Addr"
-                                                                              ],
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::net::socket_addr::SocketAddrV6",
-                                                                              "ip",
-                                                                              [],
-                                                                              []
-                                                                            |),
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::net::ip_addr::Ipv6Addr"
+                                                                    ]
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
                                                                             [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |)
+                                                                              Ty.path
+                                                                                "core::net::ip_addr::Ipv6Addr"
+                                                                            ],
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::net::socket_addr::SocketAddrV6",
+                                                                            "ip",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
                                                                               |)
-                                                                            ]
-                                                                          |)
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)
                                                                     |)
                                                                   |)
-                                                                ]
-                                                              |);
-                                                              M.call_closure (|
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u32" ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        scope_id
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [],
-                                                                  [ Ty.path "u16" ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "u16",
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::net::socket_addr::SocketAddrV6",
-                                                                              "port",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |)
+                                                                "new_display",
+                                                                [],
+                                                                [ Ty.path "u16" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          Ty.path "u16",
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::net::socket_addr::SocketAddrV6",
+                                                                            "port",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
                                                                               |)
-                                                                            ]
-                                                                          |)
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)
                                                                     |)
                                                                   |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                        |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                       |)
                                                     |)
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)))
-                                  ]
-                                |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let scope_id := M.copy (| γ |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                          M.get_trait_method (|
+                                            "core::fmt::Write",
+                                            Ty.apply
+                                              (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                              [ Value.Integer IntegerKind.Usize 58 ]
+                                              [],
+                                            [],
+                                            [],
+                                            "write_fmt",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.MutRef, buf |);
+                                            M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                [
+                                                  Value.Integer IntegerKind.Usize 3;
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            mk_str (| "[" |);
+                                                            mk_str (| "%" |);
+                                                            mk_str (| "]:" |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::net::ip_addr::Ipv6Addr"
+                                                                    ]
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::net::ip_addr::Ipv6Addr"
+                                                                            ],
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::net::socket_addr::SocketAddrV6",
+                                                                            "ip",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [ Ty.path "u32" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      scope_id
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [ Ty.path "u16" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          Ty.path "u16",
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::net::socket_addr::SocketAddrV6",
+                                                                            "port",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)))
+                                ]
                               |)
-                            ]
-                          |)
+                            |)
+                          ]
                         |) in
                       M.alloc (|
                         M.call_closure (|

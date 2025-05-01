@@ -34,11 +34,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ count : Ty.path "u32" := Value.Integer IntegerKind.U32 0 in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -67,86 +66,88 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.loop (|
           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           ltac:(M.monadic
-            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                let β := count in
-                M.write (|
-                  β,
-                  M.call_closure (|
-                    Ty.path "u32",
-                    BinOp.Wrap.add,
-                    [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
-                  |)
+            (let~ _ : Ty.tuple [] :=
+              let β := count in
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); Value.Integer IntegerKind.U32 1 ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [ M.read (| count |); Value.Integer IntegerKind.U32 3 ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.read (|
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.tuple [],
-                                    M.get_function (| "std::io::stdio::_print", [], [] |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| count |); Value.Integer IntegerKind.U32 3 ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                                      [
+                                        M.call_closure (|
                                           Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          [ Value.Integer IntegerKind.Usize 1 ],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (| Value.Array [ mk_str (| "three
-" |) ] |)
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            [ Value.Integer IntegerKind.Usize 1 ],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array [ mk_str (| "three
+" |) ]
+                                                  |)
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
+                                          ]
+                                        |)
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |) in
-                            M.continue (||)
+                              M.continue (||)
+                            |)
                           |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |)
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -201,9 +202,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.match_operator (|
               Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               M.alloc (| Value.Tuple [] |),
@@ -223,9 +224,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              let~ _ : Ty.tuple [] :=
                                 M.call_closure (|
                                   Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -254,9 +255,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       ]
                                     |)
                                   ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |) in
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |) in
                           M.break (||)
                         |)
                       |)

@@ -68,26 +68,24 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "len",
-                        [],
+                let~ len : Ty.path "usize" :=
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
                         []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                    |)
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                        ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                   |) in
                 M.match_operator (|
                   Ty.apply
@@ -358,47 +356,39 @@ Module collections.
                                           |) in
                                         let~ parent :
                                             Ty.apply
-                                              (Ty.path "*")
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
                                               []
                                               [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::NodeRef")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Mut";
-                                                    K;
-                                                    V;
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Internal"
-                                                  ]
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
                                               ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ],
+                                            M.get_associated_function (|
                                               Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::BalancingContext")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::BalancingContext")
-                                                  []
-                                                  [ K; V ],
-                                                "merge_tracking_parent",
-                                                [],
-                                                [ A ]
-                                              |),
-                                              [ M.read (| left_parent_kv |); M.read (| alloc |) ]
-                                            |)
+                                                [ K; V ],
+                                              "merge_tracking_parent",
+                                              [],
+                                              [ A ]
+                                            |),
+                                            [ M.read (| left_parent_kv |); M.read (| alloc |) ]
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -457,37 +447,35 @@ Module collections.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.tuple [],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::BalancingContext")
-                                                  []
-                                                  [ K; V ],
-                                                "bulk_steal_left",
-                                                [],
+                                        (let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::BalancingContext")
                                                 []
-                                              |),
-                                              [
-                                                M.borrow (| Pointer.Kind.MutRef, left_parent_kv |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.sub,
-                                                  [
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloc::collections::btree::map::MIN_LEN",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |);
-                                                    M.read (| len |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                [ K; V ],
+                                              "bulk_steal_left",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, left_parent_kv |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "alloc::collections::btree::map::MIN_LEN",
+                                                      Ty.path "usize"
+                                                    |)
+                                                  |);
+                                                  M.read (| len |)
+                                                ]
+                                              |)
+                                            ]
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -628,47 +616,39 @@ Module collections.
                                           |) in
                                         let~ parent :
                                             Ty.apply
-                                              (Ty.path "*")
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
                                               []
                                               [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::NodeRef")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Mut";
-                                                    K;
-                                                    V;
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Internal"
-                                                  ]
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
                                               ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ],
+                                            M.get_associated_function (|
                                               Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::BalancingContext")
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::BalancingContext")
-                                                  []
-                                                  [ K; V ],
-                                                "merge_tracking_parent",
-                                                [],
-                                                [ A ]
-                                              |),
-                                              [ M.read (| right_parent_kv |); M.read (| alloc |) ]
-                                            |)
+                                                [ K; V ],
+                                              "merge_tracking_parent",
+                                              [],
+                                              [ A ]
+                                            |),
+                                            [ M.read (| right_parent_kv |); M.read (| alloc |) ]
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -727,37 +707,35 @@ Module collections.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.tuple [],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::BalancingContext")
-                                                  []
-                                                  [ K; V ],
-                                                "bulk_steal_right",
-                                                [],
+                                        (let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::BalancingContext")
                                                 []
-                                              |),
-                                              [
-                                                M.borrow (| Pointer.Kind.MutRef, right_parent_kv |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.sub,
-                                                  [
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloc::collections::btree::map::MIN_LEN",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |);
-                                                    M.read (| len |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                [ K; V ],
+                                              "bulk_steal_right",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, right_parent_kv |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "alloc::collections::btree::map::MIN_LEN",
+                                                      Ty.path "usize"
+                                                    |)
+                                                  |);
+                                                  M.read (| len |)
+                                                ]
+                                              |)
+                                            ]
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -1299,45 +1277,43 @@ Module collections.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
-                                      []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Owned";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    "pop_internal_level",
-                                    [],
-                                    [ A ]
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.read (| self |) |)
-                                    |);
-                                    M.call_closure (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Owned";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  "pop_internal_level",
+                                  [],
+                                  [ A ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |);
+                                  M.call_closure (|
+                                    A,
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
                                       A,
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        A,
-                                        [],
-                                        [],
-                                        "clone",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                                    |)
-                                  ]
-                                |)
+                                      [],
+                                      [],
+                                      "clone",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                                  |)
+                                ]
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -1345,8 +1321,8 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
                               |)
@@ -1386,33 +1362,31 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Owned";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "fix_top",
-                        [],
-                        [ A ]
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                        M.call_closure (|
-                          A,
-                          M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                        |)
-                      ]
-                    |)
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Owned";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                        ],
+                      "fix_top",
+                      [],
+                      [ A ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.call_closure (|
+                        A,
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                      |)
+                    ]
                   |) in
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -1456,11 +1430,32 @@ Module collections.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_associated_function (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ],
+                              "fix_right_border_of_right_edge",
+                              [],
+                              [ A ]
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
                                   []
@@ -1477,29 +1472,23 @@ Module collections.
                                       ];
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
-                                "fix_right_border_of_right_edge",
-                                [],
-                                [ A ]
-                              |),
-                              [
-                                M.call_closure (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ];
-                                      Ty.path "alloc::collections::btree::node::marker::KV"
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
-                                  M.get_associated_function (|
+                                  "last_kv",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
                                       []
@@ -1510,87 +1499,66 @@ Module collections.
                                         Ty.path
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
-                                    "last_kv",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
                                         []
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          Ty.path "alloc::collections::btree::node::marker::Owned";
                                           K;
                                           V;
                                           Ty.path
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                                          []
-                                          [
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::Owned";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ],
-                                        "borrow_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
+                                      "borrow_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                A,
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
                                   A,
-                                  M.get_trait_method (|
-                                    "core::clone::Clone",
-                                    A,
-                                    [],
-                                    [],
-                                    "clone",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                                |)
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
                                   []
-                                  [
-                                    Ty.path "alloc::collections::btree::node::marker::Owned";
-                                    K;
-                                    V;
-                                    Ty.path
-                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                  ],
-                                "fix_top",
-                                [],
-                                [ A ]
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.read (| alloc |)
-                              ]
-                            |)
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                              |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  Ty.path "alloc::collections::btree::node::marker::Owned";
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                                ],
+                              "fix_top",
+                              [],
+                              [ A ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.read (| alloc |)
+                            ]
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1628,33 +1596,31 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Owned";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "fix_top",
-                        [],
-                        [ A ]
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                        M.call_closure (|
-                          A,
-                          M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                        |)
-                      ]
-                    |)
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Owned";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                        ],
+                      "fix_top",
+                      [],
+                      [ A ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.call_closure (|
+                        A,
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                      |)
+                    ]
                   |) in
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -1698,11 +1664,32 @@ Module collections.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_associated_function (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ],
+                              "fix_left_border_of_left_edge",
+                              [],
+                              [ A ]
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
                                   []
@@ -1719,29 +1706,23 @@ Module collections.
                                       ];
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
-                                "fix_left_border_of_left_edge",
-                                [],
-                                [ A ]
-                              |),
-                              [
-                                M.call_closure (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        []
-                                        [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
-                                          K;
-                                          V;
-                                          Ty.path
-                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                        ];
-                                      Ty.path "alloc::collections::btree::node::marker::KV"
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
-                                  M.get_associated_function (|
+                                  "first_kv",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
                                       []
@@ -1752,87 +1733,66 @@ Module collections.
                                         Ty.path
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
-                                    "first_kv",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
                                         []
                                         [
-                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          Ty.path "alloc::collections::btree::node::marker::Owned";
                                           K;
                                           V;
                                           Ty.path
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                                          []
-                                          [
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::Owned";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ],
-                                        "borrow_mut",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
+                                      "borrow_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                A,
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
                                   A,
-                                  M.get_trait_method (|
-                                    "core::clone::Clone",
-                                    A,
-                                    [],
-                                    [],
-                                    "clone",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                                |)
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
                                   []
-                                  [
-                                    Ty.path "alloc::collections::btree::node::marker::Owned";
-                                    K;
-                                    V;
-                                    Ty.path
-                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                  ],
-                                "fix_top",
-                                [],
-                                [ A ]
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.read (| alloc |)
-                              ]
-                            |)
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                              |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  Ty.path "alloc::collections::btree::node::marker::Owned";
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                                ],
+                              "fix_top",
+                              [],
+                              [ A ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.read (| alloc |)
+                            ]
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1880,46 +1840,39 @@ Module collections.
               M.read (|
                 let~ cur_node :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::collections::btree::node::NodeRef")
                       []
                       [
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ]
+                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                        K;
+                        V;
+                        Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
+                      [
+                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                        K;
+                        V;
+                        Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
                         []
                         [
-                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          Ty.path "alloc::collections::btree::node::marker::Owned";
                           K;
                           V;
                           Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                         ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            Ty.path "alloc::collections::btree::node::marker::Owned";
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
-                          ],
-                        "borrow_mut",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
-                    |)
+                      "borrow_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |) in
                 M.loop (|
                   Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -1984,21 +1937,37 @@ Module collections.
                             let internal := M.copy (| γ0_0 |) in
                             let~ last_kv :
                                 Ty.apply
-                                  (Ty.path "*")
+                                  (Ty.path "alloc::collections::btree::node::BalancingContext")
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::BalancingContext")
-                                      []
-                                      [ K; V ]
-                                  ] :=
-                              M.alloc (|
-                                M.call_closure (|
+                                  [ K; V ] :=
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::BalancingContext")
+                                  []
+                                  [ K; V ],
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::BalancingContext")
+                                    (Ty.path "alloc::collections::btree::node::Handle")
                                     []
-                                    [ K; V ],
-                                  M.get_associated_function (|
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::Internal"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::KV"
+                                    ],
+                                  "consider_for_balancing",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::Handle")
                                       []
@@ -2015,189 +1984,170 @@ Module collections.
                                           ];
                                         Ty.path "alloc::collections::btree::node::marker::KV"
                                       ],
-                                    "consider_for_balancing",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::Handle")
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
                                         []
                                         [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::NodeRef")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Mut";
-                                              K;
-                                              V;
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Internal"
-                                            ];
-                                          Ty.path "alloc::collections::btree::node::marker::KV"
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::Internal"
                                         ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                                          []
-                                          [
-                                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::Internal"
-                                          ],
-                                        "last_kv",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| internal |) ]
-                                    |)
-                                  ]
-                                |)
+                                      "last_kv",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| internal |) ]
+                                  |)
+                                ]
                               |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.ge,
-                                                          [
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
                                                             M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::BalancingContext")
-                                                                  []
-                                                                  [ K; V ],
-                                                                "left_child_len",
-                                                                [],
-                                                                []
-                                                              |),
+                                                              Ty.path "bool",
+                                                              BinOp.ge,
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  last_kv
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::node::BalancingContext")
+                                                                      []
+                                                                      [ K; V ],
+                                                                    "left_child_len",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      last_kv
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.mul,
+                                                                  [
+                                                                    M.read (|
+                                                                      get_constant (|
+                                                                        "alloc::collections::btree::map::MIN_LEN",
+                                                                        Ty.path "usize"
+                                                                      |)
+                                                                    |);
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
+                                                                  ]
                                                                 |)
                                                               ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              BinOp.Wrap.mul,
-                                                              [
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "alloc::collections::btree::map::MIN_LEN",
-                                                                    Ty.path "usize"
-                                                                  |)
-                                                                |);
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            mk_str (|
+                                                              "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
                                                             |)
                                                           ]
                                                         |)
                                                       |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::panic",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        mk_str (|
-                                                          "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ right_child_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::BalancingContext")
-                                      []
-                                      [ K; V ],
-                                    "right_child_len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, last_kv |) ]
-                                |)
-                              |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [
-                                                M.read (| right_child_len |);
-                                                M.read (|
-                                                  get_constant (|
-                                                    "alloc::collections::btree::map::MIN_LEN",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.alloc (|
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            let~ right_child_len : Ty.path "usize" :=
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::BalancingContext")
+                                    []
+                                    [ K; V ],
+                                  "right_child_len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, last_kv |) ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [
+                                                  M.read (| right_child_len |);
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "alloc::collections::btree::map::MIN_LEN",
+                                                      Ty.path "usize"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_associated_function (|
@@ -2226,39 +2176,36 @@ Module collections.
                                                 ]
                                               |)
                                             ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.write (|
-                                  cur_node,
-                                  M.call_closure (|
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                cur_node,
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                                      K;
+                                      V;
+                                      Ty.path
+                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                    ],
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      (Ty.path "alloc::collections::btree::node::BalancingContext")
                                       []
-                                      [
-                                        Ty.path "alloc::collections::btree::node::marker::Mut";
-                                        K;
-                                        V;
-                                        Ty.path
-                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path
-                                          "alloc::collections::btree::node::BalancingContext")
-                                        []
-                                        [ K; V ],
-                                      "into_right_child",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| last_kv |) ]
-                                  |)
+                                      [ K; V ],
+                                    "into_right_child",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| last_kv |) ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -2267,8 +2214,8 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
                               |)
@@ -2411,28 +2358,43 @@ Module collections.
                                 0
                               |) in
                             let internal_kv := M.copy (| γ0_0 |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.write (|
-                                  self,
-                                  M.call_closure (|
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                self,
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::LeafOrInternal"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::KV"
+                                    ],
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::Handle")
+                                      (Ty.path "alloc::collections::btree::node::NodeRef")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                                          []
-                                          [
-                                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ];
-                                        Ty.path "alloc::collections::btree::node::marker::KV"
+                                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                                        K;
+                                        V;
+                                        Ty.path
+                                          "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
-                                    M.get_associated_function (|
+                                    "first_kv",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
                                         []
@@ -2443,175 +2405,113 @@ Module collections.
                                           Ty.path
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
-                                      "first_kv",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
+                                      M.get_associated_function (|
                                         Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          (Ty.path "alloc::collections::btree::node::Handle")
                                           []
                                           [
-                                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ];
-                                              Ty.path "alloc::collections::btree::node::marker::KV"
-                                            ],
-                                          "fix_left_child",
-                                          [],
-                                          [ A ]
-                                        |),
-                                        [
-                                          M.read (| internal_kv |);
-                                          M.call_closure (|
-                                            A,
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              A,
-                                              [],
-                                              [],
-                                              "clone",
-                                              [],
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
                                               []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ];
+                                            Ty.path "alloc::collections::btree::node::marker::KV"
+                                          ],
+                                        "fix_left_child",
+                                        [],
+                                        [ A ]
+                                      |),
+                                      [
+                                        M.read (| internal_kv |);
+                                        M.call_closure (|
+                                          A,
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            A,
+                                            [],
+                                            [],
+                                            "clone",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.gt,
-                                                          [
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
                                                             M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::NodeRef")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Immut";
-                                                                    K;
-                                                                    V;
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                  ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
+                                                              Ty.path "bool",
+                                                              BinOp.gt,
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::node::NodeRef")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "alloc::collections::btree::node::marker::Immut";
-                                                                          K;
-                                                                          V;
-                                                                          Ty.path
-                                                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                        ],
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::collections::btree::node::Handle")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::node::NodeRef")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::collections::btree::node::marker::Immut";
-                                                                                K;
-                                                                                V;
-                                                                                Ty.path
-                                                                                  "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                              ];
-                                                                            Ty.path
-                                                                              "alloc::collections::btree::node::marker::KV"
-                                                                          ],
-                                                                        "into_node",
-                                                                        [],
-                                                                        []
-                                                                      |),
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::node::NodeRef")
+                                                                      []
                                                                       [
+                                                                        Ty.path
+                                                                          "alloc::collections::btree::node::marker::Immut";
+                                                                        K;
+                                                                        V;
+                                                                        Ty.path
+                                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                      ],
+                                                                    "len",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "alloc::collections::btree::node::Handle")
+                                                                              "alloc::collections::btree::node::NodeRef")
                                                                             []
                                                                             [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::collections::btree::node::NodeRef")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "alloc::collections::btree::node::marker::Immut";
-                                                                                  K;
-                                                                                  V;
-                                                                                  Ty.path
-                                                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                                ];
                                                                               Ty.path
-                                                                                "alloc::collections::btree::node::marker::KV"
+                                                                                "alloc::collections::btree::node::marker::Immut";
+                                                                              K;
+                                                                              V;
+                                                                              Ty.path
+                                                                                "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                             ],
                                                                           M.get_associated_function (|
                                                                             Ty.apply
@@ -2625,7 +2525,7 @@ Module collections.
                                                                                   []
                                                                                   [
                                                                                     Ty.path
-                                                                                      "alloc::collections::btree::node::marker::Mut";
+                                                                                      "alloc::collections::btree::node::marker::Immut";
                                                                                     K;
                                                                                     V;
                                                                                     Ty.path
@@ -2634,61 +2534,111 @@ Module collections.
                                                                                 Ty.path
                                                                                   "alloc::collections::btree::node::marker::KV"
                                                                               ],
-                                                                            "reborrow",
+                                                                            "into_node",
                                                                             [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              self
+                                                                            M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::collections::btree::node::Handle")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::collections::btree::node::NodeRef")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "alloc::collections::btree::node::marker::Immut";
+                                                                                      K;
+                                                                                      V;
+                                                                                      Ty.path
+                                                                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                                    ];
+                                                                                  Ty.path
+                                                                                    "alloc::collections::btree::node::marker::KV"
+                                                                                ],
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::collections::btree::node::Handle")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::collections::btree::node::NodeRef")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::collections::btree::node::marker::Mut";
+                                                                                        K;
+                                                                                        V;
+                                                                                        Ty.path
+                                                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "alloc::collections::btree::node::marker::KV"
+                                                                                  ],
+                                                                                "reborrow",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  self
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           ]
                                                                         |)
-                                                                      ]
+                                                                      |)
                                                                     |)
+                                                                  ]
+                                                                |);
+                                                                M.read (|
+                                                                  get_constant (|
+                                                                    "alloc::collections::btree::map::MIN_LEN",
+                                                                    Ty.path "usize"
                                                                   |)
                                                                 |)
                                                               ]
-                                                            |);
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "alloc::collections::btree::map::MIN_LEN",
-                                                                Ty.path "usize"
-                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            mk_str (|
+                                                              "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                             |)
                                                           ]
                                                         |)
                                                       |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::panic",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        mk_str (|
-                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -2696,8 +2646,8 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
                               |)
@@ -2821,28 +2771,43 @@ Module collections.
                                 0
                               |) in
                             let internal_kv := M.copy (| γ0_0 |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
-                                M.write (|
-                                  self,
-                                  M.call_closure (|
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                self,
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::LeafOrInternal"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::KV"
+                                    ],
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::btree::node::Handle")
+                                      (Ty.path "alloc::collections::btree::node::NodeRef")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                                          []
-                                          [
-                                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ];
-                                        Ty.path "alloc::collections::btree::node::marker::KV"
+                                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                                        K;
+                                        V;
+                                        Ty.path
+                                          "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
-                                    M.get_associated_function (|
+                                    "last_kv",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
                                         []
@@ -2853,175 +2818,113 @@ Module collections.
                                           Ty.path
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
-                                      "last_kv",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
+                                      M.get_associated_function (|
                                         Ty.apply
-                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          (Ty.path "alloc::collections::btree::node::Handle")
                                           []
                                           [
-                                            Ty.path "alloc::collections::btree::node::marker::Mut";
-                                            K;
-                                            V;
-                                            Ty.path
-                                              "alloc::collections::btree::node::marker::LeafOrInternal"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Mut";
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Internal"
-                                                ];
-                                              Ty.path "alloc::collections::btree::node::marker::KV"
-                                            ],
-                                          "fix_right_child",
-                                          [],
-                                          [ A ]
-                                        |),
-                                        [
-                                          M.read (| internal_kv |);
-                                          M.call_closure (|
-                                            A,
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              A,
-                                              [],
-                                              [],
-                                              "clone",
-                                              [],
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
                                               []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ];
+                                            Ty.path "alloc::collections::btree::node::marker::KV"
+                                          ],
+                                        "fix_right_child",
+                                        [],
+                                        [ A ]
+                                      |),
+                                      [
+                                        M.read (| internal_kv |);
+                                        M.call_closure (|
+                                          A,
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            A,
+                                            [],
+                                            [],
+                                            "clone",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |) in
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.gt,
-                                                          [
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
                                                             M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::node::NodeRef")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::Immut";
-                                                                    K;
-                                                                    V;
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                  ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
+                                                              Ty.path "bool",
+                                                              BinOp.gt,
                                                               [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::node::NodeRef")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "alloc::collections::btree::node::marker::Immut";
-                                                                          K;
-                                                                          V;
-                                                                          Ty.path
-                                                                            "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                        ],
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::collections::btree::node::Handle")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::node::NodeRef")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::collections::btree::node::marker::Immut";
-                                                                                K;
-                                                                                V;
-                                                                                Ty.path
-                                                                                  "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                              ];
-                                                                            Ty.path
-                                                                              "alloc::collections::btree::node::marker::KV"
-                                                                          ],
-                                                                        "into_node",
-                                                                        [],
-                                                                        []
-                                                                      |),
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::node::NodeRef")
+                                                                      []
                                                                       [
+                                                                        Ty.path
+                                                                          "alloc::collections::btree::node::marker::Immut";
+                                                                        K;
+                                                                        V;
+                                                                        Ty.path
+                                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                      ],
+                                                                    "len",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "alloc::collections::btree::node::Handle")
+                                                                              "alloc::collections::btree::node::NodeRef")
                                                                             []
                                                                             [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::collections::btree::node::NodeRef")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "alloc::collections::btree::node::marker::Immut";
-                                                                                  K;
-                                                                                  V;
-                                                                                  Ty.path
-                                                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                                ];
                                                                               Ty.path
-                                                                                "alloc::collections::btree::node::marker::KV"
+                                                                                "alloc::collections::btree::node::marker::Immut";
+                                                                              K;
+                                                                              V;
+                                                                              Ty.path
+                                                                                "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                             ],
                                                                           M.get_associated_function (|
                                                                             Ty.apply
@@ -3035,7 +2938,7 @@ Module collections.
                                                                                   []
                                                                                   [
                                                                                     Ty.path
-                                                                                      "alloc::collections::btree::node::marker::Mut";
+                                                                                      "alloc::collections::btree::node::marker::Immut";
                                                                                     K;
                                                                                     V;
                                                                                     Ty.path
@@ -3044,61 +2947,111 @@ Module collections.
                                                                                 Ty.path
                                                                                   "alloc::collections::btree::node::marker::KV"
                                                                               ],
-                                                                            "reborrow",
+                                                                            "into_node",
                                                                             [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              self
+                                                                            M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::collections::btree::node::Handle")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::collections::btree::node::NodeRef")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "alloc::collections::btree::node::marker::Immut";
+                                                                                      K;
+                                                                                      V;
+                                                                                      Ty.path
+                                                                                        "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                                    ];
+                                                                                  Ty.path
+                                                                                    "alloc::collections::btree::node::marker::KV"
+                                                                                ],
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::collections::btree::node::Handle")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::collections::btree::node::NodeRef")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::collections::btree::node::marker::Mut";
+                                                                                        K;
+                                                                                        V;
+                                                                                        Ty.path
+                                                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "alloc::collections::btree::node::marker::KV"
+                                                                                  ],
+                                                                                "reborrow",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  self
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           ]
                                                                         |)
-                                                                      ]
+                                                                      |)
                                                                     |)
+                                                                  ]
+                                                                |);
+                                                                M.read (|
+                                                                  get_constant (|
+                                                                    "alloc::collections::btree::map::MIN_LEN",
+                                                                    Ty.path "usize"
                                                                   |)
                                                                 |)
                                                               ]
-                                                            |);
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "alloc::collections::btree::map::MIN_LEN",
-                                                                Ty.path "usize"
-                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            mk_str (|
+                                                              "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                             |)
                                                           ]
                                                         |)
                                                       |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::panic",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        mk_str (|
-                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -3106,8 +3059,8 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.never_to_any (| M.read (| M.break (||) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
                               |)
@@ -3182,132 +3135,128 @@ Module collections.
               M.read (|
                 let~ internal_kv :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::collections::btree::node::BalancingContext")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::BalancingContext")
-                          []
-                          [ K; V ]
-                      ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                      [ K; V ] :=
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::node::BalancingContext")
+                      []
+                      [ K; V ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::Handle")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Internal"
+                            ];
+                          Ty.path "alloc::collections::btree::node::marker::KV"
+                        ],
+                      "consider_for_balancing",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |) in
+                let~ left_len : Ty.path "usize" :=
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::BalancingContext")
                         []
                         [ K; V ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::Handle")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ];
-                            Ty.path "alloc::collections::btree::node::marker::KV"
-                          ],
-                        "consider_for_balancing",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
+                      "left_child_len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                   |) in
-                let~ left_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::BalancingContext")
-                          []
-                          [ K; V ],
-                        "left_child_len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
                                                 M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::BalancingContext")
-                                                      []
-                                                      [ K; V ],
-                                                    "right_child_len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
-                                                |);
-                                                M.read (|
-                                                  get_constant (|
-                                                    "alloc::collections::btree::map::MIN_LEN",
-                                                    Ty.path "usize"
-                                                  |)
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::btree::node::BalancingContext")
+                                                          []
+                                                          [ K; V ],
+                                                        "right_child_len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, internal_kv |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "alloc::collections::btree::map::MIN_LEN",
+                                                        Ty.path "usize"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.call_closure (|
+                                              Ty.path "never",
+                                              M.get_function (| "core::panicking::panic", [], [] |),
+                                              [
+                                                mk_str (|
+                                                  "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
                                                 |)
                                               ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            mk_str (|
-                                              "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   Ty.apply
@@ -3371,57 +3320,56 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                          M.alloc (|
-                            M.call_closure (|
+                        (let~ count : Ty.path "usize" :=
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
                               Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "usize",
-                                "saturating_sub",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  BinOp.Wrap.add,
-                                  [
-                                    M.read (|
-                                      get_constant (|
-                                        "alloc::collections::btree::map::MIN_LEN",
-                                        Ty.path "usize"
-                                      |)
-                                    |);
-                                    Value.Integer IntegerKind.Usize 1
-                                  ]
-                                |);
-                                M.read (| left_len |)
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
+                              "saturating_sub",
+                              [],
+                              []
+                            |),
                             [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.gt,
-                                          [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "alloc::collections::btree::map::MIN_LEN",
+                                      Ty.path "usize"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
+                              |);
+                              M.read (| left_len |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [ M.read (| count |); Value.Integer IntegerKind.Usize 0
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -3438,11 +3386,11 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, internal_kv |);
                                           M.read (| count |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -3514,132 +3462,128 @@ Module collections.
               M.read (|
                 let~ internal_kv :
                     Ty.apply
-                      (Ty.path "*")
+                      (Ty.path "alloc::collections::btree::node::BalancingContext")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::BalancingContext")
-                          []
-                          [ K; V ]
-                      ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                      [ K; V ] :=
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::node::BalancingContext")
+                      []
+                      [ K; V ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::Handle")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Internal"
+                            ];
+                          Ty.path "alloc::collections::btree::node::marker::KV"
+                        ],
+                      "consider_for_balancing",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |) in
+                let~ right_len : Ty.path "usize" :=
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::BalancingContext")
                         []
                         [ K; V ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::Handle")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                              []
-                              [
-                                Ty.path "alloc::collections::btree::node::marker::Mut";
-                                K;
-                                V;
-                                Ty.path "alloc::collections::btree::node::marker::Internal"
-                              ];
-                            Ty.path "alloc::collections::btree::node::marker::KV"
-                          ],
-                        "consider_for_balancing",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
+                      "right_child_len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                   |) in
-                let~ right_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::BalancingContext")
-                          []
-                          [ K; V ],
-                        "right_child_len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
-                    |)
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
                                                 M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::BalancingContext")
-                                                      []
-                                                      [ K; V ],
-                                                    "left_child_len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
-                                                |);
-                                                M.read (|
-                                                  get_constant (|
-                                                    "alloc::collections::btree::map::MIN_LEN",
-                                                    Ty.path "usize"
-                                                  |)
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::btree::node::BalancingContext")
+                                                          []
+                                                          [ K; V ],
+                                                        "left_child_len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, internal_kv |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "alloc::collections::btree::map::MIN_LEN",
+                                                        Ty.path "usize"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.call_closure (|
+                                              Ty.path "never",
+                                              M.get_function (| "core::panicking::panic", [], [] |),
+                                              [
+                                                mk_str (|
+                                                  "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
                                                 |)
                                               ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            mk_str (|
-                                              "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   Ty.apply
@@ -3703,57 +3647,56 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                          M.alloc (|
-                            M.call_closure (|
+                        (let~ count : Ty.path "usize" :=
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
                               Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "usize",
-                                "saturating_sub",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  BinOp.Wrap.add,
-                                  [
-                                    M.read (|
-                                      get_constant (|
-                                        "alloc::collections::btree::map::MIN_LEN",
-                                        Ty.path "usize"
-                                      |)
-                                    |);
-                                    Value.Integer IntegerKind.Usize 1
-                                  ]
-                                |);
-                                M.read (| right_len |)
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
+                              "saturating_sub",
+                              [],
+                              []
+                            |),
                             [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.gt,
-                                          [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "alloc::collections::btree::map::MIN_LEN",
+                                      Ty.path "usize"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
+                              |);
+                              M.read (| right_len |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [ M.read (| count |); Value.Integer IntegerKind.Usize 0
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -3770,11 +3713,11 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, internal_kv |);
                                           M.read (| count |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
                           |) in
                         M.alloc (|
                           M.call_closure (|

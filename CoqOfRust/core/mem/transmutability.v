@@ -19,39 +19,28 @@ Module mem.
             M.read (|
               let~ transmute :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
-                        []
-                        [ Src; Self ]
-                    ] :=
-                M.alloc (|
-                  Value.StructRecord
-                    "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
-                    []
-                    [ Src; Self ]
-                    [
-                      ("src",
-                        M.call_closure (|
+                    [ Src; Self ] :=
+                Value.StructRecord
+                  "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
+                  []
+                  [ Src; Self ]
+                  [
+                    ("src",
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
+                        M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ M.read (| src |) ]
-                        |))
-                    ]
-                |) in
-              let~ dst :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ] ] :=
-                M.copy (|
+                          "new",
+                          [],
+                          []
+                        |),
+                        [ M.read (| src |) ]
+                      |))
+                  ] in
+              let~ dst : Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ] :=
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     transmute,
                     "core::mem::transmutability::TransmuteFrom::transmute::Transmute",

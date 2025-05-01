@@ -155,171 +155,239 @@ Module friends.
             (M.read (|
               let~ self_handle :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                    M.get_associated_function (|
-                      Ty.path "move_binary_format::file_format::CompiledModule",
-                      "self_handle",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
-                  |)
+                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                  M.get_associated_function (|
+                    Ty.path "move_binary_format::file_format::CompiledModule",
+                    "self_handle",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "slice")
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                                    "contains",
+                                    [],
                                     []
-                                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                                  "contains",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::ModuleHandle"
+                                                ]
+                                            ],
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "friend_decls",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.apply
-                                              (Ty.path "slice")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::ModuleHandle"
-                                              ]
-                                          ],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self_handle |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "friend_decls",
+                                          Ty.path "move_binary_format::errors::PartialVMError",
+                                          "new",
                                           [],
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| module |) |)
-                                          |)
+                                          Value.StructTuple
+                                            "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
+                                            []
+                                            []
+                                            []
                                         ]
                                       |)
-                                    |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| self_handle |) |)
-                                  |)
-                                ]
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.path "move_binary_format::errors::PartialVMError"
-                                  ]
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "move_binary_format::errors::PartialVMError",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::errors::PartialVMError",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.StructTuple
-                                          "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                    |)
-                                  ]
+                                    ]
+                                |)
                               |)
                             |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ self_address :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.path "move_core_types::account_address::AccountAddress" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                  M.get_associated_function (|
+                    Ty.path "move_binary_format::file_format::CompiledModule",
+                    "address_identifier_at",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                            M.get_associated_function (|
+                              Ty.path "move_binary_format::file_format::CompiledModule",
+                              "module_handle_at",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                              M.call_closure (|
+                                Ty.path "move_binary_format::file_format::ModuleHandleIndex",
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::file_format::CompiledModule",
+                                  "self_handle_idx",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |),
+                        "move_binary_format::file_format::ModuleHandle",
+                        "address"
+                      |)
+                    |)
+                  ]
+                |) in
+              let~ has_external_friend : Ty.path "bool" :=
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "core::slice::iter::Iter")
                       []
-                      [ Ty.path "move_core_types::account_address::AccountAddress" ],
-                    M.get_associated_function (|
-                      Ty.path "move_binary_format::file_format::CompiledModule",
-                      "address_identifier_at",
-                      [],
-                      []
-                    |),
+                      [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                    [],
+                    [],
+                    "any",
+                    [],
                     [
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (|
-                            M.call_closure (|
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
                               Ty.apply
                                 (Ty.path "&")
                                 []
-                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "module_handle_at",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                            ]
+                        ]
+                        (Ty.path "bool")
+                    ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                            "iter",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  Ty.path "move_binary_format::file_format::ModuleHandleIndex",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "self_handle_idx",
+                                    "friend_decls",
                                     [],
                                     []
                                   |),
@@ -330,241 +398,159 @@ Module friends.
                                     |)
                                   ]
                                 |)
-                              ]
+                              |)
                             |)
-                          |),
-                          "move_binary_format::file_format::ModuleHandle",
-                          "address"
+                          ]
                         |)
                       |)
-                    ]
-                  |)
-                |) in
-              let~ has_external_friend : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "bool",
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply
-                        (Ty.path "core::slice::iter::Iter")
-                        []
-                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                      [],
-                      [],
-                      "any",
-                      [],
-                      [
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
+                    |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
-                              ]
-                          ]
-                          (Ty.path "bool")
-                      ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::slice::iter::Iter")
-                              []
-                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                              "iter",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
-                                          ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "friend_decls",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| module |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        |)
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::ModuleHandle"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path "bool")
-                                    ],
-                                  M.alloc (| α0 |),
                                   [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let handle := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "core::cmp::PartialEq",
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.path "bool")
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let handle := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress"
+                                            ],
+                                          [],
+                                          [
                                             Ty.apply
                                               (Ty.path "&")
                                               []
                                               [
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress"
-                                              ],
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::account_address::AccountAddress"
-                                                ]
-                                            ],
-                                            "ne",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_core_types::account_address::AccountAddress"
-                                                    ],
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::CompiledModule",
-                                                    "address_identifier_at",
-                                                    [],
-                                                    []
-                                                  |),
+                                              ]
+                                          ],
+                                          "ne",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
                                                   [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| module |) |)
-                                                    |);
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| handle |) |),
-                                                        "move_binary_format::file_format::ModuleHandle",
-                                                        "address"
-                                                      |)
+                                                    Ty.path
+                                                      "move_core_types::account_address::AccountAddress"
+                                                  ],
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "address_identifier_at",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| module |) |)
+                                                  |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| handle |) |),
+                                                      "move_binary_format::file_format::ModuleHandle",
+                                                      "address"
                                                     |)
-                                                  ]
-                                                |)
+                                                  |)
+                                                ]
                                               |)
-                                            |);
-                                            M.borrow (| Pointer.Kind.Ref, self_address |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
+                                            |)
+                                          |);
+                                          M.borrow (| Pointer.Kind.Ref, self_address |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use has_external_friend in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.path "move_binary_format::errors::PartialVMError"
-                                  ]
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "move_binary_format::errors::PartialVMError",
-                                      M.get_associated_function (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use has_external_friend in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [
+                                      M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.StructTuple
-                                          "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          []
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               M.alloc (|
                 Value.StructTuple

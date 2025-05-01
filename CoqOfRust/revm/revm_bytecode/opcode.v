@@ -412,18 +412,16 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_associated_function (|
-                    Ty.path "revm_bytecode::opcode::OpCode",
-                    "get",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ n : Ty.path "u8" :=
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_associated_function (|
+                  Ty.path "revm_bytecode::opcode::OpCode",
+                  "get",
+                  [],
+                  []
+                |),
+                [ M.read (| M.deref (| M.read (| self |) |) |) ]
               |) in
             M.match_operator (|
               Ty.apply
@@ -1461,18 +1459,16 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                  M.get_associated_function (|
-                    Ty.path "revm_bytecode::opcode::OpCode",
-                    "info",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+              M.call_closure (|
+                Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                M.get_associated_function (|
+                  Ty.path "revm_bytecode::opcode::OpCode",
+                  "info",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
               Value.Tuple
@@ -2841,191 +2837,179 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "name_ptr"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "name_ptr"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u8",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "name_len"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "name_len"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u8",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "inputs"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "inputs"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u8",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "outputs"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "outputs"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "u8",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "immediate_size"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "immediate_size"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "bool",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::opcode::OpCodeInfo",
-                            "not_eof"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "bool",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::opcode::OpCodeInfo",
+                          "not_eof"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -3473,71 +3457,73 @@ Module opcode.
         ltac:(M.monadic
           (let name := M.alloc (| name |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.lt,
-                                [
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| name |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 256
-                                ]
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| name |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 256
+                                  ]
+                                |)
                               |)
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                              [
+                                M.call_closure (|
                                   Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ mk_str (| "opcode name is too long" |) ]
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ mk_str (| "opcode name is too long" |) ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
+                                  ]
+                                |)
+                              ]
+                            |)
                           |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |)
               |) in
             M.alloc (|
               Value.StructRecord
@@ -3613,47 +3599,41 @@ Module opcode.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ slice :
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                  [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::opcode::OpCodeInfo",
-                              "name_ptr"
-                            |)
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
+                [
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::opcode::OpCodeInfo",
+                            "name_ptr"
                           |)
-                        ]
-                      |));
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::opcode::OpCodeInfo",
-                          "name_len"
                         |)
-                      |))
-                  ]
-                |)
+                      ]
+                    |));
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_bytecode::opcode::OpCodeInfo",
+                        "name_len"
+                      |)
+                    |))
+                ]
               |) in
             M.alloc (|
               M.borrow (|
@@ -3852,16 +3832,14 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  op,
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "not_eof"
-                |),
-                Value.Bool true
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                op,
+                "revm_bytecode::opcode::OpCodeInfo",
+                "not_eof"
+              |),
+              Value.Bool true
             |) in
           op
         |)))
@@ -3886,16 +3864,14 @@ Module opcode.
         (let op := M.alloc (| op |) in
         let n := M.alloc (| n |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  op,
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "immediate_size"
-                |),
-                M.read (| n |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                op,
+                "revm_bytecode::opcode::OpCodeInfo",
+                "immediate_size"
+              |),
+              M.read (| n |)
             |) in
           op
         |)))
@@ -3919,16 +3895,14 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  op,
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "terminating"
-                |),
-                Value.Bool true
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                op,
+                "revm_bytecode::opcode::OpCodeInfo",
+                "terminating"
+              |),
+              Value.Bool true
             |) in
           op
         |)))
@@ -3955,27 +3929,23 @@ Module opcode.
         let inputs := M.alloc (| inputs |) in
         let outputs := M.alloc (| outputs |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  op,
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "inputs"
-                |),
-                M.read (| inputs |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                op,
+                "revm_bytecode::opcode::OpCodeInfo",
+                "inputs"
+              |),
+              M.read (| inputs |)
             |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  op,
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "outputs"
-                |),
-                M.read (| outputs |)
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                op,
+                "revm_bytecode::opcode::OpCodeInfo",
+                "outputs"
+              |),
+              M.read (| outputs |)
             |) in
           op
         |)))
@@ -4016,335 +3986,307 @@ Module opcode.
     ltac:(M.monadic
       (let~ map :
           Ty.apply
-            (Ty.path "*")
-            []
+            (Ty.path "array")
+            [ Value.Integer IntegerKind.Usize 256 ]
             [
               Ty.apply
-                (Ty.path "array")
-                [ Value.Integer IntegerKind.Usize 256 ]
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-                ]
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
             ] :=
-        M.alloc (|
-          repeat (|
-            Value.StructTuple
-              "core::option::Option::None"
-              []
-              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-              [],
-            Value.Integer IntegerKind.Usize 256
-          |)
+        repeat (|
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+            [],
+          Value.Integer IntegerKind.Usize 256
         |) in
-      let~ prev : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-        M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-        M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-          M.alloc (| Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
+      let~ prev : Ty.path "u8" := Value.Integer IntegerKind.U8 0 in
+      let~ val : Ty.path "u8" := Value.Integer IntegerKind.U8 0 in
+      let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.match_operator (|
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
                         |)
-                      |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  M.never_to_any (|
-                    M.call_closure (|
-                      Ty.path "never",
-                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                        [
+                          M.call_closure (|
                             Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      ]
+                            ]
+                          |)
+                        ]
+                      |)
                     |)
-                  |)
-                |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-          ]
-        |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
-            Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_associated_function (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              "new",
-              [],
-              []
-            |),
-            [ mk_str (| "STOP" |) ]
+                  |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
           |)
         |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
+      let~ _ : Ty.tuple [] := M.write (| prev, M.read (| val |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_associated_function (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-            [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
-          |)
+            "new",
+            [],
+            []
+          |),
+          [ mk_str (| "STOP" |) ]
         |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
-            Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_function (| "revm_bytecode::opcode::terminating", [], [] |),
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+          [ M.read (| info |); Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ]
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_function (| "revm_bytecode::opcode::terminating", [], [] |),
+          [ M.read (| info |) ]
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.write (|
+          M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
             [ M.read (| info |) ]
-          |)
         |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (|
-          M.write (|
-            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-              [ M.read (| info |) ]
-          |)
-        |) in
-      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-        M.alloc (| Value.Integer IntegerKind.U8 1 |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-          M.alloc (| Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
+      let~ val : Ty.path "u8" := Value.Integer IntegerKind.U8 1 in
+      let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.match_operator (|
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
                         |)
-                      |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  M.never_to_any (|
-                    M.call_closure (|
-                      Ty.path "never",
-                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                        [
+                          M.call_closure (|
                             Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
-                  |)
-                |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-          ]
-        |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
-            Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_associated_function (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              "new",
-              [],
-              []
-            |),
-            [ mk_str (| "ADD" |) ]
-          |)
-        |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
-            Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-            [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
-          |)
-        |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (|
-          M.write (|
-            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-              [ M.read (| info |) ]
-          |)
-        |) in
-      let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-        M.alloc (| Value.Integer IntegerKind.U8 49 |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-          M.alloc (| Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
-                        |)
+                            ]
+                          |)
+                        ]
                       |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  M.never_to_any (|
-                    M.call_closure (|
-                      Ty.path "never",
-                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
+                    |)
+                  |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
+          |)
+        |) in
+      let~ _ : Ty.tuple [] := M.write (| prev, M.read (| val |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_associated_function (|
+            Ty.path "revm_bytecode::opcode::OpCodeInfo",
+            "new",
+            [],
+            []
+          |),
+          [ mk_str (| "ADD" |) ]
+        |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+          [ M.read (| info |); Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 1 ]
+        |) in
+      let~ _ : Ty.tuple [] :=
+        M.write (|
+          M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+            [ M.read (| info |) ]
+        |) in
+      let~ val : Ty.path "u8" := Value.Integer IntegerKind.U8 49 in
+      let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.match_operator (|
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        UnOp.not (|
+                          LogicalOp.or (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                        [
+                          M.call_closure (|
                             Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      ]
+                            ]
+                          |)
+                        ]
+                      |)
                     |)
-                  |)
-                |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-          ]
+                  |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
+          |)
         |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (| M.write (| prev, M.read (| val |) |) |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
+      let~ _ : Ty.tuple [] := M.write (| prev, M.read (| val |) |) in
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_associated_function (|
             Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_associated_function (|
-              Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              "new",
-              [],
-              []
-            |),
-            [ mk_str (| "BALANCE" |) ]
-          |)
+            "new",
+            [],
+            []
+          |),
+          [ mk_str (| "BALANCE" |) ]
         |) in
-      let~ info : Ty.apply (Ty.path "*") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ] :=
-        M.alloc (|
-          M.call_closure (|
-            Ty.path "revm_bytecode::opcode::OpCodeInfo",
-            M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
-            [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
-          |)
+      let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
+        M.call_closure (|
+          Ty.path "revm_bytecode::opcode::OpCodeInfo",
+          M.get_function (| "revm_bytecode::opcode::stack_io", [], [] |),
+          [ M.read (| info |); Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 1 ]
         |) in
-      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-        M.alloc (|
-          M.write (|
-            M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
-              [ M.read (| info |) ]
-          |)
+      let~ _ : Ty.tuple [] :=
+        M.write (|
+          M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+            [ M.read (| info |) ]
         |) in
       M.match_operator (|
         Ty.apply

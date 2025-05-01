@@ -24,69 +24,65 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _a := M.copy (| γ0_0 |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "some
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "some
 " |) ] |)
-                                |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "nothing
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "nothing
 " |) ] |)
-                                |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
@@ -121,90 +117,88 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "std::fs::File",
-                M.get_associated_function (|
+          let~ file : Ty.path "std::fs::File" :=
+            M.call_closure (|
+              Ty.path "std::fs::File",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                "expect",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                  "expect",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                    M.get_associated_function (|
-                      Ty.path "std::fs::OpenOptions",
-                      "open",
-                      [],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
-                            M.get_associated_function (|
-                              Ty.path "std::fs::OpenOptions",
-                              "create",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
-                                    M.get_associated_function (|
-                                      Ty.path "std::fs::OpenOptions",
-                                      "append",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.alloc (|
-                                          M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "std::fs::OpenOptions",
+                    "open",
+                    [],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
+                          M.get_associated_function (|
+                            Ty.path "std::fs::OpenOptions",
+                            "create",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
+                                  M.get_associated_function (|
+                                    Ty.path "std::fs::OpenOptions",
+                                    "append",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "std::fs::OpenOptions",
+                                          M.get_associated_function (|
                                             Ty.path "std::fs::OpenOptions",
-                                            M.get_associated_function (|
-                                              Ty.path "std::fs::OpenOptions",
-                                              "new",
-                                              [],
-                                              []
-                                            |),
+                                            "new",
+                                            [],
                                             []
-                                          |)
+                                          |),
+                                          []
                                         |)
-                                      |);
-                                      Value.Bool true
-                                    ]
-                                  |)
+                                      |)
+                                    |);
+                                    Value.Bool true
+                                  ]
                                 |)
-                              |);
-                              Value.Bool true
-                            ]
-                          |)
+                              |)
+                            |);
+                            Value.Bool true
+                          ]
                         |)
-                      |);
-                      mk_str (| "ferris.txt" |)
-                    ]
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
-                  |)
-                ]
-              |)
+                      |)
+                    |);
+                    mk_str (| "ferris.txt" |)
+                  ]
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
+                |)
+              ]
             |) in
           M.use
             (M.match_operator (|
@@ -240,45 +234,48 @@ Module tests.
                     M.loop (|
                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                        (let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "i32" ],
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -345,10 +342,10 @@ Module tests.
                                             |)
                                           |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)))
-                            ]
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
                     |)))
@@ -384,90 +381,88 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file : Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "std::fs::File",
-                M.get_associated_function (|
+          let~ file : Ty.path "std::fs::File" :=
+            M.call_closure (|
+              Ty.path "std::fs::File",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                "expect",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                  "expect",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                    M.get_associated_function (|
-                      Ty.path "std::fs::OpenOptions",
-                      "open",
-                      [],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
-                            M.get_associated_function (|
-                              Ty.path "std::fs::OpenOptions",
-                              "create",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
-                                    M.get_associated_function (|
-                                      Ty.path "std::fs::OpenOptions",
-                                      "append",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.alloc (|
-                                          M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "std::fs::OpenOptions",
+                    "open",
+                    [],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
+                          M.get_associated_function (|
+                            Ty.path "std::fs::OpenOptions",
+                            "create",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
+                                  M.get_associated_function (|
+                                    Ty.path "std::fs::OpenOptions",
+                                    "append",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "std::fs::OpenOptions",
+                                          M.get_associated_function (|
                                             Ty.path "std::fs::OpenOptions",
-                                            M.get_associated_function (|
-                                              Ty.path "std::fs::OpenOptions",
-                                              "new",
-                                              [],
-                                              []
-                                            |),
+                                            "new",
+                                            [],
                                             []
-                                          |)
+                                          |),
+                                          []
                                         |)
-                                      |);
-                                      Value.Bool true
-                                    ]
-                                  |)
+                                      |)
+                                    |);
+                                    Value.Bool true
+                                  ]
                                 |)
-                              |);
-                              Value.Bool true
-                            ]
-                          |)
+                              |)
+                            |);
+                            Value.Bool true
+                          ]
                         |)
-                      |);
-                      mk_str (| "ferris.txt" |)
-                    ]
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
-                  |)
-                ]
-              |)
+                      |)
+                    |);
+                    mk_str (| "ferris.txt" |)
+                  ]
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
+                |)
+              ]
             |) in
           M.use
             (M.match_operator (|
@@ -503,45 +498,48 @@ Module tests.
                     M.loop (|
                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                        (let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "i32" ],
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -608,10 +606,10 @@ Module tests.
                                             |)
                                           |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)))
-                            ]
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
                     |)))

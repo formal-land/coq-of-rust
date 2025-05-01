@@ -134,21 +134,19 @@ Module intrinsics.
                         (M.alloc (|
                           UnOp.not (|
                             M.read (|
-                              let~ zero_size : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                                M.alloc (|
-                                  LogicalOp.or (|
-                                    M.call_closure (|
+                              let~ zero_size : Ty.path "bool" :=
+                                LogicalOp.or (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
-                                      [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
-                                      |)))
-                                  |)
+                                      [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
                                 |) in
                               M.alloc (|
                                 LogicalOp.and (|
@@ -409,21 +407,19 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.read (|
-                              let~ zero_size : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                                M.alloc (|
-                                  LogicalOp.or (|
-                                    M.call_closure (|
+                              let~ zero_size : Ty.path "bool" :=
+                                LogicalOp.or (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
-                                      [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                      |)))
-                                  |)
+                                      [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
                                 |) in
                               M.alloc (|
                                 LogicalOp.and (|
@@ -974,8 +970,8 @@ Module ub_checks.
         (let size := M.alloc (| size |) in
         let len := M.alloc (| len |) in
         M.read (|
-          let~ max_len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-            M.copy (|
+          let~ max_len : Ty.path "usize" :=
+            M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                 M.alloc (| Value.Tuple [] |),

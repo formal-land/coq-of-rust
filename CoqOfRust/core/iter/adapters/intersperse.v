@@ -533,57 +533,50 @@ Module iter.
                               ltac:(M.monadic
                                 (let~ next_item :
                                     Ty.apply
-                                      (Ty.path "*")
+                                      (Ty.path "core::option::Option")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
                                           []
-                                          [
-                                            Ty.associated_in_trait
-                                              "core::iter::traits::iterator::Iterator"
-                                              []
-                                              []
-                                              I
-                                              "Item"
-                                          ]
+                                          []
+                                          I
+                                          "Item"
                                       ] :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "core::iter::traits::iterator::Iterator"
-                                            []
-                                            []
-                                            I
-                                            "Item"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::iter::adapters::fuse::Fuse")
-                                          []
-                                          [ I ],
-                                        [],
-                                        [],
-                                        "next",
-                                        [],
-                                        []
-                                      |),
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::iter::adapters::intersperse::Intersperse",
-                                            "iter"
-                                          |)
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::fuse::Fuse")
+                                        []
+                                        [ I ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::intersperse::Intersperse",
+                                          "iter"
                                         |)
-                                      ]
-                                    |)
+                                      |)
+                                    ]
                                   |) in
                                 M.match_operator (|
                                   Ty.apply
@@ -635,16 +628,14 @@ Module iter.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.alloc (|
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::iter::adapters::intersperse::Intersperse",
-                                                "next_item"
-                                              |),
-                                              M.read (| next_item |)
-                                            |)
+                                        let~ _ : Ty.tuple [] :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::intersperse::Intersperse",
+                                              "next_item"
+                                            |),
+                                            M.read (| next_item |)
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -715,16 +706,14 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.write (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::intersperse::Intersperse",
-                                "started"
-                              |),
-                              Value.Bool true
-                            |)
+                        (let~ _ : Ty.tuple [] :=
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "started"
+                            |),
+                            Value.Bool true
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -870,18 +859,13 @@ Module iter.
               let f := M.alloc (| f |) in
               M.read (|
                 let~ separator :
-                    Ty.apply
-                      (Ty.path "*")
+                    Ty.associated_in_trait
+                      "core::iter::traits::iterator::Iterator"
                       []
-                      [
-                        Ty.associated_in_trait
-                          "core::iter::traits::iterator::Iterator"
-                          []
-                          []
-                          I
-                          "Item"
-                      ] :=
-                  M.copy (|
+                      []
+                      I
+                      "Item" :=
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       self,
                       "core::iter::adapters::intersperse::Intersperse",
@@ -1600,57 +1584,50 @@ Module iter.
                               ltac:(M.monadic
                                 (let~ next_item :
                                     Ty.apply
-                                      (Ty.path "*")
+                                      (Ty.path "core::option::Option")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
                                           []
-                                          [
-                                            Ty.associated_in_trait
-                                              "core::iter::traits::iterator::Iterator"
-                                              []
-                                              []
-                                              I
-                                              "Item"
-                                          ]
+                                          []
+                                          I
+                                          "Item"
                                       ] :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "core::iter::traits::iterator::Iterator"
-                                            []
-                                            []
-                                            I
-                                            "Item"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::iter::adapters::fuse::Fuse")
-                                          []
-                                          [ I ],
-                                        [],
-                                        [],
-                                        "next",
-                                        [],
-                                        []
-                                      |),
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::iter::adapters::intersperse::IntersperseWith",
-                                            "iter"
-                                          |)
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::fuse::Fuse")
+                                        []
+                                        [ I ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::intersperse::IntersperseWith",
+                                          "iter"
                                         |)
-                                      ]
-                                    |)
+                                      |)
+                                    ]
                                   |) in
                                 M.match_operator (|
                                   Ty.apply
@@ -1702,16 +1679,14 @@ Module iter.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.alloc (|
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::iter::adapters::intersperse::IntersperseWith",
-                                                "next_item"
-                                              |),
-                                              M.read (| next_item |)
-                                            |)
+                                        let~ _ : Ty.tuple [] :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::intersperse::IntersperseWith",
+                                              "next_item"
+                                            |),
+                                            M.read (| next_item |)
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -1778,16 +1753,14 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.write (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::intersperse::IntersperseWith",
-                                "started"
-                              |),
-                              Value.Bool true
-                            |)
+                        (let~ _ : Ty.tuple [] :=
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "started"
+                            |),
+                            Value.Bool true
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -2239,25 +2212,14 @@ Module iter.
             let started := M.alloc (| started |) in
             let next_item := M.alloc (| next_item |) in
             M.read (|
-              let~ accum : Ty.apply (Ty.path "*") [] [ B ] := M.copy (| init |) in
+              let~ accum : B := M.read (| init |) in
               let~ first :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::option::Option")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "core::iter::traits::iterator::Iterator"
-                            []
-                            []
-                            I
-                            "Item"
-                        ]
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
                     ] :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Ty.apply
                       (Ty.path "*")
@@ -2344,23 +2306,23 @@ Module iter.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := first in
-                        let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let x := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := first in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let x := M.copy (| γ0_0 |) in
+                          let~ _ : Ty.tuple [] :=
                             M.write (|
                               accum,
                               M.call_closure (|
@@ -2390,11 +2352,11 @@ Module iter.
                                   Value.Tuple [ M.read (| accum |); M.read (| x |) ]
                                 ]
                               |)
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -2484,100 +2446,94 @@ Module iter.
                                             ltac:(M.monadic
                                               (let x := M.copy (| γ |) in
                                               M.read (|
-                                                let~ _ :
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                  M.alloc (|
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        B,
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [],
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                B;
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  I
-                                                                  "Item"
-                                                              ]
-                                                          ],
-                                                          "call_mut",
-                                                          [],
-                                                          []
-                                                        |),
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (|
+                                                    accum,
+                                                    M.call_closure (|
+                                                      B,
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [],
                                                         [
-                                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                                          Value.Tuple
+                                                          Ty.tuple
                                                             [
-                                                              M.read (| accum |);
-                                                              M.call_closure (|
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  I
-                                                                  "Item",
-                                                                M.get_trait_method (|
-                                                                  "core::ops::function::FnMut",
-                                                                  G,
-                                                                  [],
-                                                                  [ Ty.tuple [] ],
-                                                                  "call_mut",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    separator
-                                                                  |);
-                                                                  Value.Tuple []
-                                                                ]
-                                                              |)
+                                                              B;
+                                                              Ty.associated_in_trait
+                                                                "core::iter::traits::iterator::Iterator"
+                                                                []
+                                                                []
+                                                                I
+                                                                "Item"
                                                             ]
-                                                        ]
-                                                      |)
+                                                        ],
+                                                        "call_mut",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (| accum |);
+                                                            M.call_closure (|
+                                                              Ty.associated_in_trait
+                                                                "core::iter::traits::iterator::Iterator"
+                                                                []
+                                                                []
+                                                                I
+                                                                "Item",
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnMut",
+                                                                G,
+                                                                [],
+                                                                [ Ty.tuple [] ],
+                                                                "call_mut",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  separator
+                                                                |);
+                                                                Value.Tuple []
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      ]
                                                     |)
                                                   |) in
-                                                let~ _ :
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                  M.alloc (|
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        B,
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [],
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                B;
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  I
-                                                                  "Item"
-                                                              ]
-                                                          ],
-                                                          "call_mut",
-                                                          [],
-                                                          []
-                                                        |),
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (|
+                                                    accum,
+                                                    M.call_closure (|
+                                                      B,
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [],
                                                         [
-                                                          M.borrow (| Pointer.Kind.MutRef, f |);
-                                                          Value.Tuple
-                                                            [ M.read (| accum |); M.read (| x |) ]
-                                                        ]
-                                                      |)
+                                                          Ty.tuple
+                                                            [
+                                                              B;
+                                                              Ty.associated_in_trait
+                                                                "core::iter::traits::iterator::Iterator"
+                                                                []
+                                                                []
+                                                                I
+                                                                "Item"
+                                                            ]
+                                                        ],
+                                                        "call_mut",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                                        Value.Tuple
+                                                          [ M.read (| accum |); M.read (| x |) ]
+                                                      ]
                                                     |)
                                                   |) in
                                                 accum

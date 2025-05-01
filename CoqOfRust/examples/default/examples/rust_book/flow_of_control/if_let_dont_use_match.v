@@ -23,100 +23,100 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ optional :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "i32" ]
-              [ Value.Integer IntegerKind.I32 7 ]
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            optional,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let i := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "std::io::stdio::_print", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "core::fmt::Arguments",
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                [
-                                  Value.Integer IntegerKind.Usize 2;
-                                  Value.Integer IntegerKind.Usize 1
-                                ],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            mk_str (| "This is a really long string and `" |);
-                                            mk_str (| "`
-" |)
-                                          ]
-                                      |)
-                                    |)
-                                  |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_debug",
-                                                [],
-                                                [ Ty.path "i32" ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
+        let~ optional : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "i32" ]
+            [ Value.Integer IntegerKind.I32 7 ] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              optional,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    let i := M.copy (| γ0_0 |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 1
+                                  ],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              mk_str (| "This is a really long string and `" |);
+                                              mk_str (| "`
+" |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

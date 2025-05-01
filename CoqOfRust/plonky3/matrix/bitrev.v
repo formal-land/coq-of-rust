@@ -211,60 +211,42 @@ Module bitrev.
           M.read (|
             let~ inner :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "p3_matrix::dense::DenseMatrix")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "p3_matrix::dense::DenseMatrix")
-                      []
-                      [
-                        T;
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ T; Ty.path "alloc::alloc::Global" ]
-                      ]
+                  [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
                   ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "p3_matrix::dense::DenseMatrix")
-                    []
-                    [
-                      T;
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
-                    ],
-                  M.get_trait_method (|
-                    "p3_matrix::Matrix",
-                    Inner,
-                    [],
-                    [ T ],
-                    "to_row_major_matrix",
-                    [],
-                    []
-                  |),
-                  [ M.read (| inner |) ]
-                |)
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "p3_matrix::dense::DenseMatrix")
+                  []
+                  [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                M.get_trait_method (|
+                  "p3_matrix::Matrix",
+                  Inner,
+                  [],
+                  [ T ],
+                  "to_row_major_matrix",
+                  [],
+                  []
+                |),
+                [ M.read (| inner |) ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (|
-                    "p3_matrix::util::reverse_matrix_index_bits",
-                    [],
-                    [
-                      T;
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
-                    ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, inner |) |)
-                    |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (|
+                  "p3_matrix::util::reverse_matrix_index_bits",
+                  [],
+                  [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
                   ]
-                |)
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, inner |) |)
+                  |)
+                ]
               |) in
             inner
           |)))
