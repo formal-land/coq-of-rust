@@ -122,7 +122,7 @@ Module Impl_Gas.
   Axiom u64_overflowing_sub_eq :
     forall (Stack : Stack.t) (stack : Stack.to_Set Stack) (self other : U64.t),
     {{
-      StackM.eval_f (Stack := [_]) (core.num.links.mod.Impl_u64.run_overflowing_sub self other) stack 🌲
+      StackM.eval_f (Stack := Stack) (core.num.links.mod.Impl_u64.run_overflowing_sub self other) stack 🌲
       (Output.Success (u64_overflowing_sub self other), stack)
     }}.
 
@@ -157,11 +157,30 @@ Module Impl_Gas.
     cbn.
     progress repeat get_can_access.
     eapply Run.Call. {
+      apply u64_overflowing_sub_eq.
+    }
+    destruct u64_overflowing_sub eqn:?.
+    Time cbn; progress repeat get_can_access; eapply Run.Call. {
+    Show.
+      apply Run.Pure.
+    }
+    (* Show. *)
+    cbn.
+    destruct negb eqn:?.
+    { Show.
+      progress repeat get_can_access.
+      Show.
+    apply Run.Pure.
       idtac.
-      pose proof u64_overflowing_sub_eq.
+      (* pose proof u64_overflowing_sub_eq. *)
       pose proof (u64_overflowing_sub_eq [_; _; _] (self, (ref_self, cost)) self.(Gas.remaining) cost).
-      unfold StackM.eval_f in H0.
+      unfold StackM.eval_f, links.mod.Impl_u64.Self, U64.t, Stack.to_Set, Stack.to_Set_aux in H.
+      Check (@Output.Success (Integer.t IntegerKind.U64 * bool) (Integer.t IntegerKind.U64 * bool) (u64_overflowing_sub self.(Gas.remaining) cost), (self, (ref_self, cost))).
+      exact H.
       cbn in *.
+
+
+
       exact H0.
       instantiate (1 := (Output.Success (_, _), _)).
       admit.

@@ -161,19 +161,21 @@ Module StackM.
       (Stack : Stack.t)
       (ref_core : Ref.Core.t B)
       (k : Stack.CanAccess.t Stack ref_core -> t A)
-  | Call {B : Set}
-      (e : t B)
-      (k : B -> t A).
+  | Call {B : Set} `{Link B} {Stack : Stack.t}
+      {f : list Value.t -> M} {args : list Value.t}
+      (stack_in : Stack.to_Set Stack)
+      (run_f : {{ f args 🔽 B }})
+      (k : Output.t B B * Stack.to_Set Stack -> t A).
   Arguments Pure {_}.
   Arguments GetCanAccess {_ _ _}.
-  Arguments Call {_ _}.
+  Arguments Call {_ _ _ _ _ _}.
 
   Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
     match e1 with
     | Pure value => e2 value
     | GetCanAccess Stack ref_core k =>
       GetCanAccess Stack ref_core (fun can_access => let_ (k can_access) e2)
-    | Call e k => Call e (fun value => let_ (k value) e2)
+    | Call stack_in run_f k => Call stack_in run_f (fun output_stack => let_ (k output_stack) e2)
     end.
 
   Parameter TodoLoop : forall {A : Set}, t A.
@@ -257,7 +259,7 @@ Module StackM.
     }
     { (* Call *)
       exact (
-        Call (eval _ _ _ e stack) (fun '(output, stack) =>
+        Call stack run_f0 (fun '(output, stack) =>
         eval _ _ _ (k (SuccessOrPanic.of_output output)) stack)
       ).
     }
@@ -292,13 +294,15 @@ Module Run.
       (H_access : Stack.CanAccess.t Stack ref_core)
     (H_k : {{ k H_access 🌲 value }}) :
     {{ StackM.GetCanAccess Stack ref_core k 🌲 value }}
-  | Call {B : Set}
-      (value_inter : B)
-      (e : StackM.t B)
-      (k : B -> StackM.t A)
-    (H_e : {{ e 🌲 value_inter }})
+  | Call {B : Set} `{Link B} {Stack : Stack.t}
+      {f : list Value.t -> M} {args : list Value.t}
+      (stack_in : Stack.to_Set Stack)
+      (run_f : {{ f args 🔽 B }})
+      (value_inter : Output.t B B * Stack.to_Set Stack)
+      (k : Output.t B B * Stack.to_Set Stack -> StackM.t A)
+    (H_f : {{ StackM.eval (links.M.evaluate run_f) stack_in 🌲 value_inter }})
     (H_k : {{ k value_inter 🌲 value }}) :
-    {{ StackM.Call e k 🌲 value }}
+    {{ StackM.Call stack_in run_f k 🌲 value }}
 
   where "{{ e 🌲 value }}" := (t value e).
 End Run.
