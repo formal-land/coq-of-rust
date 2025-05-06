@@ -12,16 +12,11 @@ Require Import CoqOfRust.links.M.
 }
 *)
 Module BaseAir.
-    Module Types.
-        Record t : Type := {
-            F : Set;
-        }.
-    End Types.
-    Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("BaseAir", [], [], Φ Self).
+    Definition trait (Self F : Set) (H_Self : Link Self) (H_F : Link F) : TraitMethod.Header.t :=
+  ("BaseAir", [], [Φ F], Φ Self).
 
-    Definition Run_width (Self : Set) `{Link Self} : Set :=
-    TraitMethod.C (trait Self) "width" (fun method =>
+    Definition Run_width (Self F : Set) {H_Self: Link Self} {H_F : Link F} : Set :=
+    TraitMethod.C (trait Self F H_Self H_F) "width" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] Usize.t
     ).
