@@ -43,7 +43,6 @@ pub trait PrimeField64: PrimeField {
 }
 *)
 Module PrimeField64.
-  (* TODO: figure out how to express `+ PrimeField` for this trait *)
   Parameter t : Set.
 
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
@@ -66,5 +65,9 @@ Module PrimeField64.
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
-  Class Run (Self : Set) `{Link Self} : Set := {}.
+  Class Run (Self : Set) `{Link Self} : Set := {
+    run_PrimeField_for_Self : PrimeField.Run Self;
+    as_canonical_u64 : Run_as_canonical_u64 Self;
+    to_unique_u64 : Run_to_unique_u64;
+  }.
 End PrimeField64.
