@@ -1,13 +1,12 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.blake3_air.air.
-Require Import plonky3.field.links.
+Require Import plonky3.field.link.field.
 
 (* pub struct Blake3Air {} *)
 Module Blake3Air.
   Record t : Set := {}.
 
-  (* TODO: figure out if we need to add more stuffs here *)
   Parameter to_value : t -> Value.t.
 
   Global Instance IsLink : Link t := {
@@ -22,9 +21,8 @@ End Blake3Air.
 
 (* 
 TODO:
-- Finish PrimeField64 in p3_field
-- Figure out `RowMajorMatrix`
 - Fill in correct Self type and maybe find more references
+- Check `AirBuilder`
 *)
 
 Module Impl_Blake3Air.
@@ -37,11 +35,12 @@ impl Blake3Air {
     ) -> RowMajorMatrix<F>
 *)
 Instance run_generate_trace_rows
-  {F : Set} `{Link F} {F_types : PrimeField64.Types.t}
-  {WIRE H : Set} `{Link WIRE} `{Link H}
-  {run_PrimeField64_for_F : PrimeField64.Run F F_types}
-  (self : Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t)
-  (_host : Ref.t Pointer.Kind.MutRef H) :
+  {F : Set} `{Link F} 
+  (* NOTE: On `PrimeField64` Side I think there are no needs for F_types? *)
+  (* {F_types : PrimeField64.Types.t} *)
+  {run_PrimeField64_for_F : PrimeField64.Run F}
+  (* TODO: figure out the `Self` below and refer to `interpreter` or `block` *)
+  (self : Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t) :
   Run.Trait
     blake3_air.air.generate_trace_rows [] [ Φ F ] [ φ num_hashes; φ extra_capacity_bits ]
     (RowMajorMatrix.t F).
@@ -57,15 +56,30 @@ fn quarter_round_function<AB: AirBuilder>(
         trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>,
     )
 *)
+Instance run_quarter_round_function
+  {AB : Set} `{Link AB} 
+  {run_PrimeField64_for_F : PrimeField64.Run F}
+  (self : Self) 
+  (builder : Ref.t Pointer.Kind.MutRef AB) 
+  (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
+  (trace : Set)
+  :
+  Run.Trait
+    blake3_air.air.quarter_round_function [] [ Φ AB ] [ φ builder; φ trace ]
+    unit.
+Proof.
+  constructor.
+  run_symbolic.
+Admitted.
 
 (* 
-    const fn full_round_to_column_quarter_round<'a, T: Copy, U>(
-        &self,
-        input: &'a Blake3State<T>,
-        round_data: &'a FullRound<T>,
-        m_vector: &'a [[U; 2]; 16],
-        index: usize,
-    ) -> QuarterRound<'a, T, U>
+const fn full_round_to_column_quarter_round<'a, T: Copy, U>(
+    &self,
+    input: &'a Blake3State<T>,
+    round_data: &'a FullRound<T>,
+    m_vector: &'a [[U; 2]; 16],
+    index: usize,
+) -> QuarterRound<'a, T, U>
 *)
 
 (* 
