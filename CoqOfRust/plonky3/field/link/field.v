@@ -68,6 +68,6 @@ Module PrimeField64.
   Class Run (Self : Set) `{Link Self} : Set := {
     run_PrimeField_for_Self : PrimeField.Run Self;
     as_canonical_u64 : Run_as_canonical_u64 Self;
-    to_unique_u64 : Run_to_unique_u64;
+    to_unique_u64 : Run_to_unique_u64 Self;
   }.
 End PrimeField64.
