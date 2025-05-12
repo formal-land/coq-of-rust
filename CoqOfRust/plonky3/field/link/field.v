@@ -1,4 +1,34 @@
-(* TODO: Implement PrimeField64. PrimeField *)
+Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.links.M.
+Require Import plonky3.field.field.
+
+(* NOTE: the plan here is we firstly put a stub here and see if we need to 
+implement all these alg structures (?) later *)
+(* 
+pub trait PrimeField:
+    Field
+    + Ord
+    + QuotientMap<u8>
+    + QuotientMap<u16>
+    + QuotientMap<u32>
+    + QuotientMap<u64>
+    + QuotientMap<u128>
+    + QuotientMap<usize>
+    + QuotientMap<i8>
+    + QuotientMap<i16>
+    + QuotientMap<i32>
+    + QuotientMap<i64>
+    + QuotientMap<i128>
+    + QuotientMap<isize>
+*)
+Module PrimeField.
+  Parameter t : Set.
+
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("plonky3::field::field::PrimeField", [], [], Φ Self).
+
+  Class Run (Self : Set) `{Link Self} : Set := {}.
+End PrimeField.
 
 (* 
 pub trait PrimeField64: PrimeField {
@@ -12,3 +42,29 @@ pub trait PrimeField64: PrimeField {
     }
 }
 *)
+Module PrimeField64.
+  (* TODO: figure out how to express `+ PrimeField` for this trait *)
+  Parameter t : Set.
+
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("plonky3::field::field::PrimeField64", [], [], Φ Self).
+
+  (* TODO: figure out how to implement this constant *)
+  Definition ORDER_U64 : U64.t. Admitted.
+
+  (* fn as_canonical_u64(&self) -> u64; *)
+  Definition Run_as_canonical_u64 (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "as_canonical_u64" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
+
+  (* fn to_unique_u64(&self) -> u64 *)
+  Definition Run_to_unique_u64 (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "to_unique_u64" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
+
+  Class Run (Self : Set) `{Link Self} : Set := {}.
+End PrimeField64.
