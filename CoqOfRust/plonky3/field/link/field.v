@@ -25,7 +25,9 @@ Module PrimeField.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("plonky3::field::field::PrimeField", [], [], Φ Self).
 
-  Class Run (Self : Set) `{Link Self} : Set := {}.
+  Class Run (Self : Set) `{Link Self} : Set := {
+    (* TODO: define `run_Field_for_PrimeField *)
+  }.
 End PrimeField.
 
 (* 
@@ -68,7 +70,7 @@ Module PrimeField64.
     ).
 
   Class Run (Self : Set) `{Link Self} : Set := {
-    run_PrimeField_for_Self : PrimeField.Run Self;
+    run_PrimeField_for_PrimeField64 : PrimeField.Run Self;
     as_canonical_u64 : Run_as_canonical_u64 Self;
     to_unique_u64 : Run_to_unique_u64 Self;
   }.
