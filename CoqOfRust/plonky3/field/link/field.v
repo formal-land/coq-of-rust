@@ -22,8 +22,6 @@ pub trait PrimeField:
     + QuotientMap<isize>
 *)
 Module PrimeField.
-  Parameter t : Set.
-
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("plonky3::field::field::PrimeField", [], [], Φ Self).
 
@@ -48,8 +46,12 @@ Module PrimeField64.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("plonky3::field::field::PrimeField64", [], [], Φ Self).
 
-  (* TODO: figure out how to implement this constant *)
-  Definition ORDER_U64 : U64.t. Admitted.
+  (* const ORDER_U64: u64; *)
+  Definition run_ORDER_U64 (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "ORDER_U64" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [] U64.t
+    ).
 
   (* fn as_canonical_u64(&self) -> u64; *)
   Definition Run_as_canonical_u64 (Self : Set) `{Link Self} : Set :=

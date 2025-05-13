@@ -2,6 +2,10 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.matrix.dense.
 
+(* TODO(progress):
+- define `of_ty` below
+*)
+
 (* 
 pub struct DenseMatrix<T, V = Vec<T>> {
     pub values: V,
@@ -13,8 +17,9 @@ Module DenseMatrix.
   Record t (T V : Set) : Set := {
     values : V;
     width : usize.t;
-    _phantom : Set;
   }.
+
+  Arguments t : clear implicits.
 
   Parameter to_value : forall {T V : Set}, t T V -> Value.t.
 

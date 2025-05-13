@@ -37,10 +37,8 @@ Module Impl_Blake3Air.
   *)
   Instance run_generate_trace_rows
     {F : Set} `{Link F} 
-    (* NOTE: On `PrimeField64` Side I think there are no needs for F_types? *)
-    (* {F_types : PrimeField64.Types.t} *)
     {run_PrimeField64_for_F : PrimeField64.Run F}
-    (self : Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t) :
+    (self : Ref.t Pointer.Kind.Ref Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t) :
     Run.Trait
       blake3_air.air.generate_trace_rows [] [ Φ F ] [ φ num_hashes; φ extra_capacity_bits ]
       (RowMajorMatrix.t F).
@@ -59,7 +57,7 @@ Module Impl_Blake3Air.
   Instance run_quarter_round_function
     {AB : Set} `{Link AB} 
     {run_PrimeField64_for_F : PrimeField64.Run F}
-    (self : Self) 
+    (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
     (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
     (trace : Set)
