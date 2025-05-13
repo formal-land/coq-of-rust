@@ -2,11 +2,16 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.blake3_air.air.
 Require Import plonky3.field.link.field.
+Require Import plonky3.blake3_air.link.column.
 
 (* 
 TODO:
 - Import missing dependencies
 - In future, refer to `gas` to deal with different impls
+- In future, check if AirBuilder needs `AB_types`
+- Check dependency for:
+  - Blake3State
+  - FullRound
 *)
 
 (* pub struct Blake3Air {} *)
@@ -56,11 +61,12 @@ Module Impl_Blake3Air.
   *)
   Instance run_quarter_round_function
     {AB : Set} `{Link AB} 
-    {run_PrimeField64_for_F : PrimeField64.Run F}
+    {run_AirBuilder_for_AB : AirBuilder.Run AB}
+    (* TODO: check if AirBuilder needs `AB_types` *)
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
     (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
-    (trace : Set)
+    (* (trace : Set) *)
     :
     Run.Trait
       blake3_air.air.quarter_round_function [] [ Φ AB ] [ φ builder; φ trace ]
@@ -79,36 +85,77 @@ Module Impl_Blake3Air.
       index: usize,
   ) -> QuarterRound<'a, T, U>
   *)
+  Instance run_full_round_to_column_quarter_round
+    {T U : Set} `{Link T}  `{Link U}
+    (self : Ref.t Pointer.Kind.Ref Self) 
+    (input : Ref.t Pointer.Kind.Ref (Blake3State.t T))
+    (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
+    (builder : Ref.t Pointer.Kind.MutRef AB)
+    (* TODO: translate m_vector: &'a [[U; 2]; 16], *)
+    (m_vector : Set)
+    (index : Usize.t)
+    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
+    (* (trace : Set) *)
+    :
+    Run.Trait
+      blake3_air.air.full_round_to_column_quarter_round [] [ Φ T; Φ U ] [ φ T; φ U ]
+      (QuarterRound.t T U).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 
   (* 
-      const fn full_round_to_diagonal_quarter_round<'a, T: Copy, U>(
-          &self,
-          round_data: &'a FullRound<T>,
-          m_vector: &'a [[U; 2]; 16],
-          index: usize,
-      ) -> QuarterRound<'a, T, U> 
+  const fn full_round_to_diagonal_quarter_round<'a, T: Copy, U>(
+      &self,
+      round_data: &'a FullRound<T>,
+      m_vector: &'a [[U; 2]; 16],
+      index: usize,
+  ) -> QuarterRound<'a, T, U> 
   *)
+  Instance run_full_round_to_diagonal_quarter_round
+    {T U : Set} `{Link T}  `{Link U}
+    (self : Ref.t Pointer.Kind.Ref Self) 
+    (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
+    (builder : Ref.t Pointer.Kind.MutRef AB)
+    (* TODO: translate m_vector: &'a [[U; 2]; 16], *)
+    (m_vector : Set)
+    (index : Usize.t)
+    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
+    (* (trace : Set) *)
+    :
+    Run.Trait
+      blake3_air.air.full_round_to_diagonal_quarter_round [] [ Φ T; Φ U ] [ φ T; φ U ]
+      (QuarterRound.t T U).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 
   (* 
   fn verify_round<AB: AirBuilder>(
-          &self,
-          builder: &mut AB,
-          input: &Blake3State<AB::Var>,
-          round_data: &FullRound<AB::Var>,
-          m_vector: &[[AB::Expr; 2]; 16],
-      )
+      &self,
+      builder: &mut AB,
+      input: &Blake3State<AB::Var>,
+      round_data: &FullRound<AB::Var>,
+      m_vector: &[[AB::Expr; 2]; 16],
+  )
   *)
-
-  (* 
-    Instance run_STOP :
-      Run.Trait
-        opcode.Impl_revm_bytecode_opcode_OpCode.value_STOP [] [] []
-        (Ref.t Pointer.Kind.Raw OpCode.t).
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-  *)
+  Instance run_quarter_round_function
+    {AB : Set} `{Link AB} 
+    {run_AirBuilder_for_AB : AirBuilder.Run AB}
+    (self : Ref.t Pointer.Kind.Ref Self) 
+    (builder : Ref.t Pointer.Kind.MutRef AB) 
+    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
+    (* (trace : Set) *)
+    :
+    Run.Trait
+      blake3_air.air.quarter_round_function [] [ Φ AB ] [ φ builder; φ trace ]
+      unit.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_Blake3Air.
 
 (* 
