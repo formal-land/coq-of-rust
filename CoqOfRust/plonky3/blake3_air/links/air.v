@@ -1,8 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.blake3_air.air.
-Require Import plonky3.field.link.field.
-Require Import plonky3.blake3_air.link.columns.
+Require Import plonky3.field.links.field.
+Require Import plonky3.blake3_air.links.columns.
+Require Import plonky3.air.links.air.
 
 (* 
 TODO:
