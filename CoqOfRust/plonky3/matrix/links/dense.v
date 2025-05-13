@@ -2,10 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.matrix.dense.
 
-(* TODO(progress):
-- define `of_ty` below
-*)
-
 (* 
 pub struct DenseMatrix<T, V = Vec<T>> {
     pub values: V,
@@ -28,18 +24,12 @@ Module DenseMatrix.
     φ := to_value;
   }.
 
-  (* TODO: define `of_ty` *)
-  (* Definition of_ty (N' : Value.t) (N: Usize.t) :
-    N' = φ N ->
-    OfTy.t (Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N' ] []).
-  Proof.
-    intros.
-    eapply OfTy.Make with (A := t N).
-    subst.
-    reflexivity.
-  Defined.
-  Smpl Add eapply of_ty : of_ty. *)
-
+  Definition of_ty (T' V' : Value.t) (T V : Set) :
+    T' = φ T ->
+    V' = φ V ->
+    OfTy.t (Ty.apply (Ty.path "plonky3::matrix::dense::DenseMatrix") [ T' ; V' ] []).
+  Proof. intros. eapply OfTy.Make with (A := t T V). now subst. Defined.
+  Smpl Add eapply of_ty : of_ty.
 End DenseMatrix.
 
 (* 
