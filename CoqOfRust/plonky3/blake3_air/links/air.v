@@ -7,7 +7,6 @@ Require Import plonky3.air.links.air.
 
 (* 
 TODO:
-- Import missing dependencies
 - In future, refer to `gas` to deal with different impls
 - Check if AirBuilder needs `AB_types`
 *)
@@ -91,8 +90,6 @@ Module Impl_Blake3Air.
     (builder : Ref.t Pointer.Kind.MutRef AB)
     (m_vector : list (list U))
     (index : Usize.t)
-    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
-    (* (trace : Set) *)
     :
     Run.Trait
       blake3_air.air.full_round_to_column_quarter_round [] [ Φ T; Φ U ] [ φ T; φ U ]
@@ -115,11 +112,8 @@ Module Impl_Blake3Air.
     (self : Ref.t Pointer.Kind.Ref Self) 
     (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
     (builder : Ref.t Pointer.Kind.MutRef AB)
-    (* TODO: translate m_vector: &'a [[U; 2]; 16], *)
-    (m_vector : Set)
+    (m_vector : list (list U))
     (index : Usize.t)
-    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
-    (* (trace : Set) *)
     :
     Run.Trait
       blake3_air.air.full_round_to_diagonal_quarter_round [] [ Φ T; Φ U ] [ φ T; φ U ]
@@ -138,16 +132,18 @@ Module Impl_Blake3Air.
       m_vector: &[[AB::Expr; 2]; 16],
   )
   *)
-  Instance run_quarter_round_function
+  Instance run_verify_round
     {AB : Set} `{Link AB} 
     {run_AirBuilder_for_AB : AirBuilder.Run AB}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
-    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
-    (* (trace : Set) *)
+    (* TODO: translate correctly the following variables *)
+    (* (input : Ref.t Pointer.Kind.Ref Blake3State.t (AB.Var)) *)
+    (* (round_data : Ref.t Pointer.Kind.Ref FullRound (AB.Var)) *)
+    (m_vector : list (list U))
     :
     Run.Trait
-      blake3_air.air.quarter_round_function [] [ Φ AB ] [ φ builder; φ trace ]
+      blake3_air.air.verify_round [] [ Φ AB ] [ φ builder; φ trace ]
       unit.
   Proof.
     constructor.
