@@ -14,7 +14,6 @@ Module DenseMatrix.
     values : V;
     width : usize.t;
   }.
-
   Arguments t : clear implicits.
 
   Parameter to_value : forall {T V : Set}, t T V -> Value.t.

@@ -3,6 +3,22 @@ Require Import CoqOfRust.links.M.
 Require Import plonky3.field.field.
 
 (* 
+pub trait Algebra<F>:
+    PrimeCharacteristicRing
+    + From<F>
+    + Add<F, Output = Self>
+    + AddAssign<F>
+    + Sub<F, Output = Self>
+    + SubAssign<F>
+    + Mul<F, Output = Self>
+    + MulAssign<F>
+{
+}
+*)
+Module Algebra.
+End Algebra.
+
+(* 
 pub trait Field:
     Algebra<Self>
     + Packable
