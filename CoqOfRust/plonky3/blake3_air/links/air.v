@@ -162,9 +162,22 @@ impl<F> BaseAir<F> for Blake3Air {
     }
 }
 *)
+Module Impl_BaseAir_for_Blake3Air.
+  Definition Self : Set :=
+    Blake3Air.t.
+
+  (* Instance run : BaseAir.Run Self. *)
+  (* Admitted. *)
+End Impl_BaseAir_for_Blake3Air.
 
 (* 
 impl<AB: AirBuilder> Air<AB> for Blake3Air {
-
     fn eval(&self, builder: &mut AB)
 *)
+Module Impl_Air_for_Blake3Air.
+  Definition Self : Set :=
+    Blake3Air.t.
+
+  (* Instance run : Air.Run Self. *)
+  (* Admitted. *)
+End Impl_Air_for_Blake3Air.
