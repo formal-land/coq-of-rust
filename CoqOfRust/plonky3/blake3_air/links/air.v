@@ -9,10 +9,7 @@ Require Import plonky3.air.links.air.
 TODO:
 - Import missing dependencies
 - In future, refer to `gas` to deal with different impls
-- In future, check if AirBuilder needs `AB_types`
-- Check dependency for:
-  - Blake3State
-  - FullRound
+- Check if AirBuilder needs `AB_types`
 *)
 
 (* pub struct Blake3Air {} *)
