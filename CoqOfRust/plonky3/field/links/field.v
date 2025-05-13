@@ -2,8 +2,75 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.field.field.
 
-(* NOTE: the plan here is we firstly put a stub here and see if we need to 
-implement all these alg structures (?) later *)
+(* 
+pub trait Field:
+    Algebra<Self>
+    + Packable
+    + 'static
+    + Copy
+    + Div<Self, Output = Self>
+    + Eq
+    + Hash
+    + Send
+    + Sync
+    + Display
+    + Serialize
+    + DeserializeOwned
+{
+    type Packing: PackedField<Scalar = Self>;
+
+    const GENERATOR: Self;
+
+    fn is_zero(&self) -> bool {
+        *self == Self::ZERO
+    }
+
+    fn is_one(&self) -> bool {
+        *self == Self::ONE
+    }
+
+    fn try_inverse(&self) -> Option<Self>;
+
+    fn inverse(&self) -> Self {
+        self.try_inverse().expect("Tried to invert zero")
+    }
+
+    fn halve(&self) -> Self {
+        // This should be overwritten by most field implementations.
+        let half = Self::from_prime_subfield(
+            Self::PrimeSubfield::TWO
+                .try_inverse()
+                .expect("Cannot divide by 2 in fields with characteristic 2"),
+        );
+        *self * half
+    }
+
+    fn div_2exp_u64(&self, exp: u64) -> Self {
+        // This should be overwritten by most field implementations.
+        *self
+            * Self::from_prime_subfield(
+                Self::PrimeSubfield::TWO
+                    .try_inverse()
+                    .expect("Cannot divide by 2 in fields with characteristic 2")
+                    .exp_u64(exp),
+            )
+    }
+
+    fn order() -> BigUint;
+
+    fn bits() -> usize {
+        Self::order().bits() as usize
+    }
+}
+*)
+Module Field.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("plonky3::field::field::Field", [], [], Φ Self).
+
+  Class Run (Self : Set) `{Link Self} : Set := {
+  }.
+End Field.
+
 (* 
 pub trait PrimeField:
     Field
@@ -26,7 +93,7 @@ Module PrimeField.
     ("plonky3::field::field::PrimeField", [], [], Φ Self).
 
   Class Run (Self : Set) `{Link Self} : Set := {
-    (* TODO: define `run_Field_for_PrimeField *)
+    run_Field_for_PrimeField : Field.Run Self;
   }.
 End PrimeField.
 
