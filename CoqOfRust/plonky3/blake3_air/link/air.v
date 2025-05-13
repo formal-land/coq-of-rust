@@ -3,6 +3,12 @@ Require Import CoqOfRust.links.M.
 Require Import plonky3.blake3_air.air.
 Require Import plonky3.field.link.field.
 
+(* 
+TODO:
+- Import missing dependencies
+- In future, refer to `gas` to deal with different impls
+*)
+
 (* pub struct Blake3Air {} *)
 Module Blake3Air.
   Record t : Set := {}.
@@ -19,12 +25,8 @@ Module Blake3Air.
   Smpl Add apply of_ty : of_ty. 
 End Blake3Air.
 
-(* 
-TODO:
-- Fill in correct Self type and find more references on `block` and `interpreter`...
-*)
-
 Module Impl_Blake3Air.
+  Definition Self := Blake3Air.t.
   (* 
   impl Blake3Air {
       pub fn generate_trace_rows<F: PrimeField64>(
@@ -38,7 +40,6 @@ Module Impl_Blake3Air.
     (* NOTE: On `PrimeField64` Side I think there are no needs for F_types? *)
     (* {F_types : PrimeField64.Types.t} *)
     {run_PrimeField64_for_F : PrimeField64.Run F}
-    (* TODO: figure out the `Self` below and refer to `interpreter` or `block` *)
     (self : Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t) :
     Run.Trait
       blake3_air.air.generate_trace_rows [] [ Φ F ] [ φ num_hashes; φ extra_capacity_bits ]
