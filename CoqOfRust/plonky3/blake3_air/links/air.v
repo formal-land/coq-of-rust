@@ -4,6 +4,7 @@ Require Import plonky3.blake3_air.air.
 Require Import plonky3.field.links.field.
 Require Import plonky3.blake3_air.links.columns.
 Require Import plonky3.air.links.air.
+Require Import plonky3.matrix.links.dense.
 
 (* 
 TODO:
@@ -18,11 +19,11 @@ Module Blake3Air.
   Parameter to_value : t -> Value.t.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "plonky3::blake3_air::Blake3Air";
+    Φ := Ty.path "plonky3::blake3_air::air::Blake3Air";
     φ := to_value;
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3_air::Blake3Air").
+  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3_air::air::Blake3Air").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty. 
 End Blake3Air.
