@@ -1,10 +1,13 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import plonky3.blake3_air.column.
+Require Import plonky3.blake3_air.columns.
+
+(* TODO:
+- fill in `of_ty` for structs
+*)
 
 (* 
 pub(crate) struct QuarterRound<'a, T, U> {
-    // The inputs to the quarter round function.
     pub a: &'a [T; U32_LIMBS],
     pub b: &'a [T; 32],
     pub c: &'a [T; U32_LIMBS],
@@ -12,7 +15,6 @@ pub(crate) struct QuarterRound<'a, T, U> {
 
     pub m_two_i: &'a [U; U32_LIMBS], // m_{2i}
 
-    // The state after the first half of the quarter round function.
     pub a_prime: &'a [T; U32_LIMBS],
     pub b_prime: &'a [T; 32],
     pub c_prime: &'a [T; U32_LIMBS],
@@ -20,7 +22,6 @@ pub(crate) struct QuarterRound<'a, T, U> {
 
     pub m_two_i_plus_one: &'a [U; U32_LIMBS], // m_{2i + 1}
 
-    // The output from the quarter round function.
     pub a_output: &'a [T; U32_LIMBS],
     pub b_output: &'a [T; 32],
     pub c_output: &'a [T; U32_LIMBS],
@@ -28,6 +29,30 @@ pub(crate) struct QuarterRound<'a, T, U> {
 }
 *)
 Module QuarterRound.
+  Record t (T U : Set) : Set := {
+    a : list T; 
+    b : list T; 
+    c : list T; 
+    d : list T;
+    m_two_i : list U;
+    a_prime : list T;
+    b_prime : list T;
+    c_prime : list T;
+    d_prime : list T;
+    m_two_i_plus_one : list U;
+    a_output : list T;
+    b_output : list T;
+    c_output : list T;
+    d_output : list T;
+  }.
+  Arguments t : clear implicits.
+
+  Parameter to_value : forall {T U : Set}, t T U -> Value.t.
+
+  Global Instance IsLink (T U : Set) : Link t := {
+    Φ := Ty.path "plonky3::blake3_air::columns::QuarterRound";
+    φ := to_value;
+  }.
 End QuarterRound.
 
 (* 
@@ -39,30 +64,43 @@ pub struct Blake3State<T> {
 }
 *)
 Module Blake3State.
+  Record t (T : Set) : Set := {
+    row0 : list (list T);
+    row1 : list (list T);
+    row2 : list (list T);
+    row3 : list (list T);
+  }.
+  Arguments t : clear implicits.
+
+  Parameter to_value : forall {T : Set}, t T -> Value.t.
+
+  Global Instance IsLink (T : Set) : Link t := {
+    Φ := Ty.path "plonky3::blake3_air::columns::Blake3State";
+    φ := to_value;
+  }.
 End Blake3State.
 
 (* 
 pub struct FullRound<T> {
-    // A full round of the Blake3 hash consists of 2 sub rounds each containing 4 applications
-    // of the quarter round function.
-    //
-    // In the first sub round, the quarter round function is applied to each column of the matrix.
-    // In the second sub round, the quarter round function is applied to each left-right diagonal of the matrix.
-    //
-    // We use the output of the previous row to get the input to this row.
-    //
-    /// The outputs after applying the first half of the column quarter round functions.
     pub state_prime: Blake3State<T>,
-
-    /// The outputs after the first sub round.
     pub state_middle: Blake3State<T>,
-
-    /// The outputs after applying the first half of the diagonal quarter round functions.
     pub state_middle_prime: Blake3State<T>,
-
-    /// This will also be the input to the next row.
     pub state_output: Blake3State<T>,
 }
 *)
 Module FullRound.
+  Record t (T : Set) : Set := {
+    state_prime : Blake3State.t T;
+    state_middle : Blake3State.t T;
+    state_middle_prime : Blake3State.t T;
+    state_output : Blake3State.t T;
+  }.
+  Arguments t : clear implicits.
+
+  Parameter to_value : forall {T : Set}, t T -> Value.t.
+
+  Global Instance IsLink (T : Set) : Link t := {
+    Φ := Ty.path "plonky3::blake3_air::columns::FullRound";
+    φ := to_value;
+  }.
 End FullRound.
