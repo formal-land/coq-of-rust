@@ -18,6 +18,8 @@ Module DenseMatrix.
 
   Parameter to_value : forall {T V : Set}, t T V -> Value.t.
 
+  (* NOTE: It looks like Coq will take infinitely long time to find an 
+  appropriate class for this instance *)
   Global Instance IsLink (T V : Set) : Link (t T V) := {
     Φ := Ty.apply (Ty.path "plonky3::matrix::dense::DenseMatrix") [ φ T; φ V ] [];
     φ := to_value;
