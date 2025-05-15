@@ -90,4 +90,6 @@ Module AirBuilder.
         self.assert_zero(x.into().bool_check());
     }
 *)
+  Class Run (Self : Set) `{Link Self} : Set := {
+  }.
 End AirBuilder.

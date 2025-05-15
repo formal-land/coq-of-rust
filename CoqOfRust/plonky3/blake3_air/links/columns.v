@@ -49,10 +49,10 @@ Module QuarterRound.
 
   Parameter to_value : forall {T U : Set}, t T U -> Value.t.
 
-  Global Instance IsLink (T U : Set) : Link (t T U) := {
+  (* Global Instance IsLink (T U : Set) : Link (t T U) := {
     Φ := Ty.path "plonky3::blake3_air::columns::QuarterRound";
     φ := to_value;
-  }.
+  }. *)
 End QuarterRound.
 
 (* 
@@ -74,10 +74,10 @@ Module Blake3State.
 
   Parameter to_value : forall {T : Set}, t T -> Value.t.
 
-  Global Instance IsLink (T : Set) : Link (t T) := {
+  (* Global Instance IsLink (T : Set) : Link (t T) := {
     Φ := Ty.path "plonky3::blake3_air::columns::Blake3State";
     φ := to_value;
-  }.
+  }. *)
 End Blake3State.
 
 (* 
@@ -99,8 +99,8 @@ Module FullRound.
 
   Parameter to_value : forall {T : Set}, t T -> Value.t.
 
-  Global Instance IsLink (T : Set) : Link (t T) := {
+  (* Global Instance IsLink (T : Set) : Link (t T) := {
     Φ := Ty.path "plonky3::blake3_air::columns::FullRound";
     φ := to_value;
-  }.
+  }. *)
 End FullRound.
