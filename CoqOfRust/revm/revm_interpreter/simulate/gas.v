@@ -3,15 +3,6 @@ Require Import links.M.
 Require Import simulate.M.
 Require Import revm.revm_interpreter.links.gas.
 
-Ltac get_can_access :=
-  unshelve eapply Run.GetCanAccess; [
-    match goal with
-    | |- Stack.CanAccess.t ?Stack (Ref.Core.Mutable ?index _ _ _ ?injection) =>
-      apply (Stack.CanAccess.Mutable Stack index _ _ _ injection)
-    end
-  |];
-  cbn.
-
 Module Impl_MemoryGas.
   Definition Self : Set :=
     MemoryGas.t.

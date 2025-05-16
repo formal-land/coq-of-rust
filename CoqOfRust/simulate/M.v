@@ -215,7 +215,7 @@ Module StackM.
         ).
         destruct (Stack.CanAccess.read H_access stack) as [value|].
         { exact (eval _ _ _ (k value) stack). }
-        { exact (Pure (Output.panic "StateRead: invalid reference", stack)). }
+        { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
       }
       { (* StateWrite *)
         refine (
@@ -307,3 +307,12 @@ Module Run.
   where "{{ e 🌲 value }}" := (t value e).
 End Run.
 Export Run.
+
+Ltac get_can_access :=
+  unshelve eapply Run.GetCanAccess; [
+    match goal with
+    | |- Stack.CanAccess.t ?Stack (Ref.Core.Mutable ?index _ _ _ ?injection) =>
+      apply (Stack.CanAccess.Mutable Stack index _ _ _ injection)
+    end
+  |];
+  cbn.
