@@ -140,7 +140,10 @@ Module Impl_Option.
     Run.Trait
       (option.Impl_core_option_Option_T.unwrap_or (Φ T)) [] [] [ φ self; φ default ]
       T.
-  Admitted.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 
   (* pub const fn expect(self, msg: &str) -> T *)
   Instance run_expect {T : Set} `{Link T}
