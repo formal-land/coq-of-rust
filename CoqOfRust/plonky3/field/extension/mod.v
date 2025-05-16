@@ -108,14 +108,9 @@ Module extension.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
-                                        (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
-                                    ],
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                                    (Ty.apply (Ty.path "core::option::Option") [] [ Self ]),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>

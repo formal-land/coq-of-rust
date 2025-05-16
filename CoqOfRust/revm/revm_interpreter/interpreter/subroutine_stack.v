@@ -154,11 +154,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                  ],
+                Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -284,7 +280,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -314,36 +310,34 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "usize",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                              "idx"
-                            |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                            "idx"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -800,13 +794,13 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -1024,16 +1018,14 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                      "current_code_idx"
-                    |),
-                    M.read (| idx |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                    "current_code_idx"
+                  |),
+                  M.read (| idx |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1129,118 +1121,125 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let program_counter := M.alloc (| program_counter |) in
             let new_idx := M.alloc (| new_idx |) in
-            M.catch_return (Ty.path "bool") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
-                                              Ty.path
-                                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                                              "return_stack"
-                                            |)
-                                          |)
-                                        ]
-                                      |);
-                                      Value.Integer IntegerKind.Usize 1024
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
+            M.read (|
+              M.catch_return (Ty.path "bool") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
                             [
-                              Ty.path
-                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "push",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                              "return_stack"
-                            |)
-                          |);
-                          Value.StructRecord
-                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                            []
-                            []
-                            [
-                              ("idx",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                                    "current_code_idx"
-                                  |)
-                                |));
-                              ("pc", M.read (| program_counter |))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ge,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                                    "return_stack"
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1024
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Bool false |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.write (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                          "current_code_idx"
-                        |),
-                        M.read (| new_idx |)
-                      |)
-                    |) in
-                  M.alloc (| Value.Bool true |)
-                |)))
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "push",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                "return_stack"
+                              |)
+                            |);
+                            Value.StructRecord
+                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+                              []
+                              []
+                              [
+                                ("idx",
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                      "current_code_idx"
+                                    |)
+                                  |));
+                                ("pc", M.read (| program_counter |))
+                              ]
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.write (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                            "current_code_idx"
+                          |),
+                          M.read (| new_idx |)
+                        |) in
+                      M.alloc (| Value.Bool true |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1321,40 +1320,33 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.path
-                                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                                      ]
+                                    Ty.path
+                                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
                                   ]
-                                  (Ty.path "usize")
-                              ],
+                              ]
+                              (Ty.path "usize"),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let i := M.copy (| γ |) in
                                   M.read (|
-                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                      M.alloc (|
-                                        M.write (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                          "current_code_idx"
+                                        |),
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                                            "current_code_idx"
-                                          |),
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              i,
-                                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                                              "idx"
-                                            |)
+                                            i,
+                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                                            "idx"
                                           |)
                                         |)
                                       |) in
@@ -1385,16 +1377,14 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                      "current_code_idx"
-                    |),
-                    M.read (| idx |)
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                    "current_code_idx"
+                  |),
+                  M.read (| idx |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

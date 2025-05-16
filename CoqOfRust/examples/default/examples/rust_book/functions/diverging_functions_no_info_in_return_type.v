@@ -28,46 +28,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ a : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "diverging_functions_no_info_in_return_type::some_fn", [], [] |),
-              []
-            |)
+        let~ a : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "diverging_functions_no_info_in_return_type::some_fn", [], [] |),
+            []
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "std::io::stdio::_print", [], [] |),
-              [
-                M.call_closure (|
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "std::io::stdio::_print", [], [] |),
+            [
+              M.call_closure (|
+                Ty.path "core::fmt::Arguments",
+                M.get_associated_function (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Arguments",
-                    "new_const",
-                    [ Value.Integer IntegerKind.Usize 1 ],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Value.Array
-                              [ mk_str (| "This function returns and you can see this line.
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ mk_str (| "This function returns and you can see this line.
 " |) ]
-                          |)
                         |)
                       |)
                     |)
-                  ]
-                |)
-              ]
-            |)
+                  |)
+                ]
+              |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

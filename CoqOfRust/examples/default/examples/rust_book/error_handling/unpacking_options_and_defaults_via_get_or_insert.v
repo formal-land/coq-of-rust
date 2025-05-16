@@ -60,7 +60,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 self,
                 [
                   fun γ =>
@@ -155,64 +155,44 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ my_fruit :
             Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
-              ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::None"
-              []
-              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
-              []
-          |) in
-        let~ apple :
-            Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::option::Option")
               []
               [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple"
-              []
-              []
-              []
-          |) in
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
+            [] in
+        let~ apple : Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" :=
+          Value.StructTuple
+            "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple"
+            []
+            []
+            [] in
         let~ first_available_fruit :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "&mut")
               []
-              [
-                Ty.apply
-                  (Ty.path "&mut")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
+            M.get_associated_function (|
               Ty.apply
-                (Ty.path "&mut")
+                (Ty.path "core::option::Option")
                 []
                 [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
-                "get_or_insert",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.MutRef, my_fruit |); M.read (| apple |) ]
-            |)
+              "get_or_insert",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.MutRef, my_fruit |); M.read (| apple |) ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -279,12 +259,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -352,9 +332,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

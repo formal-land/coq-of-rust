@@ -125,13 +125,13 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                   |)))
@@ -162,36 +162,34 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "core::hash::Hash",
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  [],
-                  [],
-                  "hash",
-                  [],
-                  [ __H ]
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "hash_map_alternate_or_custom_key_types::Account",
-                          "username"
-                        |)
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "hash_map_alternate_or_custom_key_types::Account",
+                        "username"
                       |)
                     |)
-                  |);
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                ]
-              |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -285,9 +283,9 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
       let username := M.alloc (| username |) in
       let password := M.alloc (| password |) in
       M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -344,12 +342,12 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -406,12 +404,12 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -438,26 +436,20 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ logon :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ] :=
-          M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::Account"
-              []
-              []
-              [
-                ("username", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| username |) |) |));
-                ("password", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| password |) |) |))
-              ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
+        let~ logon : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
+          Value.StructRecord
+            "hash_map_alternate_or_custom_key_types::Account"
+            []
+            []
+            [
+              ("username", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| username |) |) |));
+              ("password", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| password |) |) |))
+            ] in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -497,9 +489,9 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let account_info := M.copy (| γ0_0 |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -526,12 +518,12 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -598,12 +590,12 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -670,41 +662,39 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                (let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "Login failed!
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "Login failed!
 " |) ] |)
-                                |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
@@ -746,20 +736,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ accounts :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "std::collections::hash::map::HashMap")
               []
               [
-                Ty.apply
-                  (Ty.path "std::collections::hash::map::HashMap")
-                  []
-                  [
-                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                    Ty.path "std::hash::random::RandomState"
-                  ]
+                Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                Ty.path "std::hash::random::RandomState"
               ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              []
+              [
+                Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                Ty.path "std::hash::random::RandomState"
+              ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
                 []
@@ -768,124 +761,87 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
                   Ty.path "std::hash::random::RandomState"
                 ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "std::collections::hash::map::HashMap")
-                  []
-                  [
-                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                    Ty.path "std::hash::random::RandomState"
-                  ],
-                "new",
-                [],
-                []
-              |),
+              "new",
+              [],
               []
-            |)
+            |),
+            []
           |) in
-        let~ account :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ] :=
-          M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::Account"
-              []
-              []
-              [
-                ("username",
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |));
-                ("password",
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
-              ]
-          |) in
-        let~ account_info :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ] :=
-          M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::AccountInfo"
-              []
-              []
-              [
-                ("name",
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "John Everyman" |) |) |));
-                ("email",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| mk_str (| "j.everyman@email.com" |) |)
-                  |))
-              ]
-          |) in
+        let~ account : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
+          Value.StructRecord
+            "hash_map_alternate_or_custom_key_types::Account"
+            []
+            []
+            [
+              ("username",
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |));
+              ("password",
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
+            ] in
+        let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
+          Value.StructRecord
+            "hash_map_alternate_or_custom_key_types::AccountInfo"
+            []
+            []
+            [
+              ("name", M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "John Everyman" |) |) |));
+              ("email",
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman@email.com" |) |) |))
+            ] in
         let~ _ :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::option::Option")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ],
+            M.get_associated_function (|
               Ty.apply
-                (Ty.path "core::option::Option")
+                (Ty.path "std::collections::hash::map::HashMap")
                 []
-                [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "std::collections::hash::map::HashMap")
-                  []
-                  [
-                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                    Ty.path "std::hash::random::RandomState"
-                  ],
-                "insert",
-                [],
-                []
-              |),
-              [
-                M.borrow (| Pointer.Kind.MutRef, accounts |);
-                M.read (| account |);
-                M.read (| account_info |)
-              ]
-            |)
+                [
+                  Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                  Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                  Ty.path "std::hash::random::RandomState"
+                ],
+              "insert",
+              [],
+              []
+            |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, accounts |);
+              M.read (| account |);
+              M.read (| account_info |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "psasword123" |) |) |)
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "psasword123" |) |) |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |)
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

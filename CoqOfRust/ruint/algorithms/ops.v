@@ -17,59 +17,57 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let carry := M.alloc (| carry |) in
           M.read (|
-            let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u128",
-                  BinOp.Wrap.add,
-                  [
-                    M.call_closure (|
-                      Ty.path "u128",
-                      BinOp.Wrap.add,
-                      [
-                        M.call_closure (|
-                          Ty.path "u128",
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "u128",
-                            [],
-                            [ Ty.path "u64" ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| lhs |) ]
-                        |);
-                        M.call_closure (|
-                          Ty.path "u128",
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "u128",
-                            [],
-                            [ Ty.path "u64" ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| rhs |) ]
-                        |)
-                      ]
-                    |);
-                    M.call_closure (|
-                      Ty.path "u128",
-                      M.get_trait_method (|
-                        "core::convert::From",
+            let~ result : Ty.path "u128" :=
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
                         Ty.path "u128",
-                        [],
-                        [ Ty.path "u64" ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [ M.read (| carry |) ]
-                    |)
-                  ]
-                |)
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| lhs |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| carry |) ]
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -110,59 +108,57 @@ Module algorithms.
           let rhs := M.alloc (| rhs |) in
           let borrow := M.alloc (| borrow |) in
           M.read (|
-            let~ result : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u128",
-                  M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
-                  [
-                    M.call_closure (|
-                      Ty.path "u128",
-                      M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "u128",
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "u128",
-                            [],
-                            [ Ty.path "u64" ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| lhs |) ]
-                        |);
-                        M.call_closure (|
-                          Ty.path "u128",
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "u128",
-                            [],
-                            [ Ty.path "u64" ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| rhs |) ]
-                        |)
-                      ]
-                    |);
-                    M.call_closure (|
-                      Ty.path "u128",
-                      M.get_trait_method (|
-                        "core::convert::From",
+            let~ result : Ty.path "u128" :=
+              M.call_closure (|
+                Ty.path "u128",
+                M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
+                    [
+                      M.call_closure (|
                         Ty.path "u128",
-                        [],
-                        [ Ty.path "u64" ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [ M.read (| borrow |) ]
-                    |)
-                  ]
-                |)
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| lhs |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| borrow |) ]
+                  |)
+                ]
               |) in
             M.alloc (|
               Value.Tuple

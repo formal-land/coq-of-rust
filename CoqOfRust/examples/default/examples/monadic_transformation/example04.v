@@ -11,10 +11,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] :=
-          M.alloc (|
-            M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 1 |) |)
-          |) in
+        let~ x : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
+          M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 1 |) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

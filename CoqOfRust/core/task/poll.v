@@ -50,7 +50,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                 self,
                 [
                   fun γ =>
@@ -122,14 +122,9 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 self,
                 [
                   fun γ =>
@@ -221,7 +216,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -265,29 +260,25 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.and (|
@@ -299,7 +290,7 @@ Module task.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -372,32 +363,28 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                Ty.path "core::cmp::Ordering",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -427,7 +414,7 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -513,36 +500,28 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                 [
                   fun γ =>
@@ -643,42 +622,38 @@ Module task.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "isize",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 self,
                 [
                   fun γ =>
@@ -749,7 +724,7 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ] ],
+                Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
                 self,
                 [
                   fun γ =>
@@ -813,7 +788,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -900,14 +875,9 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::task::poll::Poll")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
                 self,
                 [
                   fun γ =>
@@ -1024,14 +994,9 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::task::poll::Poll")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
                 self,
                 [
                   fun γ =>
@@ -1162,18 +1127,13 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::task::poll::Poll")
+                      (Ty.path "core::option::Option")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                      ]
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
                   ],
                 self,
                 [
@@ -1358,18 +1318,13 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::task::poll::Poll")
+                      (Ty.path "core::option::Option")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                      ]
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
                   ],
                 self,
                 [
@@ -1628,19 +1583,14 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::ops::control_flow::ControlFlow")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      (Ty.path "core::result::Result")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "core::convert::Infallible"; E ];
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                      ]
+                      [ Ty.path "core::convert::Infallible"; E ];
+                    Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
                   ],
                 self,
                 [
@@ -1778,14 +1728,9 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::task::poll::Poll")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
-                  ],
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
                 x,
                 [
                   fun γ =>
@@ -1920,18 +1865,12 @@ Module task.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ])
-                              ],
+                            Ty.function
+                              [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
+                              (Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1989,22 +1928,17 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::ops::control_flow::ControlFlow")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      (Ty.path "core::result::Result")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "core::convert::Infallible"; E ];
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                      ]
+                      [ Ty.path "core::convert::Infallible"; E ];
+                    Ty.apply
+                      (Ty.path "core::task::poll::Poll")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                   ],
                 self,
                 [
@@ -2211,18 +2145,13 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::task::poll::Poll")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::task::poll::Poll")
+                      (Ty.path "core::option::Option")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
-                      ]
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
                   ],
                 x,
                 [

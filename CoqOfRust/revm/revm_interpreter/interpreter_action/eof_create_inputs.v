@@ -51,14 +51,9 @@ Module interpreter_action.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 self,
                 [
                   fun γ =>
@@ -189,11 +184,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
-                  ],
+                Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                 self,
                 [
                   fun γ =>
@@ -362,35 +353,31 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [
-                        Ty.path
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [
+                      Ty.path
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                    ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [
-                        Ty.path
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [
+                      Ty.path
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                    ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.and (|
@@ -402,7 +389,7 @@ Module interpreter_action.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -625,19 +612,19 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                               |)))
@@ -681,18 +668,9 @@ Module interpreter_action.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "alloy_primitives::bits::address::Address" ]
-                      ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ]
                   ],
                 self,
                 [
@@ -1383,25 +1361,25 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                        Ty.tuple [],
                                         Value.DeclaredButUndefined,
                                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                       |)))

@@ -37,7 +37,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              Ty.path "move_core_types::abi::ScriptABI",
               self,
               [
                 fun γ =>
@@ -130,14 +130,9 @@ Module abi.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               self,
               [
                 fun γ =>
@@ -240,42 +235,38 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::abi::ScriptABI" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::abi::ScriptABI" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "isize",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               self,
               [
                 fun γ =>
@@ -364,13 +355,13 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -413,29 +404,25 @@ Module abi.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::abi::ScriptABI" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::abi::ScriptABI" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::abi::ScriptABI" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::abi::ScriptABI" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               LogicalOp.and (|
@@ -447,7 +434,7 @@ Module abi.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                      Ty.path "bool",
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -585,16 +572,11 @@ Module abi.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                      ]
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
                   ],
                 M.deref (| M.read (| self |) |),
                 [
@@ -768,71 +750,64 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ __serde_state :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ __serde_state :
                           Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"
-                        ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
+                            "SerializeStruct" :=
+                        M.read (|
+                          M.match_operator (|
                             Ty.associated_in_trait
                               "serde::ser::Serializer"
                               []
                               []
                               __S
-                              "SerializeStruct"
-                          ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  __S
-                                  "SerializeStruct";
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::Serializer",
-                              __S,
-                              [],
-                              [],
-                              "serialize_struct",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| __serializer |);
-                              mk_str (| "ScriptFunctionABI" |);
+                              "SerializeStruct",
+                            M.alloc (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.add,
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct";
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::Serializer",
+                                  __S,
+                                  [],
+                                  [],
+                                  "serialize_struct",
+                                  [],
+                                  []
+                                |),
                                 [
+                                  M.read (| __serializer |);
+                                  mk_str (| "ScriptFunctionABI" |);
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
@@ -849,7 +824,14 @@ Module abi.
                                                 Ty.path "usize",
                                                 BinOp.Wrap.add,
                                                 [
-                                                  M.cast (Ty.path "usize") (Value.Bool false);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
                                                   Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |);
@@ -861,580 +843,619 @@ Module abi.
                                       |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "name" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ScriptFunctionABI",
+                                          "name"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "move_core_types::language_storage::ModuleId" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "module_name" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ScriptFunctionABI",
+                                          "module_name"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "doc" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ScriptFunctionABI",
+                                          "doc"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::abi::TypeArgumentABI";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "ty_args" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ScriptFunctionABI",
+                                          "ty_args"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::abi::ArgumentABI";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "args" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ScriptFunctionABI",
+                                          "args"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
+                          M.get_trait_method (|
+                            "serde::ser::SerializeStruct",
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
+                            [],
+                            [],
+                            "end",
+                            [],
+                            []
+                          |),
+                          [ M.read (| __serde_state |) ]
+                        |)
                       |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ScriptFunctionABI",
-                                    "name"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "move_core_types::language_storage::ModuleId" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "module_name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ScriptFunctionABI",
-                                    "module_name"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "doc" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ScriptFunctionABI",
-                                    "doc"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path "move_core_types::abi::TypeArgumentABI";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "ty_args" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ScriptFunctionABI",
-                                    "ty_args"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path "move_core_types::abi::ArgumentABI";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "args" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ScriptFunctionABI",
-                                    "args"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ],
-                      M.get_trait_method (|
-                        "serde::ser::SerializeStruct",
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
-                        [],
-                        [],
-                        "end",
-                        [],
-                        []
-                      |),
-                      [ M.read (| __serde_state |) ]
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1531,71 +1552,64 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ __serde_state :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ __serde_state :
                           Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"
-                        ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
+                            "SerializeStruct" :=
+                        M.read (|
+                          M.match_operator (|
                             Ty.associated_in_trait
                               "serde::ser::Serializer"
                               []
                               []
                               __S
-                              "SerializeStruct"
-                          ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  __S
-                                  "SerializeStruct";
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::Serializer",
-                              __S,
-                              [],
-                              [],
-                              "serialize_struct",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| __serializer |);
-                              mk_str (| "TransactionScriptABI" |);
+                              "SerializeStruct",
+                            M.alloc (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.add,
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct";
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::Serializer",
+                                  __S,
+                                  [],
+                                  [],
+                                  "serialize_struct",
+                                  [],
+                                  []
+                                |),
                                 [
+                                  M.read (| __serializer |);
+                                  mk_str (| "TransactionScriptABI" |);
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
@@ -1612,7 +1626,14 @@ Module abi.
                                                 Ty.path "usize",
                                                 BinOp.Wrap.add,
                                                 [
-                                                  M.cast (Ty.path "usize") (Value.Bool false);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
                                                   Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |);
@@ -1624,386 +1645,627 @@ Module abi.
                                       |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "name" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::TransactionScriptABI",
+                                          "name"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
+                                ]
+                              |)
+                            |),
                             [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::TransactionScriptABI",
-                                    "name"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "doc" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::TransactionScriptABI",
-                                    "doc"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "move_core_types::abi::_'4::serialize::__SerializeWith" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "code" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
                                   M.alloc (|
-                                    Value.StructRecord
-                                      "move_core_types::abi::_'4::serialize::__SerializeWith"
-                                      []
-                                      []
-                                      [
-                                        ("values",
-                                          Value.Tuple
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "move_core_types::abi::TransactionScriptABI",
-                                                      "code"
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            ]);
-                                        ("phantom",
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
                                           Value.StructTuple
-                                            "core::marker::PhantomData"
+                                            "core::result::Result::Err"
                                             []
-                                            [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
-                                            [])
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
                             M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "doc" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::TransactionScriptABI",
+                                          "doc"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "move_core_types::abi::_'4::serialize::__SerializeWith"
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "code" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.StructRecord
+                                            "move_core_types::abi::_'4::serialize::__SerializeWith"
+                                            []
+                                            []
+                                            [
+                                              ("values",
+                                                Value.Tuple
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_core_types::abi::TransactionScriptABI",
+                                                            "code"
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]);
+                                              ("phantom",
+                                                Value.StructTuple
+                                                  "core::marker::PhantomData"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::abi::TransactionScriptABI"
+                                                  ]
+                                                  [])
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
                                       []
                                       [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
+                                        Ty.path "move_core_types::abi::TypeArgumentABI";
+                                        Ty.path "alloc::alloc::Global"
                                       ]
-                                      [ M.read (| __err |) ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "ty_args" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::TransactionScriptABI",
+                                          "ty_args"
+                                        |)
+                                      |)
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::abi::ArgumentABI";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "args" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::TransactionScriptABI",
+                                          "args"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
                             [
-                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
                               Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
                             ],
                           M.get_trait_method (|
@@ -2016,214 +2278,16 @@ Module abi.
                               "SerializeStruct",
                             [],
                             [],
-                            "serialize_field",
+                            "end",
                             [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path "move_core_types::abi::TypeArgumentABI";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "ty_args" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::TransactionScriptABI",
-                                    "ty_args"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
                             []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path "move_core_types::abi::ArgumentABI";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
                           |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "args" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::TransactionScriptABI",
-                                    "args"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
+                          [ M.read (| __serde_state |) ]
                         |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ],
-                      M.get_trait_method (|
-                        "serde::ser::SerializeStruct",
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
-                        [],
-                        [],
-                        "end",
-                        [],
-                        []
-                      |),
-                      [ M.read (| __serde_state |) ]
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2320,348 +2384,366 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ __serde_state :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ __serde_state :
                           Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"
-                        ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
+                            "SerializeStruct" :=
+                        M.read (|
+                          M.match_operator (|
                             Ty.associated_in_trait
                               "serde::ser::Serializer"
                               []
                               []
                               __S
-                              "SerializeStruct"
-                          ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  __S
-                                  "SerializeStruct";
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::Serializer",
-                              __S,
-                              [],
-                              [],
-                              "serialize_struct",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| __serializer |);
-                              mk_str (| "ArgumentABI" |);
+                              "SerializeStruct",
+                            M.alloc (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.add,
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct";
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::Serializer",
+                                  __S,
+                                  [],
+                                  [],
+                                  "serialize_struct",
+                                  [],
+                                  []
+                                |),
                                 [
+                                  M.read (| __serializer |);
+                                  mk_str (| "ArgumentABI" |);
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
                                     [
-                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.cast (Ty.path "usize") (Value.Bool false);
+                                          Value.Integer IntegerKind.Usize 1
+                                        ]
+                                      |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "name" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ArgumentABI",
+                                          "name"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "move_core_types::language_storage::TypeTag" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "type_tag" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::ArgumentABI",
+                                          "type_tag"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
+                          M.get_trait_method (|
+                            "serde::ser::SerializeStruct",
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
+                            [],
+                            [],
+                            "end",
+                            [],
+                            []
+                          |),
+                          [ M.read (| __serde_state |) ]
+                        |)
                       |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ArgumentABI",
-                                    "name"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "type_tag" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::ArgumentABI",
-                                    "type_tag"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ],
-                      M.get_trait_method (|
-                        "serde::ser::SerializeStruct",
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
-                        [],
-                        [],
-                        "end",
-                        [],
-                        []
-                      |),
-                      [ M.read (| __serde_state |) ]
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2758,137 +2840,234 @@ Module abi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ __serde_state :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ __serde_state :
                           Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"
-                        ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
+                            "SerializeStruct" :=
+                        M.read (|
+                          M.match_operator (|
                             Ty.associated_in_trait
                               "serde::ser::Serializer"
                               []
                               []
                               __S
-                              "SerializeStruct"
-                          ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "serde::ser::Serializer"
-                                  []
-                                  []
-                                  __S
-                                  "SerializeStruct";
-                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                              ],
-                            M.get_trait_method (|
-                              "serde::ser::Serializer",
-                              __S,
-                              [],
-                              [],
-                              "serialize_struct",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (| __serializer |);
-                              mk_str (| "TypeArgumentABI" |);
+                              "SerializeStruct",
+                            M.alloc (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.add,
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct";
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::Serializer",
+                                  __S,
+                                  [],
+                                  [],
+                                  "serialize_struct",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  M.cast (Ty.path "usize") (Value.Bool false);
-                                  Value.Integer IntegerKind.Usize 1
+                                  M.read (| __serializer |);
+                                  mk_str (| "TypeArgumentABI" |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |)
                                 ]
                               |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
                             ]
                           |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
-                                |) in
-                              let __val := M.copy (| γ0_0 |) in
-                              __val));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Err",
-                                  0
-                                |) in
-                              let __err := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Ok";
-                                          Ty.associated_in_trait
-                                            "serde::ser::Serializer"
-                                            []
-                                            []
-                                            __S
-                                            "Error"
-                                        ]
-                                        [ M.read (| __err |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "serde::ser::SerializeStruct",
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct",
+                                  [],
+                                  [],
+                                  "serialize_field",
+                                  [],
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                                  |);
+                                  mk_str (| "name" |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::abi::TypeArgumentABI",
+                                          "name"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let __val := M.copy (| γ0_0 |) in
+                                  __val));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  let __err := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Ok";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                __S
+                                                "Error"
+                                            ]
+                                            [ M.read (| __err |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
                             [
-                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
                               Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
                             ],
                           M.get_trait_method (|
@@ -2901,102 +3080,16 @@ Module abi.
                               "SerializeStruct",
                             [],
                             [],
-                            "serialize_field",
+                            "end",
                             [],
-                            [ Ty.path "alloc::string::String" ]
+                            []
                           |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::abi::TypeArgumentABI",
-                                    "name"
-                                  |)
-                                |)
-                              |)
-                            |)
-                          ]
+                          [ M.read (| __serde_state |) ]
                         |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Ok";
-                                        Ty.associated_in_trait
-                                          "serde::ser::Serializer"
-                                          []
-                                          []
-                                          __S
-                                          "Error"
-                                      ]
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ],
-                      M.get_trait_method (|
-                        "serde::ser::SerializeStruct",
-                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
-                        [],
-                        [],
-                        "end",
-                        [],
-                        []
-                      |),
-                      [ M.read (| __serde_state |) ]
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3429,135 +3522,127 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "alloc::string::String",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::ScriptFunctionABI",
-                            "name"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "name"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "move_core_types::language_storage::ModuleId",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::ScriptFunctionABI",
-                            "module_name"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "move_core_types::language_storage::ModuleId",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "module_name"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "alloc::string::String",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::ScriptFunctionABI",
-                            "doc"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "doc"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [
-                        Ty.path "move_core_types::abi::TypeArgumentABI";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::ScriptFunctionABI",
-                            "ty_args"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ScriptFunctionABI",
+                          "ty_args"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -3620,25 +3705,25 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -4236,138 +4321,130 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "alloc::string::String",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::TransactionScriptABI",
-                            "name"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "name"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "alloc::string::String",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::TransactionScriptABI",
-                            "doc"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "doc"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::TransactionScriptABI",
-                            "code"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "code"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [
-                        Ty.path "move_core_types::abi::TypeArgumentABI";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::TransactionScriptABI",
-                            "ty_args"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::TransactionScriptABI",
+                          "ty_args"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4430,25 +4507,25 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -4882,36 +4959,34 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "alloc::string::String",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::abi::ArgumentABI",
-                            "name"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::abi::ArgumentABI",
+                          "name"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4971,13 +5046,13 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -5283,7 +5358,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -5993,7 +6068,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -6034,7 +6109,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               self,
               [
                 fun γ =>
@@ -6077,7 +6152,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -6164,7 +6239,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -6252,18 +6327,13 @@ Module abi.
               M.read (|
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "slice")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
-                        ]
+                        [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
                     ],
                   self,
                   [
@@ -6368,18 +6438,9 @@ Module abi.
               M.read (|
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.path "move_core_types::abi::ArgumentABI" ]
-                        ]
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "move_core_types::abi::ArgumentABI" ]
                     ],
                   self,
                   [

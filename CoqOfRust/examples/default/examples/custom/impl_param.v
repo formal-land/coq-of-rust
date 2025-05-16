@@ -22,74 +22,63 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       let func2 := M.alloc (| func2 |) in
       let foo := M.alloc (| foo |) in
       M.read (|
-        let~ x : Ty.apply (Ty.path "*") [] [ impl_Default ] := M.copy (| func |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.write (|
-              x,
-              M.call_closure (|
+        let~ x : impl_Default := M.read (| func |) in
+        let~ _ : Ty.tuple [] :=
+          M.write (|
+            x,
+            M.call_closure (|
+              impl_Default,
+              M.get_trait_method (|
+                "core::default::Default",
                 impl_Default,
-                M.get_trait_method (|
-                  "core::default::Default",
-                  impl_Default,
-                  [],
-                  [],
-                  "default",
-                  [],
-                  []
-                |),
+                [],
+                [],
+                "default",
+                [],
                 []
-              |)
+              |),
+              []
             |)
           |) in
-        let~ y : Ty.apply (Ty.path "*") [] [ impl_Default'1 ] := M.copy (| func2 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.write (|
-              y,
-              M.call_closure (|
+        let~ y : impl_Default'1 := M.read (| func2 |) in
+        let~ _ : Ty.tuple [] :=
+          M.write (|
+            y,
+            M.call_closure (|
+              impl_Default'1,
+              M.get_trait_method (|
+                "core::default::Default",
                 impl_Default'1,
-                M.get_trait_method (|
-                  "core::default::Default",
-                  impl_Default'1,
-                  [],
-                  [],
-                  "default",
-                  [],
-                  []
-                |),
+                [],
+                [],
+                "default",
+                [],
                 []
-              |)
+              |),
+              []
             |)
           |) in
-        let~ z : Ty.apply (Ty.path "*") [] [ A ] := M.copy (| foo |) in
+        let~ z : A := M.read (| foo |) in
         let~ b :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::boxed::Box")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
-              [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -205,7 +205,7 @@ Module Impl_derive_Inches.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ],
+            Ty.path "derive::Centimeters",
             self,
             [
               fun γ =>
@@ -281,17 +281,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _one_second : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Seconds" ] :=
-          M.alloc (|
-            Value.StructTuple "derive::Seconds" [] [] [ Value.Integer IntegerKind.I32 1 ]
-          |) in
-        let~ foot : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Inches" ] :=
-          M.alloc (|
-            Value.StructTuple "derive::Inches" [] [] [ Value.Integer IntegerKind.I32 12 ]
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _one_second : Ty.path "derive::Seconds" :=
+          Value.StructTuple "derive::Seconds" [] [] [ Value.Integer IntegerKind.I32 1 ] in
+        let~ foot : Ty.path "derive::Inches" :=
+          Value.StructTuple "derive::Inches" [] [] [ Value.Integer IntegerKind.I32 12 ] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -348,17 +344,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ meter : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ] :=
-          M.alloc (|
-            Value.StructTuple "derive::Centimeters" [] [] [ M.read (| UnsupportedLiteral |) ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
-        let~ cmp : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.copy (|
+        let~ meter : Ty.path "derive::Centimeters" :=
+          Value.StructTuple "derive::Centimeters" [] [] [ M.read (| UnsupportedLiteral |) ] in
+        let~ cmp : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -407,9 +401,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -467,9 +461,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

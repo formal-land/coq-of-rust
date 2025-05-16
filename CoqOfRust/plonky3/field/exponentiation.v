@@ -61,187 +61,161 @@ Module exponentiation.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.read (|
-          let~ p1 : Ty.apply (Ty.path "*") [] [ R ] := M.copy (| val |) in
-          let~ p10 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1 : R := M.read (| val |) in
+          let~ p10 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
+            |) in
+          let~ p11 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
+                |);
+                M.read (| p1 |)
+              ]
             |) in
-          let~ p11 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
-                  |);
-                  M.read (| p1 |)
-                ]
-              |)
-            |) in
-          let~ p101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p10 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ p110000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p10 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p11 |); Value.Integer IntegerKind.Usize 4 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
+                |)
+              ]
             |) in
-          let~ p110011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p110000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p110000 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
-                  |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p11 |); Value.Integer IntegerKind.Usize 4 ]
             |) in
-          let~ p11001100000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p110011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p110000 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p110011 |); Value.Integer IntegerKind.Usize 8 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
+                |)
+              ]
             |) in
-          let~ p11001100110011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p11001100000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11001100000000 |) ]
-                  |);
-                  M.read (| p110011 |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p110011 |); Value.Integer IntegerKind.Usize 8 ]
             |) in
-          let~ p1100110000000000000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p11001100110011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p11001100000000 |);
-                  Value.Integer IntegerKind.Usize 8
-                ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11001100000000 |) ]
+                |);
+                M.read (| p110011 |)
+              ]
             |) in
-          let~ p1100110011001100110011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1100110000000000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p1100110000000000000000 |); M.read (| p11001100110011 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p11001100000000 |); Value.Integer IntegerKind.Usize 8
+              ]
             |) in
-          let~ p11001100110011001100110000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p1100110011001100110011 |);
-                  Value.Integer IntegerKind.Usize 4
-                ]
-              |)
+          let~ p1100110011001100110011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p1100110000000000000000 |); M.read (| p11001100110011 |) ]
             |) in
-          let~ p11001100110011001100110011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p11001100110011001100110000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p11001100110011001100110000 |); M.read (| p11 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p1100110011001100110011 |);
+                Value.Integer IntegerKind.Usize 4
+              ]
             |) in
-          let~ p1100110011001100110011001100000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p11001100110011001100110011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p11001100110011001100110000 |); M.read (| p11 |) ]
+            |) in
+          let~ p1100110011001100110011001100000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p11001100110011001100110011 |);
-                  Value.Integer IntegerKind.Usize 5
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p11001100110011001100110011 |);
+                Value.Integer IntegerKind.Usize 5
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -286,183 +260,158 @@ Module exponentiation.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.read (|
-          let~ p1 : Ty.apply (Ty.path "*") [] [ R ] := M.copy (| val |) in
-          let~ p100 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1 : R := M.read (| val |) in
+          let~ p100 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p1 |); Value.Integer IntegerKind.Usize 2 ]
+            |) in
+          let~ p101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p1 |); Value.Integer IntegerKind.Usize 2 ]
-              |)
-            |) in
-          let~ p101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p100 |) ]
-                  |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ p10000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p100 |) ]
+                |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p100 |); Value.Integer IntegerKind.Usize 2 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
+                |)
+              ]
             |) in
-          let~ p10101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p10000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p10000 |); M.read (| p101 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p100 |); Value.Integer IntegerKind.Usize 2 ]
             |) in
-          let~ p10101000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p10101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p10000 |); M.read (| p101 |) ]
+            |) in
+          let~ p10101000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p10101 |); Value.Integer IntegerKind.Usize 6 ]
+            |) in
+          let~ p10101010101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p10101 |); Value.Integer IntegerKind.Usize 6 ]
-              |)
-            |) in
-          let~ p10101010101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p10101000000 |) ]
-                  |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p10101 |) ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ p101010010101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p10101000000 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p10101010101 |) ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ p101010010101000000000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p10101000000 |) ]
+                |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p101010010101 |); Value.Integer IntegerKind.Usize 12
-                ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p10101 |) ]
+                |)
+              ]
             |) in
-          let~ p101010010101010101010101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p101010010101000000000000 |); M.read (| p10101010101 |) ]
-              |)
-            |) in
-          let~ p101010010101010101010101000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p101010010101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p10101000000 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p101010010101010101010101 |);
-                  Value.Integer IntegerKind.Usize 6
-                ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p10101010101 |) ]
+                |)
+              ]
             |) in
-          let~ p101010010101010101010101010101 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p101010010101000000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p101010010101010101010101000000 |); M.read (| p10101 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p101010010101 |); Value.Integer IntegerKind.Usize 12 ]
             |) in
-          let~ p1010100101010101010101010101010 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p101010010101010101010101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p101010010101000000000000 |); M.read (| p10101010101 |) ]
+            |) in
+          let~ p101010010101010101010101000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p101010010101010101010101010101 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p101010010101010101010101 |);
+                Value.Integer IntegerKind.Usize 6
+              ]
+            |) in
+          let~ p101010010101010101010101010101 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p101010010101010101010101000000 |); M.read (| p10101 |) ]
+            |) in
+          let~ p1010100101010101010101010101010 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
+                R,
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p101010010101010101010101010101 |) ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -509,222 +458,194 @@ Module exponentiation.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.read (|
-          let~ p1 : Ty.apply (Ty.path "*") [] [ R ] := M.copy (| val |) in
-          let~ p10 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1 : R := M.read (| val |) in
+          let~ p10 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
+            |) in
+          let~ p11 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p10 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
+                |)
+              ]
             |) in
-          let~ p11 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p110 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p10 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
-                  |)
-                ]
-              |)
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
             |) in
-          let~ p110 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p111 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p110 |) ]
+                |);
+                M.read (| p1 |)
+              ]
             |) in
-          let~ p111 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p11000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p110 |) ]
-                  |);
-                  M.read (| p1 |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p110 |); Value.Integer IntegerKind.Usize 2 ]
             |) in
-          let~ p11000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p11011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p110 |); Value.Integer IntegerKind.Usize 2 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11000 |) ]
+                |);
+                M.read (| p11 |)
+              ]
             |) in
-          let~ p11011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p11000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11000 |) ]
-                  |);
-                  M.read (| p11 |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p11000 |); Value.Integer IntegerKind.Usize 3 ]
             |) in
-          let~ p11000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p11011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p11000 |); Value.Integer IntegerKind.Usize 3 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11000000 |) ]
+                |);
+                M.read (| p11011 |)
+              ]
             |) in
-          let~ p11011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11000000 |) ]
-                  |);
-                  M.read (| p11011 |)
-                ]
-              |)
-            |) in
-          let~ p110011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11011011 |) ]
-                  |);
-                  M.read (| p11000000 |)
-                ]
-              |)
-            |) in
-          let~ p110011011000000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p110011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p110011011 |); Value.Integer IntegerKind.Usize 9 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11011011 |) ]
+                |);
+                M.read (| p11000000 |)
+              ]
             |) in
-          let~ p110011011011011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p110011011000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p110011011000000000 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11011011 |) ]
-                  |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p110011011 |); Value.Integer IntegerKind.Usize 9 ]
             |) in
-          let~ p110011011011011011000000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p110011011011011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p110011011000000000 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p110011011011011011 |);
-                  Value.Integer IntegerKind.Usize 9
-                ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11011011 |) ]
+                |)
+              ]
             |) in
-          let~ p110011011011011011011011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p110011011011011011000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p110011011011011011000000000 |); M.read (| p11011011 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p110011011011011011 |);
+                Value.Integer IntegerKind.Usize 9
+              ]
             |) in
-          let~ p1100110110110110110110110110000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p110011011011011011011011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p110011011011011011000000000 |); M.read (| p11011011 |) ]
+            |) in
+          let~ p1100110110110110110110110110000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p110011011011011011011011011 |);
-                  Value.Integer IntegerKind.Usize 4
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p110011011011011011011011011 |);
+                Value.Integer IntegerKind.Usize 4
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -784,250 +705,215 @@ Module exponentiation.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.read (|
-          let~ p1 : Ty.apply (Ty.path "*") [] [ R ] := M.copy (| val |) in
-          let~ p10 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1 : R := M.read (| val |) in
+          let~ p10 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
+            |) in
+          let~ p11 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p1 |) ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
+                |);
+                M.read (| p1 |)
+              ]
             |) in
-          let~ p11 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p100 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
-                  |);
-                  M.read (| p1 |)
-                ]
-              |)
+                [],
+                [],
+                "square",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
             |) in
-          let~ p100 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+          let~ p111 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "square",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p10 |) ]
-              |)
-            |) in
-          let~ p111 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p100 |) ]
-                  |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
-                  |)
-                ]
-              |)
-            |) in
-          let~ p100000000000000000000000000000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p100 |) ]
+                |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, p100 |); Value.Integer IntegerKind.Usize 30 ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p11 |) ]
+                |)
+              ]
             |) in
-          let~ p100000000000000000000000000000011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p100000000000000000000000000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [ M.read (| p100000000000000000000000000000000 |); M.read (| p11 |) ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, p100 |); Value.Integer IntegerKind.Usize 30 ]
             |) in
-          let~ p100000000000000000000000000000011000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p100000000000000000000000000000011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [ M.read (| p100000000000000000000000000000000 |); M.read (| p11 |) ]
+            |) in
+          let~ p100000000000000000000000000000011000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p100000000000000000000000000000011 |);
+                Value.Integer IntegerKind.Usize 3
+              ]
+            |) in
+          let~ p100100000000000000000000000000011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p100000000000000000000000000000011000 |);
+                M.read (| p100000000000000000000000000000011 |)
+              ]
+            |) in
+          let~ p100100000000000000000000000000011011000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
+                R,
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p100100000000000000000000000000011011 |);
+                Value.Integer IntegerKind.Usize 6
+              ]
+            |) in
+          let~ p100100100100000000000000000000011011011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p100100000000000000000000000000011011000000 |);
+                M.call_closure (|
                   R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p100000000000000000000000000000011 |);
-                  Value.Integer IntegerKind.Usize 3
-                ]
-              |)
+                  M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, p100100000000000000000000000000011011 |) ]
+                |)
+              ]
             |) in
-          let~ p100100000000000000000000000000011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p100100100100000000000000000000011011011011000000000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p100000000000000000000000000000011000 |);
-                  M.read (| p100000000000000000000000000000011 |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, p100100100100000000000000000000011011011011 |);
+                Value.Integer IntegerKind.Usize 12
+              ]
             |) in
-          let~ p100100000000000000000000000000011011000000 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p100100000000000000000000000000011011 |);
-                  Value.Integer IntegerKind.Usize 6
-                ]
-              |)
+          let~ p100100100100100100100100000000011011011011011011011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p100100100100000000000000000000011011011011000000000000 |);
+                M.read (| p100100100100000000000000000000011011011011 |)
+              ]
             |) in
-          let~ p100100100100000000000000000000011011011011 : Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p100100100100100100100100000000011011011011011011011011000000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p100100000000000000000000000000011011000000 |);
-                  M.call_closure (|
-                    R,
-                    M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, p100100000000000000000000000000011011 |) ]
-                  |)
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  p100100100100100100100100000000011011011011011011011011
+                |);
+                Value.Integer IntegerKind.Usize 6
+              ]
             |) in
-          let~ p100100100100000000000000000000011011011011000000000000 :
-              Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, p100100100100000000000000000000011011011011 |);
-                  Value.Integer IntegerKind.Usize 12
-                ]
-              |)
+          let~ p100100100100100100100100100100011011011011011011011011011011 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
+              [
+                M.read (| p100100100100100100100100000000011011011011011011011011000000 |);
+                M.read (| p100100000000000000000000000000011011 |)
+              ]
             |) in
-          let~ p100100100100100100100100000000011011011011011011011011 :
-              Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ p1001001001001001001001001001000110110110110110110110110110110000 : R :=
+            M.call_closure (|
+              R,
+              M.get_trait_method (|
+                "p3_field::field::PrimeCharacteristicRing",
                 R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p100100100100000000000000000000011011011011000000000000 |);
-                  M.read (| p100100100100000000000000000000011011011011 |)
-                ]
-              |)
-            |) in
-          let~ p100100100100100100100100000000011011011011011011011011000000 :
-              Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    p100100100100100100100100000000011011011011011011011011
-                  |);
-                  Value.Integer IntegerKind.Usize 6
-                ]
-              |)
-            |) in
-          let~ p100100100100100100100100100100011011011011011011011011011011 :
-              Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
-                [
-                  M.read (| p100100100100100100100100000000011011011011011011011011000000 |);
-                  M.read (| p100100000000000000000000000000011011 |)
-                ]
-              |)
-            |) in
-          let~ p1001001001001001001001001001000110110110110110110110110110110000 :
-              Ty.apply (Ty.path "*") [] [ R ] :=
-            M.alloc (|
-              M.call_closure (|
-                R,
-                M.get_trait_method (|
-                  "p3_field::field::PrimeCharacteristicRing",
-                  R,
-                  [],
-                  [],
-                  "exp_power_of_2",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    p100100100100100100100100100100011011011011011011011011011011
-                  |);
-                  Value.Integer IntegerKind.Usize 4
-                ]
-              |)
+                [],
+                [],
+                "exp_power_of_2",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  p100100100100100100100100100100011011011011011011011011011011
+                |);
+                Value.Integer IntegerKind.Usize 4
+              ]
             |) in
           M.alloc (|
             M.call_closure (|

@@ -315,13 +315,13 @@ Module sealed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -355,28 +355,26 @@ Module sealed.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloy_primitives::sealed::Sealed",
-                            "inner"
-                          |)
+            let~ _ : Ty.tuple [] :=
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloy_primitives::sealed::Sealed",
+                          "inner"
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -525,31 +523,24 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                M.get_trait_method (|
+                  "alloy_primitives::sealed::Sealable",
+                  T,
+                  [],
+                  [],
+                  "hash_slow",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      []
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  M.get_trait_method (|
-                    "alloy_primitives::sealed::Sealable",
-                    T,
-                    [],
-                    [],
-                    "hash_slow",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, inner |) ]
-                |)
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, inner |) ]
               |) in
             M.alloc (|
               Value.StructRecord
@@ -586,31 +577,24 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                M.get_trait_method (|
+                  "alloy_primitives::sealed::Sealable",
+                  T,
+                  [],
+                  [],
+                  "hash_slow",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      []
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  M.get_trait_method (|
-                    "alloy_primitives::sealed::Sealable",
-                    T,
-                    [],
-                    [],
-                    "hash_slow",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |) ]
-                |)
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |) ]
               |) in
             M.alloc (|
               Value.StructRecord
@@ -652,40 +636,33 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                M.get_trait_method (|
+                  "core::ops::function::FnOnce",
+                  F,
+                  [],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                  "call_once",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      []
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [],
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                    "call_once",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, inner |) |)
-                        |)
-                      ]
-                  ]
-                |)
+                |),
+                [
+                  M.read (| f |);
+                  Value.Tuple
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, inner |) |)
+                      |)
+                    ]
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -729,35 +706,27 @@ Module sealed.
           M.read (|
             let~ seal :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                M.get_trait_method (|
+                  "core::ops::function::FnOnce",
+                  F,
+                  [],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                  "call_once",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      []
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [],
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                    "call_once",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| f |);
-                    Value.Tuple
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |) ]
-                  ]
-                |)
+                |),
+                [
+                  M.read (| f |);
+                  Value.Tuple [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |) ]
+                ]
               |) in
             M.alloc (|
               M.call_closure (|

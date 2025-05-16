@@ -27,54 +27,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.loop (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            ltac:(M.monadic
-              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.loop (|
+              Ty.tuple [],
+              ltac:(M.monadic
+                (let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
+                        [
+                          M.call_closure (|
                             Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ mk_str (| "Entered the outer loop
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ mk_str (| "Entered the outer loop
 " |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
+                            ]
+                          |)
+                        ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+                let~ _ : Ty.tuple [] :=
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+                        Ty.path "never",
                         ltac:(M.monadic
-                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                              M.alloc (|
+                          (let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              let~ _ : Ty.tuple [] :=
                                 M.call_closure (|
                                   Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -104,53 +104,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       ]
                                     |)
                                   ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |) in
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |) in
                           M.break (||)))
                       |)
                     |)
-                  |)
-                |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
+                        [
+                          M.call_closure (|
                             Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ mk_str (| "This point will never be reached
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ mk_str (| "This point will never be reached
 " |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
+                            ]
+                          |)
+                        ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Value.Tuple [] |)))
+            |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -177,9 +178,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -495,13 +495,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (|
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                M.deref (| M.read (| self |) |),
-                []
-              |)
-            |)
+            M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -531,25 +525,16 @@ Module convert.
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-              ],
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                        M.deref (| M.read (| self |) |),
-                        []
-                      |)
+                      M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
                     |)
                   |)))
             ]
@@ -582,25 +567,16 @@ Module convert.
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-              ],
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                        M.deref (| M.read (| self |) |),
-                        []
-                      |)
+                      M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
                     |)
                   |)))
             ]
@@ -631,13 +607,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (|
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                M.deref (| M.read (| self |) |),
-                []
-              |)
-            |)
+            M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -666,18 +636,14 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+            Ty.path "bool",
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                        M.deref (| M.read (| self |) |),
-                        []
-                      |)
+                      M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
                     |)
                   |)))
             ]
@@ -721,13 +687,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                M.deref (| M.read (| self |) |),
-                []
-              |)
-            |)
+            M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -756,13 +716,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                M.deref (| M.read (| self |) |),
-                []
-              |)
-            |)
+            M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -817,18 +771,14 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                        M.deref (| M.read (| self |) |),
-                        []
-                      |)
+                      M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
                     |)
                   |)))
             ]

@@ -121,7 +121,7 @@ Module Ord.
     apply (
       run_max_by
         (function.Impl_FnOnce_for_Function2.run _ _ _)
-        self other
+        _ _
         (Function2.of_run run_cmp.(TraitMethod.run))
     ).
   Defined.

@@ -23,82 +23,69 @@ Module array.
           M.read (|
             let~ array :
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      []
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::mem::manually_drop::ManuallyDrop")
                     []
                     [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      []
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.read (| array |) ]
-                |)
+                  "new",
+                  [],
+                  []
+                |),
+                [ M.read (| array |) ]
               |) in
-            let~ drain :
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] :=
-              M.alloc (|
-                Value.StructTuple
-                  "core::array::drain::Drain"
-                  []
-                  [ T ]
-                  [
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "iter_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.call_closure (|
+            let~ drain : Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] :=
+              Value.StructTuple
+                "core::array::drain::Drain"
+                []
+                [ T ]
+                [
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter_mut",
+                      [],
+                      []
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                              M.get_trait_method (|
+                                "core::ops::deref::DerefMut",
                                 Ty.apply
-                                  (Ty.path "&mut")
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::DerefMut",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                  [],
-                                  [],
-                                  "deref_mut",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.MutRef, array |) ]
-                              |)
+                                [],
+                                [],
+                                "deref_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, array |) ]
                             |)
-                          |))
-                      ]
-                    |)
-                  ]
-              |) in
+                          |)
+                        |))
+                    ]
+                  |)
+                ] in
             M.alloc (|
               M.call_closure (|
                 R,
@@ -212,139 +199,143 @@ Module array.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ p : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::convert::Infallible" ];
-                                Ty.apply (Ty.path "&mut") [] [ T ]
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
-                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
+                                    Ty.apply (Ty.path "&mut") [] [ T ]
+                                  ],
                                 M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                   [],
                                   [],
-                                  "next",
+                                  "branch",
                                   [],
                                   []
                                 |),
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::array::drain::Drain",
-                                      0
-                                    |)
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::array::drain::Drain",
+                                          0
+                                        |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ]
+                                              ],
+                                              "from_residual",
+                                              [],
                                               []
-                                              [ Ty.path "core::convert::Infallible" ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.borrow (|
-                                  Pointer.Kind.ConstPointer,
-                                  M.deref (| M.read (| val |) |)
-                                |)
-                              |)))
-                        ]
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| val |) |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ T ]
+                          [
+                            M.call_closure (|
+                              T,
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
+                                "read",
+                                [],
+                                []
+                              |),
+                              [ M.read (| p |) ]
+                            |)
+                          ]
                       |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      []
-                      [ T ]
-                      [
-                        M.call_closure (|
-                          T,
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [] [ T ],
-                            "read",
-                            [],
-                            []
-                          |),
-                          [ M.read (| p |) ]
-                        |)
-                      ]
-                  |)
-                |)))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -362,21 +353,19 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (|
-                      "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
-                      [],
-                      [],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ n : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_trait_method (|
+                    "core::iter::traits::exact_size::ExactSizeIterator",
+                    Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
+                    [],
+                    [],
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -494,33 +483,31 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ p : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.ConstPointer,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ T ],
-                        M.get_trait_method (|
-                          "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                          [],
-                          [],
-                          "next_unchecked",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::array::drain::Drain",
-                              0
-                            |)
+              let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ T ],
+                      M.get_trait_method (|
+                        "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        [],
+                        "next_unchecked",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::drain::Drain",
+                            0
                           |)
-                        ]
-                      |)
+                        |)
+                      ]
                     |)
                   |)
                 |) in

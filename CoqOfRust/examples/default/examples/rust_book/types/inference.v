@@ -24,55 +24,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ elem : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-          M.alloc (| Value.Integer IntegerKind.U8 5 |) in
+        let~ elem : Ty.path "u8" := Value.Integer IntegerKind.U8 5 in
         let~ vec :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::vec::Vec")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
+              "new",
+              [],
               []
-            |)
+            |),
+            []
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                "push",
-                [],
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
                 []
-              |),
-              [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| elem |) ]
-            |)
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              "push",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| elem |) ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -132,9 +122,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

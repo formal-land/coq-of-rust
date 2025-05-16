@@ -102,75 +102,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "generics_functions::reg_fn", [], [] |),
-              [
-                Value.StructTuple
-                  "generics_functions::S"
-                  []
-                  []
-                  [ Value.StructTuple "generics_functions::A" [] [] [] ]
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "generics_functions::reg_fn", [], [] |),
+            [
+              Value.StructTuple
+                "generics_functions::S"
+                []
+                []
+                [ Value.StructTuple "generics_functions::A" [] [] [] ]
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "generics_functions::gen_spec_t", [], [] |),
-              [
-                Value.StructTuple
-                  "generics_functions::SGen"
-                  []
-                  [ Ty.path "generics_functions::A" ]
-                  [ Value.StructTuple "generics_functions::A" [] [] [] ]
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "generics_functions::gen_spec_t", [], [] |),
+            [
+              Value.StructTuple
+                "generics_functions::SGen"
+                []
+                [ Ty.path "generics_functions::A" ]
+                [ Value.StructTuple "generics_functions::A" [] [] [] ]
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "generics_functions::gen_spec_i32", [], [] |),
-              [
-                Value.StructTuple
-                  "generics_functions::SGen"
-                  []
-                  [ Ty.path "i32" ]
-                  [ Value.Integer IntegerKind.I32 6 ]
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "generics_functions::gen_spec_i32", [], [] |),
+            [
+              Value.StructTuple
+                "generics_functions::SGen"
+                []
+                [ Ty.path "i32" ]
+                [ Value.Integer IntegerKind.I32 6 ]
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
-              [
-                Value.StructTuple
-                  "generics_functions::SGen"
-                  []
-                  [ Ty.path "char" ]
-                  [ Value.UnicodeChar 97 ]
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
+            [
+              Value.StructTuple
+                "generics_functions::SGen"
+                []
+                [ Ty.path "char" ]
+                [ Value.UnicodeChar 97 ]
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
-              [
-                Value.StructTuple
-                  "generics_functions::SGen"
-                  []
-                  [ Ty.path "char" ]
-                  [ Value.UnicodeChar 99 ]
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
+            [
+              Value.StructTuple
+                "generics_functions::SGen"
+                []
+                [ Ty.path "char" ]
+                [ Value.UnicodeChar 99 ]
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

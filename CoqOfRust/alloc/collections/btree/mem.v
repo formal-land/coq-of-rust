@@ -31,10 +31,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ],
+                            Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -96,24 +93,16 @@ Module collections.
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
             M.read (|
-              let~ guard :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ] :=
-                M.alloc (|
-                  Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" [] [] []
-                |) in
-              let~ value : Ty.apply (Ty.path "*") [] [ T ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    T,
-                    M.get_function (| "core::ptr::read", [], [ T ] |),
-                    [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| v |) |) |) ]
-                  |)
+              let~ guard : Ty.path "alloc::collections::btree::mem::replace::PanicGuard" :=
+                Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" [] [] [] in
+              let~ value : T :=
+                M.call_closure (|
+                  T,
+                  M.get_function (| "core::ptr::read", [], [ T ] |),
+                  [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| v |) |) |) ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ R ],
+                R,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ T; R ],
@@ -136,9 +125,9 @@ Module collections.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let new_value := M.copy (| γ0_0 |) in
                       let ret := M.copy (| γ0_1 |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_function (| "core::ptr::write", [], [ T ] |),
@@ -149,20 +138,18 @@ Module collections.
                                 |);
                                 M.read (| new_value |)
                               ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (|
-                              "core::mem::forget",
-                              [],
-                              [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ]
-                            |),
-                            [ M.read (| guard |) ]
-                          |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_function (|
+                            "core::mem::forget",
+                            [],
+                            [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ]
+                          |),
+                          [ M.read (| guard |) ]
                         |) in
                       ret))
                 ]

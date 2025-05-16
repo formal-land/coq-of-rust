@@ -89,95 +89,89 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ s :
-                  Ty.apply
-                    (Ty.path "*")
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                    "slice_assume_init_ref",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "slice_assume_init_ref",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ Ty.path "u8" ]
-                                      ]
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ SIZE ]
+                                    (Ty.path "slice")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                         []
                                         [ Ty.path "u8" ]
-                                    ],
-                                  [],
+                                    ]
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::index::Index",
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ SIZE ]
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                       []
-                                      [ Ty.path "usize" ]
+                                      [ Ty.path "u8" ]
                                   ],
-                                  "index",
-                                  [],
-                                  []
-                                |),
+                                [],
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::net::display_buffer::DisplayBuffer",
-                                      "buf"
-                                    |)
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
                                     []
                                     [ Ty.path "usize" ]
-                                    [
-                                      ("end_",
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::net::display_buffer::DisplayBuffer",
-                                            "len"
-                                          |)
-                                        |))
-                                    ]
-                                ]
-                              |)
+                                ],
+                                "index",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::net::display_buffer::DisplayBuffer",
+                                    "buf"
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
+                                  [
+                                    ("end_",
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::net::display_buffer::DisplayBuffer",
+                                          "len"
+                                        |)
+                                      |))
+                                  ]
+                              ]
                             |)
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.borrow (|
@@ -233,28 +227,17 @@ Module net.
             let s := M.alloc (| s |) in
             M.read (|
               let~ bytes :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
-                  |)
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                 |) in
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -362,67 +345,54 @@ Module net.
                       let buf := M.copy (| γ0_0 |) in
                       let~ _ :
                           Ty.apply
-                            (Ty.path "*")
+                            (Ty.path "&mut")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                            ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "&mut")
+                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [ Ty.path "u8" ],
-                              "copy_from_slice",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
-                            ]
-                          |)
+                              [ Ty.path "u8" ],
+                            "copy_from_slice",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                          ]
                         |) in
-                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                        M.alloc (|
-                          let β :=
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::display_buffer::DisplayBuffer",
-                              "len"
-                            |) in
-                          M.write (|
-                            β,
-                            M.call_closure (|
-                              Ty.path "usize",
-                              BinOp.Wrap.add,
-                              [
-                                M.read (| β |);
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| bytes |) |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
+                      let~ _ : Ty.tuple [] :=
+                        let β :=
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::display_buffer::DisplayBuffer",
+                            "len"
+                          |) in
+                        M.write (|
+                          β,
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (| β |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                                ]
+                              |)
+                            ]
                           |)
                         |) in
                       M.alloc (|

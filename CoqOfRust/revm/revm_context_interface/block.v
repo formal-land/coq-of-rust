@@ -57,20 +57,15 @@ Module block.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply
-                            (Ty.path "*")
-                            []
+                          Ty.function
                             [
-                              Ty.function
+                              Ty.tuple
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.path
-                                        "revm_context_interface::block::blob::BlobExcessGasAndPrice"
-                                    ]
+                                  Ty.path
+                                    "revm_context_interface::block::blob::BlobExcessGasAndPrice"
                                 ]
-                                (Ty.path "u128")
-                            ],
+                            ]
+                            (Ty.path "u128"),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -147,20 +142,15 @@ Module block.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.apply
-                            (Ty.path "*")
-                            []
+                          Ty.function
                             [
-                              Ty.function
+                              Ty.tuple
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.path
-                                        "revm_context_interface::block::blob::BlobExcessGasAndPrice"
-                                    ]
+                                  Ty.path
+                                    "revm_context_interface::block::blob::BlobExcessGasAndPrice"
                                 ]
-                                (Ty.path "u64")
-                            ],
+                            ]
+                            (Ty.path "u64"),
                           M.alloc (| α0 |),
                           [
                             fun γ =>

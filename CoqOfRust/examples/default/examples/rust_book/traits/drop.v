@@ -23,9 +23,9 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -91,9 +91,9 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -144,25 +144,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _a : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-          M.alloc (| Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "a" |)) ] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _b : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-            M.alloc (|
-              Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "b" |)) ]
-            |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _c : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-              M.alloc (|
-                Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "c" |)) ]
+        let~ _a : Ty.path "drop::Droppable" :=
+          Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "a" |)) ] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _b : Ty.path "drop::Droppable" :=
+              Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "b" |)) ] in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _c : Ty.path "drop::Droppable" :=
+                  Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "c" |)) ] in
+                let~ _d : Ty.path "drop::Droppable" :=
+                  Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "d" |)) ] in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
+                        [
+                          M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ mk_str (| "Exiting block B
+" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)
               |) in
-            let~ _d : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-              M.alloc (|
-                Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "d" |)) ]
-              |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -181,7 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "Exiting block B
+                                M.alloc (| Value.Array [ mk_str (| "Just exited block B
 " |) ] |)
                               |)
                             |)
@@ -189,78 +219,46 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      Ty.path "core::fmt::Arguments",
-                      M.get_associated_function (|
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
                         Ty.path "core::fmt::Arguments",
-                        "new_const",
-                        [ Value.Integer IntegerKind.Usize 1 ],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "Just exited block B
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "Exiting block A
 " |) ] |)
+                              |)
                             |)
                           |)
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
+                        ]
+                      |)
+                    ]
+                  |) in
+                M.alloc (| Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      Ty.path "core::fmt::Arguments",
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Arguments",
-                        "new_const",
-                        [ Value.Integer IntegerKind.Usize 1 ],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "Exiting block A
-" |) ] |)
-                            |)
-                          |)
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -287,20 +285,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "core::mem::drop", [], [ Ty.path "drop::Droppable" ] |),
-              [ M.read (| _a |) ]
-            |)
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "core::mem::drop", [], [ Ty.path "drop::Droppable" ] |),
+            [ M.read (| _a |) ]
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -327,9 +323,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

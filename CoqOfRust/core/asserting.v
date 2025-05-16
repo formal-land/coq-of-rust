@@ -28,11 +28,7 @@ Module asserting.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            β1,
-            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-          |)))
+          M.match_operator (| Ty.tuple [], β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -117,32 +113,30 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| to |) |),
-                    "core::asserting::Capture",
-                    "elem"
-                  |),
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    []
-                    [ E ]
-                    [
-                      M.read (|
-                        M.deref (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::asserting::Wrapper",
-                              0
-                            |)
+            let~ _ : Ty.tuple [] :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| to |) |),
+                  "core::asserting::Capture",
+                  "elem"
+                |),
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  []
+                  [ E ]
+                  [
+                    M.read (|
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::asserting::Wrapper",
+                            0
                           |)
                         |)
                       |)
-                    ]
-                |)
+                    |)
+                  ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -184,14 +178,9 @@ Module asserting.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::asserting::Capture",
