@@ -216,7 +216,6 @@ jobs:
           endGroup
           startGroup "Translate Plonky3"
             cd third-party/Plonky3
-            git checkout -- .
             cp ../../rust-toolchain ./
             # Add a line at the beginning of the file to enable its translation
             sed -i '1i#![feature(const_swap)]' util/src/lib.rs
@@ -229,7 +228,7 @@ jobs:
             touch util/src/lib.rs
             cargo coq-of-rust
             rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/blake3-air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/blake3_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
