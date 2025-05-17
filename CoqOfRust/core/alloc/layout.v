@@ -433,9 +433,16 @@ Module alloc.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
                           [
                             Value.StructRecord
                               "core::alloc::layout::Layout"
+                              []
+                              []
                               [
                                 ("size", M.read (| size |));
                                 ("align",
@@ -456,7 +463,12 @@ Module alloc.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] [] [] ]
                       |)))
                 ]
               |)
@@ -691,7 +703,18 @@ Module alloc.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
-                                      [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                                      []
+                                      [
+                                        Ty.path "core::alloc::layout::Layout";
+                                        Ty.path "core::alloc::layout::LayoutError"
+                                      ]
+                                      [
+                                        Value.StructTuple
+                                          "core::alloc::layout::LayoutError"
+                                          []
+                                          []
+                                          []
+                                      ]
                                   |)
                                 |)
                               |)
@@ -702,9 +725,16 @@ Module alloc.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
                       [
                         Value.StructRecord
                           "core::alloc::layout::Layout"
+                          []
+                          []
                           [ ("size", M.read (| size |)); ("align", M.read (| align |)) ]
                       ]
                   |)
@@ -781,6 +811,8 @@ Module alloc.
               M.alloc (|
                 Value.StructRecord
                   "core::alloc::layout::Layout"
+                  []
+                  []
                   [
                     ("size", M.read (| size |));
                     ("align",
@@ -1188,7 +1220,12 @@ Module alloc.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] [] [] ]
                       |)))
                 ]
               |)
@@ -1539,6 +1576,11 @@ Module alloc.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
                           [
                             Value.Tuple
                               [
@@ -1561,7 +1603,12 @@ Module alloc.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                          []
+                          [
+                            Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] [] [] ]
                       |)))
                 ]
               |)
@@ -1712,6 +1759,11 @@ Module alloc.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
                           [ Value.Tuple [ M.read (| layout |); M.read (| offset |) ] ]
                       |)));
                   fun γ =>
@@ -1719,7 +1771,12 @@ Module alloc.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                          []
+                          [
+                            Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] [] [] ]
                       |)))
                 ]
               |)
@@ -1821,7 +1878,12 @@ Module alloc.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ]
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] [] [] ]
                       |)))
                 ]
               |)
@@ -2007,7 +2069,7 @@ Module alloc.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::alloc::layout::LayoutError" []))
+            Value.StructTuple "core::alloc::layout::LayoutError" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

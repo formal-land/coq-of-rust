@@ -124,16 +124,26 @@ Module zip_eq.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.apply (Ty.path "p3_util::zip_eq::ZipEq") [] [ AIter; BIter ]; Error ]
                       [
                         Value.StructRecord
                           "p3_util::zip_eq::ZipEq"
+                          []
+                          [ AIter; BIter ]
                           [ ("a", M.read (| a_iter |)); ("b", M.read (| b_iter |)) ]
                       ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.apply (Ty.path "p3_util::zip_eq::ZipEq") [] [ AIter; BIter ]; Error ]
+                      [ M.read (| err |) ]
+                  |)))
             ]
           |)
         |)))
@@ -288,6 +298,24 @@ Module zip_eq.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                B
+                                "Item"
+                            ]
+                        ]
                         [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
                     |)));
                 fun γ =>
@@ -296,7 +324,29 @@ Module zip_eq.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                     let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                B
+                                "Item"
+                            ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -542,6 +592,8 @@ Module zip_eq.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -590,6 +642,8 @@ Module zip_eq.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)

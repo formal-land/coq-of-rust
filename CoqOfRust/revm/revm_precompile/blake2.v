@@ -23,6 +23,8 @@ Module blake2.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -170,7 +172,7 @@ Module blake2.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -221,6 +223,11 @@ Module blake2.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -236,6 +243,8 @@ Module blake2.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::Blake2WrongLength"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -334,6 +343,8 @@ Module blake2.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                       ]
                                     |)
@@ -382,6 +393,11 @@ Module blake2.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -397,6 +413,8 @@ Module blake2.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -441,6 +459,11 @@ Module blake2.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -457,6 +480,8 @@ Module blake2.
                                         [
                                           Value.StructTuple
                                             "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -591,6 +616,8 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 4);
                                       ("end_", Value.Integer IntegerKind.Usize 68)
@@ -775,6 +802,8 @@ Module blake2.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start", M.read (| pos |));
                                                                       ("end_",
@@ -905,6 +934,8 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 68);
                                       ("end_", Value.Integer IntegerKind.Usize 196)
@@ -1089,6 +1120,8 @@ Module blake2.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start", M.read (| pos |));
                                                                       ("end_",
@@ -1218,6 +1251,8 @@ Module blake2.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 196);
                                               ("end_",
@@ -1323,6 +1358,8 @@ Module blake2.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 204);
                                               ("end_",
@@ -1477,6 +1514,8 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", Value.Integer IntegerKind.Usize 64)
@@ -1623,6 +1662,8 @@ Module blake2.
                                                         M.borrow (| Pointer.Kind.MutRef, out |);
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start", M.read (| i |));
                                                             ("end_",
@@ -1681,6 +1722,11 @@ Module blake2.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",
@@ -2303,6 +2349,8 @@ Module blake2.
                             M.borrow (| Pointer.Kind.MutRef, v |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("end_",
                                   M.call_closure (|
@@ -2373,6 +2421,8 @@ Module blake2.
                             M.borrow (| Pointer.Kind.MutRef, v |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.call_closure (|
@@ -2495,6 +2545,8 @@ Module blake2.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_", M.read (| rounds |))
@@ -2996,6 +3048,8 @@ Module blake2.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_", Value.Integer IntegerKind.Usize 8)

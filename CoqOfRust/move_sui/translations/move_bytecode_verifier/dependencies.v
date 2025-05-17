@@ -837,6 +837,16 @@ Module dependencies.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -865,7 +875,21 @@ Module dependencies.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |) in
@@ -877,6 +901,8 @@ Module dependencies.
               M.alloc (|
                 Value.StructRecord
                   "move_bytecode_verifier::dependencies::Context"
+                  []
+                  []
                   [
                     ("module", M.read (| module |));
                     ("dependency_map", M.read (| dependency_map |));
@@ -3319,6 +3345,8 @@ Module dependencies.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::FunctionHandleIndex"
+                                                    []
+                                                    []
                                                     [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                                 |) in
                                               let~ _ :
@@ -3711,6 +3739,8 @@ Module dependencies.
                                   M.read (| e |);
                                   Value.StructTuple
                                     "move_binary_format::errors::Location::Module"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "move_core_types::language_storage::ModuleId",
@@ -4473,6 +4503,8 @@ Module dependencies.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     M.cast
                                                                       (Ty.path "u16")
@@ -4550,6 +4582,12 @@ Module dependencies.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -4562,9 +4600,13 @@ Module dependencies.
                                                               [
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::MISSING_DEPENDENCY"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::ModuleHandle"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 M.cast
                                                                   (Ty.path "u16")
@@ -4585,7 +4627,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5165,6 +5213,8 @@ Module dependencies.
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |);
                                                             M.call_closure (|
@@ -5395,6 +5445,12 @@ Module dependencies.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -5783,6 +5839,12 @@ Module dependencies.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ]
                                                                   [
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -5795,9 +5857,13 @@ Module dependencies.
                                                                       [
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                                          []
+                                                                          []
                                                                           [];
                                                                         Value.StructTuple
                                                                           "move_binary_format::IndexKind::StructHandle"
+                                                                          []
+                                                                          []
                                                                           [];
                                                                         M.cast
                                                                           (Ty.path "u16")
@@ -5827,6 +5893,12 @@ Module dependencies.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -5839,9 +5911,13 @@ Module dependencies.
                                                               [
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::StructHandle"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 M.cast
                                                                   (Ty.path "u16")
@@ -5861,7 +5937,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6527,6 +6609,8 @@ Module dependencies.
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |);
                                                             M.call_closure (|
@@ -6757,6 +6841,12 @@ Module dependencies.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -7082,6 +7172,12 @@ Module dependencies.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -7094,9 +7190,13 @@ Module dependencies.
                                                                         [
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::FunctionHandle"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           M.cast
                                                                             (Ty.path "u16")
@@ -7320,6 +7420,12 @@ Module dependencies.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -7332,9 +7438,13 @@ Module dependencies.
                                                                           [
                                                                             Value.StructTuple
                                                                               "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             M.cast
                                                                               (Ty.path "u16")
@@ -7610,6 +7720,8 @@ Module dependencies.
                                                                                     M.read (| e |);
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::FunctionHandle"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     M.cast
                                                                                       (Ty.path
@@ -7907,6 +8019,12 @@ Module dependencies.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -7919,9 +8037,13 @@ Module dependencies.
                                                                           [
                                                                             Value.StructTuple
                                                                               "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             M.cast
                                                                               (Ty.path "u16")
@@ -8197,6 +8319,8 @@ Module dependencies.
                                                                                     M.read (| e |);
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::FunctionHandle"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     M.cast
                                                                                       (Ty.path
@@ -8301,6 +8425,12 @@ Module dependencies.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -8313,9 +8443,13 @@ Module dependencies.
                                                               [
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 Value.StructTuple
                                                                   "move_binary_format::IndexKind::FunctionHandle"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 M.cast
                                                                   (Ty.path "u16")
@@ -8335,7 +8469,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9139,6 +9279,11 @@ Module dependencies.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -9151,6 +9296,8 @@ Module dependencies.
                                       [
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -9502,7 +9649,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9768,7 +9921,14 @@ Module dependencies.
                             | [] =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [ Value.Tuple [] ]
                                 |)))
                             | _ => M.impossible "wrong number of arguments"
                             end)
@@ -10351,6 +10511,11 @@ Module dependencies.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -10364,6 +10529,8 @@ Module dependencies.
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -10371,7 +10538,14 @@ Module dependencies.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
+                                  [ Value.Tuple [] ]
                               |)))
                         ]
                       |)));
@@ -10560,6 +10734,11 @@ Module dependencies.
                                 (M.alloc (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -10572,6 +10751,8 @@ Module dependencies.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -10946,6 +11127,8 @@ Module dependencies.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -10959,13 +11142,21 @@ Module dependencies.
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
                               []
+                              []
+                              []
                           ]
                         |)
                       ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))
@@ -11078,7 +11269,14 @@ Module dependencies.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [ Value.Tuple [] ]
                                 |)
                               |)
                             |)
@@ -11544,6 +11742,8 @@ Module dependencies.
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                      []
+                                                      []
                                                       [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
@@ -11664,7 +11864,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -12064,6 +12270,12 @@ Module dependencies.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -12100,6 +12312,8 @@ Module dependencies.
                                                                       [
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
+                                                                          []
+                                                                          []
                                                                           []
                                                                       ]
                                                                     |);
@@ -12145,7 +12359,13 @@ Module dependencies.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

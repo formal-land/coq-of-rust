@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::skip_while::SkipWhile"
+                []
+                [ I; P ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -126,6 +128,8 @@ Module iter.
               let predicate := M.alloc (| predicate |) in
               Value.StructRecord
                 "core::iter::adapters::skip_while::SkipWhile"
+                []
+                [ I; P ]
                 [
                   ("iter", M.read (| iter |));
                   ("flag", Value.Bool false);

@@ -28,6 +28,8 @@ Module Impl_polymorphic_associated_function_Foo_A.
         (let self := M.alloc (| self |) in
         Value.StructRecord
           "polymorphic_associated_function::Foo"
+          []
+          [ B ]
           [
             ("data",
               M.call_closure (|
@@ -75,6 +77,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "polymorphic_associated_function::Foo"
+              []
+              [ Ty.path "i32" ]
               [ ("data", Value.Integer IntegerKind.I32 42) ]
           |) in
         let~ bar :
@@ -149,7 +153,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -179,7 +183,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)

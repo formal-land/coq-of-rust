@@ -17,8 +17,8 @@ Module ControlFlow.
   Global Instance IsLink (B C : Set) `{Link B} `{Link C} : Link (t B C) := {
     Φ := Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [Φ B; Φ C];
     φ x := match x with
-    | Continue c => Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [φ c]
-    | Break b => Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [φ b]
+    | Continue c => Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [] [Φ B; Φ C] [φ c]
+    | Break b => Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [] [Φ B; Φ C] [φ b]
     end;
   }.
 
@@ -34,8 +34,8 @@ Module ControlFlow.
   Lemma of_value_with_Continue {B C : Set} `{Link B} `{Link C}
     (c : C) c' :
     c' = φ c ->
-    Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [c'] =
-    φ (Continue c).
+    Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [] [Φ B; Φ C] [c'] =
+    φ (Continue (B := B) (C := C) c).
   Proof.
     intros; subst; reflexivity.
   Qed.
@@ -44,35 +44,43 @@ Module ControlFlow.
   Lemma of_value_with_Break {B C : Set} `{Link B} `{Link C}
     (b : B) b' :
     b' = φ b ->
-    Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [b'] =
-    φ (Break b).
+    Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [] [Φ B; Φ C] [b'] =
+    φ (Break (B := B) (C := C) b).
   Proof.
     intros; subst; reflexivity.
   Qed.
   Smpl Add apply of_value_with_Break : of_value.
 
-  Definition of_value_Continue {B C : Set} `{Link B} `{Link C}
-    (c : C) c' :
-    c' = φ c ->
-    OfValue.t (Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [c']).
+  Definition of_value_Continue B' C' c' :
+    forall
+      (of_ty_B : OfTy.t B')
+      (of_value_c : OfValue.t c'),
+    C' = Φ (OfValue.get_Set of_value_c) ->
+    OfValue.t (Value.StructTuple "core::ops::control_flow::ControlFlow::Continue" [] [B'; C'] [c']).
   Proof.
-    intros; eapply OfValue.Make with (A := t B C) (value := Continue c).
-    now subst.
+    intros [B] [C ? c] **.
+    eapply OfValue.Make with (A := t B C) (value := Continue c).
+    subst.
+    now eapply of_value_with_Continue.
   Defined.
-  Smpl Add eapply of_value_Continue : of_value.
+  Smpl Add unshelve eapply of_value_Continue : of_value.
 
-  Definition of_value_Break {B C : Set} `{Link B} `{Link C}
-    (b : B) b' :
-    b' = φ b ->
-    OfValue.t (Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [b']).
+  Definition of_value_Break B' C' b' :
+    forall
+      (of_ty_C : OfTy.t C')
+      (of_value_b : OfValue.t b'),
+    B' = Φ (OfValue.get_Set of_value_b) ->
+    OfValue.t (Value.StructTuple "core::ops::control_flow::ControlFlow::Break" [] [B'; C'] [b']).
   Proof.
-    intros; eapply OfValue.Make with (A := t B C) (value := Break b).
-    now subst.
+    intros [C] [B ? b] **.
+    eapply OfValue.Make with (A := t B C) (value := Break b).
+    subst.
+    now eapply of_value_with_Break.
   Defined.
-  Smpl Add eapply of_value_Break : of_value.
+  Smpl Add unshelve eapply of_value_Break : of_value.
 
   Module SubPointer.
-    Definition get_Continue_0 {B C : Set} `{Link B} `{Link C} :
+    Definition get_Continue_0 (B C : Set) `{Link B} `{Link C} :
       SubPointer.Runner.t
         (t B C)
         (Pointer.Index.StructTuple "core::ops::control_flow::ControlFlow::Continue" 0) :=
@@ -90,13 +98,13 @@ Module ControlFlow.
     |}.
 
     Lemma get_Continue_0_is_valid {B C : Set} `{Link B} `{Link C} :
-      SubPointer.Runner.Valid.t (get_Continue_0 (B := B) (C := C)).
+      SubPointer.Runner.Valid.t (get_Continue_0 B C).
     Proof.
       sauto lq: on.
     Qed.
     Smpl Add apply get_Continue_0_is_valid : run_sub_pointer.
 
-    Definition get_Break_0 {B C : Set} `{Link B} `{Link C} :
+    Definition get_Break_0 (B C : Set) `{Link B} `{Link C} :
       SubPointer.Runner.t
         (t B C)
         (Pointer.Index.StructTuple "core::ops::control_flow::ControlFlow::Break" 0) :=
@@ -114,7 +122,7 @@ Module ControlFlow.
     |}.
 
     Lemma get_Break_0_is_valid {B C : Set} `{Link B} `{Link C} :
-      SubPointer.Runner.Valid.t (get_Break_0 (B := B) (C := C)).
+      SubPointer.Runner.Valid.t (get_Break_0 B C).
     Proof.
       sauto lq: on.
     Qed.

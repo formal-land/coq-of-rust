@@ -17,7 +17,7 @@ Module iter.
         | [], [ T; F ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            Value.StructTuple "core::iter::sources::from_fn::FromFn" [ M.read (| f |) ]))
+            Value.StructTuple "core::iter::sources::from_fn::FromFn" [] [ F ] [ M.read (| f |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -47,6 +47,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "core::iter::sources::from_fn::FromFn"
+                []
+                [ F ]
                 [
                   M.call_closure (|
                     F,

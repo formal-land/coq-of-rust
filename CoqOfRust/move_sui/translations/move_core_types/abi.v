@@ -53,6 +53,8 @@ Module abi.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::abi::ScriptABI::TransactionScript"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::abi::TransactionScriptABI",
@@ -82,6 +84,8 @@ Module abi.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::abi::ScriptABI::ScriptFunction"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::abi::ScriptFunctionABI",
@@ -725,9 +729,21 @@ Module abi.
                 |);
                 Value.StructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::abi::ScriptABI" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -878,6 +894,21 @@ Module abi.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -960,6 +991,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1041,6 +1087,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1122,6 +1183,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1211,6 +1287,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1300,6 +1391,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1386,9 +1492,21 @@ Module abi.
                 |);
                 Value.StructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::abi::ScriptFunctionABI" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1539,6 +1657,21 @@ Module abi.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -1621,6 +1754,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1702,6 +1850,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1749,6 +1912,8 @@ Module abi.
                                   M.alloc (|
                                     Value.StructRecord
                                       "move_core_types::abi::_'4::serialize::__SerializeWith"
+                                      []
+                                      []
                                       [
                                         ("values",
                                           Value.Tuple
@@ -1768,7 +1933,11 @@ Module abi.
                                               |)
                                             ]);
                                         ("phantom",
-                                          Value.StructTuple "core::marker::PhantomData" [])
+                                          Value.StructTuple
+                                            "core::marker::PhantomData"
+                                            []
+                                            [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
+                                            [])
                                       ]
                                   |)
                                 |)
@@ -1803,6 +1972,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1892,6 +2076,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1981,6 +2180,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2067,9 +2281,21 @@ Module abi.
                 |);
                 Value.StructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2199,6 +2425,21 @@ Module abi.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -2281,6 +2522,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2362,6 +2618,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2448,9 +2719,21 @@ Module abi.
                 |);
                 Value.StructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2573,6 +2856,21 @@ Module abi.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -2655,6 +2953,21 @@ Module abi.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2741,9 +3054,21 @@ Module abi.
                 |);
                 Value.StructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2795,6 +3120,8 @@ Module abi.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::abi::ScriptFunctionABI"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -3594,6 +3921,8 @@ Module abi.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::abi::TransactionScriptABI"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -4395,6 +4724,8 @@ Module abi.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::abi::ArgumentABI"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -4784,6 +5115,8 @@ Module abi.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::abi::TypeArgumentABI"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -5065,6 +5398,8 @@ Module abi.
           let args := M.alloc (| args |) in
           Value.StructRecord
             "move_core_types::abi::TransactionScriptABI"
+            []
+            []
             [
               ("name", M.read (| name |));
               ("doc", M.read (| doc |));
@@ -5379,6 +5714,8 @@ Module abi.
           let args := M.alloc (| args |) in
           Value.StructRecord
             "move_core_types::abi::ScriptFunctionABI"
+            []
+            []
             [
               ("name", M.read (| name |));
               ("module_name", M.read (| module_name |));
@@ -6145,6 +6482,8 @@ Module abi.
           let type_tag := M.alloc (| type_tag |) in
           Value.StructRecord
             "move_core_types::abi::ArgumentABI"
+            []
+            []
             [ ("name", M.read (| name |)); ("type_tag", M.read (| type_tag |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6248,6 +6587,8 @@ Module abi.
           (let name := M.alloc (| name |) in
           Value.StructRecord
             "move_core_types::abi::TypeArgumentABI"
+            []
+            []
             [ ("name", M.read (| name |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

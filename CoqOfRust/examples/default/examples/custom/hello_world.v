@@ -126,20 +126,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 7 ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "i32" ]
+              [ Value.Integer IntegerKind.I32 7 ]
           |) in
         let~ letter :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
         let~ emoticon :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
             Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],

@@ -35,6 +35,8 @@ Module net.
           ltac:(M.monadic
             (Value.StructRecord
               "core::net::display_buffer::DisplayBuffer"
+              [ SIZE ]
+              []
               [
                 ("buf",
                   repeat (|
@@ -156,6 +158,8 @@ Module net.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.read (|
@@ -305,6 +309,8 @@ Module net.
                                 |));
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start",
                                     M.read (|
@@ -420,14 +426,20 @@ Module net.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::fmt::Error" [] ]
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                          [ Value.StructTuple "core::fmt::Error" [] [] [] ]
                       |)))
                 ]
               |)

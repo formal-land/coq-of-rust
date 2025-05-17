@@ -182,6 +182,8 @@ Module log.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloy_primitives::log::LogData"
+            []
+            []
             [
               ("topics",
                 M.call_closure (|
@@ -355,6 +357,8 @@ Module log.
         ltac:(M.monadic
           (Value.StructRecord
             "alloy_primitives::log::LogData"
+            []
+            []
             [
               ("topics",
                 M.call_closure (|
@@ -683,6 +687,8 @@ Module log.
           let data := M.alloc (| data |) in
           Value.StructRecord
             "alloy_primitives::log::LogData"
+            []
+            []
             [ ("topics", M.read (| topics |)); ("data", M.read (| data |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -764,6 +770,8 @@ Module log.
         ltac:(M.monadic
           (Value.StructRecord
             "alloy_primitives::log::LogData"
+            []
+            []
             [
               ("topics",
                 M.call_closure (|
@@ -1257,6 +1265,8 @@ Module log.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ T ]
             [
               ("address",
                 M.call_closure (|
@@ -1408,6 +1418,8 @@ Module log.
         ltac:(M.monadic
           (Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ T ]
             [
               ("address",
                 M.call_closure (|
@@ -1835,6 +1847,8 @@ Module log.
                                 (let data := M.copy (| γ |) in
                                 Value.StructRecord
                                   "alloy_primitives::log::Log"
+                                  []
+                                  [ Ty.path "alloy_primitives::log::LogData" ]
                                   [ ("address", M.read (| address |)); ("data", M.read (| data |))
                                   ]))
                           ]
@@ -1864,6 +1878,8 @@ Module log.
           let data := M.alloc (| data |) in
           Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ Ty.path "alloy_primitives::log::LogData" ]
             [
               ("address", M.read (| address |));
               ("data",
@@ -1897,6 +1913,8 @@ Module log.
         ltac:(M.monadic
           (Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ Ty.path "alloy_primitives::log::LogData" ]
             [
               ("address",
                 M.read (|
@@ -1948,6 +1966,8 @@ Module log.
           let data := M.alloc (| data |) in
           Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ T ]
             [ ("address", M.read (| address |)); ("data", M.read (| data |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2077,6 +2097,8 @@ Module log.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloy_primitives::log::Log"
+            []
+            [ Ty.path "alloy_primitives::log::LogData" ]
             [
               ("address",
                 M.read (|

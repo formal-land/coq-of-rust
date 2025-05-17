@@ -385,6 +385,8 @@ Module block.
               M.alloc (|
                 Value.StructRecord
                   "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                  []
+                  []
                   [
                     ("excess_blob_gas", M.read (| excess_blob_gas |));
                     ("blob_gasprice", M.read (| blob_gasprice |))
@@ -549,7 +551,7 @@ Module block.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                        Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -581,6 +583,8 @@ Module block.
                                           |);
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "core::fmt::Arguments",

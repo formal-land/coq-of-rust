@@ -151,6 +151,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -233,6 +235,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -343,6 +347,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1058,6 +1064,8 @@ Module instructions.
                                                                 Value.StructTuple
                                                                   "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |)
                                                           |) in
@@ -1109,6 +1117,8 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -1360,6 +1370,8 @@ Module instructions.
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |)
                                                   |) in
@@ -1399,9 +1411,13 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                          []
+                                          []
                                           [
                                             Value.StructTuple
                                               "revm_interpreter::interpreter_action::FrameInput::EOFCreate"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1480,6 +1496,8 @@ Module instructions.
                                           ];
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1687,6 +1705,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1961,6 +1981,8 @@ Module instructions.
                                                             |);
                                                             Value.StructTuple
                                                               "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |)
@@ -2503,6 +2525,8 @@ Module instructions.
                                                                                 Value.StructTuple
                                                                                   "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                                                   []
+                                                                                  []
+                                                                                  []
                                                                               ]
                                                                             |)
                                                                           |) in
@@ -2711,6 +2735,8 @@ Module instructions.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                                 |)
@@ -3119,6 +3145,8 @@ Module instructions.
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |)
                                                   |) in
@@ -3194,6 +3222,8 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -3301,6 +3331,8 @@ Module instructions.
                                                         M.borrow (| Pointer.Kind.MutRef, output |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start",
                                                               M.call_closure (|
@@ -3326,6 +3358,8 @@ Module instructions.
                                                 |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeTo"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("end_", Value.Integer IntegerKind.Usize 2) ]
                                               ]
                                             |)
@@ -3376,6 +3410,8 @@ Module instructions.
                                   M.alloc (|
                                     Value.StructTuple
                                       "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                                      []
+                                      []
                                       []
                                   |) in
                                 let~ gas :
@@ -3446,10 +3482,14 @@ Module instructions.
                                         |);
                                         Value.StructRecord
                                           "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                                          []
+                                          []
                                           [
                                             ("result",
                                               Value.StructRecord
                                                 "revm_interpreter::interpreter::InterpreterResult"
+                                                []
+                                                []
                                                 [
                                                   ("output", M.read (| output |));
                                                   ("gas", M.read (| gas |));
@@ -3739,6 +3779,8 @@ Module instructions.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "alloy_primitives::bytes_::Bytes",
@@ -3761,6 +3803,8 @@ Module instructions.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                             [
                               M.call_closure (|
                                 Ty.path "alloy_primitives::bytes_::Bytes",
@@ -4142,11 +4186,17 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
                                         M.return_ (|
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "u64" ]
+                                            []
                                         |)
                                       |)
                                     |)
@@ -4447,7 +4497,11 @@ Module instructions.
                                                     |)
                                                   |) in
                                                 M.return_ (|
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [ Ty.path "u64" ]
+                                                    []
                                                 |)))
                                           ]
                                         |)
@@ -4555,11 +4609,17 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
                                         M.return_ (|
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "u64" ]
+                                            []
                                         |)
                                       |)
                                     |)
@@ -4568,7 +4628,11 @@ Module instructions.
                             ]
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| gas_limit |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [ Ty.path "u64" ]
+                            [ M.read (| gas_limit |) ]
                         |)))
                   ]
                 |)
@@ -4806,6 +4870,8 @@ Module instructions.
                                                             |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeTo"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [
                                                                 ("end_",
                                                                   Value.Integer
@@ -4903,11 +4969,17 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
                                         M.return_ (|
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                            []
                                         |)
                                       |)
                                     |)
@@ -4918,6 +4990,8 @@ Module instructions.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
                             [
                               M.call_closure (|
                                 Ty.path "alloy_primitives::bits::address::Address",
@@ -5076,6 +5150,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -5312,6 +5388,8 @@ Module instructions.
                                                                 Value.StructTuple
                                                                   "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |)
                                                           |) in
@@ -5390,9 +5468,13 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                              []
+                                                              []
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -5420,6 +5502,8 @@ Module instructions.
                                                                   [
                                                                     Value.StructRecord
                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("input",
                                                                           M.read (| input |));
@@ -5469,10 +5553,14 @@ Module instructions.
                                                                         ("value",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                                                                            []
+                                                                            []
                                                                             [ M.read (| value |) ]);
                                                                         ("scheme",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall"
+                                                                            []
+                                                                            []
                                                                             []);
                                                                         ("is_static",
                                                                           M.call_closure (|
@@ -5510,6 +5598,8 @@ Module instructions.
                                                                         ("return_memory_offset",
                                                                           Value.StructRecord
                                                                             "core::ops::range::Range"
+                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                             [
                                                                               ("start",
                                                                                 Value.Integer
@@ -5527,6 +5617,8 @@ Module instructions.
                                                           ];
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -5673,6 +5765,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -5806,9 +5900,13 @@ Module instructions.
                                                 |);
                                                 Value.StructTuple
                                                   "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                  []
+                                                  []
                                                   [
                                                     Value.StructTuple
                                                       "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                      []
+                                                      []
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
@@ -5835,6 +5933,8 @@ Module instructions.
                                                           [
                                                             Value.StructRecord
                                                               "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                              []
+                                                              []
                                                               [
                                                                 ("input", M.read (| input |));
                                                                 ("gas_limit",
@@ -5906,6 +6006,8 @@ Module instructions.
                                                                 ("value",
                                                                   Value.StructTuple
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent"
+                                                                    []
+                                                                    []
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -5952,6 +6054,8 @@ Module instructions.
                                                                 ("scheme",
                                                                   Value.StructTuple
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+                                                                    []
+                                                                    []
                                                                     []);
                                                                 ("is_static",
                                                                   M.call_closure (|
@@ -5987,6 +6091,8 @@ Module instructions.
                                                                 ("return_memory_offset",
                                                                   Value.StructRecord
                                                                     "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start",
                                                                         Value.Integer
@@ -6004,6 +6110,8 @@ Module instructions.
                                                   ];
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |)
@@ -6148,6 +6256,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -6281,9 +6391,13 @@ Module instructions.
                                                 |);
                                                 Value.StructTuple
                                                   "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                  []
+                                                  []
                                                   [
                                                     Value.StructTuple
                                                       "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                      []
+                                                      []
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
@@ -6310,6 +6424,8 @@ Module instructions.
                                                           [
                                                             Value.StructRecord
                                                               "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                              []
+                                                              []
                                                               [
                                                                 ("input", M.read (| input |));
                                                                 ("gas_limit",
@@ -6352,6 +6468,8 @@ Module instructions.
                                                                 ("value",
                                                                   Value.StructTuple
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                                                                    []
+                                                                    []
                                                                     [
                                                                       M.read (|
                                                                         get_associated_constant (|
@@ -6384,12 +6502,16 @@ Module instructions.
                                                                 ("scheme",
                                                                   Value.StructTuple
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
+                                                                    []
+                                                                    []
                                                                     []);
                                                                 ("is_static", Value.Bool true);
                                                                 ("is_eof", Value.Bool true);
                                                                 ("return_memory_offset",
                                                                   Value.StructRecord
                                                                     "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start",
                                                                         Value.Integer
@@ -6407,6 +6529,8 @@ Module instructions.
                                                   ];
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |)
@@ -6586,6 +6710,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -6656,6 +6782,8 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_specification::hardfork::SpecId::PETERSBURG"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |)
@@ -6697,6 +6825,8 @@ Module instructions.
                                                   |);
                                                   Value.StructTuple
                                                     "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)
@@ -6948,6 +7078,8 @@ Module instructions.
                                                             Value.StructTuple
                                                               "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                               []
+                                                              []
+                                                              []
                                                           ]
                                                         |)
                                                       |) in
@@ -7061,6 +7193,8 @@ Module instructions.
                                                       |);
                                                       Value.StructTuple
                                                         "revm_specification::hardfork::SpecId::SHANGHAI"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                   |)
@@ -7201,6 +7335,8 @@ Module instructions.
                                                                     Value.StructTuple
                                                                       "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   ]
                                                                 |)
                                                               |) in
@@ -7331,6 +7467,8 @@ Module instructions.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                                 |)
@@ -7537,6 +7675,8 @@ Module instructions.
                                                                       Value.StructTuple
                                                                         "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     ]
                                                                   |)
                                                                 |) in
@@ -7726,6 +7866,8 @@ Module instructions.
                                                           |);
                                                           Value.StructTuple
                                                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |)
@@ -8095,6 +8237,8 @@ Module instructions.
                                                                             Value.StructTuple
                                                                               "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                               []
+                                                                              []
+                                                                              []
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -8153,6 +8297,8 @@ Module instructions.
                                                                     Value.StructTuple
                                                                       "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   ]
                                                                 |)
                                                               |) in
@@ -8165,6 +8311,8 @@ Module instructions.
                                             M.alloc (|
                                               Value.StructRecord
                                                 "revm_context_interface::cfg::CreateScheme::Create2"
+                                                []
+                                                []
                                                 [ ("salt", M.read (| salt |)) ]
                                             |)))
                                       ]
@@ -8282,6 +8430,8 @@ Module instructions.
                                                             Value.StructTuple
                                                               "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                               []
+                                                              []
+                                                              []
                                                           ]
                                                         |)
                                                       |) in
@@ -8295,6 +8445,8 @@ Module instructions.
                                     M.alloc (|
                                       Value.StructTuple
                                         "revm_context_interface::cfg::CreateScheme::Create"
+                                        []
+                                        []
                                         []
                                     |)))
                               ]
@@ -8397,6 +8549,8 @@ Module instructions.
                                             |);
                                             Value.StructTuple
                                               "revm_specification::hardfork::SpecId::TANGERINE"
+                                              []
+                                              []
                                               []
                                           ]
                                         |)
@@ -8528,6 +8682,8 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
@@ -8567,9 +8723,13 @@ Module instructions.
                                 |);
                                 Value.StructTuple
                                   "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                  []
+                                  []
                                   [
                                     Value.StructTuple
                                       "revm_interpreter::interpreter_action::FrameInput::Create"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -8596,6 +8756,8 @@ Module instructions.
                                           [
                                             Value.StructRecord
                                               "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
+                                              []
+                                              []
                                               [
                                                 ("caller",
                                                   M.call_closure (|
@@ -8637,6 +8799,8 @@ Module instructions.
                                   ];
                                 Value.StructTuple
                                   "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                  []
+                                  []
                                   []
                               ]
                             |)
@@ -8966,6 +9130,8 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
@@ -9207,6 +9373,8 @@ Module instructions.
                                                                         Value.StructTuple
                                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |)
                                                                   |) in
@@ -9297,9 +9465,13 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                              []
+                                                              []
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9327,6 +9499,8 @@ Module instructions.
                                                                   [
                                                                     Value.StructRecord
                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("input",
                                                                           M.read (| input |));
@@ -9372,10 +9546,14 @@ Module instructions.
                                                                         ("value",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                                                                            []
+                                                                            []
                                                                             [ M.read (| value |) ]);
                                                                         ("scheme",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call"
+                                                                            []
+                                                                            []
                                                                             []);
                                                                         ("is_static",
                                                                           M.call_closure (|
@@ -9422,6 +9600,8 @@ Module instructions.
                                                           ];
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -9929,6 +10109,8 @@ Module instructions.
                                                                         Value.StructTuple
                                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |)
                                                                   |) in
@@ -10049,9 +10231,13 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                              []
+                                                              []
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10079,6 +10265,8 @@ Module instructions.
                                                                   [
                                                                     Value.StructRecord
                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("input",
                                                                           M.read (| input |));
@@ -10155,10 +10343,14 @@ Module instructions.
                                                                         ("value",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                                                                            []
+                                                                            []
                                                                             [ M.read (| value |) ]);
                                                                         ("scheme",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode"
+                                                                            []
+                                                                            []
                                                                             []);
                                                                         ("is_static",
                                                                           M.call_closure (|
@@ -10205,6 +10397,8 @@ Module instructions.
                                                           ];
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -10334,6 +10528,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::HOMESTEAD"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -10372,6 +10568,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -10786,6 +10984,8 @@ Module instructions.
                                                                         Value.StructTuple
                                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |)
                                                                   |) in
@@ -10828,9 +11028,13 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                              []
+                                                              []
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10858,6 +11062,8 @@ Module instructions.
                                                                   [
                                                                     Value.StructRecord
                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("input",
                                                                           M.read (| input |));
@@ -10934,6 +11140,8 @@ Module instructions.
                                                                         ("value",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent"
+                                                                            []
+                                                                            []
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.apply
@@ -10981,6 +11189,8 @@ Module instructions.
                                                                         ("scheme",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall"
+                                                                            []
+                                                                            []
                                                                             []);
                                                                         ("is_static",
                                                                           M.call_closure (|
@@ -11027,6 +11237,8 @@ Module instructions.
                                                           ];
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -11155,6 +11367,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::BYZANTIUM"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -11193,6 +11407,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -11607,6 +11823,8 @@ Module instructions.
                                                                         Value.StructTuple
                                                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |)
                                                                   |) in
@@ -11649,9 +11867,13 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "revm_interpreter::interpreter_action::FrameInput::Call"
+                                                              []
+                                                              []
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -11679,6 +11901,8 @@ Module instructions.
                                                                   [
                                                                     Value.StructRecord
                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("input",
                                                                           M.read (| input |));
@@ -11724,6 +11948,8 @@ Module instructions.
                                                                         ("value",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                                                                            []
+                                                                            []
                                                                             [
                                                                               M.read (|
                                                                                 get_associated_constant (|
@@ -11758,6 +11984,8 @@ Module instructions.
                                                                         ("scheme",
                                                                           Value.StructTuple
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
+                                                                            []
+                                                                            []
                                                                             []);
                                                                         ("is_static",
                                                                           Value.Bool true);
@@ -11774,6 +12002,8 @@ Module instructions.
                                                           ];
                                                         Value.StructTuple
                                                           "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)

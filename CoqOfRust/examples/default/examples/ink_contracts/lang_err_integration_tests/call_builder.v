@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "call_builder::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -166,7 +168,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   (* Default *)
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -269,7 +271,13 @@ Module Impl_call_builder_CallBuilderTest.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "call_builder::LangError" ]
+                      []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -277,7 +285,13 @@ Module Impl_call_builder_CallBuilderTest.
                   let e := M.copy (| γ0_0 |) in
                   let _ :=
                     M.is_struct_tuple (| γ0_0, "call_builder::LangError::CouldNotReadInput" |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "call_builder::LangError" ]
+                      [ M.read (| e |) ]
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -417,7 +431,7 @@ Module Impl_call_builder_CallBuilderTest.
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
-        Value.StructTuple "core::option::Option::None" []))
+        Value.StructTuple "core::option::Option::None" [] [ Ty.path "call_builder::LangError" ] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -461,7 +475,7 @@ Module Impl_call_builder_CallBuilderTest.
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
-        Value.StructTuple "core::option::Option::None" []))
+        Value.StructTuple "core::option::Option::None" [] [ Ty.tuple [] ] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

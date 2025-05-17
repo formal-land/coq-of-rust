@@ -323,6 +323,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::BTreeSet"
+                []
+                [ T; A ]
                 [
                   ("map",
                     M.call_closure (|
@@ -2013,6 +2015,8 @@ Module collections.
             ltac:(M.monadic
               (Value.StructRecord
                 "alloc::collections::btree::set::BTreeSet"
+                []
+                [ T; Ty.path "alloc::alloc::Global" ]
                 [
                   ("map",
                     M.call_closure (|
@@ -2067,6 +2071,8 @@ Module collections.
               (let alloc := M.alloc (| alloc |) in
               Value.StructRecord
                 "alloc::collections::btree::set::BTreeSet"
+                []
+                [ T; A ]
                 [
                   ("map",
                     M.call_closure (|
@@ -2114,6 +2120,8 @@ Module collections.
               let range := M.alloc (| range |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Range"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -2306,10 +2314,14 @@ Module collections.
                                     M.return_ (|
                                       Value.StructRecord
                                         "alloc::collections::btree::set::Difference"
+                                        []
+                                        [ T; A ]
                                         [
                                           ("inner",
                                             Value.StructTuple
                                               "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                              []
+                                              [ T; A ]
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -2451,10 +2463,14 @@ Module collections.
                                             M.return_ (|
                                               Value.StructRecord
                                                 "alloc::collections::btree::set::Difference"
+                                                []
+                                                [ T; A ]
                                                 [
                                                   ("inner",
                                                     Value.StructTuple
                                                       "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                      []
+                                                      [ T; A ]
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2497,6 +2513,8 @@ Module collections.
                                     M.alloc (|
                                       Value.StructRecord
                                         "alloc::collections::btree::set::Difference"
+                                        []
+                                        [ T; A ]
                                         [
                                           ("inner",
                                             M.read (|
@@ -2611,6 +2629,8 @@ Module collections.
                                                                 (M.alloc (|
                                                                   Value.StructTuple
                                                                     "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                                    []
+                                                                    [ T; A ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -2731,6 +2751,8 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                          []
+                                                          [ T; A ]
                                                           [ M.read (| self_iter |) ]
                                                       |)));
                                                   fun γ =>
@@ -2820,6 +2842,8 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                          []
+                                                          [ T; A ]
                                                           [ M.read (| self_iter |) ]
                                                       |)));
                                                   fun γ =>
@@ -2893,6 +2917,8 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructRecord
                                                           "alloc::collections::btree::set::DifferenceInner::Search"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             ("self_iter",
                                                               M.call_closure (|
@@ -2930,6 +2956,8 @@ Module collections.
                                                       (M.alloc (|
                                                         Value.StructRecord
                                                           "alloc::collections::btree::set::DifferenceInner::Stitch"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             ("self_iter",
                                                               M.call_closure (|
@@ -3056,6 +3084,8 @@ Module collections.
               let other := M.alloc (| other |) in
               Value.StructTuple
                 "alloc::collections::btree::set::SymmetricDifference"
+                []
+                [ T ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -3250,11 +3280,21 @@ Module collections.
                                     M.return_ (|
                                       Value.StructRecord
                                         "alloc::collections::btree::set::Intersection"
+                                        []
+                                        [ T; A ]
                                         [
                                           ("inner",
                                             Value.StructTuple
                                               "alloc::collections::btree::set::IntersectionInner::Answer"
-                                              [ Value.StructTuple "core::option::Option::None" [] ])
+                                              []
+                                              [ T; A ]
+                                              [
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                  []
+                                              ])
                                         ]
                                     |)
                                   |)
@@ -3372,13 +3412,19 @@ Module collections.
                                             M.return_ (|
                                               Value.StructRecord
                                                 "alloc::collections::btree::set::Intersection"
+                                                []
+                                                [ T; A ]
                                                 [
                                                   ("inner",
                                                     Value.StructTuple
                                                       "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                      []
+                                                      [ T; A ]
                                                       [
                                                         Value.StructTuple
                                                           "core::option::Option::None"
+                                                          []
+                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                           []
                                                       ])
                                                 ]
@@ -3398,6 +3444,8 @@ Module collections.
                                     M.alloc (|
                                       Value.StructRecord
                                         "alloc::collections::btree::set::Intersection"
+                                        []
+                                        [ T; A ]
                                         [
                                           ("inner",
                                             M.read (|
@@ -3512,9 +3560,18 @@ Module collections.
                                                                 (M.alloc (|
                                                                   Value.StructTuple
                                                                     "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                                    []
+                                                                    [ T; A ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ T ]
+                                                                        ]
                                                                         []
                                                                     ]
                                                                 |)))
@@ -3537,9 +3594,13 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
+                                                              []
+                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
@@ -3564,9 +3625,13 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
+                                                              []
+                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
@@ -3648,6 +3713,8 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructRecord
                                                           "alloc::collections::btree::set::IntersectionInner::Search"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             ("small_iter",
                                                               M.call_closure (|
@@ -3751,6 +3818,8 @@ Module collections.
                                                       M.alloc (|
                                                         Value.StructRecord
                                                           "alloc::collections::btree::set::IntersectionInner::Search"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             ("small_iter",
                                                               M.call_closure (|
@@ -3788,6 +3857,8 @@ Module collections.
                                                       (M.alloc (|
                                                         Value.StructRecord
                                                           "alloc::collections::btree::set::IntersectionInner::Stitch"
+                                                          []
+                                                          [ T; A ]
                                                           [
                                                             ("a",
                                                               M.call_closure (|
@@ -3876,6 +3947,8 @@ Module collections.
               let other := M.alloc (| other |) in
               Value.StructTuple
                 "alloc::collections::btree::set::Union"
+                []
+                [ T ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -5282,6 +5355,8 @@ Module collections.
                                                                   |);
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   M.closure
                                                                     (fun γ =>
@@ -6213,7 +6288,7 @@ Module collections.
                               M.read (| value |)
                             ]
                           |);
-                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                         ]
                       |)
                     ]
@@ -6356,9 +6431,13 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::set::entry::Entry::Occupied"
+                            []
+                            [ T; A ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::set::entry::OccupiedEntry"
+                                []
+                                [ T; A ]
                                 [ ("inner", M.read (| entry |)) ]
                             ]
                         |)));
@@ -6374,9 +6453,13 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::set::entry::Entry::Vacant"
+                            []
+                            [ T; A ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::set::entry::VacantEntry"
+                                []
+                                [ T; A ]
                                 [ ("inner", M.read (| entry |)) ]
                             ]
                         |)))
@@ -6794,6 +6877,8 @@ Module collections.
               let value := M.alloc (| value |) in
               Value.StructRecord
                 "alloc::collections::btree::set::BTreeSet"
+                []
+                [ T; A ]
                 [
                   ("map",
                     M.call_closure (|
@@ -6902,6 +6987,8 @@ Module collections.
                         M.alloc (|
                           Value.StructRecord
                             "alloc::collections::btree::set::ExtractIf"
+                            []
+                            [ T; F; A ]
                             [
                               ("pred", M.read (| pred |));
                               ("inner", M.read (| inner |));
@@ -6933,6 +7020,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Iter"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -7077,6 +7166,8 @@ Module collections.
               let bound := M.alloc (| bound |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Cursor"
+                []
+                [ T ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -7138,6 +7229,8 @@ Module collections.
               let bound := M.alloc (| bound |) in
               Value.StructRecord
                 "alloc::collections::btree::set::CursorMut"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -7199,6 +7292,8 @@ Module collections.
               let bound := M.alloc (| bound |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Cursor"
+                []
+                [ T ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -7260,6 +7355,8 @@ Module collections.
               let bound := M.alloc (| bound |) in
               Value.StructRecord
                 "alloc::collections::btree::set::CursorMut"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -7455,6 +7552,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::set::BTreeSet"
+                    []
+                    [ T; A ]
                     [ ("map", M.read (| map |)) ]
                 |)
               |)))
@@ -7689,7 +7788,7 @@ Module collections.
                             |),
                             [ M.read (| inputs |) ]
                           |);
-                          Value.StructTuple "alloc::alloc::Global" []
+                          Value.StructTuple "alloc::alloc::Global" [] [] []
                         ]
                       |)
                     |)
@@ -7967,12 +8066,14 @@ Module collections.
                                 ]
                             ]
                           |),
-                          [ M.read (| iter |); Value.StructTuple "alloc::alloc::Global" [] ]
+                          [ M.read (| iter |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
                         |)
                       |) in
                     M.alloc (|
                       Value.StructRecord
                         "alloc::collections::btree::set::BTreeSet"
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ]
                         [ ("map", M.read (| map |)) ]
                     |)
                   |)))
@@ -8019,6 +8120,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::IntoIter"
+                []
+                [ T; A ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -9761,6 +9864,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Iter"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -10307,6 +10412,8 @@ Module collections.
             ltac:(M.monadic
               (Value.StructRecord
                 "alloc::collections::btree::set::Iter"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -10546,6 +10653,8 @@ Module collections.
             ltac:(M.monadic
               (Value.StructRecord
                 "alloc::collections::btree::set::IntoIter"
+                []
+                [ T; A ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -10598,6 +10707,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Range"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -11063,6 +11174,8 @@ Module collections.
             ltac:(M.monadic
               (Value.StructRecord
                 "alloc::collections::btree::set::Range"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -11126,6 +11239,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Difference"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.read (|
@@ -11170,6 +11285,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructRecord
                                   "alloc::collections::btree::set::DifferenceInner::Stitch"
+                                  []
+                                  [ T; A ]
                                   [
                                     ("self_iter",
                                       M.call_closure (|
@@ -11253,6 +11370,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructRecord
                                   "alloc::collections::btree::set::DifferenceInner::Search"
+                                  []
+                                  [ T; A ]
                                   [
                                     ("self_iter",
                                       M.call_closure (|
@@ -11301,6 +11420,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructTuple
                                   "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                  []
+                                  [ T; A ]
                                   [
                                     M.call_closure (|
                                       Ty.apply
@@ -11615,7 +11736,11 @@ Module collections.
                                                   |)
                                                 ]
                                               |);
-                                              Value.StructTuple "core::cmp::Ordering::Less" [];
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Less"
+                                                []
+                                                []
+                                                [];
                                               M.closure
                                                 (fun γ =>
                                                   ltac:(M.monadic
@@ -11700,6 +11825,8 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -12188,6 +12315,8 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -12485,6 +12614,8 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ M.read (| self_len |) ]
                             ]
                         |)))
@@ -12568,6 +12699,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "alloc::collections::btree::set::SymmetricDifference"
+                []
+                [ T ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -12867,6 +13000,8 @@ Module collections.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   M.call_closure (|
                                     Ty.path "usize",
@@ -12966,6 +13101,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Intersection"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.read (|
@@ -13010,6 +13147,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructRecord
                                   "alloc::collections::btree::set::IntersectionInner::Stitch"
+                                  []
+                                  [ T; A ]
                                   [
                                     ("a",
                                       M.call_closure (|
@@ -13083,6 +13222,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructRecord
                                   "alloc::collections::btree::set::IntersectionInner::Search"
+                                  []
+                                  [ T; A ]
                                   [
                                     ("small_iter",
                                       M.call_closure (|
@@ -13131,6 +13272,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructTuple
                                   "alloc::collections::btree::set::IntersectionInner::Answer"
+                                  []
+                                  [ T; A ]
                                   [ M.read (| M.deref (| M.read (| answer |) |) |) ]
                               |)))
                         ]
@@ -13826,6 +13969,8 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -14044,6 +14189,8 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -14168,6 +14315,8 @@ Module collections.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   M.call_closure (|
                                     Ty.path "usize",
@@ -14236,6 +14385,8 @@ Module collections.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   M.call_closure (|
                                     Ty.path "usize",
@@ -14277,6 +14428,8 @@ Module collections.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)));
@@ -14301,6 +14454,8 @@ Module collections.
                               Value.Integer IntegerKind.Usize 1;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 1 ]
                             ]
                         |)))
@@ -14384,6 +14539,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "alloc::collections::btree::set::Union"
+                []
+                [ T ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -14604,6 +14761,8 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   M.call_closure (|
                                     Ty.path "usize",
@@ -14704,6 +14863,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Cursor"
+                []
+                [ K ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -16028,6 +16189,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Cursor"
+                []
+                [ T ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -16083,6 +16246,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::CursorMutKey"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -16156,7 +16321,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -16206,7 +16371,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -16262,7 +16427,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -16315,7 +16480,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -17124,6 +17289,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::set::Cursor"
+                []
+                [ T ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -17198,7 +17365,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -17248,7 +17415,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -17304,7 +17471,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -17357,7 +17524,7 @@ Module collections.
                     |)
                   |);
                   M.read (| value |);
-                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

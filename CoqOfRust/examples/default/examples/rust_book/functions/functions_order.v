@@ -97,7 +97,9 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |)
+                  M.alloc (|
+                    Value.StructTuple "functions_order::OtherType" [] [] [ M.read (| b |) ]
+                  |)
                 |)
               ]
             |)
@@ -118,7 +120,9 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |)
+                  M.alloc (|
+                    Value.StructTuple "functions_order::SomeType" [] [] [ M.read (| u |) ]
+                  |)
                 |)
               ]
             |)
@@ -341,7 +345,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               Ty.tuple [],
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [], [] |),
-              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer IntegerKind.U32 0 ] ]
+              [
+                Value.StructTuple
+                  "functions_order::SomeType"
+                  []
+                  []
+                  [ Value.Integer IntegerKind.U32 0 ]
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

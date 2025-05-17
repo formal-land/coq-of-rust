@@ -577,6 +577,8 @@ Module slice.
                                                   [
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("start",
                                                           Value.Integer IntegerKind.Usize 1);

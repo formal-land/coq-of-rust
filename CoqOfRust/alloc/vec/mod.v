@@ -28,6 +28,8 @@ Module vec.
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::vec::Vec"
+            []
+            [ T; Ty.path "alloc::alloc::Global" ]
             [
               ("buf",
                 M.call_closure (|
@@ -76,7 +78,7 @@ Module vec.
               [],
               []
             |),
-            [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -117,7 +119,7 @@ Module vec.
               [],
               []
             |),
-            [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -158,7 +160,7 @@ Module vec.
               M.read (| ptr |);
               M.read (| length |);
               M.read (| capacity |);
-              Value.StructTuple "alloc::alloc::Global" []
+              Value.StructTuple "alloc::alloc::Global" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -195,7 +197,7 @@ Module vec.
               M.read (| ptr |);
               M.read (| length |);
               M.read (| capacity |);
-              Value.StructTuple "alloc::alloc::Global" []
+              Value.StructTuple "alloc::alloc::Global" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -224,6 +226,8 @@ Module vec.
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::vec::Vec"
+            []
+            [ T; A ]
             [
               ("buf",
                 M.call_closure (|
@@ -266,6 +270,8 @@ Module vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::vec::Vec"
+            []
+            [ T; A ]
             [
               ("buf",
                 M.call_closure (|
@@ -317,9 +323,16 @@ Module vec.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ];
+                  Ty.path "alloc::collections::TryReserveError"
+                ]
                 [
                   Value.StructRecord
                     "alloc::vec::Vec"
+                    []
+                    [ T; A ]
                     [
                       ("buf",
                         M.read (|
@@ -476,6 +489,8 @@ Module vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::vec::Vec"
+            []
+            [ T; A ]
             [
               ("buf",
                 M.call_closure (|
@@ -520,6 +535,8 @@ Module vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::vec::Vec"
+            []
+            [ T; A ]
             [
               ("buf",
                 M.call_closure (|
@@ -3233,6 +3250,8 @@ Module vec.
                   M.alloc (|
                     Value.StructRecord
                       "alloc::vec::retain_mut::BackshiftOnDrop"
+                      []
+                      [ T; A ]
                       [
                         ("v", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                         ("processed_len", Value.Integer IntegerKind.Usize 0);
@@ -3863,6 +3882,8 @@ Module vec.
                   M.alloc (|
                     Value.StructRecord
                       "alloc::vec::dedup_by::FillGapOnDrop"
+                      []
+                      [ T; A ]
                       [
                         ("read",
                           M.call_closure (|
@@ -4460,6 +4481,8 @@ Module vec.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; T ]
                                     [ M.read (| value |) ]
                                 |)
                               |)
@@ -4526,7 +4549,13 @@ Module vec.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; T ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4583,7 +4612,7 @@ Module vec.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -4639,6 +4668,8 @@ Module vec.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -4888,7 +4919,7 @@ Module vec.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
                   ]
                 |)
               |)))
@@ -5169,7 +5200,11 @@ Module vec.
                   M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| range |);
-                    Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
+                    Value.StructRecord
+                      "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
+                      [ ("end_", M.read (| len |)) ]
                   ]
                 |)
               |),
@@ -5250,6 +5285,8 @@ Module vec.
                     M.alloc (|
                       Value.StructRecord
                         "alloc::vec::drain::Drain"
+                        []
+                        [ T; A ]
                         [
                           ("tail_start", M.read (| end_ |));
                           ("tail_len",
@@ -6615,6 +6652,8 @@ Module vec.
                     M.read (| src |);
                     Value.StructRecord
                       "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("end_",
                           M.call_closure (|
@@ -6818,6 +6857,8 @@ Module vec.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", Value.Integer IntegerKind.Usize 1); ("end_", M.read (| n |)) ]
                       ]
                     |)
@@ -7533,6 +7574,8 @@ Module vec.
                                                                   Value.StructTuple
                                                                     "core::panicking::AssertKind::Eq"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 |) in
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -7571,6 +7614,11 @@ Module vec.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -7939,6 +7987,11 @@ Module vec.
           let replace_with := M.alloc (| replace_with |) in
           Value.StructRecord
             "alloc::vec::splice::Splice"
+            []
+            [
+              Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter";
+              A
+            ]
             [
               ("drain",
                 M.call_closure (|
@@ -8040,6 +8093,8 @@ Module vec.
             M.alloc (|
               Value.StructRecord
                 "alloc::vec::extract_if::ExtractIf"
+                []
+                [ T; F; A ]
                 [
                   ("vec", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                   ("idx", Value.Integer IntegerKind.Usize 0);
@@ -8299,7 +8354,7 @@ Module vec.
             [],
             [ Ty.path "alloc::alloc::Global" ]
           |),
-          [ M.read (| elem |); M.read (| n |); Value.StructTuple "alloc::alloc::Global" [] ]
+          [ M.read (| elem |); M.read (| n |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -9895,9 +9950,11 @@ Module vec.
             M.alloc (|
               Value.StructRecord
                 "alloc::vec::into_iter::IntoIter"
+                []
+                [ T; A ]
                 [
                   ("buf", M.read (| buf |));
-                  ("phantom", Value.StructTuple "core::marker::PhantomData" []);
+                  ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ T ] []);
                   ("cap", M.read (| cap |));
                   ("alloc", M.read (| alloc |));
                   ("ptr", M.read (| buf |));
@@ -11575,7 +11632,14 @@ Module vec.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Err" [ M.read (| vec |) ]
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "array") [ N ] [ T ];
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
+                                    ]
+                                    [ M.read (| vec |) ]
                                 |)
                               |)
                             |)
@@ -11624,7 +11688,16 @@ Module vec.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| array |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "array") [ N ] [ T ];
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
+                    ]
+                    [ M.read (| array |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

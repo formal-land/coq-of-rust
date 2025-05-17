@@ -21,6 +21,8 @@ Module collections.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloc::collections::TryReserveError"
+            []
+            []
             [
               ("kind",
                 M.call_closure (|
@@ -315,6 +317,8 @@ Module collections.
                       Value.StructTuple
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -336,6 +340,8 @@ Module collections.
                     M.alloc (|
                       Value.StructRecord
                         "alloc::collections::TryReserveErrorKind::AllocError"
+                        []
+                        []
                         [
                           ("layout",
                             M.call_closure (|
@@ -712,7 +718,11 @@ Module collections.
       | [], [], [ kind ] =>
         ltac:(M.monadic
           (let kind := M.alloc (| kind |) in
-          Value.StructRecord "alloc::collections::TryReserveError" [ ("kind", M.read (| kind |)) ]))
+          Value.StructRecord
+            "alloc::collections::TryReserveError"
+            []
+            []
+            [ ("kind", M.read (| kind |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -746,6 +756,8 @@ Module collections.
                 ltac:(M.monadic
                   (Value.StructTuple
                     "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                    []
+                    []
                     []))
             ]
           |)))

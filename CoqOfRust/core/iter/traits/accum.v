@@ -5014,6 +5014,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i8" ]
                     [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
@@ -5168,6 +5170,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i8" ]
                     [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
@@ -5330,6 +5334,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i8" ]
                     [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
@@ -5512,6 +5518,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i8" ]
                     [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
@@ -5686,6 +5694,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i16" ]
                     [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
@@ -5840,6 +5850,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i16" ]
                     [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
@@ -6002,6 +6014,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i16" ]
                     [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
@@ -6184,6 +6198,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i16" ]
                     [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
@@ -6358,6 +6374,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i32" ]
                     [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
@@ -6512,6 +6530,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i32" ]
                     [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
@@ -6674,6 +6694,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i32" ]
                     [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
@@ -6856,6 +6878,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i32" ]
                     [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
@@ -7030,6 +7054,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i64" ]
                     [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
@@ -7184,6 +7210,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i64" ]
                     [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
@@ -7346,6 +7374,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i64" ]
                     [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
@@ -7528,6 +7558,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i64" ]
                     [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
@@ -7705,6 +7737,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i128" ]
                     [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
@@ -7862,6 +7896,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i128" ]
                     [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
@@ -8027,6 +8063,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i128" ]
                     [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
@@ -8212,6 +8250,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "i128" ]
                     [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
@@ -8392,6 +8432,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "isize" ]
                     [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
@@ -8552,6 +8594,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "isize" ]
                     [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
@@ -8717,6 +8761,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "isize" ]
                     [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
@@ -8902,6 +8948,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "isize" ]
                     [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
@@ -9076,6 +9124,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u8" ]
                     [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
@@ -9230,6 +9280,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u8" ]
                     [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
@@ -9392,6 +9444,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u8" ]
                     [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
@@ -9574,6 +9628,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u8" ]
                     [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
@@ -9748,6 +9804,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u16" ]
                     [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
@@ -9902,6 +9960,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u16" ]
                     [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
@@ -10064,6 +10124,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u16" ]
                     [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
@@ -10246,6 +10308,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u16" ]
                     [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
@@ -10420,6 +10484,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u32" ]
                     [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
@@ -10574,6 +10640,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u32" ]
                     [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
@@ -10736,6 +10804,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u32" ]
                     [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
@@ -10918,6 +10988,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u32" ]
                     [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
@@ -11092,6 +11164,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
                     [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
@@ -11246,6 +11320,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
                     [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
@@ -11408,6 +11484,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
                     [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
@@ -11590,6 +11668,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
                     [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
@@ -11767,6 +11847,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u128" ]
                     [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
@@ -11924,6 +12006,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u128" ]
                     [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
@@ -12089,6 +12173,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u128" ]
                     [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
@@ -12274,6 +12360,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u128" ]
                     [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
@@ -12454,6 +12542,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "usize" ]
                     [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
@@ -12614,6 +12704,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "usize" ]
                     [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>
@@ -12779,6 +12871,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "usize" ]
                     [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
@@ -12964,6 +13058,8 @@ Module iter.
                   M.read (| iter |);
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "usize" ]
                     [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>

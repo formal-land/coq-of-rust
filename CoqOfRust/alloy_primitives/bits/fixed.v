@@ -454,7 +454,11 @@ Module bits.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| value |) ]))
+            Value.StructTuple
+              "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
+              [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -980,6 +984,8 @@ Module bits.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
               [ M.read (| M.deref (| M.read (| bytes |) |) |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1012,6 +1018,8 @@ Module bits.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
               [ M.read (| M.deref (| M.read (| bytes |) |) |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1549,6 +1557,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 1 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -1631,6 +1641,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 1 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -1742,6 +1754,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 1 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -1824,6 +1838,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 1 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -1935,6 +1951,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 2 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -2017,6 +2035,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 2 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -2128,6 +2148,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 2 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -2210,6 +2232,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 2 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -2321,6 +2345,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 4 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -2403,6 +2429,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 4 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -2514,6 +2542,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 4 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -2596,6 +2626,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 4 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -2707,6 +2739,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 8 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -2789,6 +2823,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 8 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -2900,6 +2936,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 8 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -2982,6 +3020,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 8 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -3093,6 +3133,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 16 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3178,6 +3220,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 16 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3292,6 +3336,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 16 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3377,6 +3423,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 16 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3491,6 +3539,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 20 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3605,6 +3655,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 20 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3719,6 +3771,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 32 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3833,6 +3887,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 32 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3947,6 +4003,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 64 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -4061,6 +4119,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ Value.Integer IntegerKind.Usize 64 ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -4621,6 +4681,8 @@ Module bits.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_", Value.Integer IntegerKind.Usize 2)
@@ -4661,6 +4723,8 @@ Module bits.
                                           M.borrow (| Pointer.Kind.MutRef, buf |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 2);
                                               ("end_", Value.Integer IntegerKind.Usize 6)
@@ -4719,6 +4783,8 @@ Module bits.
                                       M.borrow (| Pointer.Kind.MutRef, buf |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 6) ]
                                     ]
                                   |)
@@ -4792,6 +4858,8 @@ Module bits.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start",
                                             M.call_closure (|
@@ -4837,6 +4905,8 @@ Module bits.
                                           M.borrow (| Pointer.Kind.MutRef, buf |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -5857,6 +5927,8 @@ Module bits.
           (M.alloc (|
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
               [ repeat (| Value.Integer IntegerKind.U8 0, N |) ]
           |))).
       
@@ -5877,7 +5949,11 @@ Module bits.
         | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
-            Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| bytes |) ]))
+            Value.StructTuple
+              "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
+              [ M.read (| bytes |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5947,7 +6023,11 @@ Module bits.
                   ]
                 |) in
               M.alloc (|
-                Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| bytes |) ]
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ N ]
+                  []
+                  [ M.read (| bytes |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5977,6 +6057,8 @@ Module bits.
             (let byte := M.alloc (| byte |) in
             Value.StructTuple
               "alloy_primitives::bits::fixed::FixedBytes"
+              [ N ]
+              []
               [ repeat (| M.read (| byte |), N |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6209,6 +6291,8 @@ Module bits.
               M.alloc (|
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Z ]
+                  []
                   [ M.read (| result |) ]
               |)
             |)))
@@ -6608,6 +6692,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start",
                                     M.call_closure (|
@@ -6832,6 +6918,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| len |)) ]
                             ]
                           |)
@@ -7855,6 +7943,8 @@ Module bits.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.call_closure (|

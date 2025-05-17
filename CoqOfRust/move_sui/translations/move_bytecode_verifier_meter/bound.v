@@ -363,6 +363,11 @@ Module bound.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path
@@ -388,6 +393,8 @@ Module bound.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |);
@@ -623,7 +630,13 @@ Module bound.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -665,10 +678,14 @@ Module bound.
           (let config := M.alloc (| config |) in
           Value.StructRecord
             "move_bytecode_verifier_meter::bound::BoundMeter"
+            []
+            []
             [
               ("pkg_bounds",
                 Value.StructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
+                  []
+                  []
                   [
                     ("name",
                       M.call_closure (|
@@ -697,6 +714,8 @@ Module bound.
               ("mod_bounds",
                 Value.StructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
+                  []
+                  []
                   [
                     ("name",
                       M.call_closure (|
@@ -725,6 +744,8 @@ Module bound.
               ("fun_bounds",
                 Value.StructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
+                  []
+                  []
                   [
                     ("name",
                       M.call_closure (|

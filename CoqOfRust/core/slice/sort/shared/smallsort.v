@@ -2025,6 +2025,8 @@ Module slice.
                                                       [
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start", M.read (| presorted_len |));
                                                             ("end_", M.read (| desired_len |))
@@ -2238,6 +2240,8 @@ Module slice.
                       M.alloc (|
                         Value.StructRecord
                           "core::slice::sort::shared::smallsort::CopyOnDrop"
+                          []
+                          [ T ]
                           [
                             ("src",
                               (* MutToConstPointer *)
@@ -4889,6 +4893,8 @@ Module slice.
                       M.alloc (|
                         Value.StructRecord
                           "core::slice::sort::shared::smallsort::CopyOnDrop"
+                          []
+                          [ T ]
                           [
                             ("src",
                               M.borrow (|
@@ -6612,6 +6618,8 @@ Module slice.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_", M.read (| len_div_2 |))

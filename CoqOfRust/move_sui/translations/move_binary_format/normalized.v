@@ -145,21 +145,23 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Bool" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Bool" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Bool" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U8" |) in
-                    M.alloc (| Value.StructTuple "move_binary_format::normalized::Type::U8" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "move_binary_format::normalized::Type::U8" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U64" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U64" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -167,7 +169,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U128" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U128" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U128" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -175,7 +177,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Address" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Address" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Address" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -183,7 +185,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Signer" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Signer" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Signer" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -219,6 +221,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructRecord
                         "move_binary_format::normalized::Type::Struct"
+                        []
+                        []
                         [
                           ("address",
                             M.call_closure (|
@@ -307,6 +311,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -348,6 +354,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::TypeParameter"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -377,6 +385,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Reference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -418,6 +428,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::MutableReference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -452,7 +464,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U16" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U16" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -460,7 +472,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U32" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U32" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -468,7 +480,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U256" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U256" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U256" [] [] []
                     |)))
               ]
             |)
@@ -1414,7 +1426,7 @@ Module normalized.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -2950,6 +2962,21 @@ Module normalized.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Ok";
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Error"
+                                                ]
                                                 [ M.read (| __err |) ]
                                             |)
                                           |)
@@ -3030,6 +3057,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -3109,6 +3151,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -3185,6 +3242,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -3272,6 +3344,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -3632,9 +3719,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Type" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -3764,6 +3863,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -3846,6 +3960,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -3927,6 +4056,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4013,9 +4157,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Field" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -4145,6 +4301,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -4227,6 +4398,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4313,6 +4499,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4399,9 +4600,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'5::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Constant" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -4538,6 +4751,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -4620,6 +4848,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4709,6 +4952,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4798,6 +5056,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -4884,9 +5157,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'7::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Struct" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -5044,6 +5329,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -5126,6 +5426,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5207,6 +5522,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5296,6 +5626,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5385,6 +5730,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5474,6 +5834,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5563,6 +5938,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5649,9 +6039,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'9::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Function" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -5781,6 +6183,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -5863,6 +6280,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -5944,6 +6376,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -6030,9 +6477,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'11::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::FieldRef" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -6162,6 +6621,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -6244,6 +6718,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -6325,6 +6814,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -6411,9 +6915,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'13::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::FunctionRef" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -8456,6 +8972,21 @@ Module normalized.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Ok";
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Error"
+                                                ]
                                                 [ M.read (| __err |) ]
                                             |)
                                           |)
@@ -8535,6 +9066,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -8613,6 +9159,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -8944,6 +9505,21 @@ Module normalized.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Ok";
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    __S
+                                                    "Error"
+                                                ]
                                                 [ M.read (| __err |) ]
                                             |)
                                           |)
@@ -9023,6 +9599,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -9101,6 +9692,21 @@ Module normalized.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Ok";
+                                                Ty.associated_in_trait
+                                                  "serde::ser::Serializer"
+                                                  []
+                                                  []
+                                                  __S
+                                                  "Error"
+                                              ]
                                               [ M.read (| __err |) ]
                                           |)
                                         |)
@@ -9857,9 +10463,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'15::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Bytecode" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -10033,6 +10651,21 @@ Module normalized.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -10115,6 +10748,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10196,6 +10844,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10277,6 +10940,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10366,6 +11044,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10455,6 +11148,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10545,6 +11253,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10635,6 +11358,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10724,6 +11462,21 @@ Module normalized.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10810,9 +11563,21 @@ Module normalized.
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'17::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::normalized::Module" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -10853,6 +11618,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::Field"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -11417,6 +12184,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::Constant"
+            []
+            []
             [
               ("type_",
                 M.call_closure (|
@@ -12014,6 +12783,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::Struct"
+            []
+            []
             [
               ("abilities",
                 M.call_closure (|
@@ -12900,6 +13671,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::Function"
+            []
+            []
             [
               ("visibility",
                 M.call_closure (|
@@ -14578,6 +15351,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::FieldRef"
+            []
+            []
             [
               ("struct_name",
                 M.call_closure (|
@@ -15128,6 +15903,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::FunctionRef"
+            []
+            []
             [
               ("module_id",
                 M.call_closure (|
@@ -16303,7 +17080,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Pop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Pop" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Pop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16311,7 +17088,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Ret" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ret" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ret" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16326,6 +17103,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrTrue"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -16355,6 +17134,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrFalse"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -16384,6 +17165,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Branch"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -16413,6 +17196,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU8"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16442,6 +17227,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU64"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u64",
@@ -16471,6 +17258,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU128"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u128",
@@ -16496,7 +17285,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU8" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU8" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16507,7 +17296,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU64" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16518,7 +17307,11 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU128" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::CastU128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16533,6 +17326,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdConst"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Constant",
@@ -16558,7 +17353,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdTrue"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdTrue" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdTrue" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16569,7 +17364,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdFalse"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdFalse" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdFalse" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16584,6 +17379,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::CopyLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16613,6 +17410,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16642,6 +17441,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::StLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16671,6 +17472,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FunctionRef",
@@ -16700,6 +17503,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::CallGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -16749,6 +17554,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Pack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -16778,6 +17585,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::PackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -16827,6 +17636,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Unpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -16856,6 +17667,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::UnpackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -16901,7 +17714,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ReadRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::ReadRef" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::ReadRef" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16912,7 +17725,11 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::WriteRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::WriteRef" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::WriteRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16923,7 +17740,11 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::FreezeRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::FreezeRef" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::FreezeRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -16938,6 +17759,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16967,6 +17790,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -16996,6 +17821,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FieldRef",
@@ -17025,6 +17852,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -17074,6 +17903,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FieldRef",
@@ -17103,6 +17934,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -17145,7 +17978,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Add" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Add" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Add" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17153,7 +17986,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Sub" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Sub" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Sub" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17161,7 +17994,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Mul" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mul" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mul" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17169,7 +18002,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Mod" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mod" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mod" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17177,7 +18010,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Div" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Div" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Div" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17188,7 +18021,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::BitOr"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitOr" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitOr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17199,7 +18032,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::BitAnd"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitAnd" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitAnd" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17207,7 +18040,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Xor" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Xor" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Xor" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17215,7 +18048,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Or" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Or" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Or" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17223,7 +18056,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::And" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::And" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::And" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17231,7 +18064,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Not" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Not" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Not" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17239,7 +18072,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Eq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Eq" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Eq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17247,7 +18080,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Neq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Neq" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Neq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17255,7 +18088,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Lt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Lt" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Lt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17263,7 +18096,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Gt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Gt" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Gt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17271,7 +18104,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Le" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Le" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Le" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17279,7 +18112,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Ge" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ge" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ge" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17290,7 +18123,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Abort"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Abort" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Abort" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17298,7 +18131,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Nop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Nop" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Nop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17306,7 +18139,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Shl" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shl" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shl" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17314,7 +18147,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Shr" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shr" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17336,6 +18169,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17378,6 +18213,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecLen"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17407,6 +18244,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecImmBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17436,6 +18275,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecMutBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17465,6 +18306,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPushBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17494,6 +18337,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPopBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17530,6 +18375,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecUnpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17572,6 +18419,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecSwap"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -17601,6 +18450,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU16"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -17630,6 +18481,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU32"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u32",
@@ -17659,6 +18512,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
@@ -17684,7 +18539,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU16" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17695,7 +18550,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU32" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17706,7 +18561,11 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CastU256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU256" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::CastU256"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -17721,6 +18580,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -17750,6 +18611,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -17799,6 +18662,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -17828,6 +18693,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -17877,6 +18744,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ExistsDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -17906,6 +18775,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ExistsGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -17955,6 +18826,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveFromDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -17984,6 +18857,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveFromGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -18033,6 +18908,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveToDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -18062,6 +18939,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveToGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -22671,7 +23550,7 @@ Module normalized.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -25161,7 +26040,9 @@ Module normalized.
                             (M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                             |)))
                       ]
                     |)));
@@ -27800,6 +28681,8 @@ Module normalized.
           let constant := M.alloc (| constant |) in
           Value.StructRecord
             "move_binary_format::normalized::Constant"
+            []
+            []
             [
               ("type_",
                 M.call_closure (|
@@ -27929,6 +28812,8 @@ Module normalized.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::normalized::Module"
+            []
+            []
             [
               ("file_format_version",
                 M.call_closure (|
@@ -29716,6 +30601,8 @@ Module normalized.
             M.alloc (|
               Value.StructRecord
                 "move_binary_format::normalized::Module"
+                []
+                []
                 [
                   ("file_format_version",
                     M.call_closure (|
@@ -30065,6 +30952,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructRecord
                         "move_binary_format::normalized::Type::Struct"
+                        []
+                        []
                         [
                           ("address",
                             M.read (|
@@ -30299,6 +31188,8 @@ Module normalized.
                             M.alloc (|
                               Value.StructRecord
                                 "move_binary_format::normalized::Type::Struct"
+                                []
+                                []
                                 [
                                   ("address",
                                     M.read (|
@@ -30675,7 +31566,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Bool" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Bool" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30685,7 +31576,9 @@ Module normalized.
                         γ,
                         "move_binary_format::file_format::SignatureToken::U8"
                       |) in
-                    M.alloc (| Value.StructTuple "move_binary_format::normalized::Type::U8" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "move_binary_format::normalized::Type::U8" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
@@ -30695,7 +31588,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U16" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30706,7 +31599,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U32" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30717,7 +31610,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U64" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30728,7 +31621,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U128" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U128" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30739,7 +31632,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U256" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U256" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30750,7 +31643,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::Address"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Address" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Address" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30761,7 +31654,7 @@ Module normalized.
                         "move_binary_format::file_format::SignatureToken::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Signer" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Signer" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -30776,6 +31669,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -30831,6 +31726,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::TypeParameter"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| i |) |) |) ]
                     |)));
                 fun γ =>
@@ -30846,6 +31743,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Reference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -30901,6 +31800,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::MutableReference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -31341,6 +32242,8 @@ Module normalized.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
+                []
+                [ Ty.path "move_core_types::language_storage::TypeTag" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -31411,6 +32314,11 @@ Module normalized.
                                                       Value.StructTuple
                                                         "core::option::Option::None"
                                                         []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::TypeTag"
+                                                        ]
+                                                        []
                                                     |)
                                                   |)
                                                 |)
@@ -31429,6 +32337,8 @@ Module normalized.
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::Bool"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -31440,6 +32350,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U8"
+                                        []
+                                        []
                                         []
                                     |)));
                                 fun γ =>
@@ -31453,6 +32365,8 @@ Module normalized.
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U16"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -31464,6 +32378,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U32"
+                                        []
+                                        []
                                         []
                                     |)));
                                 fun γ =>
@@ -31477,6 +32393,8 @@ Module normalized.
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U64"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -31488,6 +32406,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U128"
+                                        []
+                                        []
                                         []
                                     |)));
                                 fun γ =>
@@ -31501,6 +32421,8 @@ Module normalized.
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::U256"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -31513,6 +32435,8 @@ Module normalized.
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::Address"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -31524,6 +32448,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::Signer"
+                                        []
+                                        []
                                         []
                                     |)));
                                 fun γ =>
@@ -31538,6 +32464,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::Vector"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.apply
@@ -31642,6 +32570,8 @@ Module normalized.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::language_storage::TypeTag::Struct"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.apply
@@ -31668,6 +32598,8 @@ Module normalized.
                                             [
                                               Value.StructRecord
                                                 "move_core_types::language_storage::StructTag"
+                                                []
+                                                []
                                                 [
                                                   ("address", M.read (| address |));
                                                   ("module", M.read (| module |));
@@ -31923,7 +32855,13 @@ Module normalized.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "move_core_types::language_storage::TypeTag" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)))
@@ -32083,11 +33021,19 @@ Module normalized.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "move_core_types::language_storage::StructTag" ]
                             [ M.read (| M.deref (| M.read (| s |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.path "move_core_types::language_storage::StructTag" ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -32264,6 +33210,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Reference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -32322,6 +33270,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::MutableReference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -32380,6 +33330,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -32459,6 +33411,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructRecord
                         "move_binary_format::normalized::Type::Struct"
+                        []
+                        []
                         [
                           ("address", M.read (| M.deref (| M.read (| address |) |) |));
                           ("module",
@@ -32816,6 +33770,8 @@ Module normalized.
           let f := M.alloc (| f |) in
           Value.StructRecord
             "move_binary_format::normalized::Field"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -33321,6 +34277,8 @@ Module normalized.
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Struct"
+                  []
+                  []
                   [
                     ("abilities",
                       M.read (|
@@ -34159,6 +35117,8 @@ Module normalized.
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Function"
+                  []
+                  []
                   [
                     ("visibility",
                       M.read (|
@@ -34978,6 +35938,11 @@ Module normalized.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::normalized::Function"
+                                                            ]
                                                             [
                                                               M.read (|
                                                                 M.SubPointer.get_tuple_field (|
@@ -35031,7 +35996,13 @@ Module normalized.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "move_binary_format::normalized::Function" ]
+                    []
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -35087,13 +36058,15 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Bool" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Bool" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_core_types::language_storage::TypeTag::U8" |) in
-                    M.alloc (| Value.StructTuple "move_binary_format::normalized::Type::U8" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "move_binary_format::normalized::Type::U8" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -35102,7 +36075,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U16" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35112,7 +36085,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U32" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35122,7 +36095,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U64" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35132,7 +36105,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U128" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U128" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35142,7 +36115,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::U256" []
+                      Value.StructTuple "move_binary_format::normalized::Type::U256" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35152,7 +36125,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::Address"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Address" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Address" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35162,7 +36135,7 @@ Module normalized.
                         "move_core_types::language_storage::TypeTag::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Type::Signer" []
+                      Value.StructTuple "move_binary_format::normalized::Type::Signer" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35176,6 +36149,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -35227,6 +36202,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructRecord
                         "move_binary_format::normalized::Type::Struct"
+                        []
+                        []
                         [
                           ("address",
                             M.read (|
@@ -35461,6 +36438,8 @@ Module normalized.
           let field_handle := M.alloc (| field_handle |) in
           Value.StructRecord
             "move_binary_format::normalized::FieldRef"
+            []
+            []
             [
               ("struct_name",
                 M.call_closure (|
@@ -35591,6 +36570,8 @@ Module normalized.
           let function_handle := M.alloc (| function_handle |) in
           Value.StructRecord
             "move_binary_format::normalized::FunctionRef"
+            []
+            []
             [
               ("module_id",
                 M.call_closure (|
@@ -35869,7 +36850,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Pop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Pop" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Pop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35877,7 +36858,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ret" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ret" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ret" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35888,7 +36869,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU8" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU8" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35899,7 +36880,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU64" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35910,7 +36891,11 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU128" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::CastU128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35921,7 +36906,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::LdTrue"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdTrue" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdTrue" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35932,7 +36917,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::LdFalse"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdFalse" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::LdFalse" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35943,7 +36928,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::ReadRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::ReadRef" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::ReadRef" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35954,7 +36939,11 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::WriteRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::WriteRef" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::WriteRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35965,7 +36954,11 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::FreezeRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::FreezeRef" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::FreezeRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35973,7 +36966,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Add" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Add" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Add" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35981,7 +36974,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Sub" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Sub" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Sub" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35989,7 +36982,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mul" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mul" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mul" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -35997,7 +36990,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mod" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mod" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Mod" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36005,7 +36998,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Div" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Div" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Div" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36016,7 +37009,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::BitOr"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitOr" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitOr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36027,7 +37020,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::BitAnd"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitAnd" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::BitAnd" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36035,7 +37028,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Xor" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Xor" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Xor" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36043,7 +37036,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Or" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Or" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Or" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36051,7 +37044,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::And" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::And" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::And" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36059,7 +37052,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Not" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Not" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Not" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36067,7 +37060,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Eq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Eq" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Eq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36075,7 +37068,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Neq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Neq" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Neq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36083,7 +37076,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Lt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Lt" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Lt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36091,7 +37084,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Gt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Gt" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Gt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36099,7 +37092,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Le" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Le" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Le" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36107,7 +37100,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ge" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ge" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Ge" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36118,7 +37111,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::Abort"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Abort" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Abort" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36126,7 +37119,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Nop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Nop" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Nop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36134,7 +37127,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shl" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shl" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shl" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36142,7 +37135,7 @@ Module normalized.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shr" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shr" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::Shr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36153,7 +37146,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU16" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36164,7 +37157,7 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU32" []
+                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36175,7 +37168,11 @@ Module normalized.
                         "move_binary_format::file_format::Bytecode::CastU256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::normalized::Bytecode::CastU256" []
+                      Value.StructTuple
+                        "move_binary_format::normalized::Bytecode::CastU256"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -36190,6 +37187,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrTrue"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36205,6 +37204,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrFalse"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36220,6 +37221,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Branch"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36235,6 +37238,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU8"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36250,6 +37255,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU64"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36265,6 +37272,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU128"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| M.deref (| M.read (| x |) |) |) |) |) ]
                     |)));
                 fun γ =>
@@ -36280,6 +37289,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::CopyLoc"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36295,6 +37306,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveLoc"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36310,6 +37323,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::StLoc"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36325,6 +37340,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU16"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36340,6 +37357,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU32"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36355,6 +37374,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU256"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| M.deref (| M.read (| x |) |) |) |) |) ]
                     |)));
                 fun γ =>
@@ -36370,6 +37391,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdConst"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Constant",
@@ -36419,6 +37442,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FunctionRef",
@@ -36517,6 +37542,8 @@ Module normalized.
                             M.alloc (|
                               Value.StructTuple
                                 "move_binary_format::normalized::Bytecode::CallGeneric"
+                                []
+                                []
                                 [
                                   Value.Tuple
                                     [
@@ -36798,6 +37825,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Pack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -36849,6 +37878,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::PackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -36887,6 +37918,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Unpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -36938,6 +37971,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::UnpackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -36976,6 +38011,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowLoc"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -36991,6 +38028,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowLoc"
+                        []
+                        []
                         [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -37006,6 +38045,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FieldRef",
@@ -37035,6 +38076,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37073,6 +38116,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::FieldRef",
@@ -37102,6 +38147,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37140,6 +38187,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -37191,6 +38240,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37229,6 +38280,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -37280,6 +38333,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37318,6 +38373,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ExistsDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -37369,6 +38426,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ExistsGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37407,6 +38466,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveFromDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -37458,6 +38519,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveFromGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37496,6 +38559,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveToDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::identifier::Identifier",
@@ -37547,6 +38612,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveToGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -37592,6 +38659,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37621,6 +38690,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecLen"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37649,6 +38720,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecImmBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37677,6 +38750,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecMutBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37705,6 +38780,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPushBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37733,6 +38810,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecPopBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37768,6 +38847,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecUnpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -37797,6 +38878,8 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::VecSwap"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::normalized::Type",
@@ -39147,7 +40230,11 @@ Module normalized.
                             ]
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic

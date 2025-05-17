@@ -36,14 +36,20 @@ Module interpreter.
             (let gas_limit := M.alloc (| gas_limit |) in
             Value.StructRecord
               "revm_interpreter::interpreter::loop_control::LoopControl"
+              []
+              []
               [
                 ("instruction_result",
                   Value.StructTuple
                     "revm_interpreter::instruction_result::InstructionResult::Continue"
+                    []
+                    []
                     []);
                 ("next_action",
                   Value.StructTuple
                     "revm_interpreter::interpreter_action::InterpreterAction::None"
+                    []
+                    []
                     []);
                 ("gas",
                   M.call_closure (|

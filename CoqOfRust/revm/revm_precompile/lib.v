@@ -89,6 +89,8 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
         (let self := M.alloc (| self |) in
         Value.StructRecord
           "revm_precompile::Precompiles"
+          []
+          []
           [
             ("inner",
               M.call_closure (|
@@ -217,6 +219,8 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
       ltac:(M.monadic
         (Value.StructRecord
           "revm_precompile::Precompiles"
+          []
+          []
           [
             ("inner",
               M.call_closure (|
@@ -2925,6 +2929,8 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -3100,6 +3106,8 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__a
         (let value := M.alloc (| value |) in
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.read (| M.SubPointer.get_tuple_field (| value, 0 |) |);
             M.read (| M.SubPointer.get_tuple_field (| value, 1 |) |)
@@ -3846,7 +3854,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
+                              Value.StructTuple
+                                "revm_precompile::PrecompileSpecId::HOMESTEAD"
+                                []
+                                []
+                                []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
                         end)
@@ -3887,7 +3899,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
+                              Value.StructTuple
+                                "revm_precompile::PrecompileSpecId::BYZANTIUM"
+                                []
+                                []
+                                []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
                         end)
@@ -3920,7 +3936,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
+                              Value.StructTuple
+                                "revm_precompile::PrecompileSpecId::ISTANBUL"
+                                []
+                                []
+                                []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
                         end)
@@ -3985,7 +4005,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" [] [] []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
                         end)
@@ -3994,7 +4014,9 @@ Module Impl_revm_precompile_PrecompileSpecId.
                 ltac:(M.monadic
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
-                  M.alloc (| Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.find_or_pattern (Ty.tuple []) (|
@@ -4023,7 +4045,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" []
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" [] [] []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
                         end)
@@ -4032,7 +4054,9 @@ Module Impl_revm_precompile_PrecompileSpecId.
                 ltac:(M.monadic
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
-                  M.alloc (| Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] |)))
+                  M.alloc (|
+                    Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] [] []
+                  |)))
             ]
           |)
         |)))

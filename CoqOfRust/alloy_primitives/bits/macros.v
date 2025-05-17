@@ -67,6 +67,8 @@ Module bits.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -493,6 +495,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -627,6 +631,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -761,6 +767,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -894,6 +902,8 @@ Module bits.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -1026,7 +1036,11 @@ Module bits.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructTuple "alloy_primitives::bits::address::Address" [ M.read (| value |) ]))
+            Value.StructTuple
+              "alloy_primitives::bits::address::Address"
+              []
+              []
+              [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1082,9 +1096,16 @@ Module bits.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "alloy_primitives::bits::address::Address";
+                    Ty.path "const_hex::error::FromHexError"
+                  ]
                   [
                     Value.StructTuple
                       "alloy_primitives::bits::address::Address"
+                      []
+                      []
                       [
                         M.read (|
                           M.match_operator (|
@@ -1933,7 +1954,14 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| value |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
+                  [ M.read (| value |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2000,9 +2028,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2038,9 +2070,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4688,7 +4724,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -4769,7 +4805,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -4848,7 +4884,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -4937,7 +4973,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -5017,7 +5053,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -5098,7 +5134,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -5219,6 +5255,8 @@ Module bits.
           (M.alloc (|
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.read (|
                   get_associated_constant (|
@@ -5253,7 +5291,14 @@ Module bits.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| bytes |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
+                  [ M.read (| bytes |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5274,6 +5319,8 @@ Module bits.
             (let x := M.alloc (| x |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5312,6 +5359,8 @@ Module bits.
             (let byte := M.alloc (| byte |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5525,6 +5574,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5563,6 +5614,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5745,6 +5798,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5798,6 +5853,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5851,6 +5908,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -5958,6 +6017,8 @@ Module bits.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6384,6 +6445,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6518,6 +6581,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6652,6 +6717,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6785,6 +6852,8 @@ Module bits.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6917,7 +6986,7 @@ Module bits.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructTuple "alloy_primitives::bits::bloom::Bloom" [ M.read (| value |) ]))
+            Value.StructTuple "alloy_primitives::bits::bloom::Bloom" [] [] [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6973,9 +7042,16 @@ Module bits.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "alloy_primitives::bits::bloom::Bloom";
+                    Ty.path "const_hex::error::FromHexError"
+                  ]
                   [
                     Value.StructTuple
                       "alloy_primitives::bits::bloom::Bloom"
+                      []
+                      []
                       [
                         M.read (|
                           M.match_operator (|
@@ -7896,7 +7972,14 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| value |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  []
+                  [ M.read (| value |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7963,9 +8046,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8002,9 +8089,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -10656,7 +10747,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -10737,7 +10828,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -10816,7 +10907,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -10905,7 +10996,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -10985,7 +11076,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -11066,7 +11157,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -11187,6 +11278,8 @@ Module bits.
           (M.alloc (|
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.read (|
                   get_associated_constant (|
@@ -11221,7 +11314,14 @@ Module bits.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| bytes |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  []
+                  [ M.read (| bytes |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11242,6 +11342,8 @@ Module bits.
             (let x := M.alloc (| x |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11280,6 +11382,8 @@ Module bits.
             (let byte := M.alloc (| byte |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11493,6 +11597,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11531,6 +11637,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11712,6 +11820,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11765,6 +11875,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -11818,6 +11930,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::bloom::Bloom"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -13669,7 +13783,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -13754,7 +13868,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -13839,7 +13953,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -13932,7 +14046,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -14020,7 +14134,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -14105,7 +14219,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -14277,6 +14391,8 @@ Module bits.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -14703,6 +14819,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -14837,6 +14955,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -14971,6 +15091,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -15104,6 +15226,8 @@ Module bits.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -15236,7 +15360,11 @@ Module bits.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructTuple "alloy_primitives::bits::function::Function" [ M.read (| value |) ]))
+            Value.StructTuple
+              "alloy_primitives::bits::function::Function"
+              []
+              []
+              [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15292,9 +15420,16 @@ Module bits.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "alloy_primitives::bits::function::Function";
+                    Ty.path "const_hex::error::FromHexError"
+                  ]
                   [
                     Value.StructTuple
                       "alloy_primitives::bits::function::Function"
+                      []
+                      []
                       [
                         M.read (|
                           M.match_operator (|
@@ -16219,7 +16354,14 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| value |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 24 ]
+                  []
+                  [ M.read (| value |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16286,9 +16428,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 24 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16324,9 +16470,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 24 ]
+                  []
                   [ M.read (| M.deref (| M.read (| value |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -18983,7 +19133,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19064,7 +19214,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19143,7 +19293,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19232,7 +19382,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19312,7 +19462,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19393,7 +19543,7 @@ Module bits.
                                 0
                               |)
                             |);
-                            Value.StructTuple "core::ops::range::RangeFull" []
+                            Value.StructTuple "core::ops::range::RangeFull" [] [] []
                           ]
                         |)
                       |)
@@ -19514,6 +19664,8 @@ Module bits.
           (M.alloc (|
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.read (|
                   get_associated_constant (|
@@ -19548,7 +19700,14 @@ Module bits.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
-              [ Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| bytes |) ]
+              []
+              []
+              [
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 24 ]
+                  []
+                  [ M.read (| bytes |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19569,6 +19728,8 @@ Module bits.
             (let x := M.alloc (| x |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -19607,6 +19768,8 @@ Module bits.
             (let byte := M.alloc (| byte |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -19820,6 +19983,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -19858,6 +20023,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -20040,6 +20207,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -20093,6 +20262,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -20146,6 +20317,8 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply

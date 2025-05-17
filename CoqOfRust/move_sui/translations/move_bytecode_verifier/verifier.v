@@ -594,10 +594,18 @@ Module verifier.
                                         [
                                           Value.Integer IntegerKind.Usize 0;
                                           Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Unknown"
+                                            []
+                                            []
+                                            [];
                                           Value.Integer IntegerKind.U32 0;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                         ]
                                       |);
                                       M.call_closure (|
@@ -611,12 +619,18 @@ Module verifier.
                                         [
                                           Value.Integer IntegerKind.Usize 1;
                                           Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Unknown"
+                                            []
+                                            []
+                                            [];
                                           Value.Integer IntegerKind.U32 0;
                                           Value.StructTuple
                                             "core::fmt::rt::Count::Is"
+                                            []
+                                            []
                                             [ Value.Integer IntegerKind.Usize 3 ];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                         ]
                                       |);
                                       M.call_closure (|
@@ -630,10 +644,18 @@ Module verifier.
                                         [
                                           Value.Integer IntegerKind.Usize 2;
                                           Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Unknown"
+                                            []
+                                            []
+                                            [];
                                           Value.Integer IntegerKind.U32 0;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                         ]
                                       |);
                                       M.call_closure (|
@@ -647,10 +669,18 @@ Module verifier.
                                         [
                                           Value.Integer IntegerKind.Usize 3;
                                           Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Unknown"
+                                            []
+                                            []
+                                            [];
                                           Value.Integer IntegerKind.U32 0;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                         ]
                                       |)
                                     ]
@@ -1001,6 +1031,8 @@ Module verifier.
                                                   M.read (| e |);
                                                   Value.StructTuple
                                                     "move_binary_format::errors::Location::Undefined"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)))
@@ -2200,7 +2232,7 @@ Module verifier.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
-                    Value.StructTuple "move_bytecode_verifier_meter::dummy::DummyMeter" []
+                    Value.StructTuple "move_bytecode_verifier_meter::dummy::DummyMeter" [] [] []
                   |)
                 |)
               |)

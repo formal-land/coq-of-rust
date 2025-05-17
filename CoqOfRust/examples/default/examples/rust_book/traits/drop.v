@@ -145,15 +145,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _a : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-          M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "a" |)) ] |) in
+          M.alloc (| Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "a" |)) ] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _b : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-            M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "b" |)) ] |) in
+            M.alloc (|
+              Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "b" |)) ]
+            |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             let~ _c : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-              M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "c" |)) ] |) in
+              M.alloc (|
+                Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "c" |)) ]
+              |) in
             let~ _d : Ty.apply (Ty.path "*") [] [ Ty.path "drop::Droppable" ] :=
-              M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "d" |)) ] |) in
+              M.alloc (|
+                Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "d" |)) ]
+              |) in
             let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|

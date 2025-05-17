@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "updated_incrementer::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",

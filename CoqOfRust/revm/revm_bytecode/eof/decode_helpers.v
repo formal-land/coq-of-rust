@@ -64,9 +64,23 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "u8"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::EofDecodeError::MissingInput"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -79,6 +93,18 @@ Module eof.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.path "u8"
+                        ];
+                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                    ]
                     [
                       Value.Tuple
                         [
@@ -114,6 +140,8 @@ Module eof.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                     ]
                                   |)
@@ -209,9 +237,23 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "u16"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::EofDecodeError::MissingInput"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -276,6 +318,18 @@ Module eof.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "u16"
+                                ];
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
                             [
                               Value.Tuple
                                 [

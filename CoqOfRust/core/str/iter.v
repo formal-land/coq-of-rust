@@ -22,6 +22,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::Chars"
+              []
+              []
               [
                 ("iter",
                   M.call_closure (|
@@ -454,6 +456,8 @@ Module str.
                                                 [
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",
@@ -1208,8 +1212,21 @@ Module str.
                       |),
                       [ M.read (| remainder |) ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -1272,7 +1289,11 @@ Module str.
                         Value.Integer IntegerKind.Usize 4
                       ]
                     |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| len |) ]
                   ]
               |)
             |)))
@@ -1752,7 +1773,13 @@ Module str.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1949,6 +1976,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::CharIndices"
+              []
+              []
               [
                 ("front_offset",
                   M.call_closure (|
@@ -2187,7 +2216,13 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.tuple [ Ty.path "usize"; Ty.path "char" ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -2261,6 +2296,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.tuple [ Ty.path "usize"; Ty.path "char" ] ]
                           [ Value.Tuple [ M.read (| index |); M.read (| ch |) ] ]
                       |)))
                 ]
@@ -2635,6 +2672,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::Bytes"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -4020,6 +4059,8 @@ Module str.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.read (|
@@ -4044,6 +4085,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                               [
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
@@ -4060,7 +4103,13 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4122,7 +4171,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -4231,6 +4286,8 @@ Module str.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.read (|
@@ -4259,6 +4316,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
@@ -4350,7 +4409,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -4458,6 +4523,8 @@ Module str.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.read (|
@@ -4486,6 +4553,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
@@ -4589,7 +4658,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -4692,6 +4767,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                               [
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
@@ -4728,6 +4805,9 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ]
                                                       []
                                                   |)
                                                 |)
@@ -4843,6 +4923,8 @@ Module str.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", M.read (| b |));
                                       ("end_",
@@ -4871,6 +4953,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
@@ -4890,6 +4974,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -4914,6 +5000,8 @@ Module str.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.read (|
@@ -5031,7 +5119,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -5134,6 +5228,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                               [
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
@@ -5170,6 +5266,9 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ]
                                                       []
                                                   |)
                                                 |)
@@ -5284,6 +5383,8 @@ Module str.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", M.read (| b |));
                                       ("end_",
@@ -5312,6 +5413,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
@@ -5331,6 +5434,8 @@ Module str.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -5355,6 +5460,8 @@ Module str.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.read (|
@@ -5435,7 +5542,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -5445,6 +5558,8 @@ Module str.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -5497,6 +5612,8 @@ Module str.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.read (|
@@ -5703,6 +5820,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::Split"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
@@ -5910,6 +6029,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::RSplit"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
@@ -6339,6 +6460,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::SplitTerminator"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
@@ -6552,6 +6675,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::RSplitTerminator"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
@@ -7080,7 +7205,13 @@ Module str.
                           M.read (| γ |),
                           Value.Integer IntegerKind.Usize 0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -7226,7 +7357,13 @@ Module str.
                           M.read (| γ |),
                           Value.Integer IntegerKind.Usize 0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -7537,6 +7674,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::SplitN"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
@@ -7747,6 +7886,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::RSplitN"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
@@ -7933,6 +8074,8 @@ Module str.
               M.alloc (|
                 Value.StructTuple
                   "core::str::iter::MatchIndicesInternal"
+                  []
+                  [ P ]
                   [
                     M.call_closure (|
                       Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
@@ -8214,6 +8357,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", M.read (| start |));
                                               ("end_", M.read (| end_ |))
@@ -8374,6 +8519,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", M.read (| start |));
                                               ("end_", M.read (| end_ |))
@@ -8574,6 +8721,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::MatchIndices"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
@@ -8788,6 +8937,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::RMatchIndices"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
@@ -8984,6 +9135,8 @@ Module str.
               M.alloc (|
                 Value.StructTuple
                   "core::str::iter::MatchesInternal"
+                  []
+                  [ P ]
                   [
                     M.call_closure (|
                       Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
@@ -9261,6 +9414,8 @@ Module str.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", M.read (| a |)); ("end_", M.read (| b |)) ]
                                     ]
                                   |)))
@@ -9413,6 +9568,8 @@ Module str.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", M.read (| a |)); ("end_", M.read (| b |)) ]
                                     ]
                                   |)))
@@ -9605,6 +9762,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::Matches"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
@@ -9815,6 +9974,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::RMatches"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
@@ -10004,6 +10165,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::Lines"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -10387,6 +10550,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::LinesAny"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::str::iter::Lines",
@@ -10675,6 +10840,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::SplitWhitespace"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -10832,6 +10999,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::SplitAsciiWhitespace"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -11524,7 +11693,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -11534,6 +11709,8 @@ Module str.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -11759,6 +11936,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::iter::SplitInclusive"
+              []
+              [ P ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
@@ -11926,6 +12105,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::EncodeUtf16"
+              []
+              []
               [
                 ("chars",
                   M.call_closure (|
@@ -12138,6 +12319,8 @@ Module str.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "u16" ]
                                       [ M.read (| tmp |) ]
                                   |)
                                 |)
@@ -12434,7 +12617,11 @@ Module str.
                                 Value.Integer IntegerKind.Usize 3
                               ]
                             |);
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
+                              [ M.read (| len |) ]
                           ]
                       |)));
                   fun γ =>
@@ -12463,6 +12650,8 @@ Module str.
                             |);
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -12548,6 +12737,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::EscapeDebug"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -12721,6 +12912,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::EscapeDefault"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -12866,6 +13059,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::iter::EscapeUnicode"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|

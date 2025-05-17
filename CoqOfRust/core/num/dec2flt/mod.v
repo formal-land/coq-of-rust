@@ -155,6 +155,8 @@ Module num.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::num::dec2flt::ParseFloatError"
+              []
+              []
               [
                 ("kind",
                   M.call_closure (|
@@ -400,7 +402,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []
+                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -408,7 +410,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Invalid" |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []
+                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" [] [] []
                       |)))
                 ]
               |)
@@ -645,7 +647,9 @@ Module num.
         ltac:(M.monadic
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
-            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []) ]))
+            []
+            []
+            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" [] [] []) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -665,7 +669,9 @@ Module num.
         ltac:(M.monadic
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
-            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []) ]))
+            []
+            []
+            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" [] [] []) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -869,6 +875,8 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
                                       [
                                         M.call_closure (|
                                           Ty.path "core::num::dec2flt::ParseFloatError",
@@ -957,6 +965,8 @@ Module num.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                           ]
                                         |)
@@ -999,6 +1009,8 @@ Module num.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "core::num::dec2flt::ParseFloatError",
@@ -1074,6 +1086,8 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
                                       [ M.read (| value |) ]
                                   |)
                                 |)
@@ -1088,6 +1102,8 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
                                       [
                                         M.call_closure (|
                                           Ty.path "core::num::dec2flt::ParseFloatError",
@@ -1159,6 +1175,8 @@ Module num.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
+                                            []
+                                            [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
                                             [ M.read (| value |) ]
                                         |)
                                       |)
@@ -1393,7 +1411,13 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| float |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ F; Ty.path "core::num::dec2flt::ParseFloatError" ]
+                    [ M.read (| float |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

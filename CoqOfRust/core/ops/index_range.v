@@ -22,6 +22,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
+              []
+              []
               [
                 ("start",
                   M.call_closure (|
@@ -334,6 +336,8 @@ Module ops.
               M.alloc (|
                 Value.StructRecord
                   "core::ops::index_range::IndexRange"
+                  []
+                  []
                   [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
               |)
             |)))
@@ -357,6 +361,8 @@ Module ops.
             (let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
+              []
+              []
               [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| end_ |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -775,6 +781,8 @@ Module ops.
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::index_range::IndexRange"
+                    []
+                    []
                     [
                       ("start",
                         M.read (|
@@ -902,6 +910,8 @@ Module ops.
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::index_range::IndexRange"
+                    []
+                    []
                     [
                       ("start", M.read (| mid |));
                       ("end_",
@@ -998,6 +1008,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             M.call_closure (|
                               Ty.path "usize",
@@ -1014,7 +1026,9 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1050,7 +1064,11 @@ Module ops.
                 Value.Tuple
                   [
                     M.read (| len |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| len |) ]
                   ]
               |)
             |)))
@@ -1154,8 +1172,21 @@ Module ops.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -1237,6 +1268,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             M.call_closure (|
                               Ty.path "usize",
@@ -1253,7 +1286,9 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1357,8 +1392,21 @@ Module ops.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)

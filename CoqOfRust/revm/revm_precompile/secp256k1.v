@@ -7,6 +7,8 @@ Module secp256k1.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -532,6 +534,8 @@ Module secp256k1.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("start", Value.Integer IntegerKind.Usize 1) ]
                               ]
                             |)
@@ -580,6 +584,8 @@ Module secp256k1.
                                 M.borrow (| Pointer.Kind.MutRef, hash |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", Value.Integer IntegerKind.Usize 12) ]
                               ]
                             |)
@@ -589,7 +595,19 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| hash |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [];
+                      Ty.path "secp256k1::Error"
+                    ]
+                    [ M.read (| hash |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -673,6 +691,11 @@ Module secp256k1.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -688,6 +711,8 @@ Module secp256k1.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -902,6 +927,8 @@ Module secp256k1.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 32);
@@ -1043,6 +1070,11 @@ Module secp256k1.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileOutput",
@@ -1227,6 +1259,8 @@ Module secp256k1.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", Value.Integer IntegerKind.Usize 32)
@@ -1434,6 +1468,8 @@ Module secp256k1.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 64);
                                       ("end_", Value.Integer IntegerKind.Usize 128)
@@ -1627,6 +1663,11 @@ Module secp256k1.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",

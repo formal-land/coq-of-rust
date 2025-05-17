@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::cloned::Cloned"
+                []
+                [ I ]
                 [
                   ("it",
                     M.call_closure (|
@@ -139,6 +141,8 @@ Module iter.
               (let it := M.alloc (| it |) in
               Value.StructRecord
                 "core::iter::adapters::cloned::Cloned"
+                []
+                [ I ]
                 [ ("it", M.read (| it |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

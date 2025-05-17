@@ -407,6 +407,8 @@ Module buf.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("start", M.read (| index |)) ]
                               ]
                             |)
@@ -524,7 +526,11 @@ Module buf.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -554,7 +560,11 @@ Module buf.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
                                           ]
                                         |)
                                       |)

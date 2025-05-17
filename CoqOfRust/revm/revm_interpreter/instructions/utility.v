@@ -1071,6 +1071,8 @@ Module instructions.
                                           M.borrow (| Pointer.Kind.MutRef, tmp |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -1246,6 +1248,8 @@ Module instructions.
                                                       Value.StructTuple
                                                         "core::panicking::AssertKind::Eq"
                                                         []
+                                                        []
+                                                        []
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -1277,6 +1281,8 @@ Module instructions.
                                                         |);
                                                         Value.StructTuple
                                                           "core::option::Option::Some"
+                                                          []
+                                                          [ Ty.path "core::fmt::Arguments" ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path "core::fmt::Arguments",

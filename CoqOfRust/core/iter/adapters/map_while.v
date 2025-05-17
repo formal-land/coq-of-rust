@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::map_while::MapWhile"
+                []
+                [ I; P ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -98,6 +100,8 @@ Module iter.
               let predicate := M.alloc (| predicate |) in
               Value.StructRecord
                 "core::iter::adapters::map_while::MapWhile"
+                []
+                [ I; P ]
                 [ ("iter", M.read (| iter |)); ("predicate", M.read (| predicate |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -792,6 +796,8 @@ Module iter.
                                                                       M.alloc (|
                                                                         Value.StructTuple
                                                                           "core::ops::control_flow::ControlFlow::Break"
+                                                                          []
+                                                                          [ R; Acc ]
                                                                           [
                                                                             M.call_closure (|
                                                                               R,

@@ -1443,6 +1443,8 @@ Module vec.
                     M.alloc (|
                       Value.StructTuple
                         "alloc::vec::drain::drop::DropGuard"
+                        []
+                        [ T; A ]
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

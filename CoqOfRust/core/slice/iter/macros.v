@@ -1021,12 +1021,20 @@ Module slice.
                             ]
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1174,7 +1182,11 @@ Module slice.
                 Value.Tuple
                   [
                     M.read (| exact |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| exact |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| exact |) ]
                   ]
               |)
             |)))
@@ -1611,7 +1623,13 @@ Module slice.
                                             |)))
                                       ]
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1641,6 +1659,8 @@ Module slice.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1880,8 +1900,21 @@ Module slice.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -2827,6 +2860,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                   [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
@@ -2856,7 +2891,13 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2971,6 +3012,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ B ]
                                                   [ M.read (| y |) ]
                                               |)
                                             |)
@@ -2995,7 +3038,7 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] [ B ] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3238,6 +3281,8 @@ Module slice.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ M.read (| i |) ]
                                                 |)
                                               |)
@@ -3275,7 +3320,9 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3540,6 +3587,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ M.read (| i |) ]
                                               |)
                                             |)
@@ -3564,7 +3613,9 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3972,12 +4023,20 @@ Module slice.
                             ]
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -4329,7 +4388,13 @@ Module slice.
                                             |)))
                                       ]
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -4359,6 +4424,8 @@ Module slice.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -4600,8 +4667,21 @@ Module slice.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -5801,12 +5881,20 @@ Module slice.
                             ]
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.MutRef,
@@ -5954,7 +6042,11 @@ Module slice.
                 Value.Tuple
                   [
                     M.read (| exact |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| exact |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| exact |) ]
                   ]
               |)
             |)))
@@ -6393,7 +6485,13 @@ Module slice.
                                             |)))
                                       ]
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -6423,6 +6521,8 @@ Module slice.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.MutRef,
@@ -6662,8 +6762,21 @@ Module slice.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -7621,6 +7734,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                   [
                                                     M.borrow (|
                                                       Pointer.Kind.MutRef,
@@ -7650,7 +7765,13 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7765,6 +7886,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ B ]
                                                   [ M.read (| y |) ]
                                               |)
                                             |)
@@ -7789,7 +7912,7 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] [ B ] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8034,6 +8157,8 @@ Module slice.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ M.read (| i |) ]
                                                 |)
                                               |)
@@ -8071,7 +8196,9 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8339,6 +8466,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ M.read (| i |) ]
                                               |)
                                             |)
@@ -8363,7 +8492,9 @@ Module slice.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8639,12 +8770,20 @@ Module slice.
                             ]
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.MutRef,
@@ -8998,7 +9137,13 @@ Module slice.
                                             |)))
                                       ]
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -9028,6 +9173,8 @@ Module slice.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.MutRef,
@@ -9269,8 +9416,21 @@ Module slice.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)

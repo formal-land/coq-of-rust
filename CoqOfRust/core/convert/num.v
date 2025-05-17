@@ -3458,7 +3458,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3466,6 +3473,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3539,7 +3548,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3547,6 +3563,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3624,7 +3642,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3632,6 +3657,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3705,7 +3732,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3713,6 +3747,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3790,7 +3826,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3798,6 +3841,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3875,7 +3920,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3883,6 +3935,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -3956,7 +4010,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -3964,6 +4025,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4041,7 +4104,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4049,6 +4119,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4126,7 +4198,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4134,6 +4213,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4211,7 +4292,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4219,6 +4307,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4307,7 +4397,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4315,6 +4412,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4403,7 +4502,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4411,6 +4517,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4499,7 +4607,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4507,6 +4622,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4595,7 +4712,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4603,6 +4727,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4691,7 +4817,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4699,6 +4832,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4787,7 +4922,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4795,6 +4937,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4883,7 +5027,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4891,6 +5042,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -4979,7 +5132,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -4987,6 +5147,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5075,7 +5237,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5083,6 +5252,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5171,7 +5342,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5179,6 +5357,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5252,7 +5432,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5260,6 +5447,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5333,7 +5522,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5341,6 +5537,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5418,7 +5616,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5426,6 +5631,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5499,7 +5706,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5507,6 +5721,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5584,7 +5800,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5592,6 +5815,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5669,7 +5894,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5677,6 +5909,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5750,7 +5984,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5758,6 +5999,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5835,7 +6078,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5843,6 +6093,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -5920,7 +6172,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -5928,6 +6187,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6005,7 +6266,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6013,6 +6281,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6086,7 +6356,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6094,6 +6371,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6171,7 +6450,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6179,6 +6465,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6256,7 +6544,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6264,6 +6559,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6341,7 +6638,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6349,6 +6653,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6426,7 +6732,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6434,6 +6747,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "i128") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6500,6 +6815,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6507,7 +6824,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -6574,6 +6898,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6581,7 +6907,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -6648,6 +6981,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6655,7 +6990,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -6722,6 +7064,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6729,7 +7073,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -6796,6 +7147,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6803,7 +7156,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -6892,7 +7252,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6900,6 +7267,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -6966,6 +7335,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -6973,7 +7344,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7040,6 +7418,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7047,7 +7427,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7114,6 +7501,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7121,7 +7510,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7188,6 +7584,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7195,7 +7593,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7284,7 +7689,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -7292,6 +7704,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -7380,7 +7794,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -7388,6 +7809,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -7454,6 +7877,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7461,7 +7886,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7528,6 +7960,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7535,7 +7969,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7602,6 +8043,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7609,7 +8052,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -7698,7 +8148,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -7706,6 +8163,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -7794,7 +8253,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -7802,6 +8268,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -7890,7 +8358,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -7898,6 +8373,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -7964,6 +8441,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -7971,7 +8450,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -8038,6 +8524,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -8045,7 +8533,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -8134,7 +8629,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -8142,6 +8644,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
@@ -8230,7 +8734,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -8238,6 +8749,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
@@ -8326,7 +8839,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -8334,6 +8854,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
@@ -8422,7 +8944,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -8430,6 +8959,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
@@ -8496,6 +9027,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -8503,7 +9036,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -8581,7 +9121,14 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)));
                   fun γ =>
@@ -8589,6 +9136,8 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                       |)))
                 ]
@@ -8655,6 +9204,8 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                           [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                       |)));
                   fun γ =>
@@ -8662,7 +9213,14 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                          []
+                          [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
+                          [
+                            Value.StructTuple
+                              "core::num::error::TryFromIntError"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           ]
                       |)))
                 ]
@@ -8741,9 +9299,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -8752,6 +9314,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
@@ -8829,9 +9393,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -8840,6 +9408,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
@@ -8917,9 +9487,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -8928,6 +9502,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
@@ -8964,6 +9540,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "u64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -8996,6 +9574,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "u128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9069,9 +9649,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9080,6 +9664,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9157,9 +9743,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9168,6 +9758,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9245,9 +9837,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9256,6 +9852,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9333,9 +9931,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9344,6 +9946,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9380,6 +9984,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9464,9 +10070,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9475,6 +10085,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9567,9 +10179,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9578,6 +10194,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9670,9 +10288,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9681,6 +10303,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
@@ -9747,6 +10371,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -9754,9 +10380,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -9824,6 +10454,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -9831,9 +10463,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -9923,9 +10559,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -9934,6 +10574,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10026,9 +10668,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -10037,6 +10683,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10129,9 +10777,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -10140,6 +10792,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10176,6 +10830,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "i64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10208,6 +10864,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10240,6 +10898,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10272,6 +10932,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10345,9 +11007,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -10356,6 +11022,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10422,6 +11090,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -10429,9 +11099,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -10499,6 +11173,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -10506,9 +11182,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -10576,6 +11256,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -10583,9 +11265,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -10653,6 +11339,8 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
@@ -10660,9 +11348,13 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)))
@@ -10756,9 +11448,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -10767,6 +11463,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10803,6 +11501,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10835,6 +11535,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10908,9 +11610,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -10919,6 +11625,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
@@ -10996,9 +11704,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -11007,6 +11719,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
@@ -11043,6 +11757,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -11075,6 +11791,8 @@ Module convert.
               (let value := M.alloc (| value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                 [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -11163,9 +11881,13 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [
                               Value.StructTuple
                                 "core::num::error::TryFromIntError"
+                                []
+                                []
                                 [ Value.Tuple [] ]
                             ]
                         |)));
@@ -11174,6 +11896,8 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]
                             [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
@@ -13446,7 +14170,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13510,7 +14234,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13574,7 +14298,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13638,7 +14362,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13702,7 +14426,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13766,7 +14490,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13830,7 +14554,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13894,7 +14618,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13958,7 +14682,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14022,7 +14746,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14086,7 +14810,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14150,7 +14874,7 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14200,6 +14924,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -14396,6 +15125,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -14592,6 +15326,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -14789,6 +15528,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -14987,6 +15731,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -15183,6 +15932,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -15380,6 +16134,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -15577,6 +16336,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -15775,6 +16539,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -15971,6 +16740,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -16168,6 +16942,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -16365,6 +17144,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -16562,6 +17346,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -16760,6 +17549,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -16956,6 +17750,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -17153,6 +17952,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -17350,6 +18154,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -17547,6 +18356,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -17744,6 +18558,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -17940,6 +18759,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -18136,6 +18960,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -18333,6 +19162,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -18531,6 +19365,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -18727,6 +19566,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -18924,6 +19768,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -19121,6 +19970,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -19319,6 +20173,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -19515,6 +20374,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -19712,6 +20576,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -19909,6 +20778,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -20106,6 +20980,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -20304,6 +21183,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -20500,6 +21384,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -20697,6 +21586,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -20894,6 +21788,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -21091,6 +21990,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
@@ -21288,6 +22192,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -21484,6 +22393,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -21680,6 +22594,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -21877,6 +22796,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -22075,6 +22999,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -22271,6 +23200,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -22468,6 +23402,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -22665,6 +23604,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -22863,6 +23807,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -23059,6 +24008,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -23256,6 +24210,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -23453,6 +24412,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -23650,6 +24614,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -23848,6 +24817,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -24044,6 +25018,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -24241,6 +25220,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -24438,6 +25422,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -24635,6 +25624,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
@@ -24832,6 +25826,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -25030,6 +26029,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -25226,6 +26230,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -25423,6 +26432,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -25620,6 +26634,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -25817,6 +26836,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
@@ -26014,6 +27038,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
@@ -26212,6 +27241,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -26408,6 +27442,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -26605,6 +27644,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -26802,6 +27846,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -26999,6 +28048,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -27196,6 +28250,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -27394,6 +28453,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -27590,6 +28654,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -27787,6 +28856,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -27984,6 +29058,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -28181,6 +29260,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -28378,6 +29462,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -28576,6 +29665,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -28772,6 +29866,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -28969,6 +30068,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -29166,6 +30270,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -29363,6 +30472,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -29560,6 +30674,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -29758,6 +30877,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -29954,6 +31078,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -30151,6 +31280,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -30348,6 +31482,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -30545,6 +31684,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -30742,6 +31886,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -30940,6 +32089,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -31136,6 +32290,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -31333,6 +32492,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -31530,6 +32694,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -31727,6 +32896,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -31924,6 +33098,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -32122,6 +33301,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -32318,6 +33502,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -32515,6 +33704,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -32712,6 +33906,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -32909,6 +34108,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
@@ -33106,6 +34310,11 @@ Module convert.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                    Ty.path "core::num::error::TryFromIntError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],

@@ -107,6 +107,8 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+              []
+              []
               [
                 ("result",
                   M.call_closure (|
@@ -350,6 +352,8 @@ Module interpreter_action.
             let address := M.alloc (| address |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+              []
+              []
               [ ("result", M.read (| result |)); ("address", M.read (| address |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

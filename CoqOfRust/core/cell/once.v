@@ -33,6 +33,8 @@ Module cell.
           ltac:(M.monadic
             (Value.StructRecord
               "core::cell::once::OnceCell"
+              []
+              [ T ]
               [
                 ("inner",
                   M.call_closure (|
@@ -49,7 +51,7 @@ Module cell.
                       [],
                       []
                     |),
-                    [ Value.StructTuple "core::option::Option::None" [] ]
+                    [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -241,7 +243,11 @@ Module cell.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; T ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -255,7 +261,11 @@ Module cell.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let value := M.copy (| γ1_1 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Err" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          []
+                          [ Ty.tuple []; T ]
+                          [ M.read (| value |) ]
                       |)))
                 ]
               |)
@@ -335,6 +345,11 @@ Module cell.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; T ]
+                                      ]
                                       [
                                         Value.Tuple
                                           [
@@ -402,6 +417,11 @@ Module cell.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; T ]
+                      ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -497,6 +517,8 @@ Module cell.
                                       ltac:(M.monadic
                                         (Value.StructTuple
                                           "core::result::Result::Ok"
+                                          []
+                                          [ T; Ty.path "never" ]
                                           [
                                             M.call_closure (|
                                               T,
@@ -621,6 +643,8 @@ Module cell.
                                               ltac:(M.monadic
                                                 (Value.StructTuple
                                                   "core::result::Result::Ok"
+                                                  []
+                                                  [ T; Ty.path "never" ]
                                                   [
                                                     M.call_closure (|
                                                       T,
@@ -739,6 +763,8 @@ Module cell.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ T ]; E ]
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -976,6 +1002,8 @@ Module cell.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ]; E ]
                       [
                         M.borrow (|
                           Pointer.Kind.MutRef,
@@ -1197,6 +1225,8 @@ Module cell.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ T ]; E ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                           |)));
                       fun γ =>
@@ -1807,6 +1837,8 @@ Module cell.
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "core::cell::once::OnceCell"
+              []
+              [ T ]
               [
                 ("inner",
                   M.call_closure (|
@@ -1823,7 +1855,8 @@ Module cell.
                       [],
                       []
                     |),
-                    [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
+                    [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| value |) ]
+                    ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"

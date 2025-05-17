@@ -34,6 +34,8 @@ Module legacy.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "revm_bytecode::legacy::jump_map::JumpTable"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -103,6 +105,8 @@ Module legacy.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_bytecode::legacy::jump_map::JumpTable"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -745,6 +749,8 @@ Module legacy.
             (let slice := M.alloc (| slice |) in
             Value.StructTuple
               "revm_bytecode::legacy::jump_map::JumpTable"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply

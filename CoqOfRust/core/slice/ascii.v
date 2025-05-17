@@ -87,6 +87,18 @@ Module slice.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -116,7 +128,23 @@ Module slice.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -691,6 +719,8 @@ Module slice.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::slice::ascii::EscapeAscii"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -725,7 +755,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |);
-                      Value.StructTuple "core::slice::ascii::EscapeByte" []
+                      Value.StructTuple "core::slice::ascii::EscapeByte" [] [] []
                     ]
                   |))
               ]))
@@ -1027,7 +1057,7 @@ Module slice.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::slice::ascii::EscapeByte" []))
+            Value.StructTuple "core::slice::ascii::EscapeByte" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1070,6 +1100,8 @@ Module slice.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::slice::ascii::EscapeAscii"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -2585,6 +2617,8 @@ Module slice.
                                                                           |);
                                                                           Value.StructRecord
                                                                             "core::ops::range::RangeFrom"
+                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                             [
                                                                               ("start",
                                                                                 Value.Integer
@@ -2842,7 +2876,11 @@ Module slice.
                                 ]
                               |)) in
                           M.alloc (|
-                            Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                              [ Value.Tuple [] ]
                           |)))
                     ]
                   |)

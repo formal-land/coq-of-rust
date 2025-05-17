@@ -365,9 +365,24 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 48 ]
+                                            [ Ty.path "u8" ]
+                                        ];
+                                      Ty.path "revm_precompile::interface::PrecompileError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_precompile::interface::PrecompileError::Other"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -744,9 +759,24 @@ Module bls12_381.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 48 ]
+                                                    [ Ty.path "u8" ]
+                                                ];
+                                              Ty.path "revm_precompile::interface::PrecompileError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_precompile::interface::PrecompileError::Other"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "alloc::string::String",
@@ -867,6 +897,19 @@ Module bls12_381.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 48 ]
+                                    [ Ty.path "u8" ]
+                                ];
+                              Ty.path "revm_precompile::interface::PrecompileError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -1041,9 +1084,16 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "blst::blst_scalar";
+                                      Ty.path "revm_precompile::interface::PrecompileError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_precompile::interface::PrecompileError::Other"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -1286,7 +1336,16 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| out |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "blst::blst_scalar";
+                      Ty.path "revm_precompile::interface::PrecompileError"
+                    ]
+                    [ M.read (| out |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1628,9 +1687,16 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "blst::blst_fp";
+                                      Ty.path "revm_precompile::interface::PrecompileError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_precompile::interface::PrecompileError::Other"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -1704,7 +1770,14 @@ Module bls12_381.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| fp |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.path "blst::blst_fp"; Ty.path "revm_precompile::interface::PrecompileError"
+                    ]
+                    [ M.read (| fp |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

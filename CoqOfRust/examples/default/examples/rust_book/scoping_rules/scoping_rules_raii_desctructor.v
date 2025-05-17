@@ -81,7 +81,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_raii_desctructor::ToDrop" ] :=
-          M.alloc (| Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" [] |) in
+          M.alloc (| Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" [] [] [] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|

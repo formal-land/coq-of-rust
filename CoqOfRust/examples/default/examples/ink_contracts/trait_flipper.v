@@ -28,6 +28,8 @@ Module Impl_trait_flipper_Flipper.
       ltac:(M.monadic
         (Value.StructRecord
           "trait_flipper::Flipper"
+          []
+          []
           [
             ("value",
               M.call_closure (|

@@ -25,6 +25,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "mapping_integration_tests::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -286,6 +288,8 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "mapping_integration_tests::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -416,6 +420,8 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (Value.StructRecord
           "mapping_integration_tests::Mappings"
+          []
+          []
           [
             ("balances",
               M.call_closure (|
@@ -544,6 +550,8 @@ Module Impl_mapping_integration_tests_Mappings.
           M.alloc (|
             Value.StructRecord
               "mapping_integration_tests::Mappings"
+              []
+              []
               [ ("balances", M.read (| balances |)) ]
           |)
         |)))

@@ -366,6 +366,8 @@ Module num.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeFrom"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 8)
@@ -1057,6 +1059,8 @@ Module num.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "i64" ]
                                   [ UnOp.neg (| M.read (| exponent |) |) ]
                               |)));
                           fun γ =>
@@ -1064,6 +1068,8 @@ Module num.
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "i64" ]
                                   [ M.read (| exponent |) ]
                               |)))
                         ]
@@ -1077,7 +1083,9 @@ Module num.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                           |)
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "i64" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1525,7 +1533,19 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "core::num::dec2flt::number::Number";
+                                            Ty.path "usize"
+                                          ]
+                                      ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1807,11 +1827,21 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "core::num::dec2flt::number::Number";
+                                            Ty.path "usize"
+                                          ]
+                                      ]
                                       [
                                         Value.Tuple
                                           [
                                             Value.StructRecord
                                               "core::num::dec2flt::number::Number"
+                                              []
+                                              []
                                               [
                                                 ("exponent", M.read (| exponent |));
                                                 ("mantissa", M.read (| mantissa |));
@@ -2168,6 +2198,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeFrom"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start",
                                                                       Value.Integer
@@ -2279,11 +2311,15 @@ Module num.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.tuple [ Ty.path "core::num::dec2flt::number::Number"; Ty.path "usize" ] ]
                       [
                         Value.Tuple
                           [
                             Value.StructRecord
                               "core::num::dec2flt::number::Number"
+                              []
+                              []
                               [
                                 ("exponent", M.read (| exponent |));
                                 ("mantissa", M.read (| mantissa |));
@@ -2407,6 +2443,8 @@ Module num.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.path "core::num::dec2flt::number::Number" ]
                                               [ M.read (| float |) ]
                                           |)
                                         |)
@@ -2418,7 +2456,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "core::num::dec2flt::number::Number" ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2662,7 +2706,11 @@ Module num.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ F ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -2746,7 +2794,7 @@ Module num.
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple "core::option::Option::None" [] [ F ] []
                                     |)
                                   |)
                                 |)
@@ -2769,6 +2817,8 @@ Module num.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ F ]
                               [
                                 M.call_closure (|
                                   F,
@@ -2788,7 +2838,11 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| float |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ F ]
+                              [ M.read (| float |) ]
                           |)))
                     ]
                   |)

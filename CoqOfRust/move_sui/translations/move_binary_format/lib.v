@@ -735,24 +735,40 @@ Module Impl_move_binary_format_IndexKind.
                 M.alloc (|
                   Value.Array
                     [
-                      Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
-                      Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
-                      Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
-                      Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
-                      Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
-                      Value.StructTuple "move_binary_format::IndexKind::Signature" [];
-                      Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
-                      Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                      Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
-                      Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
-                      Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
-                      Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
+                      Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::StructHandle" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [] [] [];
+                      Value.StructTuple
+                        "move_binary_format::IndexKind::StructDefInstantiation"
+                        []
+                        []
+                        [];
+                      Value.StructTuple
+                        "move_binary_format::IndexKind::FunctionInstantiation"
+                        []
+                        []
+                        [];
+                      Value.StructTuple
+                        "move_binary_format::IndexKind::FieldInstantiation"
+                        []
+                        []
+                        [];
+                      Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [] [] [];
+                      Value.StructTuple
+                        "move_binary_format::IndexKind::FunctionDefinition"
+                        []
+                        []
+                        [];
+                      Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::Signature" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::Identifier" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::LocalPool" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [] [] [];
+                      Value.StructTuple "move_binary_format::IndexKind::MemberCount" [] [] []
                     ]
                 |)
               |)

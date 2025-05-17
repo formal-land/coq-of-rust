@@ -36,6 +36,8 @@ Module num.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::num::dec2flt::decimal::Decimal"
+                []
+                []
                 [
                   ("num_digits",
                     M.call_closure (|
@@ -182,6 +184,8 @@ Module num.
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::decimal::Decimal"
+                []
+                []
                 [
                   ("num_digits", Value.Integer IntegerKind.Usize 0);
                   ("decimal_point", Value.Integer IntegerKind.I32 0);
@@ -701,6 +705,8 @@ Module num.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", Value.Integer IntegerKind.Usize 0);
                                     ("end_", M.read (| dp |))
@@ -3120,6 +3126,8 @@ Module num.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeFrom"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             M.read (|
@@ -3206,6 +3214,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start",
                                                               Value.Integer IntegerKind.Usize 8)
@@ -3482,6 +3492,8 @@ Module num.
                                                     |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("end_",
                                                           M.call_closure (|
@@ -4222,6 +4234,8 @@ Module num.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start",
                                 M.read (|
@@ -4541,6 +4555,8 @@ Module num.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", M.read (| pow5_a |)) ]
                             ]
                           |)

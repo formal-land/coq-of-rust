@@ -781,6 +781,8 @@ Module num.
                               M.read (| k |);
                               Value.StructRecord
                                 "core::num::diy_float::Fp"
+                                []
+                                []
                                 [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
                             ]
                         |)))
@@ -2158,6 +2160,8 @@ Module num.
                                 M.alloc (|
                                   Value.StructRecord
                                     "core::num::diy_float::Fp"
+                                    []
+                                    []
                                     [
                                       ("f",
                                         M.call_closure (|
@@ -2211,6 +2215,8 @@ Module num.
                                 M.alloc (|
                                   Value.StructRecord
                                     "core::num::diy_float::Fp"
+                                    []
+                                    []
                                     [
                                       ("f",
                                         M.call_closure (|
@@ -2270,6 +2276,8 @@ Module num.
                                 M.alloc (|
                                   Value.StructRecord
                                     "core::num::diy_float::Fp"
+                                    []
+                                    []
                                     [
                                       ("f",
                                         M.read (|
@@ -2536,6 +2544,8 @@ Module num.
                                                                     Value.StructTuple
                                                                       "core::panicking::AssertKind::Eq"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -2572,6 +2582,11 @@ Module num.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments"
+                                                                        ]
                                                                         []
                                                                     ]
                                                                   |)
@@ -2684,6 +2699,8 @@ Module num.
                                                                     Value.StructTuple
                                                                       "core::panicking::AssertKind::Eq"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -2720,6 +2737,11 @@ Module num.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments"
+                                                                        ]
                                                                         []
                                                                     ]
                                                                   |)
@@ -3227,6 +3249,11 @@ Module num.
                                                                                           |);
                                                                                           Value.StructRecord
                                                                                             "core::ops::range::RangeTo"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            ]
                                                                                             [
                                                                                               ("end_",
                                                                                                 M.read (|
@@ -3438,6 +3465,8 @@ Module num.
                                                                                                   Value.StructTuple
                                                                                                     "core::panicking::AssertKind::Eq"
                                                                                                     []
+                                                                                                    []
+                                                                                                    []
                                                                                                 |) in
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -3485,6 +3514,11 @@ Module num.
                                                                                                     |);
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::None"
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "core::fmt::Arguments"
+                                                                                                      ]
                                                                                                       []
                                                                                                   ]
                                                                                                 |)
@@ -3949,6 +3983,11 @@ Module num.
                                                                                                 |);
                                                                                                 Value.StructRecord
                                                                                                   "core::ops::range::RangeTo"
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
                                                                                                   [
                                                                                                     ("end_",
                                                                                                       M.read (|
@@ -4541,7 +4580,21 @@ Module num.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -4618,6 +4671,17 @@ Module num.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                        Ty.path "i16"
+                                      ]
+                                  ]
                                   [
                                     Value.Tuple
                                       [
@@ -4631,7 +4695,22 @@ Module num.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                        Ty.path "i16"
+                                      ]
+                                  ]
+                                  []
+                              |)))
                         ]
                       |)
                     |)))
@@ -5258,6 +5337,8 @@ Module num.
                                 M.alloc (|
                                   Value.StructRecord
                                     "core::num::diy_float::Fp"
+                                    []
+                                    []
                                     [
                                       ("f",
                                         M.read (|
@@ -5537,7 +5618,25 @@ Module num.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ];
+                                                        Ty.path "i16"
+                                                      ]
+                                                  ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -6284,6 +6383,8 @@ Module num.
                                                                                                   Value.StructTuple
                                                                                                     "core::panicking::AssertKind::Eq"
                                                                                                     []
+                                                                                                    []
+                                                                                                    []
                                                                                                 |) in
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -6331,6 +6432,11 @@ Module num.
                                                                                                     |);
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::None"
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "core::fmt::Arguments"
+                                                                                                      ]
                                                                                                       []
                                                                                                   ]
                                                                                                 |)
@@ -6493,6 +6599,8 @@ Module num.
                                                                                                   Value.StructTuple
                                                                                                     "core::panicking::AssertKind::Eq"
                                                                                                     []
+                                                                                                    []
+                                                                                                    []
                                                                                                 |) in
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -6540,6 +6648,11 @@ Module num.
                                                                                                     |);
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::None"
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "core::fmt::Arguments"
+                                                                                                      ]
                                                                                                       []
                                                                                                   ]
                                                                                                 |)
@@ -6982,7 +7095,21 @@ Module num.
                                             |)))
                                         |) in
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
+                                          []
                                       |)))
                                 ]
                               |)))
@@ -7254,7 +7381,21 @@ Module num.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -7294,7 +7435,21 @@ Module num.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -7366,6 +7521,18 @@ Module num.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
                                           [
                                             Value.Tuple
                                               [
@@ -7446,6 +7613,8 @@ Module num.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeTo"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [ ("end_", M.read (| len |)) ]
                                                                   ]
                                                                 |)
@@ -7627,6 +7796,9 @@ Module num.
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
                                                                                   [
                                                                                     ("end_",
                                                                                       M.read (|
@@ -7792,6 +7964,18 @@ Module num.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "i16"
+                                              ]
+                                          ]
                                           [
                                             Value.Tuple
                                               [
@@ -7872,6 +8056,8 @@ Module num.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeTo"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [ ("end_", M.read (| len |)) ]
                                                                   ]
                                                                 |)
@@ -7893,7 +8079,22 @@ Module num.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                Ty.path "i16"
+                              ]
+                          ]
+                          []
+                      |)
                     |)))
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"

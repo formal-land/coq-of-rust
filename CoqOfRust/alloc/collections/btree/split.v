@@ -352,6 +352,8 @@ Module collections.
                                                                         Value.StructTuple
                                                                           "core::panicking::AssertKind::Eq"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
@@ -394,6 +396,11 @@ Module collections.
                                                                           |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments"
+                                                                            ]
                                                                             []
                                                                         ]
                                                                       |)
@@ -634,6 +641,8 @@ Module collections.
                                                                         Value.StructTuple
                                                                           "core::panicking::AssertKind::Eq"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
@@ -676,6 +685,11 @@ Module collections.
                                                                           |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments"
+                                                                            ]
                                                                             []
                                                                         ]
                                                                       |)
@@ -1546,6 +1560,8 @@ Module collections.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_", M.read (| height |))

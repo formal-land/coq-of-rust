@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "contract_transfer::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -262,7 +264,7 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

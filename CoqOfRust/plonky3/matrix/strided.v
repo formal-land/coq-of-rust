@@ -189,10 +189,14 @@ Module strided.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::row_index_mapped::RowIndexMappedView"
+                []
+                [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap"; Inner ]
                 [
                   ("index_map",
                     Value.StructRecord
                       "p3_matrix::strided::VerticallyStridedRowIndexMap"
+                      []
+                      []
                       [
                         ("height", M.read (| height |));
                         ("stride", M.read (| stride |));

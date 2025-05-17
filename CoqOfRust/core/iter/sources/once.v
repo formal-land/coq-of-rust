@@ -16,6 +16,8 @@ Module iter.
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "core::iter::sources::once::Once"
+              []
+              [ T ]
               [
                 ("inner",
                   M.call_closure (|
@@ -29,7 +31,8 @@ Module iter.
                       [],
                       []
                     |),
-                    [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
+                    [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| value |) ]
+                    ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -61,6 +64,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::sources::once::Once"
+                []
+                [ T ]
                 [
                   ("inner",
                     M.call_closure (|

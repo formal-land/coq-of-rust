@@ -263,6 +263,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_bounds::Ref"
+              []
+              [ Ty.path "i32" ]
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

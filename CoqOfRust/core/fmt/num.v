@@ -1272,6 +1272,8 @@ Module fmt.
                       (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
                       Value.StructRecord
                         "core::ops::range::RangeFrom"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", M.read (| curr |)) ]
                     ]
                   |)
@@ -1390,7 +1392,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::fmt::num::Binary" []))
+            Value.StructTuple "core::fmt::num::Binary" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1455,7 +1457,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::fmt::num::Octal" []))
+            Value.StructTuple "core::fmt::num::Octal" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1520,7 +1522,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::fmt::num::LowerHex" []))
+            Value.StructTuple "core::fmt::num::LowerHex" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1585,7 +1587,7 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::fmt::num::UpperHex" []))
+            Value.StructTuple "core::fmt::num::UpperHex" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2358,7 +2360,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2407,7 +2409,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2456,7 +2458,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2505,7 +2507,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2554,7 +2556,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2603,7 +2605,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2652,7 +2654,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2701,7 +2703,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2750,7 +2752,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2799,7 +2801,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2848,7 +2850,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2897,7 +2899,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2946,7 +2948,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -2995,7 +2997,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3044,7 +3046,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3093,7 +3095,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3142,7 +3144,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3191,7 +3193,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3240,7 +3242,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3289,7 +3291,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3338,7 +3340,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3387,7 +3389,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3436,7 +3438,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3485,7 +3487,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3534,7 +3536,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3583,7 +3585,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3632,7 +3634,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3681,7 +3683,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3730,7 +3732,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3779,7 +3781,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3828,7 +3830,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3877,7 +3879,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3926,7 +3928,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -3975,7 +3977,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4024,7 +4026,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4073,7 +4075,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4122,7 +4124,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4171,7 +4173,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4220,7 +4222,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4269,7 +4271,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4318,7 +4320,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4367,7 +4369,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4416,7 +4418,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4465,7 +4467,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.cast (Ty.path "u128") (M.read (| M.deref (| M.read (| self |) |) |));
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4514,7 +4516,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Binary" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4563,7 +4565,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::Octal" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4612,7 +4614,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::LowerHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -4661,7 +4663,7 @@ Module fmt.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] |)
+                  M.alloc (| Value.StructTuple "core::fmt::num::UpperHex" [] [] [] |)
                 |);
                 M.read (| M.use (M.deref (| M.read (| self |) |)) |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
@@ -11417,6 +11419,8 @@ Module fmt.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 1);
                                         ("end_", M.read (| subtracted_precision |))
@@ -12558,6 +12562,8 @@ Module fmt.
                                 [
                                   Value.StructTuple
                                     "core::num::fmt::Part::Copy"
+                                    []
+                                    []
                                     [
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -12566,9 +12572,13 @@ Module fmt.
                                     ];
                                   Value.StructTuple
                                     "core::num::fmt::Part::Zero"
+                                    []
+                                    []
                                     [ M.read (| added_precision |) ];
                                   Value.StructTuple
                                     "core::num::fmt::Part::Copy"
+                                    []
+                                    []
                                     [
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -12666,6 +12676,8 @@ Module fmt.
                         M.alloc (|
                           Value.StructRecord
                             "core::num::fmt::Formatted"
+                            []
+                            []
                             [
                               ("sign",
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));
@@ -15615,6 +15627,8 @@ Module fmt.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 1);
                                       ("end_", M.read (| subtracted_precision |))
@@ -16745,6 +16759,8 @@ Module fmt.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -16753,9 +16769,13 @@ Module fmt.
                                   ];
                                 Value.StructTuple
                                   "core::num::fmt::Part::Zero"
+                                  []
+                                  []
                                   [ M.read (| added_precision |) ];
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -16847,6 +16867,8 @@ Module fmt.
                       M.alloc (|
                         Value.StructRecord
                           "core::num::fmt::Formatted"
+                          []
+                          []
                           [
                             ("sign",
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sign |) |) |));

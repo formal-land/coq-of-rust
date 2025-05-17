@@ -217,6 +217,8 @@ Module borrow.
                     M.alloc (|
                       Value.StructTuple
                         "alloc::borrow::Cow::Borrowed"
+                        []
+                        [ B ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
                     |)));
                 fun γ =>
@@ -248,6 +250,8 @@ Module borrow.
                     M.alloc (|
                       Value.StructTuple
                         "alloc::borrow::Cow::Owned"
+                        []
+                        [ B ]
                         [
                           M.call_closure (|
                             Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
@@ -528,6 +532,8 @@ Module borrow.
                                           M.deref (| M.read (| self |) |),
                                           Value.StructTuple
                                             "alloc::borrow::Cow::Owned"
+                                            []
+                                            [ B ]
                                             [
                                               M.call_closure (|
                                                 Ty.associated_in_trait
@@ -1297,6 +1303,8 @@ Module borrow.
         ltac:(M.monadic
           (Value.StructTuple
             "alloc::borrow::Cow::Owned"
+            []
+            [ B ]
             [
               M.call_closure (|
                 Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
@@ -1596,6 +1604,8 @@ Module borrow.
                         M.deref (| M.read (| self |) |),
                         Value.StructTuple
                           "alloc::borrow::Cow::Borrowed"
+                          []
+                          [ Ty.path "str" ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
                       |)
                     |)));
@@ -1724,6 +1734,8 @@ Module borrow.
                                             M.deref (| M.read (| self |) |),
                                             Value.StructTuple
                                               "alloc::borrow::Cow::Owned"
+                                              []
+                                              [ Ty.path "str" ]
                                               [ M.read (| s |) ]
                                           |)
                                         |) in
@@ -2018,6 +2030,8 @@ Module borrow.
                                             M.deref (| M.read (| self |) |),
                                             Value.StructTuple
                                               "alloc::borrow::Cow::Owned"
+                                              []
+                                              [ Ty.path "str" ]
                                               [ M.read (| s |) ]
                                           |)
                                         |) in

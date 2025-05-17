@@ -637,15 +637,21 @@ Module fmt.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Param"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -1244,15 +1250,21 @@ Module fmt.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Param"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -1798,15 +1810,21 @@ Module fmt.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Param"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -2352,15 +2370,21 @@ Module fmt.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Param"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -2906,15 +2930,21 @@ Module fmt.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Param"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -3046,6 +3076,8 @@ Module fmt.
         ltac:(M.monadic
           (Value.StructRecord
             "ruint::fmt::DisplayBuffer"
+            [ SIZE ]
+            []
             [
               ("buf",
                 M.call_closure (|
@@ -3195,6 +3227,8 @@ Module fmt.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("end_",
                                     M.read (|
@@ -3405,7 +3439,9 @@ Module fmt.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
-                                    [ Value.StructTuple "core::fmt::Error" [] ]
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                                    [ Value.StructTuple "core::fmt::Error" [] [] [] ]
                                 |)
                               |)
                             |)
@@ -3557,7 +3593,13 @@ Module fmt.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

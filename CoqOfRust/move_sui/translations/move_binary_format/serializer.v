@@ -82,6 +82,8 @@ Module serializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "anyhow::Error",
@@ -1565,6 +1567,8 @@ Module serializer.
                             M.return_ (|
                               Value.StructTuple
                                 "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                 [
                                   M.call_closure (|
                                     Ty.path "anyhow::Error",
@@ -1731,7 +1735,11 @@ Module serializer.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                          [ Value.Tuple [] ]
                       |)))
                 ]
               |)
@@ -1769,7 +1777,7 @@ Module serializer.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              Value.StructTuple "core::option::Option::None" [];
+              Value.StructTuple "core::option::Option::None" [] [ Ty.path "u32" ] [];
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |)
             ]
           |)))
@@ -2181,6 +2189,8 @@ Module serializer.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -2831,7 +2841,13 @@ Module serializer.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3503,6 +3519,8 @@ Module serializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "u32"; Ty.path "anyhow::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "anyhow::Error",
@@ -3657,6 +3675,8 @@ Module serializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u32"; Ty.path "anyhow::Error" ]
                   [ M.cast (Ty.path "u32") (M.read (| index |)) ]
               |)
             |)))
@@ -4039,7 +4059,13 @@ Module serializer.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4282,7 +4308,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5095,7 +5127,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5900,7 +5938,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6889,7 +6933,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -7245,7 +7295,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -7489,7 +7545,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8328,7 +8390,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8998,7 +9066,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9367,7 +9441,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9800,7 +9880,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -10065,7 +10151,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -10432,7 +10524,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -10867,7 +10965,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -13379,7 +13483,13 @@ Module serializer.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -13551,6 +13661,8 @@ Module serializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                                             [
                                                               M.read (|
                                                                 let~ error :
@@ -13738,7 +13850,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -13897,7 +14015,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -14252,7 +14376,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -14816,6 +14946,8 @@ Module serializer.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "anyhow::Error",
@@ -23485,7 +23617,13 @@ Module serializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -23846,7 +23984,13 @@ Module serializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -24053,6 +24197,8 @@ Module serializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u32"; Ty.path "anyhow::Error" ]
                   [
                     M.call_closure (|
                       Ty.path "u32",
@@ -24100,6 +24246,8 @@ Module serializer.
           (let major_version := M.alloc (| major_version |) in
           Value.StructRecord
             "move_binary_format::serializer::CommonSerializer"
+            []
+            []
             [
               ("major_version", M.read (| major_version |));
               ("table_count", Value.Integer IntegerKind.U8 0);
@@ -24359,7 +24507,13 @@ Module serializer.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -24598,6 +24752,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::MODULE_HANDLES"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -24723,6 +24879,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_HANDLES"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -24848,6 +25006,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -24973,6 +25133,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_INST"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -25098,6 +25260,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::SIGNATURES"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -25223,6 +25387,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::IDENTIFIERS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -25348,6 +25514,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -25473,6 +25641,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::CONSTANT_POOL"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -25636,6 +25806,8 @@ Module serializer.
                                         |);
                                         Value.StructTuple
                                           "move_binary_format::file_format_common::TableType::METADATA"
+                                          []
+                                          []
                                           [];
                                         M.read (|
                                           M.SubPointer.get_tuple_field (|
@@ -25723,7 +25895,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -27158,7 +27336,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -27766,7 +27950,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -28374,7 +28564,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -28988,7 +29184,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -29610,7 +29812,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30267,7 +30475,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30882,7 +31096,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -31487,7 +31707,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -32086,7 +32312,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -32691,7 +32923,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -32751,6 +32989,8 @@ Module serializer.
           (let major_version := M.alloc (| major_version |) in
           Value.StructRecord
             "move_binary_format::serializer::ModuleSerializer"
+            []
+            []
             [
               ("common",
                 M.call_closure (|
@@ -33968,6 +34208,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34093,6 +34335,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34218,6 +34462,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34343,6 +34589,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34468,6 +34716,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FIELD_INST"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34593,6 +34843,8 @@ Module serializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                               Value.StructTuple
                                 "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -34676,7 +34928,13 @@ Module serializer.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -35312,7 +35570,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -35953,7 +36217,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -36566,7 +36836,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37191,7 +37467,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37837,7 +38119,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -38098,6 +38386,8 @@ Module serializer.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "move_binary_format::file_format::Visibility::Public"
+                                                        []
+                                                        []
                                                         []
                                                     |)
                                                   |)
@@ -38887,7 +39177,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -39519,7 +39815,13 @@ Module serializer.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

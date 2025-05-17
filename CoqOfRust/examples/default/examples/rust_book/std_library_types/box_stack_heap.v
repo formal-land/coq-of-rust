@@ -144,6 +144,8 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
     ltac:(M.monadic
       (Value.StructRecord
         "box_stack_heap::Point"
+        []
+        []
         [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -179,6 +181,8 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         [
           Value.StructRecord
             "box_stack_heap::Point"
+            []
+            []
             [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
         ]
       |)))
@@ -260,6 +264,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "box_stack_heap::Rectangle"
+              []
+              []
               [
                 ("top_left",
                   M.call_closure (|
@@ -270,6 +276,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("bottom_right",
                   Value.StructRecord
                     "box_stack_heap::Point"
+                    []
+                    []
                     [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |))
                     ])
               ]
@@ -302,6 +310,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 Value.StructRecord
                   "box_stack_heap::Rectangle"
+                  []
+                  []
                   [
                     ("top_left",
                       M.call_closure (|
@@ -312,6 +322,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ("bottom_right",
                       Value.StructRecord
                         "box_stack_heap::Point"
+                        []
+                        []
                         [
                           ("x", M.read (| UnsupportedLiteral |));
                           ("y", M.read (| UnsupportedLiteral |))

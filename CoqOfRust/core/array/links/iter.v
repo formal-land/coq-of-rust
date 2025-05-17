@@ -20,7 +20,7 @@ Module IntoIter.
 
   Global Instance IsLink {T : Set} `{Link T} {N : Usize.t} : Link (t T N) := {
     Φ := Ty.apply (Ty.path "core::array::iter::IntoIter") [ φ N ] [ Φ T ];
-    φ x := Value.StructRecord "core::array::iter::IntoIter" [
+    φ x := Value.StructRecord "core::array::iter::IntoIter" [ φ N ] [ Φ T ] [
       ("data", φ x.(data));
       ("alive", φ x.(alive))
     ];

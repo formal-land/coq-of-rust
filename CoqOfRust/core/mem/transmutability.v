@@ -30,6 +30,8 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
+                    []
+                    [ Src; Self ]
                     [
                       ("src",
                         M.call_closure (|
@@ -434,6 +436,8 @@ Module mem.
           (M.alloc (|
             Value.StructRecord
               "core::mem::transmutability::Assume"
+              []
+              []
               [
                 ("alignment", Value.Bool false);
                 ("lifetimes", Value.Bool false);
@@ -549,6 +553,8 @@ Module mem.
             let other_assumptions := M.alloc (| other_assumptions |) in
             Value.StructRecord
               "core::mem::transmutability::Assume"
+              []
+              []
               [
                 ("alignment",
                   LogicalOp.or (|
@@ -648,6 +654,8 @@ Module mem.
             let other_assumptions := M.alloc (| other_assumptions |) in
             Value.StructRecord
               "core::mem::transmutability::Assume"
+              []
+              []
               [
                 ("alignment",
                   LogicalOp.and (|

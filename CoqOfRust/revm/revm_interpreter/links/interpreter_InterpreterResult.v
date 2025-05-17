@@ -14,7 +14,7 @@ Module InterpreterResult.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::InterpreterResult";
     φ '(Build_t result output gas) :=
-      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
+      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
         ("result", φ result);
         ("output", φ output);
         ("gas", φ gas)
@@ -32,7 +32,7 @@ Module InterpreterResult.
     result' = φ result ->
     output' = φ output ->
     gas' = φ gas ->
-    Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
+    Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
       ("result", result');
       ("output", output');
       ("gas", gas')
@@ -49,7 +49,7 @@ Module InterpreterResult.
     output' = φ output ->
     gas' = φ gas ->
     OfValue.t (
-      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
+      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
         ("result", result');
         ("output", output');
         ("gas", gas')

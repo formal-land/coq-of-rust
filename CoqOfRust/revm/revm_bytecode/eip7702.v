@@ -71,6 +71,8 @@ Module eip7702.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_bytecode::eip7702::Eip7702Bytecode"
+            []
+            []
             [
               ("delegated_address",
                 M.call_closure (|
@@ -1019,9 +1021,16 @@ Module eip7702.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -1172,9 +1181,16 @@ Module eip7702.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -1260,9 +1276,16 @@ Module eip7702.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -1275,9 +1298,16 @@ Module eip7702.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                    ]
                     [
                       Value.StructRecord
                         "revm_bytecode::eip7702::Eip7702Bytecode"
+                        []
+                        []
                         [
                           ("delegated_address",
                             M.call_closure (|
@@ -1414,6 +1444,8 @@ Module eip7702.
                                                 |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeFrom"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("start", Value.Integer IntegerKind.Usize 3) ]
                                               ]
                                             |)
@@ -1595,6 +1627,8 @@ Module eip7702.
             M.alloc (|
               Value.StructRecord
                 "revm_bytecode::eip7702::Eip7702Bytecode"
+                []
+                []
                 [
                   ("delegated_address", M.read (| address |));
                   ("version",

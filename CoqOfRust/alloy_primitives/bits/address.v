@@ -186,6 +186,8 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::AddressError::Hex"
+              []
+              []
               [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -241,6 +243,13 @@ Module bits.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
                           [
                             (* Unsize *)
                             M.pointer_coercion
@@ -255,7 +264,18 @@ Module bits.
                           γ,
                           "alloy_primitives::bits::address::AddressError::InvalidChecksum"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -391,9 +411,13 @@ Module bits.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
                   [
                     M.call_closure (|
                       Ty.apply
@@ -535,7 +559,7 @@ Module bits.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []
                         ]
                       |)
                     |) in
@@ -659,6 +683,8 @@ Module bits.
                                                     |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [ ("end_", Value.Integer IntegerKind.Usize 6)
                                                       ]
                                                   ]
@@ -885,6 +911,8 @@ Module bits.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", Value.Integer IntegerKind.Usize 38) ]
                                           ]
                                         |)
@@ -946,9 +974,13 @@ Module bits.
             (let word := M.alloc (| word |) in
             Value.StructTuple
               "alloy_primitives::bits::address::Address"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 20 ]
+                  []
                   [
                     M.call_closure (|
                       Ty.apply
@@ -1029,6 +1061,8 @@ Module bits.
                                     M.borrow (| Pointer.Kind.Ref, word |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("start", Value.Integer IntegerKind.Usize 12) ]
                                   ]
                                 |)
@@ -1114,6 +1148,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, word |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", Value.Integer IntegerKind.Usize 12) ]
                             ]
                           |)
@@ -1176,7 +1212,11 @@ Module bits.
                   |)
                 |) in
               M.alloc (|
-                Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| word |) ]
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  []
+                  [ M.read (| word |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1673,6 +1713,8 @@ Module bits.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                     ]
                                   |)
@@ -1852,6 +1894,8 @@ Module bits.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                     ]
                                   |)
@@ -1965,6 +2009,8 @@ Module bits.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                       ]
                                     |)
@@ -2468,6 +2514,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 1);
                                   ("end_", Value.Integer IntegerKind.Usize 21)
@@ -2568,6 +2616,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 21);
                                   ("end_", Value.Integer IntegerKind.Usize 53)
@@ -2618,6 +2668,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 53);
                                   ("end_", Value.Integer IntegerKind.Usize 85)
@@ -2763,7 +2815,11 @@ Module bits.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -2795,6 +2851,8 @@ Module bits.
                                             |);
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path "core::fmt::Arguments",
@@ -2902,6 +2960,8 @@ Module bits.
                                 M.borrow (| Pointer.Kind.Ref, digest |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("start", Value.Integer IntegerKind.Usize 12) ]
                               ]
                             |)
@@ -2947,6 +3007,8 @@ Module bits.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::bits::address::AddressChecksumBuffer"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3120,6 +3182,8 @@ Module bits.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::bits::address::AddressChecksumBuffer"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply

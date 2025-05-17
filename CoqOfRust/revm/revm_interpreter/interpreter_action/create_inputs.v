@@ -34,6 +34,8 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
+              []
+              []
               [
                 ("caller",
                   M.call_closure (|

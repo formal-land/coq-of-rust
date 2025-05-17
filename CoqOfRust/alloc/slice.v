@@ -197,6 +197,8 @@ Module slice.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::slice::hack::to_vec::DropGuard"
+                    []
+                    [ T; A ]
                     [
                       ("vec",
                         M.borrow (|
@@ -873,6 +875,8 @@ Module slice.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Less"
+                                                        []
+                                                        []
                                                         []
                                                     |)
                                                   |)
@@ -1553,6 +1557,8 @@ Module slice.
                                             [
                                               Value.StructRecord
                                                 "core::ops::range::Range"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_",
@@ -2159,6 +2165,8 @@ Module slice.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
@@ -2462,7 +2470,7 @@ Module slice.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              Value.StructTuple "alloc::alloc::Global" []
+              Value.StructTuple "alloc::alloc::Global" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4704,7 +4712,7 @@ Module slice.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -4760,7 +4768,7 @@ Module slice.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)

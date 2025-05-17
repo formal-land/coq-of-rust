@@ -26,6 +26,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_new_type_idiom_as_base_type::Years"
+              []
+              []
               [ Value.Integer IntegerKind.I64 42 ]
           |) in
         let~ years_as_primitive_1 : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=

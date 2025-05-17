@@ -88,6 +88,8 @@ Module hash.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::hash::sip::SipHasher13"
+              []
+              []
               [
                 ("hasher",
                   M.call_closure (|
@@ -146,6 +148,8 @@ Module hash.
           ltac:(M.monadic
             (Value.StructRecord
               "core::hash::sip::SipHasher13"
+              []
+              []
               [
                 ("hasher",
                   M.call_closure (|
@@ -265,6 +269,8 @@ Module hash.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::hash::sip::SipHasher24"
+              []
+              []
               [
                 ("hasher",
                   M.call_closure (|
@@ -323,6 +329,8 @@ Module hash.
           ltac:(M.monadic
             (Value.StructRecord
               "core::hash::sip::SipHasher24"
+              []
+              []
               [
                 ("hasher",
                   M.call_closure (|
@@ -434,6 +442,8 @@ Module hash.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::hash::sip::SipHasher"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::hash::sip::SipHasher24",
@@ -485,6 +495,8 @@ Module hash.
           ltac:(M.monadic
             (Value.StructTuple
               "core::hash::sip::SipHasher"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::hash::sip::SipHasher24",
@@ -1685,9 +1697,13 @@ Module hash.
             let key1 := M.alloc (| key1 |) in
             Value.StructTuple
               "core::hash::sip::SipHasher"
+              []
+              []
               [
                 Value.StructRecord
                   "core::hash::sip::SipHasher24"
+                  []
+                  []
                   [
                     ("hasher",
                       M.call_closure (|
@@ -1759,6 +1775,8 @@ Module hash.
             let key1 := M.alloc (| key1 |) in
             Value.StructRecord
               "core::hash::sip::SipHasher13"
+              []
+              []
               [
                 ("hasher",
                   M.call_closure (|
@@ -1826,6 +1844,8 @@ Module hash.
                 M.alloc (|
                   Value.StructRecord
                     "core::hash::sip::Hasher"
+                    []
+                    [ S ]
                     [
                       ("k0", M.read (| key0 |));
                       ("k1", M.read (| key1 |));
@@ -1833,6 +1853,8 @@ Module hash.
                       ("state",
                         Value.StructRecord
                           "core::hash::sip::State"
+                          []
+                          []
                           [
                             ("v0", Value.Integer IntegerKind.U64 0);
                             ("v1", Value.Integer IntegerKind.U64 0);
@@ -1841,7 +1863,7 @@ Module hash.
                           ]);
                       ("tail", Value.Integer IntegerKind.U64 0);
                       ("ntail", Value.Integer IntegerKind.Usize 0);
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ S ] [])
                     ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3354,6 +3376,8 @@ Module hash.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::hash::sip::Hasher"
+              []
+              [ S ]
               [
                 ("k0",
                   M.read (|
@@ -3514,7 +3538,7 @@ Module hash.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::hash::sip::Sip13Rounds" []))
+            Value.StructTuple "core::hash::sip::Sip13Rounds" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3533,7 +3557,7 @@ Module hash.
       (* Default *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip13Rounds" []))
+        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip13Rounds" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5124,7 +5148,7 @@ Module hash.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::hash::sip::Sip24Rounds" []))
+            Value.StructTuple "core::hash::sip::Sip24Rounds" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5143,7 +5167,7 @@ Module hash.
       (* Default *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip24Rounds" []))
+        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip24Rounds" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

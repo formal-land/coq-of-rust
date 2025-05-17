@@ -22,6 +22,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::range::Range"
+            []
+            [ Idx ]
             [
               ("start",
                 M.call_closure (|
@@ -101,6 +103,8 @@ Module range.
         ltac:(M.monadic
           (Value.StructRecord
             "core::range::Range"
+            []
+            [ Idx ]
             [
               ("start",
                 M.call_closure (|
@@ -679,7 +683,13 @@ Module range.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -847,6 +857,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -878,6 +890,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Excluded"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -927,6 +941,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -957,6 +973,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Excluded"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1004,6 +1022,8 @@ Module range.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::ops::range::Range"
+            []
+            [ T ]
             [
               ("start",
                 M.read (|
@@ -1043,6 +1063,8 @@ Module range.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::range::Range"
+            []
+            [ T ]
             [
               ("start",
                 M.read (|
@@ -1091,6 +1113,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::range::RangeInclusive"
+            []
+            [ Idx ]
             [
               ("start",
                 M.call_closure (|
@@ -1717,7 +1741,13 @@ Module range.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1886,6 +1916,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::range::Range"
+            []
+            [ Ty.path "usize" ]
             [
               ("start",
                 M.read (|
@@ -1936,6 +1968,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1967,6 +2001,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2016,6 +2052,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2046,6 +2084,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2241,6 +2281,8 @@ Module range.
                     M.alloc (|
                       Value.StructRecord
                         "core::range::RangeInclusive"
+                        []
+                        [ T ]
                         [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
                     |)))
               ]
@@ -2280,6 +2322,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::range::RangeFrom"
+            []
+            [ Idx ]
             [
               ("start",
                 M.call_closure (|
@@ -2720,7 +2764,13 @@ Module range.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2844,6 +2894,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2873,7 +2925,11 @@ Module range.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+          Value.StructTuple
+            "core::ops::range::Bound::Unbounded"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2908,6 +2964,8 @@ Module range.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2936,7 +2994,11 @@ Module range.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+          Value.StructTuple
+            "core::ops::range::Bound::Unbounded"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2970,6 +3032,8 @@ Module range.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::ops::range::RangeFrom"
+            []
+            [ T ]
             [
               ("start",
                 M.read (|
@@ -3009,6 +3073,8 @@ Module range.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::range::RangeFrom"
+            []
+            [ T ]
             [
               ("start",
                 M.read (|

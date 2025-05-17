@@ -29,6 +29,8 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
       ltac:(M.monadic
         (Value.StructRecord
           "move_abstract_stack::AbstractStack"
+          []
+          [ T ]
           [
             ("values",
               M.call_closure (|
@@ -172,6 +174,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
       ltac:(M.monadic
         (Value.StructRecord
           "move_abstract_stack::AbstractStack"
+          []
+          [ T ]
           [
             ("values",
               M.call_closure (|
@@ -942,7 +946,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
+                                  [ Value.Tuple [] ]
                               |)
                             |)
                           |)
@@ -1208,7 +1216,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                           ]
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
+                          [ Value.Tuple [] ]
                       |)))
                 ]
               |)
@@ -1384,9 +1396,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ T; Ty.path "move_abstract_stack::AbsStackError" ]
                                   [
                                     Value.StructTuple
                                       "move_abstract_stack::AbsStackError::Underflow"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -1574,9 +1590,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [ T; Ty.path "move_abstract_stack::AbsStackError" ]
                                             [
                                               Value.StructTuple
                                                 "move_abstract_stack::AbsStackError::ElementNotEqual"
+                                                []
+                                                []
                                                 []
                                             ]
                                         |)
@@ -1699,7 +1719,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| ret |) ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ T; Ty.path "move_abstract_stack::AbsStackError" ]
+                          [ M.read (| ret |) ]
                       |)))
                 ]
               |)
@@ -1815,9 +1839,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
                                   [
                                     Value.StructTuple
                                       "move_abstract_stack::AbsStackError::Underflow"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -2204,7 +2232,13 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     |)
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

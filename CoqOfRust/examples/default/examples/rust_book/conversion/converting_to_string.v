@@ -114,6 +114,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "converting_to_string::Circle"
+              []
+              []
               [ ("radius", Value.Integer IntegerKind.I32 6) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=

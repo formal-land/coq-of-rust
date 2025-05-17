@@ -1651,6 +1651,8 @@ Module collections.
                           M.alloc (|
                             Value.StructTuple
                               "alloc::collections::btree::map::entry::Entry::Occupied"
+                              []
+                              [ K; V; A ]
                               [ M.read (| entry |) ]
                           |)));
                       fun γ =>
@@ -1665,6 +1667,8 @@ Module collections.
                           M.alloc (|
                             Value.StructTuple
                               "alloc::collections::btree::map::entry::Entry::Vacant"
+                              []
+                              [ K; V; A ]
                               [ M.read (| entry |) ]
                           |)))
                     ]
@@ -3021,6 +3025,8 @@ Module collections.
                   M.alloc (|
                     Value.StructRecord
                       "alloc::collections::btree::map::entry::OccupiedEntry"
+                      []
+                      [ K; V; A ]
                       [
                         ("handle",
                           M.call_closure (|
@@ -3078,7 +3084,12 @@ Module collections.
                               "alloc"
                             |)
                           |));
-                        ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                        ("_marker",
+                          Value.StructTuple
+                            "core::marker::PhantomData"
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
+                            [])
                       ]
                   |)
                 |)))

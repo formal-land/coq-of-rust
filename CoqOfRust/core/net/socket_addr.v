@@ -2247,6 +2247,8 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::net::socket_addr::SocketAddr::V4"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -2272,6 +2274,8 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::net::socket_addr::SocketAddr::V6"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -2330,6 +2334,8 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::net::ip_addr::IpAddr::V4"
+                          []
+                          []
                           [
                             M.read (|
                               M.deref (|
@@ -2362,6 +2368,8 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::net::ip_addr::IpAddr::V6"
+                          []
+                          []
                           [
                             M.read (|
                               M.deref (|
@@ -2760,6 +2768,8 @@ Module net.
             let port := M.alloc (| port |) in
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV4"
+              []
+              []
               [ ("ip", M.read (| ip |)); ("port", M.read (| port |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2906,6 +2916,8 @@ Module net.
             let scope_id := M.alloc (| scope_id |) in
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV6"
+              []
+              []
               [
                 ("ip", M.read (| ip |));
                 ("port", M.read (| port |));
@@ -3168,7 +3180,11 @@ Module net.
         | [], [], [ sock4 ] =>
           ltac:(M.monadic
             (let sock4 := M.alloc (| sock4 |) in
-            Value.StructTuple "core::net::socket_addr::SocketAddr::V4" [ M.read (| sock4 |) ]))
+            Value.StructTuple
+              "core::net::socket_addr::SocketAddr::V4"
+              []
+              []
+              [ M.read (| sock4 |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3194,7 +3210,11 @@ Module net.
         | [], [], [ sock6 ] =>
           ltac:(M.monadic
             (let sock6 := M.alloc (| sock6 |) in
-            Value.StructTuple "core::net::socket_addr::SocketAddr::V6" [ M.read (| sock6 |) ]))
+            Value.StructTuple
+              "core::net::socket_addr::SocketAddr::V6"
+              []
+              []
+              [ M.read (| sock6 |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

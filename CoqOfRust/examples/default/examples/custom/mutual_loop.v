@@ -19,7 +19,7 @@ Module Impl_mutual_loop_LoopA.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -84,6 +84,8 @@ Module Impl_mutual_loop_LoopB.
       ltac:(M.monadic
         (Value.StructRecord
           "mutual_loop::LoopB::Item"
+          []
+          []
           [
             ("ident",
               M.call_closure (|

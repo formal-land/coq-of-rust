@@ -16,7 +16,7 @@ Module future.
       | [], [ T; F ], [ f ] =>
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
-          Value.StructRecord "core::future::poll_fn::PollFn" [ ("f", M.read (| f |)) ]))
+          Value.StructRecord "core::future::poll_fn::PollFn" [] [ F ] [ ("f", M.read (| f |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

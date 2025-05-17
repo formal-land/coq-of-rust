@@ -262,6 +262,8 @@ Module unicode.
                                                                       |);
                                                                       Value.StructRecord
                                                                         "core::ops::range::Range"
+                                                                        []
+                                                                        [ Ty.path "usize" ]
                                                                         [
                                                                           ("start",
                                                                             M.read (|

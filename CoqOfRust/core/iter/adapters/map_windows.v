@@ -292,6 +292,8 @@ Module iter.
                 M.alloc (|
                   Value.StructRecord
                     "core::iter::adapters::map_windows::MapWindows"
+                    [ N ]
+                    [ I; F ]
                     [
                       ("inner",
                         M.call_closure (|
@@ -347,9 +349,29 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::map_windows::MapWindowsInner"
+                [ N ]
+                [ I ]
                 [
-                  ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]);
-                  ("buffer", Value.StructTuple "core::option::Option::None" [])
+                  ("iter",
+                    Value.StructTuple "core::option::Option::Some" [] [ I ] [ M.read (| iter |) ]);
+                  ("buffer",
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::map_windows::Buffer")
+                          [ N ]
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1512,9 +1534,14 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ]
+                        ]
                         [
                           Value.StructRecord
                             "core::iter::adapters::map_windows::Buffer"
+                            [ N ]
+                            [ T ]
                             [
                               ("buffer", M.read (| buffer |));
                               ("start", Value.Integer IntegerKind.Usize 0)
@@ -2736,6 +2763,8 @@ Module iter.
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::map_windows::Buffer"
+                      [ N ]
+                      [ T ]
                       [
                         ("buffer",
                           Value.Array
@@ -2896,6 +2925,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::map_windows::MapWindowsInner"
+                [ N ]
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -3416,7 +3447,7 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| out |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ R ] [ M.read (| out |) ]
                     |)
                   |)))
               |)))
@@ -3641,6 +3672,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::map_windows::MapWindows"
+                [ N ]
+                [ I; F ]
                 [
                   ("f",
                     M.call_closure (|

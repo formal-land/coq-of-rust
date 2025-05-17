@@ -247,6 +247,8 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
                 [
                   M.call_closure (|
                     Ty.path "i32",

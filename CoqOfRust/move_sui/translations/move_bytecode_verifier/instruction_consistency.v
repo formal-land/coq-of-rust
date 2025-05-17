@@ -102,6 +102,8 @@ Module instruction_consistency.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -402,14 +404,23 @@ Module instruction_consistency.
                                                     M.alloc (|
                                                       Value.StructRecord
                                                         "move_bytecode_verifier::instruction_consistency::InstructionConsistency"
+                                                        []
+                                                        []
                                                         [
                                                           ("module", M.read (| module |));
                                                           ("current_function",
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     M.cast
                                                                       (Ty.path "u16")
@@ -562,7 +573,13 @@ Module instruction_consistency.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4549,6 +4566,12 @@ Module instruction_consistency.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -4585,6 +4608,8 @@ Module instruction_consistency.
                                                                                           [
                                                                                             Value.StructTuple
                                                                                               "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                                                                                              []
+                                                                                              []
                                                                                               []
                                                                                           ]
                                                                                         |);
@@ -5197,7 +5222,13 @@ Module instruction_consistency.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5333,6 +5364,8 @@ Module instruction_consistency.
               |);
               Value.StructTuple
                 "move_binary_format::file_format::FunctionDefinitionIndex"
+                []
+                []
                 [ Value.Integer IntegerKind.U16 0 ]
             ]
           |)))
@@ -5513,6 +5546,11 @@ Module instruction_consistency.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -5534,6 +5572,8 @@ Module instruction_consistency.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -5565,7 +5605,13 @@ Module instruction_consistency.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5698,6 +5744,11 @@ Module instruction_consistency.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -5719,6 +5770,8 @@ Module instruction_consistency.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -5750,7 +5803,13 @@ Module instruction_consistency.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

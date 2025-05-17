@@ -74,6 +74,8 @@ Module stack_usage_verifier.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier"
+                      []
+                      []
                       [
                         ("module", M.read (| module |));
                         ("current_function",
@@ -439,7 +441,13 @@ Module stack_usage_verifier.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1005,6 +1013,12 @@ Module stack_usage_verifier.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -1030,6 +1044,8 @@ Module stack_usage_verifier.
                                                                                       [
                                                                                         Value.StructTuple
                                                                                           "move_core_types::vm_status::StatusCode::VALUE_STACK_PUSH_OVERFLOW"
+                                                                                          []
+                                                                                          []
                                                                                           []
                                                                                       ]
                                                                                     |);
@@ -1107,6 +1123,12 @@ Module stack_usage_verifier.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -1132,6 +1154,8 @@ Module stack_usage_verifier.
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |);
@@ -1219,6 +1243,12 @@ Module stack_usage_verifier.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -1244,6 +1274,8 @@ Module stack_usage_verifier.
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |);
@@ -1328,6 +1360,12 @@ Module stack_usage_verifier.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -1353,6 +1391,8 @@ Module stack_usage_verifier.
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |);
@@ -1428,6 +1468,12 @@ Module stack_usage_verifier.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -1453,6 +1499,8 @@ Module stack_usage_verifier.
                                                                             [
                                                                               Value.StructTuple
                                                                                 "move_core_types::vm_status::StatusCode::VALUE_STACK_OVERFLOW"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                           |);
@@ -1522,13 +1570,19 @@ Module stack_usage_verifier.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                             [
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -1550,6 +1604,8 @@ Module stack_usage_verifier.
                                     [
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
+                                        []
+                                        []
                                         []
                                     ]
                                   |);
@@ -1749,6 +1805,11 @@ Module stack_usage_verifier.
           let instruction := M.alloc (| instruction |) in
           Value.StructTuple
             "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ];
+              Ty.path "move_binary_format::errors::PartialVMError"
+            ]
             [
               M.read (|
                 M.match_operator (|
@@ -3615,6 +3676,8 @@ Module stack_usage_verifier.
               |);
               Value.StructTuple
                 "move_binary_format::file_format::FunctionDefinitionIndex"
+                []
+                []
                 [ Value.Integer IntegerKind.U16 0 ]
             ]
           |)))

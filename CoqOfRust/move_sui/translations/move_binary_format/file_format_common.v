@@ -3006,6 +3006,8 @@ Module file_format_common.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::file_format_common::BinaryData"
+            []
+            []
             [
               ("_binary",
                 M.call_closure (|
@@ -3115,6 +3117,8 @@ Module file_format_common.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::file_format_common::BinaryData"
+            []
+            []
             [
               ("_binary",
                 M.call_closure (|
@@ -3343,6 +3347,8 @@ Module file_format_common.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -3508,7 +3514,13 @@ Module file_format_common.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3666,6 +3678,8 @@ Module file_format_common.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -3882,7 +3896,13 @@ Module file_format_common.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4031,6 +4051,8 @@ Module file_format_common.
           (let vec := M.alloc (| vec |) in
           Value.StructRecord
             "move_binary_format::file_format_common::BinaryData"
+            []
+            []
             [ ("_binary", M.read (| vec |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4353,7 +4375,13 @@ Module file_format_common.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4785,6 +4813,8 @@ Module file_format_common.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u8"; Ty.path "anyhow::Error" ]
                   [
                     M.read (|
                       M.SubPointer.get_array_field (| buf, Value.Integer IntegerKind.Usize 0 |)
@@ -4957,6 +4987,8 @@ Module file_format_common.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u32"; Ty.path "anyhow::Error" ]
                   [
                     M.call_closure (|
                       Ty.path "u32",
@@ -5106,6 +5138,8 @@ Module file_format_common.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
+                                                  []
+                                                  [ Ty.path "u64"; Ty.path "anyhow::Error" ]
                                                   [
                                                     M.read (|
                                                       let~ error :
@@ -5262,6 +5296,11 @@ Module file_format_common.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.path "u64";
+                                                                    Ty.path "anyhow::Error"
+                                                                  ]
                                                                   [
                                                                     M.read (|
                                                                       let~ error :
@@ -5332,6 +5371,8 @@ Module file_format_common.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
+                                                  []
+                                                  [ Ty.path "u64"; Ty.path "anyhow::Error" ]
                                                   [ M.read (| value |) ]
                                               |)
                                             |)
@@ -5406,6 +5447,8 @@ Module file_format_common.
                 M.return_ (|
                   Value.StructTuple
                     "core::result::Result::Err"
+                    []
+                    [ Ty.path "u64"; Ty.path "anyhow::Error" ]
                     [
                       M.read (|
                         let~ error : Ty.apply (Ty.path "*") [] [ Ty.path "anyhow::Error" ] :=
@@ -5637,7 +5680,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Pop"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::POP" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::POP"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5648,7 +5695,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Ret"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::RET" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::RET"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5662,6 +5713,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BR_TRUE"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5677,6 +5730,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BR_FALSE"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5690,6 +5745,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BRANCH"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5705,6 +5762,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U8"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5718,6 +5777,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U64"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5733,6 +5794,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U128"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5745,6 +5808,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U8"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5759,6 +5824,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U64"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5771,6 +5838,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U128"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5786,6 +5855,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_CONST"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5799,6 +5870,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_TRUE"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5811,6 +5884,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_FALSE"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5826,6 +5901,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::COPY_LOC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5839,6 +5916,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5854,6 +5933,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::ST_LOC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5865,7 +5946,11 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::CALL" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::CALL"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5880,6 +5965,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5891,7 +5978,11 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::PACK" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::PACK"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5905,6 +5996,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5920,6 +6013,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::UNPACK"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5934,6 +6029,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5946,6 +6043,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::READ_REF"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5960,6 +6059,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::WRITE_REF"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5972,6 +6073,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -5987,6 +6090,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6000,6 +6105,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6015,6 +6122,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6028,6 +6137,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6043,6 +6154,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6057,6 +6170,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6067,7 +6182,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Add"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::ADD" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::ADD"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6078,7 +6197,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Sub"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::SUB" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::SUB"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6089,7 +6212,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Mul"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::MUL" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::MUL"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6100,7 +6227,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Mod"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::MOD" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::MOD"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6111,7 +6242,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Div"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::DIV" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::DIV"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6124,6 +6259,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BIT_OR"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6138,6 +6275,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BIT_AND"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6148,7 +6287,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Xor"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::XOR" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::XOR"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6159,7 +6302,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Shl"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::SHL" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::SHL"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6170,7 +6317,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Shr"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::SHR" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::SHR"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6181,7 +6332,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Or"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::OR" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::OR"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6192,7 +6347,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::And"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::AND" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::AND"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6203,7 +6362,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Not"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::NOT" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::NOT"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6214,7 +6377,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Eq"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::EQ" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::EQ"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6225,7 +6392,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Neq"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::NEQ" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::NEQ"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6236,7 +6407,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Lt"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::LT" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::LT"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6247,7 +6422,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Gt"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::GT" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::GT"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6258,7 +6437,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Le"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::LE" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::LE"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6269,7 +6452,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Ge"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::GE" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::GE"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6283,6 +6470,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::ABORT"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6293,7 +6482,11 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Nop"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format_common::Opcodes::NOP" []
+                        Value.StructTuple
+                          "move_binary_format::file_format_common::Opcodes::NOP"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6306,6 +6499,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_PACK"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6321,6 +6516,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_LEN"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6334,6 +6531,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6349,6 +6548,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6362,6 +6563,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6377,6 +6580,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6389,6 +6594,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6404,6 +6611,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6417,6 +6626,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U16"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6432,6 +6643,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U32"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6446,6 +6659,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U256"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6458,6 +6673,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U16"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6472,6 +6689,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U32"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6484,6 +6703,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U256"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6499,6 +6720,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6512,6 +6735,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6527,6 +6752,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6540,6 +6767,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6555,6 +6784,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6568,6 +6799,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6583,6 +6816,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6596,6 +6831,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -6611,6 +6848,8 @@ Module file_format_common.
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6624,6 +6863,8 @@ Module file_format_common.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
+                          []
+                          []
                           []
                       |)))
                 ]

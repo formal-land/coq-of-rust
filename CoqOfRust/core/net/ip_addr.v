@@ -2164,6 +2164,8 @@ Module net.
             let d := M.alloc (| d |) in
             Value.StructRecord
               "core::net::ip_addr::Ipv4Addr"
+              []
+              []
               [
                 ("octets",
                   Value.Array [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ])
@@ -2227,6 +2229,8 @@ Module net.
             (let bits := M.alloc (| bits |) in
             Value.StructRecord
               "core::net::ip_addr::Ipv4Addr"
+              []
+              []
               [
                 ("octets",
                   M.call_closure (|
@@ -2346,7 +2350,11 @@ Module net.
         | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
+            Value.StructRecord
+              "core::net::ip_addr::Ipv4Addr"
+              []
+              []
+              [ ("octets", M.read (| octets |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3488,6 +3496,8 @@ Module net.
                       M.alloc (|
                         Value.StructRecord
                           "core::net::ip_addr::Ipv6Addr"
+                          []
+                          []
                           [
                             ("octets",
                               Value.Array
@@ -3565,6 +3575,8 @@ Module net.
                       M.alloc (|
                         Value.StructRecord
                           "core::net::ip_addr::Ipv6Addr"
+                          []
+                          []
                           [
                             ("octets",
                               Value.Array
@@ -3765,7 +3777,7 @@ Module net.
         | [], [], [ ipv4 ] =>
           ltac:(M.monadic
             (let ipv4 := M.alloc (| ipv4 |) in
-            Value.StructTuple "core::net::ip_addr::IpAddr::V4" [ M.read (| ipv4 |) ]))
+            Value.StructTuple "core::net::ip_addr::IpAddr::V4" [] [] [ M.read (| ipv4 |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3791,7 +3803,7 @@ Module net.
         | [], [], [ ipv6 ] =>
           ltac:(M.monadic
             (let ipv6 := M.alloc (| ipv6 |) in
-            Value.StructTuple "core::net::ip_addr::IpAddr::V6" [ M.read (| ipv6 |) ]))
+            Value.StructTuple "core::net::ip_addr::IpAddr::V6" [] [] [ M.read (| ipv6 |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4571,6 +4583,8 @@ Module net.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -4670,7 +4684,9 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4756,7 +4772,9 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4917,7 +4935,11 @@ Module net.
         | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
+            Value.StructRecord
+              "core::net::ip_addr::Ipv4Addr"
+              []
+              []
+              [ ("octets", M.read (| octets |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4946,6 +4968,8 @@ Module net.
             (let octets := M.alloc (| octets |) in
             Value.StructTuple
               "core::net::ip_addr::IpAddr::V4"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -5072,6 +5096,8 @@ Module net.
               M.alloc (|
                 Value.StructRecord
                   "core::net::ip_addr::Ipv6Addr"
+                  []
+                  []
                   [
                     ("octets",
                       M.call_closure (|
@@ -5157,6 +5183,8 @@ Module net.
             (let bits := M.alloc (| bits |) in
             Value.StructRecord
               "core::net::ip_addr::Ipv6Addr"
+              []
+              []
               [
                 ("octets",
                   M.call_closure (|
@@ -6824,9 +6852,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6840,9 +6872,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6856,9 +6892,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6872,9 +6912,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6888,9 +6932,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6904,9 +6952,13 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
@@ -6920,20 +6972,36 @@ Module net.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                                   [
                                     Value.StructTuple
                                       "core::net::ip_addr::Ipv6MulticastScope::Global"
+                                      []
+                                      []
                                       []
                                   ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
+                                  []
+                              |)))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -7206,6 +7274,8 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                           [
                             M.call_closure (|
                               Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -7221,7 +7291,13 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -7409,6 +7485,8 @@ Module net.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -7436,7 +7514,13 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -7500,6 +7584,8 @@ Module net.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::net::ip_addr::IpAddr::V4"
+                                      []
+                                      []
                                       [ M.read (| mapped |) ]
                                   |)
                                 |)
@@ -7511,6 +7597,8 @@ Module net.
                   M.alloc (|
                     Value.StructTuple
                       "core::net::ip_addr::IpAddr::V6"
+                      []
+                      []
                       [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)))
@@ -7557,7 +7645,11 @@ Module net.
         | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
+            Value.StructRecord
+              "core::net::ip_addr::Ipv6Addr"
+              []
+              []
+              [ ("octets", M.read (| octets |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8494,6 +8586,8 @@ Module net.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeTo"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [
                                                                         ("end_",
                                                                           M.read (|
@@ -8757,6 +8851,8 @@ Module net.
                                                             |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeFrom"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [
                                                                 ("start",
                                                                   M.call_closure (|
@@ -9216,6 +9312,8 @@ Module net.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -9284,7 +9382,9 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -9370,7 +9470,9 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -9582,7 +9684,11 @@ Module net.
         | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
+            Value.StructRecord
+              "core::net::ip_addr::Ipv6Addr"
+              []
+              []
+              [ ("octets", M.read (| octets |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9685,6 +9791,8 @@ Module net.
             (let octets := M.alloc (| octets |) in
             Value.StructTuple
               "core::net::ip_addr::IpAddr::V6"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -9733,6 +9841,8 @@ Module net.
             (let segments := M.alloc (| segments |) in
             Value.StructTuple
               "core::net::ip_addr::IpAddr::V6"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",

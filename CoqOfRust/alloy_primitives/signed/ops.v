@@ -186,6 +186,8 @@ Module signed.
                               [
                                 Value.StructTuple
                                   "alloy_primitives::signed::int::Signed"
+                                  [ BITS; LIMBS ]
+                                  []
                                   [
                                     M.call_closure (|
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -280,11 +282,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -600,6 +622,8 @@ Module signed.
                               [
                                 Value.StructTuple
                                   "alloy_primitives::signed::int::Signed"
+                                  [ BITS; LIMBS ]
+                                  []
                                   [
                                     M.call_closure (|
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -698,11 +722,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -932,6 +976,8 @@ Module signed.
                         M.alloc (|
                           Value.StructTuple
                             "alloy_primitives::signed::int::Signed"
+                            [ BITS; LIMBS ]
+                            []
                             [ M.read (| unsigned |) ]
                         |) in
                       let~ overflow : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
@@ -1119,11 +1165,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1433,6 +1499,8 @@ Module signed.
                         M.alloc (|
                           Value.StructTuple
                             "alloy_primitives::signed::int::Signed"
+                            [ BITS; LIMBS ]
+                            []
                             [ M.read (| unsigned |) ]
                         |) in
                       let~ overflow : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
@@ -1620,11 +1688,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -2182,11 +2270,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -2824,12 +2932,30 @@ Module signed.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
                           [
                             M.read (|
                               M.SubPointer.get_tuple_field (|
@@ -3389,12 +3515,30 @@ Module signed.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
                           [
                             M.read (|
                               M.SubPointer.get_tuple_field (|
@@ -4030,12 +4174,30 @@ Module signed.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -4725,12 +4887,30 @@ Module signed.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -4862,12 +5042,12 @@ Module signed.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
               |)
@@ -5329,12 +5509,30 @@ Module signed.
                               (let γ := M.use overflow in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
+                                  []
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
                                   [ M.read (| result |) ]
                               |)))
                         ]
@@ -5630,6 +5828,8 @@ Module signed.
                           [
                             Value.StructTuple
                               "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -5733,11 +5933,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5876,6 +6096,8 @@ Module signed.
                           [
                             Value.StructTuple
                               "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -5979,11 +6201,31 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -6525,7 +6767,16 @@ Module signed.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              []
+                          ]
+                          [ M.read (| self |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6632,12 +6883,30 @@ Module signed.
                                   |)) in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
+                                  []
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
                                   [ M.read (| result |) ]
                               |)))
                         ]
@@ -8989,6 +9258,8 @@ Module signed.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -9114,7 +9385,7 @@ Module signed.
                           γ1_0,
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -9133,7 +9404,7 @@ Module signed.
                           γ1_0,
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -10300,6 +10571,8 @@ Module signed.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -10440,6 +10713,8 @@ Module signed.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -10580,6 +10855,8 @@ Module signed.
             let rhs := M.alloc (| rhs |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -10784,6 +11061,8 @@ Module signed.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

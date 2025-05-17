@@ -576,6 +576,8 @@ Module slice.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeFrom"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [
                                                                         ("start",
                                                                           M.call_closure (|
@@ -604,6 +606,8 @@ Module slice.
                                                         ancestor_pivot,
                                                         Value.StructTuple
                                                           "core::option::Option::None"
+                                                          []
+                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                           []
                                                       |)
                                                     |) in
@@ -791,6 +795,8 @@ Module slice.
                                                 ancestor_pivot,
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                   [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
@@ -1360,7 +1366,18 @@ Module slice.
                                   [ T ]
                               ]
                           ] :=
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::sort::unstable::quicksort::GapGuard")
+                              []
+                              [ T ]
+                          ]
+                          []
+                      |) in
                     let~ v_base :
                         Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                       M.alloc (|
@@ -1652,9 +1669,19 @@ Module slice.
                                           gap_opt,
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::slice::sort::unstable::quicksort::GapGuard")
+                                                []
+                                                [ T ]
+                                            ]
                                             [
                                               Value.StructRecord
                                                 "core::slice::sort::unstable::quicksort::GapGuard"
+                                                []
+                                                [ T ]
                                                 [
                                                   ("pos", M.read (| right |));
                                                   ("value",
@@ -2375,6 +2402,8 @@ Module slice.
                       M.alloc (|
                         Value.StructRecord
                           "core::slice::sort::unstable::quicksort::PartitionState"
+                          []
+                          [ T ]
                           [
                             ("num_lt", Value.Integer IntegerKind.Usize 0);
                             ("right",
@@ -2391,6 +2420,8 @@ Module slice.
                             ("gap",
                               Value.StructRecord
                                 "core::slice::sort::unstable::quicksort::GapGuardRaw"
+                                []
+                                [ T ]
                                 [
                                   ("pos", M.read (| v_base |));
                                   ("value",

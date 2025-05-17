@@ -39,7 +39,11 @@ Module signed.
                     [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
                     ] :=
                 M.alloc (|
-                  Value.StructTuple "alloy_primitives::signed::int::Signed" [ M.read (| from |) ]
+                  Value.StructTuple
+                    "alloy_primitives::signed::int::Signed"
+                    [ BITS; LIMBS ]
+                    []
+                    [ M.read (| from |) ]
                 |) in
               M.match_operator (|
                 Ty.apply
@@ -78,7 +82,17 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| value |) ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [ M.read (| value |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -90,9 +104,19 @@ Module signed.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
                           [
                             Value.StructTuple
                               "alloy_primitives::signed::errors::BigIntConversionError"
+                              []
+                              []
                               []
                           ]
                       |)))
@@ -180,6 +204,11 @@ Module signed.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
                           [
                             M.read (|
                               M.SubPointer.get_struct_tuple_field (|
@@ -200,9 +229,16 @@ Module signed.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
                           [
                             Value.StructTuple
                               "alloy_primitives::signed::errors::BigIntConversionError"
+                              []
+                              []
                               []
                           ]
                       |)))
@@ -561,6 +597,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -588,6 +626,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -614,6 +654,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Negative"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -641,6 +683,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -655,6 +699,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.read (| s |)
                                 ]
@@ -862,6 +908,8 @@ Module signed.
                                 Value.StructTuple
                                   "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                                   []
+                                  []
+                                  []
                               ]
                             |)
                           |)))
@@ -974,9 +1022,17 @@ Module signed.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "i128";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::signed::errors::BigIntConversionError"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -1025,6 +1081,11 @@ Module signed.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "i128";
+                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                              ]
                               [
                                 M.cast
                                   (Ty.path "i128")
@@ -1156,6 +1217,11 @@ Module signed.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "i128";
+                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                              ]
                               [
                                 M.call_closure (|
                                   Ty.path "i128",
@@ -1425,9 +1491,20 @@ Module signed.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                           |)
@@ -1440,9 +1517,19 @@ Module signed.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [];
+                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                              ]
                               [
                                 Value.StructTuple
                                   "alloy_primitives::signed::int::Signed"
+                                  [ BITS; LIMBS ]
+                                  []
                                   [
                                     M.call_closure (|
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -1559,9 +1646,17 @@ Module signed.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "u128";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::signed::errors::BigIntConversionError"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -1628,6 +1723,8 @@ Module signed.
                                         M.alloc (|
                                           Value.StructTuple
                                             "alloy_primitives::signed::int::Signed"
+                                            [ BITS; LIMBS ]
+                                            []
                                             [ M.read (| saturated |) ]
                                         |)
                                       |)
@@ -1642,9 +1739,17 @@ Module signed.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "u128";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::signed::errors::BigIntConversionError"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -1752,6 +1857,8 @@ Module signed.
                                         ltac:(M.monadic
                                           (Value.StructTuple
                                             "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
                                             []))
                                     ]
                                   |)))
@@ -1878,9 +1985,20 @@ Module signed.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [];
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::signed::errors::BigIntConversionError"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -3651,6 +3769,8 @@ Module signed.
                                                   ltac:(M.monadic
                                                     (Value.StructTuple
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      []
+                                                      []
                                                       []))
                                               ]
                                             |)))
@@ -3781,12 +3901,18 @@ Module signed.
                             []
                           |),
                           [
-                            Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [];
+                            Value.StructTuple
+                              "alloy_primitives::signed::sign::Sign::Positive"
+                              []
+                              []
+                              [];
                             M.read (| u |)
                           ]
                         |);
                         Value.StructTuple
                           "alloy_primitives::signed::errors::BigIntConversionError"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -3957,9 +4083,19 @@ Module signed.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                      ]
                       [
                         Value.StructTuple
                           "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
                           [ M.read (| tc |) ]
                       ]
                   |)
@@ -4213,6 +4349,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -4470,6 +4608,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -4677,6 +4817,8 @@ Module signed.
                                                   ltac:(M.monadic
                                                     (Value.StructTuple
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      []
+                                                      []
                                                       []))
                                               ]
                                             |)))
@@ -4807,12 +4949,18 @@ Module signed.
                             []
                           |),
                           [
-                            Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [];
+                            Value.StructTuple
+                              "alloy_primitives::signed::sign::Sign::Positive"
+                              []
+                              []
+                              [];
                             M.read (| u |)
                           ]
                         |);
                         Value.StructTuple
                           "alloy_primitives::signed::errors::BigIntConversionError"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -4983,9 +5131,19 @@ Module signed.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                      ]
                       [
                         Value.StructTuple
                           "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
                           [ M.read (| tc |) ]
                       ]
                   |)
@@ -5239,6 +5397,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -5496,6 +5656,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -5703,6 +5865,8 @@ Module signed.
                                                   ltac:(M.monadic
                                                     (Value.StructTuple
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      []
+                                                      []
                                                       []))
                                               ]
                                             |)))
@@ -5833,12 +5997,18 @@ Module signed.
                             []
                           |),
                           [
-                            Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [];
+                            Value.StructTuple
+                              "alloy_primitives::signed::sign::Sign::Positive"
+                              []
+                              []
+                              [];
                             M.read (| u |)
                           ]
                         |);
                         Value.StructTuple
                           "alloy_primitives::signed::errors::BigIntConversionError"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -6009,9 +6179,19 @@ Module signed.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                      ]
                       [
                         Value.StructTuple
                           "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
                           [ M.read (| tc |) ]
                       ]
                   |)
@@ -6265,6 +6445,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -6522,6 +6704,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -6729,6 +6913,8 @@ Module signed.
                                                   ltac:(M.monadic
                                                     (Value.StructTuple
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      []
+                                                      []
                                                       []))
                                               ]
                                             |)))
@@ -6859,12 +7045,18 @@ Module signed.
                             []
                           |),
                           [
-                            Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [];
+                            Value.StructTuple
+                              "alloy_primitives::signed::sign::Sign::Positive"
+                              []
+                              []
+                              [];
                             M.read (| u |)
                           ]
                         |);
                         Value.StructTuple
                           "alloy_primitives::signed::errors::BigIntConversionError"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -7035,9 +7227,19 @@ Module signed.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                      ]
                       [
                         Value.StructTuple
                           "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
                           [ M.read (| tc |) ]
                       ]
                   |)
@@ -7291,6 +7493,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -7548,6 +7752,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -7755,6 +7961,8 @@ Module signed.
                                                   ltac:(M.monadic
                                                     (Value.StructTuple
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      []
+                                                      []
                                                       []))
                                               ]
                                             |)))
@@ -7885,12 +8093,18 @@ Module signed.
                             []
                           |),
                           [
-                            Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [];
+                            Value.StructTuple
+                              "alloy_primitives::signed::sign::Sign::Positive"
+                              []
+                              []
+                              [];
                             M.read (| u |)
                           ]
                         |);
                         Value.StructTuple
                           "alloy_primitives::signed::errors::BigIntConversionError"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -8061,9 +8275,19 @@ Module signed.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [];
+                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                      ]
                       [
                         Value.StructTuple
                           "alloy_primitives::signed::int::Signed"
+                          [ BITS; LIMBS ]
+                          []
                           [ M.read (| tc |) ]
                       ]
                   |)
@@ -8317,6 +8541,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))
@@ -8574,6 +8800,8 @@ Module signed.
                                     ltac:(M.monadic
                                       (Value.StructTuple
                                         "alloy_primitives::signed::errors::BigIntConversionError"
+                                        []
+                                        []
                                         []))
                                 ]
                               |)))

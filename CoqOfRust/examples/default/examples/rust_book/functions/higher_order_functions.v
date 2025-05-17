@@ -129,6 +129,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::RangeFrom"
+                      []
+                      [ Ty.path "u32" ]
                       [ ("start", Value.Integer IntegerKind.U32 0) ]
                   ]
                 |)
@@ -473,6 +475,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "u32" ]
                               [ ("start", Value.Integer IntegerKind.U32 0) ];
                             M.closure
                               (fun γ =>

@@ -40,13 +40,19 @@ Module char.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let c := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "char" ]
+                        [ M.read (| c |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ Ty.path "char" ] []
+                    |)))
               ]
             |)
           |)))
@@ -299,6 +305,8 @@ Module char.
                                 ltac:(M.monadic
                                   (Value.StructTuple
                                     "core::char::TryFromCharError"
+                                    []
+                                    []
                                     [ Value.Tuple [] ]))
                             ]
                           |)))
@@ -406,6 +414,8 @@ Module char.
                                 ltac:(M.monadic
                                   (Value.StructTuple
                                     "core::char::TryFromCharError"
+                                    []
+                                    []
                                     [ Value.Tuple [] ]))
                             ]
                           |)))
@@ -471,6 +481,8 @@ Module char.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::char::convert::ParseCharError"
+              []
+              []
               [
                 ("kind",
                   M.call_closure (|
@@ -1090,13 +1102,19 @@ Module char.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
                           [
                             Value.StructRecord
                               "core::char::convert::ParseCharError"
+                              []
+                              []
                               [
                                 ("kind",
                                   Value.StructTuple
                                     "core::char::convert::CharErrorKind::EmptyString"
+                                    []
+                                    []
                                     [])
                               ]
                           ]
@@ -1114,20 +1132,30 @@ Module char.
                       let c := M.copy (| γ1_0 |) in
                       let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| c |) ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
+                          [ M.read (| c |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
                           [
                             Value.StructRecord
                               "core::char::convert::ParseCharError"
+                              []
+                              []
                               [
                                 ("kind",
                                   Value.StructTuple
                                     "core::char::convert::CharErrorKind::TooManyChars"
+                                    []
+                                    []
                                     [])
                               ]
                           ]
@@ -1230,9 +1258,13 @@ Module char.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "char"; Ty.path "core::char::convert::CharTryFromError" ]
                         [
                           Value.StructTuple
                             "core::char::convert::CharTryFromError"
+                            []
+                            []
                             [ Value.Tuple [] ]
                         ]
                     |)));
@@ -1241,6 +1273,8 @@ Module char.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "char"; Ty.path "core::char::convert::CharTryFromError" ]
                         [
                           M.call_closure (|
                             Ty.path "char",
@@ -1665,6 +1699,8 @@ Module char.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "char" ]
                                 [
                                   M.cast
                                     (Ty.path "char")
@@ -1680,6 +1716,8 @@ Module char.
                             (M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "char" ]
                                 [
                                   M.cast
                                     (Ty.path "char")
@@ -1700,7 +1738,10 @@ Module char.
                       ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ Ty.path "char" ] []
+                    |)))
               ]
             |)
           |)))

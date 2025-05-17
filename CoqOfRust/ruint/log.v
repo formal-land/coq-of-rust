@@ -101,7 +101,13 @@ Module log.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "usize" ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -111,6 +117,8 @@ Module log.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       M.call_closure (|
                         Ty.path "usize",

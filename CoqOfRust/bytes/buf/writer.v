@@ -82,7 +82,7 @@ Module buf.
       | [], [ B ], [ buf ] =>
         ltac:(M.monadic
           (let buf := M.alloc (| buf |) in
-          Value.StructRecord "bytes::buf::writer::Writer" [ ("buf", M.read (| buf |)) ]))
+          Value.StructRecord "bytes::buf::writer::Writer" [] [ B ] [ ("buf", M.read (| buf |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -293,6 +293,8 @@ Module buf.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| n |))
@@ -304,7 +306,13 @@ Module buf.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| n |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.path "usize"; Ty.path "std::io::error::Error" ]
+                  [ M.read (| n |) ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -320,7 +328,11 @@ Module buf.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+            Value.StructTuple
+              "core::result::Result::Ok"
+              []
+              [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+              [ Value.Tuple [] ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

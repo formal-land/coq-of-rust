@@ -563,6 +563,8 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::StateLoad"
+            []
+            [ T ]
             [
               ("data",
                 M.call_closure (|
@@ -716,6 +718,8 @@ Module journaled_state.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_context_interface::journaled_state::StateLoad"
+            []
+            [ T ]
             [
               ("data",
                 M.call_closure (|
@@ -990,6 +994,8 @@ Module journaled_state.
           let is_cold := M.alloc (| is_cold |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::StateLoad"
+            []
+            [ T ]
             [ ("data", M.read (| data |)); ("is_cold", M.read (| is_cold |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1095,6 +1101,8 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::AccountLoad"
+            []
+            []
             [
               ("load",
                 M.call_closure (|
@@ -1256,6 +1264,8 @@ Module journaled_state.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_context_interface::journaled_state::AccountLoad"
+            []
+            []
             [
               ("load",
                 M.call_closure (|
@@ -1557,6 +1567,8 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
+            []
+            [ T ]
             [
               ("state_load",
                 M.call_closure (|
@@ -1724,6 +1736,8 @@ Module journaled_state.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
+            []
+            [ T ]
             [
               ("state_load",
                 M.call_closure (|
@@ -2036,9 +2050,12 @@ Module journaled_state.
           (let state_load := M.alloc (| state_load |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
+            []
+            [ T ]
             [
               ("state_load", M.read (| state_load |));
-              ("is_delegate_account_cold", Value.StructTuple "core::option::Option::None" [])
+              ("is_delegate_account_cold",
+                Value.StructTuple "core::option::Option::None" [] [ Ty.path "bool" ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2071,6 +2088,8 @@ Module journaled_state.
           let is_cold := M.alloc (| is_cold |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
+            []
+            [ T ]
             [
               ("state_load",
                 M.call_closure (|
@@ -2086,7 +2105,8 @@ Module journaled_state.
                   |),
                   [ M.read (| data |); M.read (| is_cold |) ]
                 |));
-              ("is_delegate_account_cold", Value.StructTuple "core::option::Option::None" [])
+              ("is_delegate_account_cold",
+                Value.StructTuple "core::option::Option::None" [] [ Ty.path "bool" ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2170,6 +2190,8 @@ Module journaled_state.
                   |);
                   Value.StructRecord
                     "revm_context_interface::journaled_state::Eip7702CodeLoad"
+                    []
+                    [ Ty.tuple [] ]
                     [
                       ("state_load",
                         M.call_closure (|
@@ -2237,6 +2259,8 @@ Module journaled_state.
                   |),
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "bool" ]
                     [ M.read (| is_delegate_account_cold |) ]
                 |)
               |) in
@@ -2268,11 +2292,15 @@ Module journaled_state.
           let is_delegate_account_cold := M.alloc (| is_delegate_account_cold |) in
           Value.StructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
+            []
+            [ T ]
             [
               ("state_load", M.read (| state_load |));
               ("is_delegate_account_cold",
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "bool" ]
                   [ M.read (| is_delegate_account_cold |) ])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"

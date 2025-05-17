@@ -15,6 +15,8 @@ Module future.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::future::async_drop::AsyncDropOwning"
+            []
+            [ T ]
             [
               ("value",
                 M.call_closure (|
@@ -27,8 +29,13 @@ Module future.
                   |),
                   [ M.read (| value |) ]
                 |));
-              ("dtor", Value.StructTuple "core::option::Option::None" []);
-              ("_pinned", Value.StructTuple "core::marker::PhantomPinned" [])
+              ("dtor",
+                Value.StructTuple
+                  "core::option::Option::None"
+                  []
+                  [ Ty.apply (Ty.path "core::future::async_drop::AsyncDropInPlace") [] [ T ] ]
+                  []);
+              ("_pinned", Value.StructTuple "core::marker::PhantomPinned" [] [] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -421,6 +428,8 @@ Module future.
           (let to_drop := M.alloc (| to_drop |) in
           Value.StructTuple
             "core::future::async_drop::AsyncDropInPlace"
+            []
+            [ T ]
             [
               M.call_closure (|
                 Ty.associated_in_trait
@@ -1056,7 +1065,12 @@ Module future.
           (let inner := M.alloc (| inner |) in
           Value.StructRecord
             "core::future::async_drop::Fuse"
-            [ ("inner", Value.StructTuple "core::option::Option::Some" [ M.read (| inner |) ]) ]))
+            []
+            [ T ]
+            [
+              ("inner",
+                Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| inner |) ])
+            ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1225,7 +1239,11 @@ Module future.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple "core::task::poll::Poll::Pending" []
+                                              Value.StructTuple
+                                                "core::task::poll::Poll::Pending"
+                                                []
+                                                [ Ty.tuple [] ]
+                                                []
                                             |)
                                           |)
                                         |)
@@ -1240,14 +1258,20 @@ Module future.
                                     "core::future::async_drop::Fuse",
                                     "inner"
                                   |),
-                                  Value.StructTuple "core::option::Option::None" []
+                                  Value.StructTuple "core::option::Option::None" [] [ T ] []
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.tuple [] ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1386,6 +1410,8 @@ Module future.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_", M.read (| len |))
@@ -2994,7 +3020,7 @@ Module future.
     *)
     Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::future::async_drop::Noop" []))
+      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::future::async_drop::Noop" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -3040,7 +3066,11 @@ Module future.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ]))
+                    (Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.tuple [] ]
+                      [ Value.Tuple [] ]))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

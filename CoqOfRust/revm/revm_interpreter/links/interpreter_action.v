@@ -23,15 +23,15 @@ Module FrameInput.
     φ x :=
       match x with
       | Call γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [] [] [
           φ γ0
         ]
       | Create γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [] [] [
           φ γ0
         ]
       | EOFCreate γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [] [] [
           φ γ0
         ]
       end
@@ -44,7 +44,7 @@ Module FrameInput.
   Lemma of_value_with_Call
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [] [] [
       γ0'
     ] =
     φ (Call γ0).
@@ -54,7 +54,7 @@ Module FrameInput.
   Lemma of_value_with_Create
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [] [] [
       γ0'
     ] =
     φ (Create γ0).
@@ -64,7 +64,7 @@ Module FrameInput.
   Lemma of_value_with_EOFCreate
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [] [] [
       γ0'
     ] =
     φ (EOFCreate γ0).
@@ -75,7 +75,7 @@ Module FrameInput.
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [] [] [
         γ0'
       ]
     ).
@@ -86,7 +86,7 @@ Module FrameInput.
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [] [] [
         γ0'
       ]
     ).
@@ -97,7 +97,7 @@ Module FrameInput.
     (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [] [] [
         γ0'
       ]
     ).
@@ -119,15 +119,15 @@ Module InterpreterAction.
     φ x :=
       match x with
       | NewFrame γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [] [] [
           φ γ0
         ]
       | Return result =>
-        Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+        Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [] [] [
           ("result", φ result)
         ]
       | None_ =>
-        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
+        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] [] []
       end
   }.
 
@@ -138,7 +138,7 @@ Module InterpreterAction.
   Lemma of_value_with_NewFrame
     (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [] [] [
       γ0'
     ] =
     φ (NewFrame γ0).
@@ -148,7 +148,7 @@ Module InterpreterAction.
   Lemma of_value_with_Return
     (result : InterpreterResult.t) (result' : Value.t) :
     result' = φ result ->
-    Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+    Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [] [] [
       ("result", result')
     ] =
     φ (Return result).
@@ -156,7 +156,7 @@ Module InterpreterAction.
   Smpl Add simple apply of_value_with_Return : of_value.
 
   Lemma of_value_with_None :
-    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] =
+    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] [] [] =
     φ None_.
   Proof. now intros; subst. Qed.
   Smpl Add simple apply of_value_with_None : of_value.
@@ -165,7 +165,7 @@ Module InterpreterAction.
     (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [] [] [
         γ0'
       ]
     ).
@@ -176,7 +176,7 @@ Module InterpreterAction.
     (result : InterpreterResult.t) (result' : Value.t) :
     result' = φ result ->
     OfValue.t (
-      Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+      Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [] [] [
         ("result", result')
       ]
     ).
@@ -185,7 +185,7 @@ Module InterpreterAction.
 
   Definition of_value_None :
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
+      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] [] []
     ).
   Proof. econstructor; apply of_value_with_None; eassumption. Defined.
   Smpl Add simple apply of_value_None : of_value.

@@ -93,6 +93,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -136,6 +138,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::Create"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -179,6 +183,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::EOFCreate"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -784,6 +790,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "revm_interpreter::interpreter_action::FrameInput",
@@ -813,6 +821,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructRecord
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                        []
+                        []
                         [
                           ("result",
                             M.call_closure (|
@@ -842,6 +852,8 @@ Module interpreter_action.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -1000,7 +1012,11 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []))
+          (Value.StructTuple
+            "revm_interpreter::interpreter_action::InterpreterAction::None"
+            []
+            []
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1448,10 +1464,21 @@ Module interpreter_action.
                       |) in
                     let result := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ]
+                        [ M.read (| result |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ]
+                        []
+                    |)))
               ]
             |)
           |)))

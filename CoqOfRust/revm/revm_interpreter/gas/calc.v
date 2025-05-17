@@ -79,7 +79,11 @@ Module gas.
                             |),
                             [
                               M.read (| spec_id |);
-                              Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" []
+                              Value.StructTuple
+                                "revm_specification::hardfork::SpecId::ISTANBUL"
+                                []
+                                []
+                                []
                             ]
                           |)
                         |)) in
@@ -107,6 +111,8 @@ Module gas.
                                           M.read (| spec_id |);
                                           Value.StructTuple
                                             "revm_specification::hardfork::SpecId::LONDON"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -456,6 +462,8 @@ Module gas.
                                                                   Value.StructTuple
                                                                     "revm_specification::hardfork::SpecId::BERLIN"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 ]
                                                               |)
                                                             |)) in
@@ -762,7 +770,13 @@ Module gas.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u64" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)))
@@ -1101,6 +1115,8 @@ Module gas.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "u64" ]
                             [
                               M.read (|
                                 get_constant (|
@@ -1169,6 +1185,8 @@ Module gas.
                                                     M.read (| spec_id |);
                                                     Value.StructTuple
                                                       "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -1698,6 +1716,8 @@ Module gas.
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::BERLIN"
                                     []
+                                    []
+                                    []
                                 ]
                               |)
                             |)) in
@@ -1736,6 +1756,8 @@ Module gas.
                                           M.read (| spec_id |);
                                           Value.StructTuple
                                             "revm_specification::hardfork::SpecId::TANGERINE"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -1822,7 +1844,13 @@ Module gas.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u64" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)))
@@ -1913,7 +1941,11 @@ Module gas.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.path "u64" ]
+                                                []
                                             |)
                                           |)
                                         |)
@@ -1941,7 +1973,13 @@ Module gas.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u64" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)))
@@ -2026,7 +2064,13 @@ Module gas.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u64" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)))
@@ -2179,7 +2223,11 @@ Module gas.
                             |),
                             [
                               M.read (| spec_id |);
-                              Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" []
+                              Value.StructTuple
+                                "revm_specification::hardfork::SpecId::BERLIN"
+                                []
+                                []
+                                []
                             ]
                           |)
                         |)) in
@@ -2229,6 +2277,8 @@ Module gas.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::ISTANBUL"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)) in
@@ -2261,6 +2311,8 @@ Module gas.
                                               M.read (| spec_id |);
                                               Value.StructTuple
                                                 "revm_specification::hardfork::SpecId::TANGERINE"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |)
@@ -2334,7 +2386,11 @@ Module gas.
                             |),
                             [
                               M.read (| spec_id |);
-                              Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" []
+                              Value.StructTuple
+                                "revm_specification::hardfork::SpecId::BERLIN"
+                                []
+                                []
+                                []
                             ]
                           |)
                         |)) in
@@ -2410,6 +2466,8 @@ Module gas.
                                       M.read (| spec_id |);
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::ISTANBUL"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -2734,6 +2792,8 @@ Module gas.
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                                     []
+                                    []
+                                    []
                                 ]
                               |)
                             |)) in
@@ -2812,6 +2872,8 @@ Module gas.
                                     Value.StructTuple
                                       "revm_specification::hardfork::SpecId::TANGERINE"
                                       []
+                                      []
+                                      []
                                   ]
                                 |),
                                 ltac:(M.monadic (M.read (| should_charge_topup |)))
@@ -2846,6 +2908,8 @@ Module gas.
                                   M.read (| spec_id |);
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::TANGERINE"
+                                    []
+                                    []
                                     []
                                 ]
                               |)
@@ -2887,6 +2951,8 @@ Module gas.
                                   M.read (| spec_id |);
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::BERLIN"
+                                    []
+                                    []
                                     []
                                 ]
                               |),
@@ -2998,6 +3064,8 @@ Module gas.
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::BERLIN"
                                     []
+                                    []
+                                    []
                                 ]
                               |)
                             |)) in
@@ -3044,6 +3112,8 @@ Module gas.
                                           M.read (| spec_id |);
                                           Value.StructTuple
                                             "revm_specification::hardfork::SpecId::TANGERINE"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -3130,6 +3200,8 @@ Module gas.
                                         M.read (| spec_id |);
                                         Value.StructTuple
                                           "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3692,6 +3764,8 @@ Module gas.
                                               Value.StructTuple
                                                 "revm_specification::hardfork::SpecId::ISTANBUL"
                                                 []
+                                                []
+                                                []
                                             ]
                                           |)
                                         |)) in
@@ -3861,6 +3935,8 @@ Module gas.
                                                   Value.StructTuple
                                                     "revm_specification::hardfork::SpecId::HOMESTEAD"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             |)) in
@@ -3907,6 +3983,8 @@ Module gas.
                                   M.read (| spec_id |);
                                   Value.StructTuple
                                     "revm_specification::hardfork::SpecId::SHANGHAI"
+                                    []
+                                    []
                                     []
                                 ]
                               |),
@@ -3975,7 +4053,11 @@ Module gas.
                               |),
                               [
                                 M.read (| spec_id |);
-                                Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" []
+                                Value.StructTuple
+                                  "revm_specification::hardfork::SpecId::PRAGUE"
+                                  []
+                                  []
+                                  []
                               ]
                             |)
                           |)) in

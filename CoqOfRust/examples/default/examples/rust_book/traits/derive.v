@@ -216,6 +216,8 @@ Module Impl_derive_Inches.
                   M.alloc (|
                     Value.StructTuple
                       "derive::Centimeters"
+                      []
+                      []
                       [
                         M.call_closure (|
                           Ty.path "f64",
@@ -280,9 +282,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _one_second : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Seconds" ] :=
-          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer IntegerKind.I32 1 ] |) in
+          M.alloc (|
+            Value.StructTuple "derive::Seconds" [] [] [ Value.Integer IntegerKind.I32 1 ]
+          |) in
         let~ foot : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Inches" ] :=
-          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer IntegerKind.I32 12 ] |) in
+          M.alloc (|
+            Value.StructTuple "derive::Inches" [] [] [ Value.Integer IntegerKind.I32 12 ]
+          |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
@@ -347,7 +353,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ meter : Ty.apply (Ty.path "*") [] [ Ty.path "derive::Centimeters" ] :=
           M.alloc (|
-            Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
+            Value.StructTuple "derive::Centimeters" [] [] [ M.read (| UnsupportedLiteral |) ]
           |) in
         let~ cmp : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.copy (|

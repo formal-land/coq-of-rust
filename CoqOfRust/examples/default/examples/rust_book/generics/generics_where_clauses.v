@@ -70,6 +70,8 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ T ]
                                                   [ M.read (| self |) ]
                                               |)
                                             |)

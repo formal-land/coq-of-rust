@@ -76,6 +76,8 @@ Module ability_field_requirements.
                                   M.read (| e |);
                                   Value.StructTuple
                                     "move_binary_format::errors::Location::Module"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "move_core_types::language_storage::ModuleId",
@@ -1366,6 +1368,12 @@ Module ability_field_requirements.
                                                                               M.return_ (|
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Err"
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
                                                                                   [
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -1378,9 +1386,13 @@ Module ability_field_requirements.
                                                                                       [
                                                                                         Value.StructTuple
                                                                                           "move_core_types::vm_status::StatusCode::FIELD_MISSING_TYPE_ABILITY"
+                                                                                          []
+                                                                                          []
                                                                                           [];
                                                                                         Value.StructTuple
                                                                                           "move_binary_format::IndexKind::StructDefinition"
+                                                                                          []
+                                                                                          []
                                                                                           [];
                                                                                         M.cast
                                                                                           (Ty.path
@@ -1414,7 +1426,13 @@ Module ability_field_requirements.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

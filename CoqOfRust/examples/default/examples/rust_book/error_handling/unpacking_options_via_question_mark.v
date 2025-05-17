@@ -376,24 +376,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "unpacking_options_via_question_mark::Person"
+              []
+              []
               [
                 ("job",
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "unpacking_options_via_question_mark::Job" ]
                     [
                       Value.StructRecord
                         "unpacking_options_via_question_mark::Job"
+                        []
+                        []
                         [
                           ("phone_number",
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
                               [
                                 Value.StructRecord
                                   "unpacking_options_via_question_mark::PhoneNumber"
+                                  []
+                                  []
                                   [
                                     ("area_code",
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "u8" ]
                                         [ Value.Integer IntegerKind.U8 61 ]);
                                     ("number", Value.Integer IntegerKind.U32 439222222)
                                   ]
@@ -428,6 +440,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "u8" ]
                         [ Value.Integer IntegerKind.U8 61 ]
                     |)
                   |)
@@ -490,7 +504,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -529,7 +543,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)

@@ -64,7 +64,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ]
+                                  [ M.read (| e |) ]
                               |)
                             |)
                           |)
@@ -132,7 +136,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ]
+                [ Value.Tuple [] ]
+            |)
           |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

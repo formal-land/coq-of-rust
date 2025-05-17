@@ -493,6 +493,8 @@ Module algorithms.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| l |)) ]
                         ]
                       |)
@@ -527,6 +529,8 @@ Module algorithms.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| l |)) ]
                         ]
                       |)
@@ -574,6 +578,8 @@ Module algorithms.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| l |))
@@ -730,6 +736,8 @@ Module algorithms.
                                                         Value.StructTuple
                                                           "core::cmp::Ordering::Less"
                                                           []
+                                                          []
+                                                          []
                                                       |)
                                                     |)
                                                   |)
@@ -755,6 +763,8 @@ Module algorithms.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::cmp::Ordering::Greater"
+                                                          []
+                                                          []
                                                           []
                                                       |)
                                                     |)

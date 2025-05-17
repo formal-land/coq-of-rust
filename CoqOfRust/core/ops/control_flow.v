@@ -168,6 +168,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [ B; C ]
                           [
                             M.call_closure (|
                               C,
@@ -198,6 +200,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [ B; C ]
                           [
                             M.call_closure (|
                               B,
@@ -617,6 +621,8 @@ Module ops.
             (let output := M.alloc (| output |) in
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
+              []
+              [ B; C ]
               [ M.read (| output |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -666,6 +672,14 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ B; Ty.path "core::convert::Infallible" ];
+                            C
+                          ]
                           [ M.read (| c |) ]
                       |)));
                   fun γ =>
@@ -680,9 +694,19 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ B; Ty.path "core::convert::Infallible" ];
+                            C
+                          ]
                           [
                             Value.StructTuple
                               "core::ops::control_flow::ControlFlow::Break"
+                              []
+                              [ B; Ty.path "core::convert::Infallible" ]
                               [ M.read (| b |) ]
                           ]
                       |)))
@@ -750,6 +774,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [ B; C ]
                           [ M.read (| b |) ]
                       |)))
                 ]
@@ -911,7 +937,7 @@ Module ops.
                           γ,
                           "core::ops::control_flow::ControlFlow::Continue"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ B ] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -922,7 +948,7 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                        Value.StructTuple "core::option::Option::Some" [] [ B ] [ M.read (| x |) ]
                       |)))
                 ]
               |)
@@ -971,6 +997,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [ T; C ]
                           [ M.read (| x |) ]
                       |)));
                   fun γ =>
@@ -985,6 +1013,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [ T; C ]
                           [
                             M.call_closure (|
                               T,
@@ -1047,13 +1077,13 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                        Value.StructTuple "core::option::Option::Some" [] [ C ] [ M.read (| x |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Break" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ C ] [] |)))
                 ]
               |)
             |)))
@@ -1106,6 +1136,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [ B; T ]
                           [
                             M.call_closure (|
                               T,
@@ -1134,6 +1166,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [ B; T ]
                           [ M.read (| x |) ]
                       |)))
                 ]
@@ -1215,6 +1249,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                           [ M.read (| v |) ]
                       |)));
                   fun γ =>
@@ -1229,6 +1265,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
+                          []
+                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                           [
                             M.call_closure (|
                               R,

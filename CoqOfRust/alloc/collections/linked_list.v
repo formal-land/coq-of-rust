@@ -277,6 +277,8 @@ Module collections.
                                                     [
                                                       Value.StructRecord
                                                         "alloc::collections::linked_list::LinkedList"
+                                                        []
+                                                        [ T; Ty.path "alloc::alloc::Global" ]
                                                         [
                                                           ("head",
                                                             M.read (|
@@ -305,10 +307,26 @@ Module collections.
                                                           ("alloc",
                                                             Value.StructTuple
                                                               "alloc::alloc::Global"
+                                                              []
+                                                              []
                                                               []);
                                                           ("marker",
                                                             Value.StructTuple
                                                               "core::marker::PhantomData"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::boxed::Box")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::linked_list::Node")
+                                                                      []
+                                                                      [ T ];
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ]
+                                                              ]
                                                               [])
                                                         ]
                                                     ]
@@ -374,7 +392,7 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "alloc::collections::linked_list::Iter" []))
+            Value.StructTuple "alloc::collections::linked_list::Iter" [] [ T ] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -589,6 +607,8 @@ Module collections.
                                                     [
                                                       Value.StructRecord
                                                         "alloc::collections::linked_list::LinkedList"
+                                                        []
+                                                        [ T; Ty.path "alloc::alloc::Global" ]
                                                         [
                                                           ("head",
                                                             M.read (|
@@ -617,10 +637,26 @@ Module collections.
                                                           ("alloc",
                                                             Value.StructTuple
                                                               "alloc::alloc::Global"
+                                                              []
+                                                              []
                                                               []);
                                                           ("marker",
                                                             Value.StructTuple
                                                               "core::marker::PhantomData"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::boxed::Box")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::linked_list::Node")
+                                                                      []
+                                                                      [ T ];
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ]
+                                                              ]
                                                               [])
                                                         ]
                                                     ]
@@ -694,6 +730,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::IntoIter"
+              []
+              [ T; A ]
               [
                 ("list",
                   M.call_closure (|
@@ -849,9 +887,31 @@ Module collections.
             (let element := M.alloc (| element |) in
             Value.StructRecord
               "alloc::collections::linked_list::Node"
+              []
+              [ T ]
               [
-                ("next", Value.StructTuple "core::option::Option::None" []);
-                ("prev", Value.StructTuple "core::option::Option::None" []);
+                ("next",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
+                ("prev",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
                 ("element", M.read (| element |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -994,7 +1054,16 @@ Module collections.
                       "alloc::collections::linked_list::Node",
                       "prev"
                     |),
-                    Value.StructTuple "core::option::Option::None" []
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                      ]
+                      []
                   |)
                 |) in
               let~ node :
@@ -1013,7 +1082,16 @@ Module collections.
                         ]
                     ] :=
                 M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| node |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    [ M.read (| node |) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
@@ -1380,7 +1458,22 @@ Module collections.
                                                     "alloc::collections::linked_list::LinkedList",
                                                     "tail"
                                                   |),
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]
+                                                    []
                                                 |)
                                               |)));
                                           fun γ =>
@@ -1428,7 +1521,22 @@ Module collections.
                                                     "alloc::collections::linked_list::Node",
                                                     "prev"
                                                   |),
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]
+                                                    []
                                                 |)
                                               |)))
                                         ]
@@ -1526,7 +1634,16 @@ Module collections.
                       "alloc::collections::linked_list::Node",
                       "next"
                     |),
-                    Value.StructTuple "core::option::Option::None" []
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                      ]
+                      []
                   |)
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1580,7 +1697,16 @@ Module collections.
                         ]
                     ] :=
                 M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| node |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    [ M.read (| node |) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
@@ -1947,7 +2073,22 @@ Module collections.
                                                     "alloc::collections::linked_list::LinkedList",
                                                     "head"
                                                   |),
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]
+                                                    []
                                                 |)
                                               |)));
                                           fun γ =>
@@ -1995,7 +2136,22 @@ Module collections.
                                                     "alloc::collections::linked_list::Node",
                                                     "next"
                                                   |),
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]
+                                                    []
                                                 |)
                                               |)))
                                         ]
@@ -2394,6 +2550,18 @@ Module collections.
                               |),
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| splice_start |) ]
                             |)
                           |) in
@@ -2410,6 +2578,18 @@ Module collections.
                               |),
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| splice_start |) ]
                             |)
                           |) in
@@ -2468,6 +2648,18 @@ Module collections.
                               |),
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| splice_end |) ]
                             |)
                           |) in
@@ -2484,6 +2676,18 @@ Module collections.
                               |),
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| splice_end |) ]
                             |)
                           |) in
@@ -2827,11 +3031,65 @@ Module collections.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ];
+                                Ty.path "usize"
+                              ]
+                          ]
                           [ Value.Tuple [ M.read (| head |); M.read (| tail |); M.read (| len |) ] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ];
+                                Ty.path "usize"
+                              ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -3053,7 +3311,21 @@ Module collections.
                                           "alloc::collections::linked_list::Node",
                                           "next"
                                         |),
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ]
+                                          ]
+                                          []
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
@@ -3077,7 +3349,21 @@ Module collections.
                                   M.alloc (|
                                     M.write (|
                                       first_part_head,
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::linked_list::Node")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ]
+                                        []
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)))
@@ -3096,6 +3382,8 @@ Module collections.
                         M.alloc (|
                           Value.StructRecord
                             "alloc::collections::linked_list::LinkedList"
+                            []
+                            [ T; A ]
                             [
                               ("head", M.read (| first_part_head |));
                               ("tail", M.read (| first_part_tail |));
@@ -3123,7 +3411,23 @@ Module collections.
                                     |)
                                   ]
                                 |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::linked_list::Node")
+                                          []
+                                          [ T ];
+                                        A
+                                      ]
+                                  ]
+                                  [])
                             ]
                         |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3136,6 +3440,18 @@ Module collections.
                             |),
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
                               [ M.read (| split_node |) ]
                           |)
                         |) in
@@ -3448,7 +3764,21 @@ Module collections.
                                           "alloc::collections::linked_list::Node",
                                           "prev"
                                         |),
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ]
+                                          ]
+                                          []
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
@@ -3472,7 +3802,21 @@ Module collections.
                                   M.alloc (|
                                     M.write (|
                                       second_part_tail,
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::linked_list::Node")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ]
+                                        []
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)))
@@ -3491,6 +3835,8 @@ Module collections.
                         M.alloc (|
                           Value.StructRecord
                             "alloc::collections::linked_list::LinkedList"
+                            []
+                            [ T; A ]
                             [
                               ("head", M.read (| second_part_head |));
                               ("tail", M.read (| second_part_tail |));
@@ -3532,7 +3878,23 @@ Module collections.
                                     |)
                                   ]
                                 |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::linked_list::Node")
+                                          []
+                                          [ T ];
+                                        A
+                                      ]
+                                  ]
+                                  [])
                             ]
                         |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3545,6 +3907,18 @@ Module collections.
                             |),
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
                               [ M.read (| split_node |) ]
                           |)
                         |) in
@@ -3646,12 +4020,44 @@ Module collections.
             (let alloc := M.alloc (| alloc |) in
             Value.StructRecord
               "alloc::collections::linked_list::LinkedList"
+              []
+              [ T; A ]
               [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
+                ("head",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
+                ("tail",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
                 ("len", Value.Integer IntegerKind.Usize 0);
                 ("alloc", M.read (| alloc |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]; A ]
+                    ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3675,6 +4081,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::Iter"
+              []
+              [ T ]
               [
                 ("head",
                   M.read (|
@@ -3700,7 +4108,17 @@ Module collections.
                       "len"
                     |)
                   |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3724,6 +4142,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::IterMut"
+              []
+              [ T ]
               [
                 ("head",
                   M.read (|
@@ -3749,7 +4169,17 @@ Module collections.
                       "len"
                     |)
                   |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3778,6 +4208,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::Cursor"
+              []
+              [ T; A ]
               [
                 ("index", Value.Integer IntegerKind.Usize 0);
                 ("current",
@@ -3817,6 +4249,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::CursorMut"
+              []
+              [ T; A ]
               [
                 ("index", Value.Integer IntegerKind.Usize 0);
                 ("current",
@@ -3856,6 +4290,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::Cursor"
+              []
+              [ T; A ]
               [
                 ("index",
                   M.call_closure (|
@@ -3921,6 +4357,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::CursorMut"
+              []
+              [ T; A ]
               [
                 ("index",
                   M.call_closure (|
@@ -4079,6 +4517,8 @@ Module collections.
                     [
                       Value.StructRecord
                         "alloc::collections::linked_list::LinkedList"
+                        []
+                        [ T; Ty.apply (Ty.path "&") [] [ A ] ]
                         [
                           ("head",
                             M.call_closure (|
@@ -4201,7 +4641,23 @@ Module collections.
                                 "alloc"
                               |)
                             |));
-                          ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                          ("marker",
+                            Value.StructTuple
+                              "core::marker::PhantomData"
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ];
+                                    Ty.apply (Ty.path "&") [] [ A ]
+                                  ]
+                              ]
+                              [])
                         ]
                     ]
                   |)
@@ -5976,6 +6432,8 @@ Module collections.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
@@ -6165,6 +6623,8 @@ Module collections.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
@@ -6525,6 +6985,8 @@ Module collections.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", M.read (| at_ |))
@@ -6692,6 +7154,8 @@ Module collections.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", M.read (| offset_from_end |))
@@ -7163,6 +7627,8 @@ Module collections.
               M.alloc (|
                 Value.StructRecord
                   "alloc::collections::linked_list::ExtractIf"
+                  []
+                  [ T; F; A ]
                   [
                     ("list", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                     ("it", M.read (| it |));
@@ -7247,12 +7713,47 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::LinkedList"
+              []
+              [ T; Ty.path "alloc::alloc::Global" ]
               [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
+                ("head",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
+                ("tail",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
                 ("len", Value.Integer IntegerKind.Usize 0);
-                ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("alloc", Value.StructTuple "alloc::alloc::Global" [] [] []);
+                ("marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7430,6 +7931,18 @@ Module collections.
                                       |),
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::linked_list::Node")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ]
                                         [ M.read (| other_head |) ]
                                     |)
                                   |) in
@@ -7471,6 +7984,18 @@ Module collections.
                                       |),
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::linked_list::Node")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ]
                                         [ M.read (| tail |) ]
                                     |)
                                   |) in
@@ -7633,6 +8158,8 @@ Module collections.
                 M.alloc (|
                   Value.StructTuple
                     "alloc::collections::linked_list::drop::DropGuard"
+                    []
+                    [ T; A ]
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -7828,7 +8355,13 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -8054,6 +8587,8 @@ Module collections.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -8165,7 +8700,13 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -8423,9 +8964,31 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::Iter"
+              []
+              [ T ]
               [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
+                ("head",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
+                ("tail",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
                 ("len", Value.Integer IntegerKind.Usize 0);
                 ("marker",
                   M.call_closure (|
@@ -8533,7 +9096,13 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -8764,6 +9333,8 @@ Module collections.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -8879,7 +9450,13 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -9142,9 +9719,31 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::IterMut"
+              []
+              [ T ]
               [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
+                ("head",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
+                ("tail",
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
+                    ]
+                    []);
                 ("len", Value.Integer IntegerKind.Usize 0);
                 ("marker",
                   M.call_closure (|
@@ -9266,6 +9865,8 @@ Module collections.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::collections::linked_list::Cursor"
+                          []
+                          [ T; A ]
                           [
                             ("index", M.read (| index |));
                             ("current", M.read (| current |));
@@ -9762,6 +10363,8 @@ Module collections.
                           (M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -11148,6 +11751,8 @@ Module collections.
                           (M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -12292,6 +12897,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::Cursor"
+              []
+              [ T; A ]
               [
                 ("list",
                   M.borrow (|
@@ -13354,6 +13961,8 @@ Module collections.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ T ]
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -13666,7 +14275,17 @@ Module collections.
                           "alloc::collections::linked_list::Node",
                           "prev"
                         |),
-                        Value.StructTuple "core::option::Option::None" []
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
+                              ]
+                          ]
+                          []
                       |)
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -13704,23 +14323,62 @@ Module collections.
                           "alloc::collections::linked_list::Node",
                           "next"
                         |),
-                        Value.StructTuple "core::option::Option::None" []
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
+                              ]
+                          ]
+                          []
                       |)
                     |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ]
+                      ]
                       [
                         Value.StructRecord
                           "alloc::collections::linked_list::LinkedList"
+                          []
+                          [ T; A ]
                           [
                             ("head",
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| unlinked_node |) ]);
                             ("tail",
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
                                 [ M.read (| unlinked_node |) ]);
                             ("len", Value.Integer IntegerKind.Usize 1);
                             ("alloc",
@@ -13754,7 +14412,23 @@ Module collections.
                                   |)
                                 ]
                               |));
-                            ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                            ("marker",
+                              Value.StructTuple
+                                "core::marker::PhantomData"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::Node")
+                                        []
+                                        [ T ];
+                                      A
+                                    ]
+                                ]
+                                [])
                           ]
                       ]
                   |)
@@ -14312,7 +14986,7 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -14544,7 +15218,7 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -14639,7 +15313,21 @@ Module collections.
                                         "alloc::collections::linked_list::CursorMut",
                                         "current"
                                       |),
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::linked_list::Node")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ]
+                                        []
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -15907,6 +16595,8 @@ Module collections.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ T ]
                                                   [
                                                     M.read (|
                                                       M.SubPointer.get_struct_record_field (|
@@ -16018,7 +16708,7 @@ Module collections.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16045,6 +16735,8 @@ Module collections.
                 Value.Integer IntegerKind.Usize 0;
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     M.call_closure (|
                       Ty.path "usize",
@@ -16250,6 +16942,8 @@ Module collections.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -16530,6 +17224,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::IntoIter"
+              []
+              [ T; A ]
               [ ("list", M.read (| self |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

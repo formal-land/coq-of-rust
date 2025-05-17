@@ -54,6 +54,8 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
       ltac:(M.monadic
         (Value.StructRecord
           "set_code_hash::Incrementer"
+          []
+          []
           [
             ("count",
               M.call_closure (|

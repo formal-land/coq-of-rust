@@ -31,6 +31,8 @@ Module sealed.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloy_primitives::sealed::Sealed"
+            []
+            [ T ]
             [
               ("inner",
                 M.call_closure (|
@@ -552,6 +554,8 @@ Module sealed.
             M.alloc (|
               Value.StructRecord
                 "alloy_primitives::sealed::Sealed"
+                []
+                [ T ]
                 [ ("inner", M.read (| inner |)); ("seal", M.read (| seal |)) ]
             |)
           |)))
@@ -611,6 +615,8 @@ Module sealed.
             M.alloc (|
               Value.StructRecord
                 "alloy_primitives::sealed::Sealed"
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ] ]
                 [
                   ("inner", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |));
                   ("seal", M.read (| seal |))
@@ -798,6 +804,8 @@ Module sealed.
           let seal := M.alloc (| seal |) in
           Value.StructRecord
             "alloy_primitives::sealed::Sealed"
+            []
+            [ T ]
             [ ("inner", M.read (| inner |)); ("seal", M.read (| seal |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

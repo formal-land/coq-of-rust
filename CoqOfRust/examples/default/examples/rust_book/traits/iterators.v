@@ -82,7 +82,13 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 |)
               |)
             |) in
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| current |) ] |)
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "u32" ]
+              [ M.read (| current |) ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -107,6 +113,8 @@ Definition fibonacci (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (Value.StructRecord
         "iterators::Fibonacci"
+        []
+        []
         [ ("curr", Value.Integer IntegerKind.U32 0); ("next", Value.Integer IntegerKind.U32 1) ]))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -167,6 +175,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
+              []
+              [ Ty.path "i32" ]
               [
                 ("start", Value.Integer IntegerKind.I32 0);
                 ("end_", Value.Integer IntegerKind.I32 3)
@@ -619,6 +629,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "i32" ]
                       [
                         ("start", Value.Integer IntegerKind.I32 0);
                         ("end_", Value.Integer IntegerKind.I32 3)

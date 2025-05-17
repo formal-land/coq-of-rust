@@ -27,6 +27,8 @@ Module legacy.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
+              []
+              []
               [
                 ("bytecode",
                   M.call_closure (|
@@ -902,6 +904,8 @@ Module legacy.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
+              []
+              []
               [
                 ("bytecode",
                   M.call_closure (|
@@ -930,6 +934,8 @@ Module legacy.
                 ("jump_table",
                   Value.StructTuple
                     "revm_bytecode::legacy::jump_map::JumpTable"
+                    []
+                    []
                     [
                       M.call_closure (|
                         Ty.apply
@@ -1084,6 +1090,8 @@ Module legacy.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("end_",
                                                 M.read (|
@@ -1138,6 +1146,8 @@ Module legacy.
             let jump_table := M.alloc (| jump_table |) in
             Value.StructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
+              []
+              []
               [
                 ("bytecode", M.read (| bytecode |));
                 ("original_len", M.read (| original_len |));
@@ -1235,6 +1245,8 @@ Module legacy.
                 |);
                 Value.StructRecord
                   "core::ops::range::RangeTo"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     ("end_",
                       M.read (|
@@ -1334,6 +1346,8 @@ Module legacy.
                         |);
                         Value.StructRecord
                           "core::ops::range::RangeTo"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("end_",
                               M.read (|

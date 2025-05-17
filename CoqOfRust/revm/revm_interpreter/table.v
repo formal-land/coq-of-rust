@@ -515,6 +515,8 @@ Module table.
                               M.deref (| M.read (| self |) |),
                               Value.StructTuple
                                 "revm_interpreter::table::InstructionTables::Custom"
+                                []
+                                [ WIRE; H; CI ]
                                 [
                                   M.call_closure (|
                                     Ty.apply

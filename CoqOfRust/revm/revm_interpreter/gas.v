@@ -189,6 +189,8 @@ Module gas.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::gas::Gas"
+            []
+            []
             [
               ("limit",
                 M.call_closure (|
@@ -608,6 +610,8 @@ Module gas.
           (let limit := M.alloc (| limit |) in
           Value.StructRecord
             "revm_interpreter::gas::Gas"
+            []
+            []
             [
               ("limit", M.read (| limit |));
               ("remaining", M.read (| limit |));
@@ -648,6 +652,8 @@ Module gas.
           (let limit := M.alloc (| limit |) in
           Value.StructRecord
             "revm_interpreter::gas::Gas"
+            []
+            []
             [
               ("limit", M.read (| limit |));
               ("remaining", Value.Integer IntegerKind.U64 0);
@@ -1262,6 +1268,8 @@ Module gas.
                                           Value.StructTuple
                                             "revm_interpreter::gas::MemoryExtensionResult::OutOfGas"
                                             []
+                                            []
+                                            []
                                         |)
                                       |)
                                     |)
@@ -1272,6 +1280,8 @@ Module gas.
                         M.alloc (|
                           Value.StructTuple
                             "revm_interpreter::gas::MemoryExtensionResult::Extended"
+                            []
+                            []
                             []
                         |)))
                   ]
@@ -1383,6 +1393,8 @@ Module gas.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::gas::MemoryGas"
+            []
+            []
             [
               ("words_num",
                 M.call_closure (|
@@ -1720,6 +1732,8 @@ Module gas.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::gas::MemoryGas"
+            []
+            []
             [
               ("words_num", Value.Integer IntegerKind.Usize 0);
               ("expansion_cost", Value.Integer IntegerKind.U64 0)
@@ -1783,7 +1797,13 @@ Module gas.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "u64" ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -1838,6 +1858,8 @@ Module gas.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "u64" ]
                     [
                       M.call_closure (|
                         Ty.path "u64",

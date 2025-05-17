@@ -32,6 +32,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::zip::Zip"
+                []
+                [ A; B ]
                 [
                   ("a",
                     M.call_closure (|
@@ -345,6 +347,24 @@ Module iter.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::iterator::Iterator"
+                                                              []
+                                                              []
+                                                              A
+                                                              "Item";
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::iterator::Iterator"
+                                                              []
+                                                              []
+                                                              B
+                                                              "Item"
+                                                          ]
+                                                      ]
                                                       [ M.read (| x |) ]
                                                   |)
                                                 |)
@@ -382,7 +402,29 @@ Module iter.
                             ]
                           |)))
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                B
+                                "Item"
+                            ]
+                        ]
+                        []
+                    |)
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -851,6 +893,8 @@ Module iter.
               let b := M.alloc (| b |) in
               Value.StructRecord
                 "core::iter::adapters::zip::Zip"
+                []
+                [ A; B ]
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
@@ -1268,6 +1312,24 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                B
+                                "Item"
+                            ]
+                        ]
                         [ Value.Tuple [ M.read (| x |); M.read (| y |) ] ]
                     |)
                   |)))
@@ -1477,6 +1539,8 @@ Module iter.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
@@ -1638,6 +1702,8 @@ Module iter.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
@@ -1895,6 +1961,24 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
                             [ Value.Tuple [ M.read (| x |); M.read (| y |) ] ]
                         |)));
                     fun γ =>
@@ -1903,7 +1987,29 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
@@ -2100,6 +2206,8 @@ Module iter.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "usize",
@@ -2131,6 +2239,8 @@ Module iter.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ M.read (| x |) ]
                                             |)));
                                         fun γ =>
@@ -2152,6 +2262,8 @@ Module iter.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ M.read (| y |) ]
                                             |)));
                                         fun γ =>
@@ -2169,7 +2281,11 @@ Module iter.
                                                 "core::option::Option::None"
                                               |) in
                                             M.alloc (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                []
                                             |)))
                                       ]
                                     |)
@@ -2342,6 +2458,8 @@ Module iter.
               let b := M.alloc (| b |) in
               Value.StructRecord
                 "core::iter::adapters::zip::Zip"
+                []
+                [ A; B ]
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
@@ -2759,6 +2877,24 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                B
+                                "Item"
+                            ]
+                        ]
                         [ Value.Tuple [ M.read (| x |); M.read (| y |) ] ]
                     |)
                   |)))
@@ -2968,6 +3104,8 @@ Module iter.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
@@ -3129,6 +3267,8 @@ Module iter.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
@@ -3386,6 +3526,24 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
                             [ Value.Tuple [ M.read (| x |); M.read (| y |) ] ]
                         |)));
                     fun γ =>
@@ -3394,7 +3552,29 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
@@ -3487,7 +3667,11 @@ Module iter.
                   Value.Tuple
                     [
                       M.read (| size |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| size |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| size |) ]
                     ]
                 |)
               |)))
@@ -3674,6 +3858,8 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_", M.read (| len |))
@@ -3911,6 +4097,8 @@ Module iter.
                 M.alloc (|
                   Value.StructRecord
                     "core::iter::adapters::zip::Zip"
+                    []
+                    [ A; B ]
                     [
                       ("a", M.read (| a |));
                       ("b", M.read (| b |));
@@ -4040,6 +4228,24 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
                             [
                               Value.Tuple
                                 [
@@ -4258,10 +4464,54 @@ Module iter.
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
-                                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                                M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item";
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            B
+                                            "Item"
+                                        ]
+                                    ]
+                                    []
+                                |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item";
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            B
+                                            "Item"
+                                        ]
+                                    ]
+                                    []
+                                |)))
                           ]
                         |)))
                   ]
@@ -4315,7 +4565,11 @@ Module iter.
                   Value.Tuple
                     [
                       M.read (| len |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| len |) ]
                     ]
                 |)
               |)))
@@ -4891,6 +5145,8 @@ Module iter.
                                                       [
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start",
                                                               Value.Integer IntegerKind.Usize 0);
@@ -5191,6 +5447,8 @@ Module iter.
                                                                                   Value.StructTuple
                                                                                     "core::panicking::AssertKind::Eq"
                                                                                     []
+                                                                                    []
+                                                                                    []
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 M.call_closure (|
@@ -5237,6 +5495,11 @@ Module iter.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::fmt::Arguments"
+                                                                                      ]
                                                                                       []
                                                                                   ]
                                                                                 |)
@@ -5349,6 +5612,8 @@ Module iter.
                                                   [
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("start",
                                                           Value.Integer IntegerKind.Usize 0);
@@ -5612,6 +5877,24 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
                             [
                               Value.Tuple
                                 [
@@ -5676,7 +5959,29 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    A
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    B
+                                    "Item"
+                                ]
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -6767,6 +7072,8 @@ Module iter.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_", M.read (| upper |))

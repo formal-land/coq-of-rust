@@ -20,6 +20,8 @@ Module vec.
             (let s := M.alloc (| s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -58,6 +60,8 @@ Module vec.
             (let s := M.alloc (| s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -102,7 +106,11 @@ Module vec.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| v |) ]))
+            Value.StructTuple
+              "alloc::borrow::Cow::Owned"
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+              [ M.read (| v |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -134,6 +142,8 @@ Module vec.
             (let v := M.alloc (| v |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -190,6 +200,8 @@ Module vec.
             (let it := M.alloc (| it |) in
             Value.StructTuple
               "alloc::borrow::Cow::Owned"
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],

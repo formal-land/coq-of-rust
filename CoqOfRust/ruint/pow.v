@@ -57,14 +57,24 @@ Module pow.
                     let x := M.copy (| γ0_0 |) in
                     let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        [ M.read (| x |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -849,6 +859,13 @@ Module pow.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ BITS; LIMBS ]
+                                                        []
+                                                    ]
                                                     [
                                                       M.read (|
                                                         get_associated_constant (|
@@ -957,7 +974,13 @@ Module pow.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -1028,6 +1051,8 @@ Module pow.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                             [
                               M.read (|
                                 M.match_operator (|

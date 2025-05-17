@@ -21,11 +21,11 @@ Module EOFCreateKind.
     φ x :=
       match x with
       | Tx initdata =>
-        Value.StructRecord "eof_create_inputs::EOFCreateKind::Tx" [
+        Value.StructRecord "eof_create_inputs::EOFCreateKind::Tx" [] [] [
           ("initdata", φ initdata)
         ]
       | Opcode initcode input created_address =>
-        Value.StructRecord "eof_create_inputs::EOFCreateKind::Opcode" [
+        Value.StructRecord "eof_create_inputs::EOFCreateKind::Opcode" [] [] [
           ("initcode", φ initcode);
           ("input", φ input);
           ("created_address", φ created_address)
@@ -45,7 +45,7 @@ Module EOFCreateInputs.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
     φ '(Build_t caller value gas_limit kind) :=
-      Value.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs" [
+      Value.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs" [] [] [
         ("caller", φ caller);
         ("value", φ value);
         ("gas_limit", φ gas_limit);

@@ -18,7 +18,7 @@ Module EofHeader.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::eof::header::EofHeader";
     φ '(Build_t types_size code_sizes container_sizes data_size sum_code_sizes sum_container_sizes) :=
-      Value.StructRecord "revm_bytecode::eof::header::EofHeader" [
+      Value.StructRecord "revm_bytecode::eof::header::EofHeader" [] [] [
         ("types_size", φ types_size);
         ("code_sizes", φ code_sizes);
         ("container_sizes", φ container_sizes);

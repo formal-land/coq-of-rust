@@ -211,6 +211,8 @@ Module utils.
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
                     Value.StructRecord
                       "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("end_",
                           M.call_closure (|

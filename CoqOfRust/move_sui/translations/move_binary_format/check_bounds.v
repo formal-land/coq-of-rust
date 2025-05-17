@@ -80,11 +80,15 @@ Module check_bounds.
                   M.alloc (|
                     Value.StructRecord
                       "move_binary_format::check_bounds::BoundsChecker"
+                      []
+                      []
                       [
                         ("module", M.read (| module |));
                         ("context",
                           Value.StructTuple
                             "move_binary_format::check_bounds::BoundsCheckingContext::Module"
+                            []
+                            []
                             [])
                       ]
                   |) in
@@ -174,9 +178,13 @@ Module check_bounds.
                                       [
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::NO_MODULE_HANDLES"
+                                          []
+                                          []
                                           [];
                                         Value.StructTuple
                                           "move_binary_format::IndexKind::ModuleHandle"
+                                          []
+                                          []
                                           [];
                                         Value.Integer IntegerKind.U16 0
                                       ]
@@ -185,6 +193,11 @@ Module check_bounds.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [ M.read (| status |) ]
                                 |)
                               |)
@@ -1875,7 +1888,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2168,7 +2187,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2466,7 +2491,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2764,7 +2795,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3062,7 +3099,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3358,7 +3401,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3656,7 +3705,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3966,7 +4021,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4274,7 +4335,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4579,7 +4646,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4877,7 +4950,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5249,7 +5328,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7252,7 +7337,13 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7673,6 +7764,11 @@ Module check_bounds.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -7685,9 +7781,13 @@ Module check_bounds.
                                                 [
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                                    []
+                                                    []
                                                     [];
                                                   Value.StructTuple
                                                     "move_binary_format::IndexKind::MemberCount"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -7710,7 +7810,13 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8766,7 +8872,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9831,7 +9943,13 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9910,9 +10028,13 @@ Module check_bounds.
                       |),
                       Value.StructTuple
                         "move_binary_format::check_bounds::BoundsCheckingContext::ModuleFunction"
+                        []
+                        []
                         [
                           Value.StructTuple
                             "move_binary_format::file_format::FunctionDefinitionIndex"
+                            []
+                            []
                             [ M.cast (Ty.path "u16") (M.read (| function_def_idx |)) ]
                         ]
                     |)
@@ -10415,7 +10537,14 @@ Module check_bounds.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
+                                      [ Value.Tuple [] ]
                                   |)
                                 |)
                               |)
@@ -10527,6 +10656,11 @@ Module check_bounds.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -10538,9 +10672,13 @@ Module check_bounds.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| function_def_idx |))
                                         ]
@@ -10724,6 +10862,11 @@ Module check_bounds.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -10735,9 +10878,13 @@ Module check_bounds.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| function_def_idx |))
                                         ]
@@ -11502,6 +11649,11 @@ Module check_bounds.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -11513,9 +11665,13 @@ Module check_bounds.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::TOO_MANY_LOCALS"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| index |))
                                         ]
@@ -15602,6 +15758,12 @@ Module check_bounds.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -15624,9 +15786,13 @@ Module check_bounds.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::CodeDefinition"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     M.read (|
                                                                                       offset
@@ -15771,6 +15937,12 @@ Module check_bounds.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -15793,9 +15965,13 @@ Module check_bounds.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "move_binary_format::IndexKind::LocalPool"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     M.read (|
                                                                                       idx
@@ -17025,7 +17201,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -17681,6 +17863,12 @@ Module check_bounds.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -17706,6 +17894,8 @@ Module check_bounds.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -18317,6 +18507,12 @@ Module check_bounds.
                                                                                 M.return_ (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ]
                                                                                     [
                                                                                       M.call_closure (|
                                                                                         Ty.path
@@ -18342,6 +18538,8 @@ Module check_bounds.
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                           |);
@@ -18580,7 +18778,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18789,6 +18993,12 @@ Module check_bounds.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -18801,9 +19011,13 @@ Module check_bounds.
                                                                         [
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::TypeParameter"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           M.read (|
                                                                             M.deref (|
@@ -18980,7 +19194,13 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -19085,6 +19305,8 @@ Module check_bounds.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -19098,6 +19320,8 @@ Module check_bounds.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                []
+                                []
                                 [];
                               M.read (|
                                 get_constant (|
@@ -19114,7 +19338,13 @@ Module check_bounds.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -19261,6 +19491,19 @@ Module check_bounds.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                            ];
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -19316,6 +19559,19 @@ Module check_bounds.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                            ];
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -19323,8 +19579,10 @@ Module check_bounds.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::Signature" [];
+                              Value.StructTuple "move_binary_format::IndexKind::Signature" [] [] [];
                               M.cast
                                 (Ty.path "u16")
                                 (M.call_closure (|
@@ -19579,6 +19837,8 @@ Module check_bounds.
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                 []
+                                []
+                                []
                             ]
                           |);
                           M.read (| msg |)
@@ -19701,6 +19961,8 @@ Module check_bounds.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -19708,6 +19970,8 @@ Module check_bounds.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                              []
+                              []
                               [];
                             M.read (|
                               get_constant (|
@@ -19723,7 +19987,13 @@ Module check_bounds.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))

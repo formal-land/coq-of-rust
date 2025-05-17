@@ -282,6 +282,8 @@ Module str.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "u32" ]
                                     [ M.cast (Ty.path "u32") (M.read (| x |)) ]
                                 |)
                               |)
@@ -549,7 +551,13 @@ Module str.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "u32" ]
+                    [ M.read (| ch |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -741,6 +749,8 @@ Module str.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "u32" ]
                                       [ M.cast (Ty.path "u32") (M.read (| next_byte |)) ]
                                   |)
                                 |)
@@ -1006,7 +1016,13 @@ Module str.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "u32" ]
+                    [ M.read (| ch |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1480,9 +1496,18 @@ Module str.
                                                                                       M.return_ (|
                                                                                         Value.StructTuple
                                                                                           "core::result::Result::Err"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::str::error::Utf8Error"
+                                                                                          ]
                                                                                           [
                                                                                             Value.StructRecord
                                                                                               "core::str::error::Utf8Error"
+                                                                                              []
+                                                                                              []
                                                                                               [
                                                                                                 ("valid_up_to",
                                                                                                   M.read (|
@@ -1491,6 +1516,11 @@ Module str.
                                                                                                 ("error_len",
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::None"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ]
                                                                                                     [])
                                                                                               ]
                                                                                           ]
@@ -1527,15 +1557,25 @@ Module str.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "core::str::error::Utf8Error"
+                                                                  ]
                                                                   [
                                                                     Value.StructRecord
                                                                       "core::str::error::Utf8Error"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("valid_up_to",
                                                                           M.read (| old_offset |));
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [ Ty.path "u8" ]
                                                                             [
                                                                               Value.Integer
                                                                                 IntegerKind.U8
@@ -1626,9 +1666,17 @@ Module str.
                                                                             M.return_ (|
                                                                               Value.StructTuple
                                                                                 "core::result::Result::Err"
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "core::str::error::Utf8Error"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructRecord
                                                                                     "core::str::error::Utf8Error"
+                                                                                    []
+                                                                                    []
                                                                                     [
                                                                                       ("valid_up_to",
                                                                                         M.read (|
@@ -1637,6 +1685,11 @@ Module str.
                                                                                       ("error_len",
                                                                                         Value.StructTuple
                                                                                           "core::option::Option::None"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
                                                                                           [])
                                                                                     ]
                                                                                 ]
@@ -1750,9 +1803,17 @@ Module str.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "core::str::error::Utf8Error"
+                                                                    ]
                                                                     [
                                                                       Value.StructRecord
                                                                         "core::str::error::Utf8Error"
+                                                                        []
+                                                                        []
                                                                         [
                                                                           ("valid_up_to",
                                                                             M.read (|
@@ -1761,6 +1822,8 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
+                                                                              []
+                                                                              [ Ty.path "u8" ]
                                                                               [
                                                                                 Value.Integer
                                                                                   IntegerKind.U8
@@ -1855,9 +1918,18 @@ Module str.
                                                                                       M.return_ (|
                                                                                         Value.StructTuple
                                                                                           "core::result::Result::Err"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::str::error::Utf8Error"
+                                                                                          ]
                                                                                           [
                                                                                             Value.StructRecord
                                                                                               "core::str::error::Utf8Error"
+                                                                                              []
+                                                                                              []
                                                                                               [
                                                                                                 ("valid_up_to",
                                                                                                   M.read (|
@@ -1866,6 +1938,11 @@ Module str.
                                                                                                 ("error_len",
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::None"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ]
                                                                                                     [])
                                                                                               ]
                                                                                           ]
@@ -1902,15 +1979,25 @@ Module str.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "core::str::error::Utf8Error"
+                                                                  ]
                                                                   [
                                                                     Value.StructRecord
                                                                       "core::str::error::Utf8Error"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("valid_up_to",
                                                                           M.read (| old_offset |));
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [ Ty.path "u8" ]
                                                                             [
                                                                               Value.Integer
                                                                                 IntegerKind.U8
@@ -2001,9 +2088,17 @@ Module str.
                                                                             M.return_ (|
                                                                               Value.StructTuple
                                                                                 "core::result::Result::Err"
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "core::str::error::Utf8Error"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructRecord
                                                                                     "core::str::error::Utf8Error"
+                                                                                    []
+                                                                                    []
                                                                                     [
                                                                                       ("valid_up_to",
                                                                                         M.read (|
@@ -2012,6 +2107,11 @@ Module str.
                                                                                       ("error_len",
                                                                                         Value.StructTuple
                                                                                           "core::option::Option::None"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
                                                                                           [])
                                                                                     ]
                                                                                 ]
@@ -2112,9 +2212,17 @@ Module str.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "core::str::error::Utf8Error"
+                                                                    ]
                                                                     [
                                                                       Value.StructRecord
                                                                         "core::str::error::Utf8Error"
+                                                                        []
+                                                                        []
                                                                         [
                                                                           ("valid_up_to",
                                                                             M.read (|
@@ -2123,6 +2231,8 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
+                                                                              []
+                                                                              [ Ty.path "u8" ]
                                                                               [
                                                                                 Value.Integer
                                                                                   IntegerKind.U8
@@ -2222,9 +2332,18 @@ Module str.
                                                                                         M.return_ (|
                                                                                           Value.StructTuple
                                                                                             "core::result::Result::Err"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [];
+                                                                                              Ty.path
+                                                                                                "core::str::error::Utf8Error"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructRecord
                                                                                                 "core::str::error::Utf8Error"
+                                                                                                []
+                                                                                                []
                                                                                                 [
                                                                                                   ("valid_up_to",
                                                                                                     M.read (|
@@ -2233,6 +2352,11 @@ Module str.
                                                                                                   ("error_len",
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::None"
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "u8"
+                                                                                                      ]
                                                                                                       [])
                                                                                                 ]
                                                                                             ]
@@ -2271,9 +2395,17 @@ Module str.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "core::str::error::Utf8Error"
+                                                                    ]
                                                                     [
                                                                       Value.StructRecord
                                                                         "core::str::error::Utf8Error"
+                                                                        []
+                                                                        []
                                                                         [
                                                                           ("valid_up_to",
                                                                             M.read (|
@@ -2282,6 +2414,8 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
+                                                                              []
+                                                                              [ Ty.path "u8" ]
                                                                               [
                                                                                 Value.Integer
                                                                                   IntegerKind.U8
@@ -2379,9 +2513,18 @@ Module str.
                                                                                       M.return_ (|
                                                                                         Value.StructTuple
                                                                                           "core::result::Result::Err"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::str::error::Utf8Error"
+                                                                                          ]
                                                                                           [
                                                                                             Value.StructRecord
                                                                                               "core::str::error::Utf8Error"
+                                                                                              []
+                                                                                              []
                                                                                               [
                                                                                                 ("valid_up_to",
                                                                                                   M.read (|
@@ -2390,6 +2533,11 @@ Module str.
                                                                                                 ("error_len",
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::None"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ]
                                                                                                     [])
                                                                                               ]
                                                                                           ]
@@ -2426,15 +2574,25 @@ Module str.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "core::str::error::Utf8Error"
+                                                                  ]
                                                                   [
                                                                     Value.StructRecord
                                                                       "core::str::error::Utf8Error"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("valid_up_to",
                                                                           M.read (| old_offset |));
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [ Ty.path "u8" ]
                                                                             [
                                                                               Value.Integer
                                                                                 IntegerKind.U8
@@ -2459,15 +2617,24 @@ Module str.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path "core::str::error::Utf8Error"
+                                                          ]
                                                           [
                                                             Value.StructRecord
                                                               "core::str::error::Utf8Error"
+                                                              []
+                                                              []
                                                               [
                                                                 ("valid_up_to",
                                                                   M.read (| old_offset |));
                                                                 ("error_len",
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "u8" ]
                                                                     [ Value.Integer IntegerKind.U8 1
                                                                     ])
                                                               ]
@@ -2924,7 +3091,13 @@ Module str.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

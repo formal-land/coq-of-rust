@@ -2156,10 +2156,12 @@ Module num.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                            M.alloc (|
+                              Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)
                   |) in
@@ -3464,6 +3466,8 @@ Module num.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::RangeTo"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [ ("end_", M.read (| i |)) ]
                                                                 ]
                                                               |)
@@ -3614,6 +3618,8 @@ Module num.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| i |)) ]
                                         ]
                                       |)
@@ -4793,6 +4799,8 @@ Module num.
                                       [
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start", Value.Integer IntegerKind.Usize 0);
                                             ("end_", M.read (| len |))
@@ -5018,6 +5026,11 @@ Module num.
                                                                                           |);
                                                                                           Value.StructRecord
                                                                                             "core::ops::range::Range"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            ]
                                                                                             [
                                                                                               ("start",
                                                                                                 M.read (|
@@ -5315,6 +5328,11 @@ Module num.
                                                                                                 |);
                                                                                                 Value.StructRecord
                                                                                                   "core::ops::range::RangeTo"
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
                                                                                                   [
                                                                                                     ("end_",
                                                                                                       M.read (|
@@ -6169,7 +6187,11 @@ Module num.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Greater" []
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Greater"
+                                                []
+                                                []
+                                                []
                                             |)
                                           |)
                                         ]
@@ -6195,6 +6217,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::cmp::Ordering::Equal"
+                                                      []
+                                                      []
                                                       []
                                                   |)
                                                 |)
@@ -6359,6 +6383,8 @@ Module num.
                                                                       |);
                                                                       Value.StructRecord
                                                                         "core::ops::range::RangeTo"
+                                                                        []
+                                                                        [ Ty.path "usize" ]
                                                                         [ ("end_", M.read (| len |))
                                                                         ]
                                                                     ]
@@ -6573,6 +6599,8 @@ Module num.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("end_", M.read (| len |)) ]
                                             ]
                                           |)

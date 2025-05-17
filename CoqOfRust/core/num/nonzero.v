@@ -3945,6 +3945,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -3963,7 +3965,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -4149,6 +4157,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -4167,7 +4177,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -4504,6 +4520,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -4522,7 +4540,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -4725,6 +4749,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
@@ -4743,7 +4769,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5065,7 +5097,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -6001,6 +6036,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -6019,7 +6056,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -6205,6 +6248,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -6223,7 +6268,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -6560,6 +6611,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -6578,7 +6631,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -6781,6 +6840,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
@@ -6799,7 +6860,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -7121,7 +7188,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -8057,6 +8127,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -8075,7 +8147,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -8261,6 +8339,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -8279,7 +8359,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -8616,6 +8702,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -8634,7 +8722,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -8837,6 +8931,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
@@ -8855,7 +8951,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -9177,7 +9279,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -10113,6 +10218,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -10131,7 +10238,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -10317,6 +10430,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -10335,7 +10450,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -10672,6 +10793,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -10690,7 +10813,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -10893,6 +11022,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
@@ -10911,7 +11042,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -11233,7 +11370,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -12170,6 +12310,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -12191,7 +12333,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -12377,6 +12525,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -12398,7 +12548,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -12735,6 +12891,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -12756,7 +12914,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -12959,6 +13123,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -12980,7 +13146,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -13302,7 +13474,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -14242,6 +14417,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -14263,7 +14441,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -14449,6 +14634,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -14470,7 +14658,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -14807,6 +15002,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -14828,7 +15026,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -15031,6 +15236,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -15052,7 +15260,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -15375,7 +15590,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -16342,6 +16560,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -16360,7 +16580,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -16728,6 +16954,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "i8" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -16753,7 +16986,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -17053,6 +17292,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -17071,7 +17312,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -17274,6 +17521,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
@@ -17292,7 +17541,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -17551,7 +17806,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -18386,6 +18644,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -18404,7 +18664,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -18772,6 +19038,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "i16" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -18797,7 +19070,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -19098,6 +19377,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -19116,7 +19397,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -19319,6 +19606,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
@@ -19337,7 +19626,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -19596,7 +19891,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -20431,6 +20729,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -20449,7 +20749,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -20817,6 +21123,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "i32" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -20842,7 +21155,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -21143,6 +21462,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -21161,7 +21482,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -21364,6 +21691,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
@@ -21382,7 +21711,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -21641,7 +21976,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -22476,6 +22814,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -22494,7 +22834,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -22862,6 +23208,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "i64" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -22887,7 +23240,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -23188,6 +23547,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -23206,7 +23567,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -23409,6 +23776,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
@@ -23427,7 +23796,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -23686,7 +24061,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -24523,6 +24901,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -24544,7 +24924,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -24915,6 +25301,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "i128" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -24940,7 +25333,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -25244,6 +25643,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -25265,7 +25666,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -25468,6 +25875,8 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -25489,7 +25898,13 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -25748,7 +26163,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))
@@ -26591,6 +27009,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -26612,7 +27033,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -26983,6 +27411,13 @@ Module num.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "isize" ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -27008,7 +27443,13 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+                      []
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -27312,6 +27753,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -27333,7 +27777,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -27536,6 +27987,9 @@ Module num.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -27557,7 +28011,14 @@ Module num.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -27817,7 +28278,10 @@ Module num.
                     |);
                     Value.StructRecord
                       "core::num::error::ParseIntError"
-                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" []) ]
+                      []
+                      []
+                      [ ("kind", Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] [])
+                      ]
                   ]
                 |)))
             |)))

@@ -16,7 +16,7 @@ Module IndexRange.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "core::ops::index_range::IndexRange";
-    φ x := Value.StructRecord "core::ops::index_range::IndexRange" [
+    φ x := Value.StructRecord "core::ops::index_range::IndexRange" [] [] [
       ("start", φ x.(start));
       ("end_", φ x.(end_))
     ];
@@ -29,7 +29,7 @@ Module IndexRange.
   Lemma of_value_with start start' end_ end_' :
     start' = φ start ->
     end_' = φ end_ ->
-    Value.StructRecord "core::ops::index_range::IndexRange" [
+    Value.StructRecord "core::ops::index_range::IndexRange" [] [] [
       ("start", start');
       ("end_", end_')
     ] = φ (Build_t start end_).
@@ -39,7 +39,7 @@ Module IndexRange.
   Definition of_value (start : Usize.t) start' (end_ : Usize.t) end_' :
     start' = φ start ->
     end_' = φ end_ ->
-    OfValue.t (Value.StructRecord "core::ops::index_range::IndexRange" [
+    OfValue.t (Value.StructRecord "core::ops::index_range::IndexRange" [] [] [
       ("start", start');
       ("end_", end_')
     ]).

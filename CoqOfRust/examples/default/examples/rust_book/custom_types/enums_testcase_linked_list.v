@@ -42,7 +42,8 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" []))
+    | [], [], [] =>
+      ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -64,6 +65,8 @@ Module Impl_enums_testcase_linked_list_List.
         let elem := M.alloc (| elem |) in
         Value.StructTuple
           "enums_testcase_linked_list::List::Cons"
+          []
+          []
           [
             M.read (| elem |);
             M.call_closure (|

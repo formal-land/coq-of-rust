@@ -83,6 +83,8 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
                             [
                               M.call_closure (|
                                 Ty.path "i32",
@@ -101,7 +103,11 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           |) in
                         let e := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                            [ M.read (| e |) ]
                         |)))
                   ]
                 |)));
@@ -110,7 +116,13 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                    [ M.read (| e |) ]
+                |)))
           ]
         |)
       |)))

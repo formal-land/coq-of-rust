@@ -1487,6 +1487,8 @@ Module parser.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error" ]
               [
                 M.read (|
                   M.match_operator (|
@@ -1886,6 +1888,11 @@ Module parser.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.path "alloc::string::String";
+                                                Ty.path "anyhow::Error"
+                                              ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path "anyhow::Error",
@@ -2061,60 +2068,84 @@ Module parser.
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u8" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U8Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U8Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u16" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U16Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U16Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u32" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U32Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U32Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u64" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U64Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U64Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u128" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U128Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U128Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u256" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::U256Type" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::U256Type" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "bool" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::BoolType" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::BoolType" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
                     is_constant_or_break_match (| M.read (| γ |), mk_str (| "address" |) |) in
                   M.alloc (|
-                    Value.StructTuple "move_core_types::parser::Token::AddressType" []
+                    Value.StructTuple "move_core_types::parser::Token::AddressType" [] [] []
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
                     is_constant_or_break_match (| M.read (| γ |), mk_str (| "vector" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::VectorType" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::VectorType" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "true" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::True" [] |)));
+                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::True" [] [] [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "false" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::False" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::False" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
                     is_constant_or_break_match (| M.read (| γ |), mk_str (| "signer" |) |) in
-                  M.alloc (| Value.StructTuple "move_core_types::parser::Token::SignerType" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "move_core_types::parser::Token::SignerType" [] [] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple "move_core_types::parser::Token::Name" [ M.read (| s |) ]
+                    Value.StructTuple
+                      "move_core_types::parser::Token::Name"
+                      []
+                      []
+                      [ M.read (| s |) ]
                   |)))
             ]
           |)
@@ -2486,6 +2517,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U8"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2498,6 +2531,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U16"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2510,6 +2545,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U32"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2522,6 +2559,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U64"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2534,6 +2573,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U128"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2546,6 +2587,8 @@ Module parser.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "move_core_types::parser::Token::U256"
+                                                                        []
+                                                                        []
                                                                         [ M.read (| num |) ]
                                                                     |)));
                                                                 fun γ =>
@@ -2556,6 +2599,17 @@ Module parser.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::parser::Token";
+                                                                                    Ty.path "usize"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ]
                                                                               [
                                                                                 M.read (|
                                                                                   let~ error :
@@ -2626,6 +2680,16 @@ Module parser.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
+                                                            []
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::parser::Token";
+                                                                  Ty.path "usize"
+                                                                ];
+                                                              Ty.path "anyhow::Error"
+                                                            ]
                                                             [
                                                               Value.Tuple
                                                                 [ M.read (| tok |); M.read (| len |)
@@ -2662,11 +2726,22 @@ Module parser.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Ok"
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "move_core_types::parser::Token";
+                                                Ty.path "usize"
+                                              ];
+                                            Ty.path "anyhow::Error"
+                                          ]
                                           [
                                             Value.Tuple
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::U64"
+                                                  []
+                                                  []
                                                   [ M.read (| num |) ];
                                                 M.read (| len |)
                                               ]
@@ -2877,7 +2952,27 @@ Module parser.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ Value.StructTuple "core::option::Option::None" [] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [ Ty.path "move_core_types::parser::Token"; Ty.path "usize" ]
+                              ];
+                            Ty.path "anyhow::Error"
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [
+                                Ty.tuple
+                                  [ Ty.path "move_core_types::parser::Token"; Ty.path "usize" ]
+                              ]
+                              []
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2891,9 +2986,25 @@ Module parser.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [ Ty.path "move_core_types::parser::Token"; Ty.path "usize" ]
+                              ];
+                            Ty.path "anyhow::Error"
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [
+                                Ty.tuple
+                                  [ Ty.path "move_core_types::parser::Token"; Ty.path "usize" ]
+                              ]
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2921,6 +3032,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Lt"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
@@ -2937,6 +3050,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Gt"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
@@ -2953,6 +3068,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Comma"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
@@ -3016,6 +3133,8 @@ Module parser.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::parser::Token::ColonColon"
+                                                          []
+                                                          []
                                                           [];
                                                         Value.Integer IntegerKind.Usize 2
                                                       ]
@@ -3028,6 +3147,21 @@ Module parser.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::parser::Token";
+                                                                      Ty.path "usize"
+                                                                    ]
+                                                                ];
+                                                              Ty.path "anyhow::Error"
+                                                            ]
                                                             [
                                                               M.read (|
                                                                 let~ error :
@@ -3157,6 +3291,13 @@ Module parser.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "core::option::Option::Some"
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "char" ]
+                                                          ]
                                                           [
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
@@ -3239,6 +3380,13 @@ Module parser.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "char" ]
+                                                            ]
                                                             [
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
@@ -3652,6 +3800,8 @@ Module parser.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::parser::Token::Address"
+                                                          []
+                                                          []
                                                           [ M.read (| r |) ];
                                                         M.read (| len |)
                                                       ]
@@ -3664,6 +3814,21 @@ Module parser.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::parser::Token";
+                                                                      Ty.path "usize"
+                                                                    ]
+                                                                ];
+                                                              Ty.path "anyhow::Error"
+                                                            ]
                                                             [
                                                               M.read (|
                                                                 let~ error :
@@ -3972,6 +4137,13 @@ Module parser.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "char" ]
+                                                        ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -4144,6 +4316,22 @@ Module parser.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::parser::Token";
+                                                                            Ty.path "usize"
+                                                                          ]
+                                                                      ];
+                                                                    Ty.path "anyhow::Error"
+                                                                  ]
                                                                   [
                                                                     M.read (|
                                                                       let~ error :
@@ -4235,6 +4423,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Bytes"
+                                                  []
+                                                  []
                                                   [
                                                     M.call_closure (|
                                                       Ty.path "alloc::string::String",
@@ -4312,6 +4502,13 @@ Module parser.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "char" ]
+                                                        ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -4484,6 +4681,22 @@ Module parser.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::parser::Token";
+                                                                            Ty.path "usize"
+                                                                          ]
+                                                                      ];
+                                                                    Ty.path "anyhow::Error"
+                                                                  ]
                                                                   [
                                                                     M.read (|
                                                                       let~ error :
@@ -4575,6 +4788,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Bytes"
+                                                  []
+                                                  []
                                                   [ M.read (| r |) ];
                                                 M.read (| len |)
                                               ]
@@ -4831,6 +5046,8 @@ Module parser.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::parser::Token::Whitespace"
+                                                  []
+                                                  []
                                                   [ M.read (| r |) ];
                                                 M.read (| len |)
                                               ]
@@ -5099,6 +5316,21 @@ Module parser.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::parser::Token";
+                                                              Ty.path "usize"
+                                                            ]
+                                                        ];
+                                                      Ty.path "anyhow::Error"
+                                                    ]
                                                     [
                                                       M.read (|
                                                         let~ error :
@@ -5476,6 +5708,8 @@ Module parser.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("start", M.read (| n |)) ]
                                             ]
                                           |)
@@ -5500,7 +5734,19 @@ Module parser.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "anyhow::Error"
+                  ]
+                  [ M.read (| v |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5538,6 +5784,8 @@ Module parser.
           (let v := M.alloc (| v |) in
           Value.StructRecord
             "move_core_types::parser::Parser"
+            []
+            [ I ]
             [
               ("it",
                 M.call_closure (|
@@ -5646,7 +5894,11 @@ Module parser.
                           |) in
                         let tok := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| tok |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error" ]
+                            [ M.read (| tok |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -5657,6 +5909,11 @@ Module parser.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "move_core_types::parser::Token";
+                                    Ty.path "anyhow::Error"
+                                  ]
                                   [
                                     M.read (|
                                       let~ error :
@@ -5925,6 +6182,8 @@ Module parser.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -6069,7 +6328,13 @@ Module parser.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6234,6 +6499,13 @@ Module parser.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::parser::Token" ]
+                                            ]
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -6503,6 +6775,16 @@ Module parser.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::parser::Token"
+                                                            ]
+                                                        ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -6582,6 +6864,8 @@ Module parser.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::parser::Token::Comma"
+                                              []
+                                              []
                                               []
                                           ]
                                         |)
@@ -6738,6 +7022,16 @@ Module parser.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::parser::Token"
+                                                            ]
+                                                        ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -6771,7 +7065,16 @@ Module parser.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ R; Ty.path "alloc::alloc::Global" ];
+                      Ty.path "anyhow::Error"
+                    ]
+                    [ M.read (| v |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6805,6 +7108,8 @@ Module parser.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -6942,6 +7247,8 @@ Module parser.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error" ]
                                       [
                                         M.call_closure (|
                                           Ty.path "anyhow::Error",
@@ -7136,6 +7443,8 @@ Module parser.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "move_core_types::language_storage::TypeTag"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -7264,7 +7573,11 @@ Module parser.
                             (let _ :=
                               M.is_struct_tuple (| γ, "move_core_types::parser::Token::U8Type" |) in
                             M.alloc (|
-                              Value.StructTuple "move_core_types::language_storage::TypeTag::U8" []
+                              Value.StructTuple
+                                "move_core_types::language_storage::TypeTag::U8"
+                                []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7274,7 +7587,11 @@ Module parser.
                                 "move_core_types::parser::Token::U16Type"
                               |) in
                             M.alloc (|
-                              Value.StructTuple "move_core_types::language_storage::TypeTag::U16" []
+                              Value.StructTuple
+                                "move_core_types::language_storage::TypeTag::U16"
+                                []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7284,7 +7601,11 @@ Module parser.
                                 "move_core_types::parser::Token::U32Type"
                               |) in
                             M.alloc (|
-                              Value.StructTuple "move_core_types::language_storage::TypeTag::U32" []
+                              Value.StructTuple
+                                "move_core_types::language_storage::TypeTag::U32"
+                                []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7294,7 +7615,11 @@ Module parser.
                                 "move_core_types::parser::Token::U64Type"
                               |) in
                             M.alloc (|
-                              Value.StructTuple "move_core_types::language_storage::TypeTag::U64" []
+                              Value.StructTuple
+                                "move_core_types::language_storage::TypeTag::U64"
+                                []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7306,6 +7631,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::U128"
+                                []
+                                []
                                 []
                             |)));
                         fun γ =>
@@ -7319,6 +7646,8 @@ Module parser.
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::U256"
                                 []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7330,6 +7659,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::Bool"
+                                []
+                                []
                                 []
                             |)));
                         fun γ =>
@@ -7343,6 +7674,8 @@ Module parser.
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::Address"
                                 []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7354,6 +7687,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::Signer"
+                                []
+                                []
                                 []
                             |)));
                         fun γ =>
@@ -7413,7 +7748,11 @@ Module parser.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructTuple "move_core_types::parser::Token::Lt" []
+                                          Value.StructTuple
+                                            "move_core_types::parser::Token::Lt"
+                                            []
+                                            []
+                                            []
                                         ]
                                       |)
                                     ]
@@ -7669,7 +8008,11 @@ Module parser.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructTuple "move_core_types::parser::Token::Gt" []
+                                          Value.StructTuple
+                                            "move_core_types::parser::Token::Gt"
+                                            []
+                                            []
+                                            []
                                         ]
                                       |)
                                     ]
@@ -7743,6 +8086,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::Vector"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.apply
@@ -7829,6 +8174,8 @@ Module parser.
                                           |);
                                           Value.StructTuple
                                             "move_core_types::parser::Token::ColonColon"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -8118,6 +8465,8 @@ Module parser.
                                           |);
                                           Value.StructTuple
                                             "move_core_types::parser::Token::ColonColon"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -8460,6 +8809,16 @@ Module parser.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::parser::Token"
+                                                            ]
+                                                        ]
                                                         [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
@@ -8469,6 +8828,8 @@ Module parser.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "move_core_types::parser::Token::Lt"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 |)
                                                               |)
@@ -8834,6 +9195,8 @@ Module parser.
                                                               end));
                                                         Value.StructTuple
                                                           "move_core_types::parser::Token::Gt"
+                                                          []
+                                                          []
                                                           [];
                                                         Value.Bool true
                                                       ]
@@ -8961,6 +9324,8 @@ Module parser.
                                                       Value.StructTuple
                                                         "move_core_types::parser::Token::Gt"
                                                         []
+                                                        []
+                                                        []
                                                     ]
                                                   |)
                                                 ]
@@ -9067,6 +9432,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::language_storage::TypeTag::Struct"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.apply
@@ -9091,6 +9458,8 @@ Module parser.
                                     [
                                       Value.StructRecord
                                         "move_core_types::language_storage::StructTag"
+                                        []
+                                        []
                                         [
                                           ("address",
                                             M.read (|
@@ -9542,6 +9911,11 @@ Module parser.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::TypeTag";
+                                        Ty.path "anyhow::Error"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "anyhow::Error",
@@ -9715,6 +10089,11 @@ Module parser.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                  Ty.path "anyhow::Error"
+                ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -9852,6 +10231,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U8"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -10055,6 +10436,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U16"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -10258,6 +10641,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U32"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -10461,6 +10846,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U64"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -10664,6 +11051,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U128"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -10867,6 +11256,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U256"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -11068,6 +11459,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::Bool"
+                                []
+                                []
                                 [ Value.Bool true ]
                             |)));
                         fun γ =>
@@ -11077,6 +11470,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::Bool"
+                                []
+                                []
                                 [ Value.Bool false ]
                             |)));
                         fun γ =>
@@ -11091,6 +11486,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::Address"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -11263,6 +11660,8 @@ Module parser.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U8Vector"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -11411,6 +11810,12 @@ Module parser.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_core_types::transaction_argument::TransactionArgument";
+                                        Ty.path "anyhow::Error"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "anyhow::Error",
@@ -11916,7 +12321,7 @@ Module parser.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, tokens |);
-                      Value.StructTuple "move_core_types::parser::Token::EOF" []
+                      Value.StructTuple "move_core_types::parser::Token::EOF" [] [] []
                     ]
                   |)
                 |) in
@@ -12164,7 +12569,7 @@ Module parser.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, parser |);
-                            Value.StructTuple "move_core_types::parser::Token::EOF" []
+                            Value.StructTuple "move_core_types::parser::Token::EOF" [] [] []
                           ]
                         |)
                       ]
@@ -12227,7 +12632,13 @@ Module parser.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ T; Ty.path "anyhow::Error" ]
+                  [ M.read (| res |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -12513,7 +12924,7 @@ Module parser.
                                             |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end));
-                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [] [] [];
                                   Value.Bool true
                                 ]
                               |)))
@@ -12820,7 +13231,7 @@ Module parser.
                                             |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end));
-                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [] [] [];
                                   Value.Bool true
                                 ]
                               |)))
@@ -13284,7 +13695,7 @@ Module parser.
                                             |)))
                                         | _ => M.impossible "wrong number of arguments"
                                         end));
-                                  Value.StructTuple "move_core_types::parser::Token::EOF" [];
+                                  Value.StructTuple "move_core_types::parser::Token::EOF" [] [] [];
                                   Value.Bool true
                                 ]
                               |)))
@@ -13952,6 +14363,11 @@ Module parser.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "move_core_types::language_storage::StructTag";
+                            Ty.path "anyhow::Error"
+                          ]
                           [ M.read (| M.deref (| M.read (| struct_tag |) |) |) ]
                       |)));
                   fun γ =>
@@ -13962,6 +14378,11 @@ Module parser.
                             M.return_ (|
                               Value.StructTuple
                                 "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.path "move_core_types::language_storage::StructTag";
+                                  Ty.path "anyhow::Error"
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.path "anyhow::Error",

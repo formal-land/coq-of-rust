@@ -174,7 +174,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
+              []
+          |) in
         let~ get_lemon_as_fallback :
             Ty.apply
               (Ty.path "*")
@@ -248,6 +254,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc (|
                                   Value.StructTuple
                                     "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
+                                    []
+                                    []
                                     []
                                 |)
                               |)))
@@ -446,9 +454,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
               [
                 Value.StructTuple
                   "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Apple"
+                  []
+                  []
                   []
               ]
           |) in

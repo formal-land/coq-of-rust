@@ -35,6 +35,8 @@ Module my.
           (let contents := M.alloc (| contents |) in
           Value.StructRecord
             "struct_visibility::my::ClosedBox"
+            []
+            [ T ]
             [ ("contents", M.read (| contents |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -90,6 +92,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               [ ("contents", mk_str (| "public information" |)) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

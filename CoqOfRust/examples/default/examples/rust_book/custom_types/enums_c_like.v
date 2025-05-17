@@ -310,11 +310,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 8;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 6 ]
                                       ]
                                     |)
@@ -441,11 +447,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 8;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 6 ]
                                       ]
                                     |)

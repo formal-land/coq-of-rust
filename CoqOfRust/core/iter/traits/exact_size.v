@@ -52,6 +52,8 @@ Module iter.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ M.read (| lower |) ]
                                     |)
                                   |)
@@ -123,6 +125,8 @@ Module iter.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -163,6 +167,8 @@ Module iter.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)

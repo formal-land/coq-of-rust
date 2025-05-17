@@ -151,6 +151,8 @@ Module map.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloy_primitives::map::fixed::FbBuildHasher"
+              [ N ]
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -240,6 +242,8 @@ Module map.
           ltac:(M.monadic
             (Value.StructRecord
               "alloy_primitives::map::fixed::FbBuildHasher"
+              [ N ]
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -376,6 +380,8 @@ Module map.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloy_primitives::map::fixed::FbHasher"
+              [ N ]
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -400,7 +406,12 @@ Module map.
                       |)
                     ]
                   |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.tuple [] ] ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -454,6 +465,8 @@ Module map.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloy_primitives::map::fixed::FbHasher"
+              [ N ]
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -550,6 +563,8 @@ Module map.
           ltac:(M.monadic
             (Value.StructRecord
               "alloy_primitives::map::fixed::FbHasher"
+              [ N ]
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -584,7 +599,12 @@ Module map.
                       |)
                     ]
                   |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.tuple [] ] ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -805,6 +825,8 @@ Module map.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -836,6 +858,8 @@ Module map.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)
@@ -1070,6 +1094,8 @@ Module map.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -1101,6 +1127,8 @@ Module map.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)

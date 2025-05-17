@@ -33,6 +33,8 @@ Module collections.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
+                []
+                [ K; V; I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -154,7 +156,11 @@ Module collections.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.tuple [ K; V ] ]
+                                                []
                                             |)
                                           |)
                                         |)
@@ -221,6 +227,8 @@ Module collections.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.tuple [ K; V ] ]
                                                 [ M.read (| next |) ]
                                             |)
                                           |)
@@ -275,6 +283,8 @@ Module collections.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.tuple [ K; V ] ]
                                             [ M.read (| next |) ]
                                         |)
                                       |)

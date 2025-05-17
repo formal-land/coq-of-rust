@@ -60,7 +60,11 @@ Module Impl_integration_flipper_Flipper.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "integration_flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
+        Value.StructRecord
+          "integration_flipper::Flipper"
+          []
+          []
+          [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -141,6 +145,11 @@ Module Impl_integration_flipper_Flipper.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "integration_flipper::Flipper";
+                        Ty.path "integration_flipper::FlipperError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "integration_flipper::Flipper",
@@ -159,7 +168,12 @@ Module Impl_integration_flipper_Flipper.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "integration_flipper::FlipperError" [] ]
+                      []
+                      [
+                        Ty.path "integration_flipper::Flipper";
+                        Ty.path "integration_flipper::FlipperError"
+                      ]
+                      [ Value.StructTuple "integration_flipper::FlipperError" [] [] [] ]
                   |)))
             ]
           |)
@@ -259,7 +273,13 @@ Module Impl_integration_flipper_Flipper.
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+          M.alloc (|
+            Value.StructTuple
+              "core::result::Result::Err"
+              []
+              [ Ty.tuple []; Ty.tuple [] ]
+              [ Value.Tuple [] ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -58,6 +58,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "foreign_function_interface::Complex"
+              []
+              []
               [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ]
           |) in
         let~ z_sqrt : Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ] :=

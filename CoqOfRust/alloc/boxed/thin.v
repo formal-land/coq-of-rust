@@ -91,9 +91,11 @@ Module boxed.
               M.alloc (|
                 Value.StructRecord
                   "alloc::boxed::thin::ThinBox"
+                  []
+                  [ T ]
                   [
                     ("ptr", M.read (| ptr |));
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                    ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                   ]
               |)
             |)))
@@ -198,10 +200,16 @@ Module boxed.
                                       (let ptr := M.copy (| γ |) in
                                       Value.StructRecord
                                         "alloc::boxed::thin::ThinBox"
+                                        []
+                                        [ T ]
                                         [
                                           ("ptr", M.read (| ptr |));
                                           ("_marker",
-                                            Value.StructTuple "core::marker::PhantomData" [])
+                                            Value.StructTuple
+                                              "core::marker::PhantomData"
+                                              []
+                                              [ T ]
+                                              [])
                                         ]))
                                 ]
                               |)))
@@ -490,9 +498,11 @@ Module boxed.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::boxed::thin::ThinBox"
+                          []
+                          [ Dyn ]
                           [
                             ("ptr", M.read (| ptr |));
-                            ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                            ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ Dyn ] [])
                           ]
                       |)));
                   fun γ =>
@@ -566,9 +576,11 @@ Module boxed.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::boxed::thin::ThinBox"
+                          []
+                          [ Dyn ]
                           [
                             ("ptr", M.read (| ptr |));
-                            ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                            ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ Dyn ] [])
                           ]
                       |)))
                 ]
@@ -1051,6 +1063,8 @@ Module boxed.
               M.alloc (|
                 Value.StructTuple
                   "alloc::boxed::thin::WithOpaqueHeader"
+                  []
+                  []
                   [
                     M.read (|
                       M.SubPointer.get_struct_tuple_field (|
@@ -1119,6 +1133,8 @@ Module boxed.
               M.alloc (|
                 Value.StructTuple
                   "alloc::boxed::thin::WithOpaqueHeader"
+                  []
+                  []
                   [
                     M.read (|
                       M.SubPointer.get_struct_tuple_field (|
@@ -1215,6 +1231,8 @@ Module boxed.
                                   (let ptr := M.copy (| γ |) in
                                   Value.StructTuple
                                     "alloc::boxed::thin::WithOpaqueHeader"
+                                    []
+                                    []
                                     [
                                       M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
@@ -1592,7 +1610,12 @@ Module boxed.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::boxed::thin::WithHeader"
-                            [ M.read (| ptr |); Value.StructTuple "core::marker::PhantomData" [] ]
+                            []
+                            [ H ]
+                            [
+                              M.read (| ptr |);
+                              Value.StructTuple "core::marker::PhantomData" [] [ H ] []
+                            ]
                         |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
@@ -1997,9 +2020,20 @@ Module boxed.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::boxed::thin::WithHeader")
+                                                              []
+                                                              [ H ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ]
                                                           [
                                                             Value.StructTuple
                                                               "core::alloc::AllocError"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                       |)
@@ -2057,7 +2091,11 @@ Module boxed.
                             M.alloc (|
                               Value.StructTuple
                                 "alloc::boxed::thin::WithHeader"
-                                [ M.read (| ptr |); Value.StructTuple "core::marker::PhantomData" []
+                                []
+                                [ H ]
+                                [
+                                  M.read (| ptr |);
+                                  Value.StructTuple "core::marker::PhantomData" [] [ H ] []
                                 ]
                             |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -2115,7 +2153,14 @@ Module boxed.
                               |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ]
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ];
+                                Ty.path "core::alloc::AllocError"
+                              ]
+                              [ M.read (| result |) ]
                           |)))
                     ]
                   |)
@@ -2348,6 +2393,8 @@ Module boxed.
               M.alloc (|
                 Value.StructTuple
                   "alloc::boxed::thin::WithHeader"
+                  []
+                  [ H ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
@@ -2388,7 +2435,7 @@ Module boxed.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::marker::PhantomData" []
+                    Value.StructTuple "core::marker::PhantomData" [] [ H ] []
                   ]
               |)
             |)))
@@ -2458,6 +2505,8 @@ Module boxed.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::boxed::thin::drop::DropGuard"
+                    []
+                    [ H ]
                     [
                       ("ptr",
                         M.read (|
@@ -2478,7 +2527,7 @@ Module boxed.
                           |),
                           [ (* MutToConstPointer *) M.pointer_coercion (M.read (| value |)) ]
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ H ] [])
                     ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

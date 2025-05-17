@@ -103,7 +103,7 @@ Module future.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                              Value.StructTuple "core::future::join::MaybeDone::Taken" []
+                              Value.StructTuple "core::future::join::MaybeDone::Taken" [] [ F ] []
                             ]
                           |)
                         |),
@@ -118,7 +118,18 @@ Module future.
                                 |) in
                               let val := M.copy (| γ0_0 |) in
                               M.alloc (|
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::future::future::Future"
+                                      []
+                                      []
+                                      F
+                                      "Output"
+                                  ]
+                                  [ M.read (| val |) ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -135,7 +146,13 @@ Module future.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -355,6 +372,8 @@ Module future.
                                                 Value.StructTuple
                                                   "core::task::poll::Poll::Pending"
                                                   []
+                                                  [ Ty.tuple [] ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -389,6 +408,8 @@ Module future.
                                     M.borrow (| Pointer.Kind.MutRef, self |);
                                     Value.StructTuple
                                       "core::future::join::MaybeDone::Done"
+                                      []
+                                      [ F ]
                                       [ M.read (| val |) ]
                                   ]
                                 |)
@@ -418,7 +439,13 @@ Module future.
                             |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.tuple [] ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

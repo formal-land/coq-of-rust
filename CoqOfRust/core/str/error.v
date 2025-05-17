@@ -332,12 +332,16 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "usize" ]
                           [ M.cast (Ty.path "usize") (M.read (| len |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -680,7 +684,7 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::str::error::ParseBoolError" []))
+            Value.StructTuple "core::str::error::ParseBoolError" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

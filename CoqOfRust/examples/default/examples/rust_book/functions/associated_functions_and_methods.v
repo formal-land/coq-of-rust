@@ -23,6 +23,8 @@ Module Impl_associated_functions_and_methods_Point.
       ltac:(M.monadic
         (Value.StructRecord
           "associated_functions_and_methods::Point"
+          []
+          []
           [ ("y", M.read (| UnsupportedLiteral |)); ("x", M.read (| UnsupportedLiteral |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -44,6 +46,8 @@ Module Impl_associated_functions_and_methods_Point.
         let y := M.alloc (| y |) in
         Value.StructRecord
           "associated_functions_and_methods::Point"
+          []
+          []
           [ ("x", M.read (| x |)); ("y", M.read (| y |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -627,6 +631,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
+              []
+              []
               [
                 ("p1",
                   M.call_closure (|
@@ -815,6 +821,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
+              []
+              []
               [
                 ("p1",
                   M.call_closure (|
@@ -862,6 +870,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "associated_functions_and_methods::Pair"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply

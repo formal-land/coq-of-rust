@@ -205,6 +205,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
                         [ Value.Integer IntegerKind.Usize 5 ]
                     |)
                   |)
@@ -270,7 +272,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -309,7 +311,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)
@@ -403,7 +409,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, index_of_first_negative_number |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                    |)
                   |)
                 ]
             |),
@@ -467,7 +475,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -506,7 +514,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)

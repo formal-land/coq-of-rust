@@ -296,7 +296,13 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                      []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -309,6 +315,8 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
                       [
                         (* Unsize *)
                         M.pointer_coercion
@@ -343,7 +351,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     | [], [], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
-        Value.StructTuple "wrapping_errors::DoubleError::Parse" [ M.read (| err |) ]))
+        Value.StructTuple "wrapping_errors::DoubleError::Parse" [] [] [ M.read (| err |) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -503,7 +511,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                 |)
                               ]
                             |);
-                            Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" []
+                            Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" [] [] []
                           ]
                         |)
                       ]
@@ -681,6 +689,8 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ]
                 [
                   M.call_closure (|
                     Ty.path "i32",

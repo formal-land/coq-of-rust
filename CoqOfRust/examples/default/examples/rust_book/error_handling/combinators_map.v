@@ -304,12 +304,20 @@ Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ Value.StructTuple "combinators_map::Peeled" [ M.read (| food |) ] ]
+                    []
+                    [ Ty.path "combinators_map::Peeled" ]
+                    [ Value.StructTuple "combinators_map::Peeled" [] [] [ M.read (| food |) ] ]
                 |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "combinators_map::Peeled" ]
+                    []
+                |)))
           ]
         |)
       |)))
@@ -351,12 +359,20 @@ Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ Value.StructTuple "combinators_map::Chopped" [ M.read (| food |) ] ]
+                    []
+                    [ Ty.path "combinators_map::Chopped" ]
+                    [ Value.StructTuple "combinators_map::Chopped" [] [] [ M.read (| food |) ] ]
                 |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "combinators_map::Chopped" ]
+                    []
+                |)))
           ]
         |)
       |)))
@@ -418,7 +434,11 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 0
                               |) in
                             let food := M.copy (| γ0_0 |) in
-                            Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
+                            Value.StructTuple
+                              "combinators_map::Cooked"
+                              []
+                              []
+                              [ M.read (| food |) ]))
                       ]
                     |)))
                 | _ => M.impossible "wrong number of arguments"
@@ -507,7 +527,11 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let f := M.copy (| γ |) in
-                                    Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
+                                    Value.StructTuple
+                                      "combinators_map::Peeled"
+                                      []
+                                      []
+                                      [ M.read (| f |) ]))
                               ]
                             |)))
                         | _ => M.impossible "wrong number of arguments"
@@ -540,7 +564,11 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                     0
                                   |) in
                                 let f := M.copy (| γ0_0 |) in
-                                Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
+                                Value.StructTuple
+                                  "combinators_map::Chopped"
+                                  []
+                                  []
+                                  [ M.read (| f |) ]))
                           ]
                         |)))
                     | _ => M.impossible "wrong number of arguments"
@@ -573,7 +601,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                 0
                               |) in
                             let f := M.copy (| γ0_0 |) in
-                            Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
+                            Value.StructTuple "combinators_map::Cooked" [] [] [ M.read (| f |) ]))
                       ]
                     |)))
                 | _ => M.impossible "wrong number of arguments"
@@ -748,7 +776,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
-              [ Value.StructTuple "combinators_map::Food::Apple" [] ]
+              []
+              [ Ty.path "combinators_map::Food" ]
+              [ Value.StructTuple "combinators_map::Food::Apple" [] [] [] ]
           |) in
         let~ carrot :
             Ty.apply
@@ -759,7 +789,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
-              [ Value.StructTuple "combinators_map::Food::Carrot" [] ]
+              []
+              [ Ty.path "combinators_map::Food" ]
+              [ Value.StructTuple "combinators_map::Food::Carrot" [] [] [] ]
           |) in
         let~ potato :
             Ty.apply
@@ -767,7 +799,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::None" [] [ Ty.path "combinators_map::Food" ] []
+          |) in
         let~ cooked_apple :
             Ty.apply
               (Ty.path "*")

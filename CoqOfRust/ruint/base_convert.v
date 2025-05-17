@@ -777,6 +777,8 @@ Module base_convert.
             M.alloc (|
               Value.StructRecord
                 "ruint::base_convert::SpigotLittle"
+                [ LIMBS ]
+                []
                 [
                   ("base", M.read (| base |));
                   ("limbs",
@@ -867,6 +869,8 @@ Module base_convert.
             M.alloc (|
               Value.StructRecord
                 "ruint::base_convert::to_base_be::OwnedVecIterator"
+                []
+                []
                 [
                   ("vec",
                     M.call_closure (|
@@ -1014,9 +1018,16 @@ Module base_convert.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.path "ruint::base_convert::BaseConvertError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::base_convert::BaseConvertError::InvalidBase"
+                                        []
+                                        []
                                         [ M.read (| base |) ]
                                     ]
                                 |)
@@ -1174,9 +1185,21 @@ Module base_convert.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [ BITS; LIMBS ]
+                                                                                  [];
+                                                                                Ty.path
+                                                                                  "ruint::base_convert::BaseConvertError"
+                                                                              ]
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "ruint::base_convert::BaseConvertError::InvalidDigit"
+                                                                                  []
+                                                                                  []
                                                                                   [
                                                                                     M.read (|
                                                                                       digit
@@ -1229,9 +1252,21 @@ Module base_convert.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [ BITS; LIMBS ]
+                                                                                [];
+                                                                              Ty.path
+                                                                                "ruint::base_convert::BaseConvertError"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "ruint::base_convert::BaseConvertError::Overflow"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -1252,6 +1287,11 @@ Module base_convert.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.path "ruint::base_convert::BaseConvertError"
+                                    ]
                                     [
                                       M.read (|
                                         get_associated_constant (|
@@ -1488,9 +1528,20 @@ Module base_convert.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  [];
+                                                                Ty.path
+                                                                  "ruint::base_convert::BaseConvertError"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "ruint::base_convert::BaseConvertError::InvalidDigit"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     M.read (| digit |);
                                                                     M.read (| base |)
@@ -1630,9 +1681,20 @@ Module base_convert.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  [];
+                                                                Ty.path
+                                                                  "ruint::base_convert::BaseConvertError"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "ruint::base_convert::BaseConvertError::Overflow"
+                                                                  []
+                                                                  []
                                                                   []
                                                               ]
                                                           |)
@@ -1862,9 +1924,20 @@ Module base_convert.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  [];
+                                                                Ty.path
+                                                                  "ruint::base_convert::BaseConvertError"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "ruint::base_convert::BaseConvertError::InvalidDigit"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     M.read (| digit |);
                                                                     M.read (| base |)
@@ -1907,9 +1980,20 @@ Module base_convert.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ BITS; LIMBS ]
+                                                                [];
+                                                              Ty.path
+                                                                "ruint::base_convert::BaseConvertError"
+                                                            ]
                                                             [
                                                               Value.StructTuple
                                                                 "ruint::base_convert::BaseConvertError::Overflow"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -1926,7 +2010,16 @@ Module base_convert.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.path "ruint::base_convert::BaseConvertError"
+                    ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2019,9 +2112,16 @@ Module base_convert.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.path "ruint::base_convert::BaseConvertError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::base_convert::BaseConvertError::InvalidBase"
+                                        []
+                                        []
                                         [ M.read (| base |) ]
                                     ]
                                 |)
@@ -2153,9 +2253,20 @@ Module base_convert.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  [];
+                                                                Ty.path
+                                                                  "ruint::base_convert::BaseConvertError"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "ruint::base_convert::BaseConvertError::InvalidDigit"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     M.read (| digit |);
                                                                     M.read (| base |)
@@ -2492,9 +2603,20 @@ Module base_convert.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ BITS; LIMBS ]
+                                                                [];
+                                                              Ty.path
+                                                                "ruint::base_convert::BaseConvertError"
+                                                            ]
                                                             [
                                                               Value.StructTuple
                                                                 "ruint::base_convert::BaseConvertError::Overflow"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -2511,7 +2633,16 @@ Module base_convert.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.path "ruint::base_convert::BaseConvertError"
+                    ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2839,12 +2970,16 @@ Module base_convert.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "u64" ]
                         [ M.cast (Ty.path "u64") (M.read (| remainder |)) ]
                     |)))
               ]

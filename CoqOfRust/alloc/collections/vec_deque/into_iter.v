@@ -26,6 +26,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::vec_deque::into_iter::IntoIter"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -86,6 +88,8 @@ Module collections.
               (let inner := M.alloc (| inner |) in
               Value.StructRecord
                 "alloc::collections::vec_deque::into_iter::IntoIter"
+                []
+                [ T; A ]
                 [ ("inner", M.read (| inner |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -308,7 +312,11 @@ Module collections.
                   Value.Tuple
                     [
                       M.read (| len |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| len |) ]
                     ]
                 |)
               |)))
@@ -447,6 +455,8 @@ Module collections.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", M.read (| n |)) ]
                                   ]
                                 |)
@@ -509,8 +519,21 @@ Module collections.
                         |),
                         [ M.read (| rem |) ]
                       |);
-                      Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                      M.constructor_as_closure "core::result::Result::Err"
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ];
+                      M.constructor_as_closure
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
                     ]
                   |)
                 |)
@@ -615,6 +638,8 @@ Module collections.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::collections::vec_deque::into_iter::try_fold::Guard"
+                          []
+                          [ T; A ]
                           [
                             ("deque",
                               M.borrow (|
@@ -1174,6 +1199,8 @@ Module collections.
                                                   (let item := M.copy (| γ |) in
                                                   Value.StructTuple
                                                     "core::result::Result::Ok"
+                                                    []
+                                                    [ B; Ty.path "never" ]
                                                     [
                                                       M.call_closure (|
                                                         B,
@@ -1591,6 +1618,14 @@ Module collections.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Ok"
+                                                []
+                                                [
+                                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                                  Ty.apply
+                                                    (Ty.path "core::array::iter::IntoIter")
+                                                    [ N ]
+                                                    [ T ]
+                                                ]
                                                 [
                                                   M.call_closure (|
                                                     Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -1873,6 +1908,14 @@ Module collections.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::result::Result::Ok"
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "array") [ N ] [ T ];
+                                          Ty.apply
+                                            (Ty.path "core::array::iter::IntoIter")
+                                            [ N ]
+                                            [ T ]
+                                        ]
                                         [
                                           M.call_closure (|
                                             Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -2056,6 +2099,14 @@ Module collections.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "array") [ N ] [ T ];
+                                          Ty.apply
+                                            (Ty.path "core::array::iter::IntoIter")
+                                            [ N ]
+                                            [ T ]
+                                        ]
                                         [
                                           M.call_closure (|
                                             Ty.apply
@@ -2075,6 +2126,8 @@ Module collections.
                                               M.read (| raw_arr |);
                                               Value.StructRecord
                                                 "core::ops::range::Range"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_", M.read (| init |))
@@ -2334,8 +2387,21 @@ Module collections.
                         |),
                         [ M.read (| rem |) ]
                       |);
-                      Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                      M.constructor_as_closure "core::result::Result::Err"
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ];
+                      M.constructor_as_closure
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
                     ]
                   |)
                 |)
@@ -2412,6 +2478,8 @@ Module collections.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::collections::vec_deque::into_iter::try_rfold::Guard"
+                          []
+                          [ T; A ]
                           [
                             ("deque",
                               M.borrow (|
@@ -2971,6 +3039,8 @@ Module collections.
                                                   (let item := M.copy (| γ |) in
                                                   Value.StructTuple
                                                     "core::result::Result::Ok"
+                                                    []
+                                                    [ B; Ty.path "never" ]
                                                     [
                                                       M.call_closure (|
                                                         B,

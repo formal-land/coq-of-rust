@@ -317,6 +317,8 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_",
@@ -720,6 +722,8 @@ Module slice.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| l |)) ]
                             ]
                           |)
@@ -755,6 +759,8 @@ Module slice.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| l |)) ]
                             ]
                           |)
@@ -780,6 +786,8 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| l |))
@@ -1012,6 +1020,8 @@ Module slice.
             let right := M.alloc (| right |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -1372,6 +1382,8 @@ Module slice.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| l |)) ]
                             ]
                           |)
@@ -1407,6 +1419,8 @@ Module slice.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| l |)) ]
                             ]
                           |)
@@ -1432,6 +1446,8 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| l |))

@@ -342,6 +342,8 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+              []
+              []
               [
                 ("current_function",
                   M.call_closure (|
@@ -992,6 +994,8 @@ Module locals_safety.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| num_locals |))
@@ -1051,12 +1055,16 @@ Module locals_safety.
                                                             Value.StructTuple
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                               []
+                                                              []
+                                                              []
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
                                                             Value.StructTuple
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+                                                              []
+                                                              []
                                                               []
                                                           |)))
                                                     ]
@@ -1738,9 +1746,17 @@ Module locals_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructRecord
                           "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+                          []
+                          []
                           [
                             ("current_function",
                               M.call_closure (|
@@ -1999,6 +2015,8 @@ Module locals_safety.
               Value.StructTuple
                 "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                 []
+                []
+                []
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2095,6 +2113,8 @@ Module locals_safety.
                                         Value.StructTuple
                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                           []
+                                          []
+                                          []
                                       |)
                                     |)
                                   ]
@@ -2160,6 +2180,8 @@ Module locals_safety.
                   |),
                   Value.StructTuple
                     "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+                    []
+                    []
                     []
                 |)
               |)
@@ -2227,6 +2249,8 @@ Module locals_safety.
                     |);
                     Value.StructTuple
                       "move_binary_format::file_format::FunctionDefinitionIndex"
+                      []
+                      []
                       [ Value.Integer IntegerKind.U16 0 ]
                   ]
                 |);
@@ -3006,6 +3030,8 @@ Module locals_safety.
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                           []
+                                                          []
+                                                          []
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -3197,6 +3223,8 @@ Module locals_safety.
                                                                   Value.StructTuple
                                                                     "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 |)))
                                                             | _ =>
                                                               M.impossible
@@ -3225,6 +3253,8 @@ Module locals_safety.
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                           []
+                                                          []
+                                                          []
                                                       |)))
                                                 ]
                                               |)
@@ -3241,6 +3271,8 @@ Module locals_safety.
               M.alloc (|
                 Value.StructRecord
                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+                  []
+                  []
                   [
                     ("current_function", M.read (| current_function |));
                     ("all_local_abilities", M.read (| all_local_abilities |));
@@ -3357,6 +3389,8 @@ Module locals_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -3485,6 +3519,8 @@ Module locals_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -3994,9 +4030,16 @@ Module locals_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::absint::JoinResult::Unchanged"
+                                  []
+                                  []
                                   []
                               ]
                           |)));
@@ -4009,9 +4052,16 @@ Module locals_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::absint::JoinResult::Changed"
+                                  []
+                                  []
                                   []
                               ]
                           |)))

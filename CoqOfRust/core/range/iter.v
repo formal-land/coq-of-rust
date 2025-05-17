@@ -85,6 +85,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRange"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -144,6 +146,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::range::Range"
+              []
+              [ A ]
               [
                 ("start",
                   M.read (|
@@ -1124,6 +1128,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRange"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -1239,6 +1245,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRangeInclusive"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1345,7 +1353,13 @@ Module range.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1355,9 +1369,13 @@ Module range.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]
                       [
                         Value.StructRecord
                           "core::range::RangeInclusive"
+                          []
+                          [ A ]
                           [
                             ("start",
                               M.read (|
@@ -1938,6 +1956,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRangeInclusive"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -2157,6 +2177,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRangeFrom"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
@@ -2216,6 +2238,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::range::RangeFrom"
+              []
+              [ A ]
               [
                 ("start",
                   M.read (|
@@ -2426,6 +2450,8 @@ Module range.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::range::iter::IterRangeFrom"
+              []
+              [ A ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],

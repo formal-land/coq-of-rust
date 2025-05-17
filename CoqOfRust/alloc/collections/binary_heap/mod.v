@@ -625,6 +625,13 @@ Module collections.
                                   |),
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.apply
@@ -952,6 +959,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
+              []
+              [ T; A ]
               [
                 ("data",
                   M.call_closure (|
@@ -1290,6 +1299,8 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
+              []
+              [ T; Ty.path "alloc::alloc::Global" ]
               [
                 ("data",
                   M.call_closure (|
@@ -1330,6 +1341,8 @@ Module collections.
             (let capacity := M.alloc (| capacity |) in
             Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
+              []
+              [ T; Ty.path "alloc::alloc::Global" ]
               [
                 ("data",
                   M.call_closure (|
@@ -1370,6 +1383,8 @@ Module collections.
             (let alloc := M.alloc (| alloc |) in
             Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
+              []
+              [ T; A ]
               [
                 ("data",
                   M.call_closure (|
@@ -1411,6 +1426,8 @@ Module collections.
             let alloc := M.alloc (| alloc |) in
             Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
+              []
+              [ T; A ]
               [
                 ("data",
                   M.call_closure (|
@@ -1477,22 +1494,52 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::binary_heap::PeekMut")
+                              []
+                              [ T; A ]
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::binary_heap::PeekMut")
+                              []
+                              [ T; A ]
+                          ]
                           [
                             Value.StructRecord
                               "alloc::collections::binary_heap::PeekMut"
+                              []
+                              [ T; A ]
                               [
                                 ("heap",
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| self |) |)
                                   |));
-                                ("original_len", Value.StructTuple "core::option::Option::None" [])
+                                ("original_len",
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                    [])
                               ]
                           ]
                       |)))
@@ -3606,6 +3653,8 @@ Module collections.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", M.read (| start |));
                                         ("end_",
@@ -4060,6 +4109,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::DrainSorted"
+              []
+              [ T; A ]
               [ ("inner", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4111,6 +4162,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::binary_heap::RebuildOnDrop"
+                    []
+                    [ T; A ]
                     [
                       ("rebuild_from",
                         M.call_closure (|
@@ -4307,6 +4360,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::Iter"
+              []
+              [ T ]
               [
                 ("iter",
                   M.call_closure (|
@@ -4375,6 +4430,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::IntoIterSorted"
+              []
+              [ T; A ]
               [ ("inner", M.read (| self |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4981,6 +5038,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::Drain"
+              []
+              [ T; A ]
               [
                 ("iter",
                   M.call_closure (|
@@ -5000,7 +5059,7 @@ Module collections.
                           "data"
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |))
               ]))
@@ -5183,6 +5242,8 @@ Module collections.
               M.alloc (|
                 Value.StructRecord
                   "alloc::collections::binary_heap::Hole"
+                  []
+                  [ T ]
                   [
                     ("data", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |));
                     ("elt",
@@ -5867,6 +5928,8 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::binary_heap::Iter"
+              []
+              [ T ]
               [
                 ("iter",
                   M.call_closure (|
@@ -6024,6 +6087,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::Iter"
+              []
+              [ T ]
               [
                 ("iter",
                   M.call_closure (|
@@ -6329,6 +6394,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::IntoIter"
+              []
+              [ T; A ]
               [
                 ("iter",
                   M.call_closure (|
@@ -6781,6 +6848,8 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::binary_heap::IntoIter"
+              []
+              [ T; Ty.path "alloc::alloc::Global" ]
               [
                 ("iter",
                   M.call_closure (|
@@ -7016,6 +7085,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::IntoIterSorted"
+              []
+              [ T; A ]
               [
                 ("inner",
                   M.call_closure (|
@@ -7249,7 +7320,11 @@ Module collections.
                 Value.Tuple
                   [
                     M.read (| exact |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| exact |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| exact |) ]
                   ]
               |)
             |)))
@@ -7858,6 +7933,8 @@ Module collections.
                             M.alloc (|
                               Value.StructTuple
                                 "alloc::collections::binary_heap::drop::DropGuard"
+                                []
+                                [ T; A ]
                                 [
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
@@ -8006,7 +8083,11 @@ Module collections.
                 Value.Tuple
                   [
                     M.read (| exact |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| exact |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| exact |) ]
                   ]
               |)
             |)))
@@ -8097,6 +8178,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::binary_heap::BinaryHeap"
+                    []
+                    [ T; A ]
                     [ ("data", M.read (| vec |)) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -8331,6 +8414,8 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::IntoIter"
+              []
+              [ T; A ]
               [
                 ("iter",
                   M.call_closure (|
@@ -8457,6 +8542,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::binary_heap::RebuildOnDrop"
+                    []
+                    [ T; A ]
                     [
                       ("rebuild_from",
                         M.call_closure (|

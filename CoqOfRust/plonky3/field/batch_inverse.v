@@ -985,7 +985,11 @@ Module batch_inverse.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -1015,7 +1019,11 @@ Module batch_inverse.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
                                           ]
                                         |)
                                       |)
@@ -1448,7 +1456,11 @@ Module batch_inverse.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -1478,7 +1490,11 @@ Module batch_inverse.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
                                           ]
                                         |)
                                       |)
@@ -1544,6 +1560,8 @@ Module batch_inverse.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", Value.Integer IntegerKind.Usize 1); ("end_", M.read (| n |))
                             ]
                         ]
@@ -1742,6 +1760,8 @@ Module batch_inverse.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_", M.read (| n |))

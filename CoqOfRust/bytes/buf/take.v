@@ -101,6 +101,8 @@ Module buf.
           let limit := M.alloc (| limit |) in
           Value.StructRecord
             "bytes::buf::take::Take"
+            []
+            [ T ]
             [ ("inner", M.read (| inner |)); ("limit", M.read (| limit |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -384,6 +386,8 @@ Module buf.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("end_",
                                   M.call_closure (|

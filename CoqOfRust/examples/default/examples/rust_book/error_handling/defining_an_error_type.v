@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.StructTuple "defining_an_error_type::DoubleError" []))
+        Value.StructTuple "defining_an_error_type::DoubleError" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -233,7 +233,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                   |)
                 ]
               |);
-              Value.StructTuple "defining_an_error_type::DoubleError" []
+              Value.StructTuple "defining_an_error_type::DoubleError" [] [] []
             ]
           |);
           M.closure
@@ -353,6 +353,8 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                     ltac:(M.monadic
                                                       (Value.StructTuple
                                                         "defining_an_error_type::DoubleError"
+                                                        []
+                                                        []
                                                         []))
                                                 ]
                                               |)))

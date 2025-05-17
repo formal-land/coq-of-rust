@@ -976,6 +976,8 @@ Module vec.
                                                           Value.StructTuple
                                                             "core::panicking::AssertKind::Eq"
                                                             []
+                                                            []
+                                                            []
                                                         |) in
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -1046,6 +1048,8 @@ Module vec.
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [ Ty.path "core::fmt::Arguments" ]
                                                               []
                                                           ]
                                                         |)
@@ -1360,11 +1364,33 @@ Module vec.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "alloc::vec::in_place_collect::InPlaceCollect"
+                              []
+                              []
+                              I
+                              "Src";
+                            T
+                          ]
                           [
                             ("ptr", M.read (| dst_buf |));
                             ("len", M.read (| len |));
                             ("src_cap", M.read (| src_cap |));
-                            ("src", Value.StructTuple "core::marker::PhantomData" [])
+                            ("src",
+                              Value.StructTuple
+                                "core::marker::PhantomData"
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "alloc::vec::in_place_collect::InPlaceCollect"
+                                    []
+                                    []
+                                    I
+                                    "Src"
+                                ]
+                                [])
                           ]
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1428,7 +1454,7 @@ Module vec.
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ alloc :
                                   Ty.apply (Ty.path "*") [] [ Ty.path "alloc::alloc::Global" ] :=
-                                M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |) in
+                                M.alloc (| Value.StructTuple "alloc::alloc::Global" [] [] [] |) in
                               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
                                   Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -1510,6 +1536,8 @@ Module vec.
                                                                     Value.StructTuple
                                                                       "core::panicking::AssertKind::Ne"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -1548,6 +1576,11 @@ Module vec.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments"
+                                                                        ]
                                                                         []
                                                                     ]
                                                                   |)
@@ -1647,6 +1680,8 @@ Module vec.
                                                                     Value.StructTuple
                                                                       "core::panicking::AssertKind::Ne"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -1685,6 +1720,11 @@ Module vec.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments"
+                                                                        ]
                                                                         []
                                                                     ]
                                                                   |)
@@ -2043,6 +2083,8 @@ Module vec.
                                                                     Value.StructTuple
                                                                       "core::panicking::AssertKind::Eq"
                                                                       []
+                                                                      []
+                                                                      []
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -2081,6 +2123,11 @@ Module vec.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "core::option::Option::None"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments"
+                                                                        ]
                                                                         []
                                                                     ]
                                                                   |)
@@ -2423,6 +2470,14 @@ Module vec.
                                       M.alloc (|
                                         Value.StructTuple
                                           "core::result::Result::Ok"
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                              []
+                                              [ T ];
+                                            Ty.path "never"
+                                          ]
                                           [ M.read (| sink |) ]
                                       |)
                                     |)))
@@ -2483,6 +2538,8 @@ Module vec.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::vec::in_place_drop::InPlaceDrop"
+                    []
+                    [ T ]
                     [ ("inner", M.read (| dst_buf |)); ("dst", M.read (| dst_buf |)) ]
                 |) in
               let~ sink :
@@ -2708,6 +2765,8 @@ Module vec.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::vec::in_place_drop::InPlaceDrop"
+                    []
+                    [ T ]
                     [ ("inner", M.read (| dst_buf |)); ("dst", M.read (| dst_buf |)) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -2729,6 +2788,8 @@ Module vec.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_", M.read (| len |))

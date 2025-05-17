@@ -52,6 +52,11 @@ Module str.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -75,7 +80,14 @@ Module str.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ]
+                        [ M.read (| err |) ]
                     |)))
               ]
             |)
@@ -137,6 +149,11 @@ Module str.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -170,7 +187,14 @@ Module str.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ]
+                        [ M.read (| err |) ]
                     |)))
               ]
             |)

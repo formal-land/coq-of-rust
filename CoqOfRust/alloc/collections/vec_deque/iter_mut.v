@@ -34,6 +34,8 @@ Module collections.
               let i2 := M.alloc (| i2 |) in
               Value.StructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
+                []
+                [ T ]
                 [ ("i1", M.read (| i1 |)); ("i2", M.read (| i2 |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -455,6 +457,8 @@ Module collections.
             ltac:(M.monadic
               (Value.StructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
+                []
+                [ T ]
                 [
                   ("i1",
                     M.call_closure (|
@@ -578,6 +582,8 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
@@ -733,7 +739,17 @@ Module collections.
                             0
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -871,7 +887,11 @@ Module collections.
                   Value.Tuple
                     [
                       M.read (| len |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| len |) ]
                     ]
                 |)
               |)))
@@ -1407,6 +1427,8 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
@@ -1562,7 +1584,17 @@ Module collections.
                             0
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic

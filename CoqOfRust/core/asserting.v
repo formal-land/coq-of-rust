@@ -127,6 +127,8 @@ Module asserting.
                   |),
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ E ]
                     [
                       M.read (|
                         M.deref (|
@@ -283,9 +285,11 @@ Module asserting.
         ltac:(M.monadic
           (Value.StructRecord
             "core::asserting::Capture"
+            []
+            [ M_; T ]
             [
-              ("elem", Value.StructTuple "core::option::Option::None" []);
-              ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+              ("elem", Value.StructTuple "core::option::Option::None" [] [ M_ ] []);
+              ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -209,6 +209,8 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+                          []
+                          []
                           [
                             ("initdata",
                               M.call_closure (|
@@ -258,6 +260,8 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                          []
+                          []
                           [
                             ("initcode",
                               M.call_closure (|
@@ -705,6 +709,13 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -720,7 +731,18 @@ Module interpreter_action.
                           γ,
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -752,6 +774,8 @@ Module interpreter_action.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+              []
+              []
               [
                 ("initcode",
                   M.call_closure (|
@@ -946,6 +970,8 @@ Module interpreter_action.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+              []
+              []
               [
                 ("caller",
                   M.call_closure (|
@@ -1036,6 +1062,8 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+              []
+              []
               [
                 ("caller",
                   M.call_closure (|
@@ -1422,6 +1450,8 @@ Module interpreter_action.
             let kind := M.alloc (| kind |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+              []
+              []
               [
                 ("caller", M.read (| caller |));
                 ("value", M.read (| value |));
@@ -1480,6 +1510,8 @@ Module interpreter_action.
                 M.read (| gas_limit |);
                 Value.StructRecord
                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                  []
+                  []
                   [
                     ("initcode", M.read (| eof_init_code |));
                     ("input", M.read (| input |));

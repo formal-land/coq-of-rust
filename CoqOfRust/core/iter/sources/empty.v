@@ -15,7 +15,9 @@ Module iter.
           ltac:(M.monadic
             (Value.StructTuple
               "core::iter::sources::empty::Empty"
-              [ Value.StructTuple "core::marker::PhantomData" [] ]))
+              []
+              [ T ]
+              [ Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] T ] [] ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -111,7 +113,7 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple "core::option::Option::None" []))
+              Value.StructTuple "core::option::Option::None" [] [ T ] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -131,6 +133,8 @@ Module iter.
                   Value.Integer IntegerKind.Usize 0;
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
                     [ Value.Integer IntegerKind.Usize 0 ]
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -166,7 +170,7 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple "core::option::Option::None" []))
+              Value.StructTuple "core::option::Option::None" [] [ T ] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -254,7 +258,9 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "core::iter::sources::empty::Empty"
-                [ Value.StructTuple "core::marker::PhantomData" [] ]))
+                []
+                [ T ]
+                [ Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] T ] [] ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -284,7 +290,9 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::iter::sources::empty::Empty"
-                [ Value.StructTuple "core::marker::PhantomData" [] ]))
+                []
+                [ T ]
+                [ Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] T ] [] ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

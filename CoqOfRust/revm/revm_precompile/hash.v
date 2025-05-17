@@ -7,6 +7,8 @@ Module hash.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -28,6 +30,8 @@ Module hash.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -127,6 +131,11 @@ Module hash.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -142,6 +151,8 @@ Module hash.
                           [
                             Value.StructTuple
                               "revm_precompile::interface::PrecompileError::OutOfGas"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -307,6 +318,11 @@ Module hash.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "revm_precompile::interface::PrecompileOutput",
@@ -516,6 +532,11 @@ Module hash.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -531,6 +552,8 @@ Module hash.
                           [
                             Value.StructTuple
                               "revm_precompile::interface::PrecompileError::OutOfGas"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -754,6 +777,8 @@ Module hash.
                                           M.borrow (| Pointer.Kind.MutRef, output |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 12) ]
                                         ]
                                       |)
@@ -769,6 +794,11 @@ Module hash.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "revm_precompile::interface::PrecompileOutput",

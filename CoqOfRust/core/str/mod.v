@@ -199,6 +199,8 @@ Module str.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
                       Value.StructRecord
                         "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("end_", M.read (| trunc_len |)) ]
                     ]
                   |)
@@ -674,6 +676,8 @@ Module str.
                                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", M.read (| char_start |)) ]
                                     ]
                                   |)
@@ -696,6 +700,8 @@ Module str.
             M.alloc (|
               Value.StructRecord
                 "core::ops::range::Range"
+                []
+                [ Ty.path "usize" ]
                 [
                   ("start", M.read (| char_start |));
                   ("end_",
@@ -1498,6 +1504,8 @@ Module str.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::Range"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   ("start", M.read (| index |));
                                                   ("end_", M.read (| upper_bound |))
@@ -1986,6 +1994,8 @@ Module str.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", M.read (| begin |)); ("end_", M.read (| end_ |)) ];
                       M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                     ]
@@ -2043,6 +2053,8 @@ Module str.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", M.read (| begin |)); ("end_", M.read (| end_ |)) ];
                               M.borrow (|
                                 Pointer.Kind.MutPointer,
@@ -2303,6 +2315,14 @@ Module str.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                            ]
+                        ]
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -2324,7 +2344,20 @@ Module str.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                            ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2395,6 +2428,14 @@ Module str.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ]
+                            ]
+                        ]
                         [
                           M.call_closure (|
                             Ty.tuple
@@ -2416,7 +2457,20 @@ Module str.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ]
+                            ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2686,6 +2740,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::Chars"
+            []
+            []
             [
               ("iter",
                 M.call_closure (|
@@ -2732,6 +2788,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::CharIndices"
+            []
+            []
             [
               ("front_offset", Value.Integer IntegerKind.Usize 0);
               ("iter",
@@ -2761,6 +2819,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::str::iter::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -2823,6 +2883,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::SplitWhitespace"
+            []
+            []
             [
               ("inner",
                 M.call_closure (|
@@ -2862,10 +2924,10 @@ Module str.
                       |),
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::str::IsWhitespace" []
+                        Value.StructTuple "core::str::IsWhitespace" [] [] []
                       ]
                     |);
-                    Value.StructTuple "core::str::IsNotEmpty" []
+                    Value.StructTuple "core::str::IsNotEmpty" [] [] []
                   ]
                 |))
             ]))
@@ -3002,19 +3064,21 @@ Module str.
                                 |)
                               |)
                             |);
-                            Value.StructTuple "core::str::IsAsciiWhitespace" []
+                            Value.StructTuple "core::str::IsAsciiWhitespace" [] [] []
                           ]
                         |);
-                        Value.StructTuple "core::str::BytesIsNotEmpty" []
+                        Value.StructTuple "core::str::BytesIsNotEmpty" [] [] []
                       ]
                     |);
-                    Value.StructTuple "core::str::UnsafeBytesToStr" []
+                    Value.StructTuple "core::str::UnsafeBytesToStr" [] [] []
                   ]
                 |)
               |) in
             M.alloc (|
               Value.StructRecord
                 "core::str::iter::SplitAsciiWhitespace"
+                []
+                []
                 [ ("inner", M.read (| inner |)) ]
             |)
           |)))
@@ -3038,6 +3102,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::str::iter::Lines"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -3070,7 +3136,7 @@ Module str.
                       Value.UnicodeChar 10
                     ]
                   |);
-                  Value.StructTuple "core::str::LinesMap" []
+                  Value.StructTuple "core::str::LinesMap" [] [] []
                 ]
               |)
             ]))
@@ -3093,6 +3159,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::str::iter::LinesAny"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "core::str::iter::Lines",
@@ -3120,6 +3188,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::EncodeUtf16"
+            []
+            []
             [
               ("chars",
                 M.call_closure (|
@@ -3461,9 +3531,13 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::Split"
+            []
+            [ P ]
             [
               Value.StructRecord
                 "core::str::iter::SplitInternal"
+                []
+                [ P ]
                 [
                   ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
@@ -3519,9 +3593,13 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::SplitInclusive"
+            []
+            [ P ]
             [
               Value.StructRecord
                 "core::str::iter::SplitInternal"
+                []
+                [ P ]
                 [
                   ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
@@ -3575,6 +3653,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::RSplit"
+            []
+            [ P ]
             [
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -3613,6 +3693,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::SplitTerminator"
+            []
+            [ P ]
             [
               M.struct_record_update
                 (M.read (|
@@ -3657,6 +3739,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::RSplitTerminator"
+            []
+            [ P ]
             [
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -3697,9 +3781,13 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::SplitN"
+            []
+            [ P ]
             [
               Value.StructRecord
                 "core::str::iter::SplitNInternal"
+                []
+                [ P ]
                 [
                   ("iter",
                     M.read (|
@@ -3745,6 +3833,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::RSplitN"
+            []
+            [ P ]
             [
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -3970,6 +4060,14 @@ Module str.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                ]
+                            ]
                             [
                               Value.Tuple
                                 [
@@ -3996,6 +4094,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| start |)) ]
                                         ]
                                       |)
@@ -4024,6 +4124,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", M.read (| end_ |)) ]
                                         ]
                                       |)
@@ -4246,6 +4348,14 @@ Module str.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                ]
+                            ]
                             [
                               Value.Tuple
                                 [
@@ -4272,6 +4382,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| start |)) ]
                                         ]
                                       |)
@@ -4300,6 +4412,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", M.read (| end_ |)) ]
                                         ]
                                       |)
@@ -4333,9 +4447,13 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::Matches"
+            []
+            [ P ]
             [
               Value.StructTuple
                 "core::str::iter::MatchesInternal"
+                []
+                [ P ]
                 [
                   M.call_closure (|
                     Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
@@ -4378,6 +4496,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::RMatches"
+            []
+            [ P ]
             [
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -4416,9 +4536,13 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::MatchIndices"
+            []
+            [ P ]
             [
               Value.StructTuple
                 "core::str::iter::MatchIndicesInternal"
+                []
+                [ P ]
                 [
                   M.call_closure (|
                     Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
@@ -4462,6 +4586,8 @@ Module str.
           let pat := M.alloc (| pat |) in
           Value.StructTuple
             "core::str::iter::RMatchIndices"
+            []
+            [ P ]
             [
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -4902,6 +5028,8 @@ Module str.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", M.read (| i |)); ("end_", M.read (| j |)) ]
                     ]
                   |)
@@ -5028,6 +5156,8 @@ Module str.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", M.read (| i |));
                           ("end_",
@@ -5234,6 +5364,8 @@ Module str.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| j |)) ]
                     ]
                   |)
@@ -5804,6 +5936,8 @@ Module str.
             M.alloc (|
               Value.StructRecord
                 "core::str::iter::EscapeDebug"
+                []
+                []
                 [
                   ("inner",
                     M.call_closure (|
@@ -6004,7 +6138,7 @@ Module str.
                           |),
                           [
                             M.read (| chars |);
-                            Value.StructTuple "core::str::CharEscapeDebugContinue" []
+                            Value.StructTuple "core::str::CharEscapeDebugContinue" [] [] []
                           ]
                         |)
                       ]
@@ -6032,6 +6166,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::EscapeDefault"
+            []
+            []
             [
               ("inner",
                 M.call_closure (|
@@ -6058,7 +6194,7 @@ Module str.
                       M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    Value.StructTuple "core::str::CharEscapeDefault" []
+                    Value.StructTuple "core::str::CharEscapeDefault" [] [] []
                   ]
                 |))
             ]))
@@ -6082,6 +6218,8 @@ Module str.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::str::iter::EscapeUnicode"
+            []
+            []
             [
               ("inner",
                 M.call_closure (|
@@ -6108,7 +6246,7 @@ Module str.
                       M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    Value.StructTuple "core::str::CharEscapeUnicode" []
+                    Value.StructTuple "core::str::CharEscapeUnicode" [] [] []
                   ]
                 |))
             ]))
@@ -6314,7 +6452,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::LinesMap" []))
+          Value.StructTuple "core::str::LinesMap" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6336,7 +6474,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeDebugContinue" []))
+          Value.StructTuple "core::str::CharEscapeDebugContinue" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6358,7 +6496,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeUnicode" []))
+          Value.StructTuple "core::str::CharEscapeUnicode" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6380,7 +6518,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeDefault" []))
+          Value.StructTuple "core::str::CharEscapeDefault" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6402,7 +6540,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsWhitespace" []))
+          Value.StructTuple "core::str::IsWhitespace" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6424,7 +6562,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsAsciiWhitespace" []))
+          Value.StructTuple "core::str::IsAsciiWhitespace" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6446,7 +6584,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsNotEmpty" []))
+          Value.StructTuple "core::str::IsNotEmpty" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6468,7 +6606,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::BytesIsNotEmpty" []))
+          Value.StructTuple "core::str::BytesIsNotEmpty" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6490,7 +6628,7 @@ Module str.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::UnsafeBytesToStr" []))
+          Value.StructTuple "core::str::UnsafeBytesToStr" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

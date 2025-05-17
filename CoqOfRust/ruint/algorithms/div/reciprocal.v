@@ -343,7 +343,11 @@ Module algorithms.
                     []
                     [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ] :=
                 M.alloc (|
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| d |) ]
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
+                    [ M.read (| d |) ]
                 |) in
               let~ d0 :
                   Ty.apply
@@ -488,6 +492,8 @@ Module algorithms.
                 M.alloc (|
                   Value.StructTuple
                     "core::num::wrapping::Wrapping"
+                    []
+                    [ Ty.path "u64" ]
                     [
                       M.cast
                         (Ty.path "u64")
@@ -1039,7 +1045,11 @@ Module algorithms.
         Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer IntegerKind.U64 0 ]
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                []
+                [ Ty.path "u64" ]
+                [ Value.Integer IntegerKind.U64 0 ]
             |))).
         
         Global Instance Instance_IsConstant_value_ZERO :
@@ -1050,7 +1060,11 @@ Module algorithms.
         Definition value_ONE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer IntegerKind.U64 1 ]
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                []
+                [ Ty.path "u64" ]
+                [ Value.Integer IntegerKind.U64 1 ]
             |))).
         
         Global Instance Instance_IsConstant_value_ONE :
@@ -1831,6 +1845,8 @@ Module algorithms.
               M.alloc (|
                 Value.StructTuple
                   "core::num::wrapping::Wrapping"
+                  []
+                  [ Ty.path "u64" ]
                   [
                     M.cast
                       (Ty.path "u64")
@@ -1957,6 +1973,8 @@ Module algorithms.
               M.alloc (|
                 Value.StructTuple
                   "core::num::wrapping::Wrapping"
+                  []
+                  [ Ty.path "u64" ]
                   [
                     M.cast
                       (Ty.path "u64")

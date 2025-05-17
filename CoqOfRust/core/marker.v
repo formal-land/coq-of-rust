@@ -679,7 +679,9 @@ Module marker.
           let _other := M.alloc (| _other |) in
           Value.StructTuple
             "core::option::Option::Some"
-            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+            []
+            [ Ty.path "core::cmp::Ordering" ]
+            [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -708,7 +710,7 @@ Module marker.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          Value.StructTuple "core::cmp::Ordering::Equal" []))
+          Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -936,7 +938,7 @@ Module marker.
     (* Default *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::marker::PhantomPinned" []))
+      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::marker::PhantomPinned" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1055,7 +1057,7 @@ Module marker.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.StructTuple "core::cmp::Ordering::Equal" []))
+          Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1080,7 +1082,9 @@ Module marker.
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
-            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+            []
+            [ Ty.path "core::cmp::Ordering" ]
+            [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

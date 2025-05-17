@@ -72,6 +72,8 @@ Module friends.
                                   M.read (| e |);
                                   Value.StructTuple
                                     "move_binary_format::errors::Location::Module"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "move_core_types::language_storage::ModuleId",
@@ -243,6 +245,11 @@ Module friends.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -255,6 +262,8 @@ Module friends.
                                       [
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -527,6 +536,11 @@ Module friends.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -540,6 +554,8 @@ Module friends.
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -550,7 +566,13 @@ Module friends.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

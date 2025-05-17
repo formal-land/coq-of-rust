@@ -94,10 +94,14 @@ Module bitrev.
           (let inner := M.alloc (| inner |) in
           Value.StructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
+            []
+            [ Ty.path "p3_matrix::bitrev::BitReversalPerm"; Inner ]
             [
               ("index_map",
                 Value.StructRecord
                   "p3_matrix::bitrev::BitReversalPerm"
+                  []
+                  []
                   [
                     ("log_height",
                       M.call_closure (|

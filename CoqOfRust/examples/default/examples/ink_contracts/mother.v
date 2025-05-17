@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -146,6 +148,8 @@ Module Impl_core_default_Default_for_mother_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "mother::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -352,6 +356,8 @@ Module Impl_core_default_Default_for_mother_Bids.
       ltac:(M.monadic
         (Value.StructTuple
           "mother::Bids"
+          []
+          []
           [
             M.call_closure (|
               Ty.apply
@@ -549,6 +555,8 @@ Module Impl_core_clone_Clone_for_mother_Bids.
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "mother::Bids"
+          []
+          []
           [
             M.call_closure (|
               Ty.apply
@@ -760,17 +768,17 @@ Module Impl_core_clone_Clone_for_mother_Outline.
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let _ := M.is_struct_tuple (| γ, "mother::Outline::NoWinner" |) in
-                  M.alloc (| Value.StructTuple "mother::Outline::NoWinner" [] |)));
+                  M.alloc (| Value.StructTuple "mother::Outline::NoWinner" [] [] [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let _ := M.is_struct_tuple (| γ, "mother::Outline::WinnerDetected" |) in
-                  M.alloc (| Value.StructTuple "mother::Outline::WinnerDetected" [] |)));
+                  M.alloc (| Value.StructTuple "mother::Outline::WinnerDetected" [] [] [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let _ := M.is_struct_tuple (| γ, "mother::Outline::PayoutCompleted" |) in
-                  M.alloc (| Value.StructTuple "mother::Outline::PayoutCompleted" [] |)))
+                  M.alloc (| Value.StructTuple "mother::Outline::PayoutCompleted" [] [] [] |)))
             ]
           |)
         |)))
@@ -1075,12 +1083,12 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let _ := M.is_struct_tuple (| γ, "mother::Status::NotStarted" |) in
-                  M.alloc (| Value.StructTuple "mother::Status::NotStarted" [] |)));
+                  M.alloc (| Value.StructTuple "mother::Status::NotStarted" [] [] [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let _ := M.is_struct_tuple (| γ, "mother::Status::OpeningPeriod" |) in
-                  M.alloc (| Value.StructTuple "mother::Status::OpeningPeriod" [] |)));
+                  M.alloc (| Value.StructTuple "mother::Status::OpeningPeriod" [] [] [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
@@ -1094,6 +1102,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   M.alloc (|
                     Value.StructTuple
                       "mother::Status::EndingPeriod"
+                      []
+                      []
                       [
                         M.call_closure (|
                           Ty.path "u32",
@@ -1119,6 +1129,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   M.alloc (|
                     Value.StructTuple
                       "mother::Status::Ended"
+                      []
+                      []
                       [
                         M.call_closure (|
                           Ty.path "mother::Outline",
@@ -1144,6 +1156,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   M.alloc (|
                     Value.StructTuple
                       "mother::Status::RfDelay"
+                      []
+                      []
                       [
                         M.call_closure (|
                           Ty.path "u32",
@@ -1570,6 +1584,8 @@ Module Impl_core_clone_Clone_for_mother_Auction.
         (let self := M.alloc (| self |) in
         Value.StructRecord
           "mother::Auction"
+          []
+          []
           [
             ("name",
               M.call_closure (|
@@ -1814,6 +1830,8 @@ Module Impl_core_default_Default_for_mother_Auction.
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Auction"
+          []
+          []
           [
             ("name",
               M.call_closure (|
@@ -1877,7 +1895,7 @@ Module Impl_core_default_Default_for_mother_Auction.
                 |),
                 []
               |));
-            ("status", Value.StructTuple "mother::Status::OpeningPeriod" []);
+            ("status", Value.StructTuple "mother::Status::OpeningPeriod" [] [] []);
             ("finalized", Value.Bool false);
             ("vector",
               M.call_closure (|
@@ -2186,6 +2204,8 @@ Module Impl_core_default_Default_for_mother_Mother.
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Mother"
+          []
+          []
           [
             ("auction",
               M.call_closure (|
@@ -2297,6 +2317,8 @@ Module Impl_mother_Mother.
         (let auction := M.alloc (| auction |) in
         Value.StructRecord
           "mother::Mother"
+          []
+          []
           [
             ("balances",
               M.call_closure (|
@@ -2391,9 +2413,13 @@ Module Impl_mother_Mother.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]
                       [
                         Value.StructTuple
                           "mother::Failure::Revert"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "alloc::string::String",
@@ -2421,6 +2447,8 @@ Module Impl_mother_Mother.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]
                       [
                         M.call_closure (|
                           Ty.path "mother::Mother",
@@ -2481,9 +2509,13 @@ Module Impl_mother_Mother.
                   |);
                   Value.StructTuple
                     "mother::Event::AuctionEchoed"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "mother::AuctionEchoed"
+                        []
+                        []
                         [
                           ("auction",
                             M.call_closure (|
@@ -2555,9 +2587,13 @@ Module Impl_mother_Mother.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "mother::Failure" ]
                       [
                         Value.StructTuple
                           "mother::Failure::Revert"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "alloc::string::String",
@@ -2601,7 +2637,13 @@ Module Impl_mother_Mother.
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "mother::Failure" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))

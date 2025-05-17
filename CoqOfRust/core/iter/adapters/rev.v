@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::rev::Rev"
+                []
+                [ T ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -137,7 +139,11 @@ Module iter.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
-              Value.StructRecord "core::iter::adapters::rev::Rev" [ ("iter", M.read (| iter |)) ]))
+              Value.StructRecord
+                "core::iter::adapters::rev::Rev"
+                []
+                [ T ]
+                [ ("iter", M.read (| iter |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

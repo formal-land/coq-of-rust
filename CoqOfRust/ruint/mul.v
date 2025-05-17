@@ -57,10 +57,21 @@ Module mul.
                     let value := M.copy (| γ0_0 |) in
                     let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        [ M.read (| value |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -597,7 +608,13 @@ Module mul.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -637,6 +654,8 @@ Module mul.
                           M.alloc (|
                             Value.StructTuple
                               "core::num::wrapping::Wrapping"
+                              []
+                              [ Ty.path "u64" ]
                               [
                                 M.read (|
                                   M.SubPointer.get_array_field (|
@@ -1177,6 +1196,8 @@ Module mul.
                                                               Value.StructTuple
                                                                 "core::panicking::AssertKind::Eq"
                                                                 []
+                                                                []
+                                                                []
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -1212,6 +1233,8 @@ Module mul.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
+                                                                  []
+                                                                  [ Ty.path "core::fmt::Arguments" ]
                                                                   []
                                                               ]
                                                             |)
@@ -1374,7 +1397,13 @@ Module mul.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1473,7 +1502,7 @@ Module mul.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1503,7 +1532,11 @@ Module mul.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -1572,7 +1605,7 @@ Module mul.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1602,7 +1635,11 @@ Module mul.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)

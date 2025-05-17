@@ -21,6 +21,8 @@ Module bytes_.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -72,6 +74,8 @@ Module bytes_.
         ltac:(M.monadic
           (Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -899,6 +903,8 @@ Module bytes_.
           (let iter := M.alloc (| iter |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -941,6 +947,8 @@ Module bytes_.
           (let iter := M.alloc (| iter |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -1178,7 +1186,7 @@ Module bytes_.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructTuple "alloy_primitives::bytes_::Bytes" [ M.read (| value |) ]))
+          Value.StructTuple "alloy_primitives::bytes_::Bytes" [] [] [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1234,6 +1242,8 @@ Module bytes_.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -1601,6 +1611,8 @@ Module bytes_.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -1653,6 +1665,8 @@ Module bytes_.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -1821,7 +1835,7 @@ Module bytes_.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -1928,7 +1942,7 @@ Module bytes_.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -2033,7 +2047,7 @@ Module bytes_.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -2057,7 +2071,7 @@ Module bytes_.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -2541,6 +2555,8 @@ Module bytes_.
         ltac:(M.monadic
           (Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2567,6 +2583,8 @@ Module bytes_.
           (let bytes := M.alloc (| bytes |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2599,6 +2617,8 @@ Module bytes_.
           (let data := M.alloc (| data |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2632,6 +2652,8 @@ Module bytes_.
           let range := M.alloc (| range |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2674,6 +2696,8 @@ Module bytes_.
           let subset := M.alloc (| subset |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2712,6 +2736,8 @@ Module bytes_.
           let at_ := M.alloc (| at_ |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",
@@ -2750,6 +2776,8 @@ Module bytes_.
           let at_ := M.alloc (| at_ |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "bytes::bytes::Bytes",

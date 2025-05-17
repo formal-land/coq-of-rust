@@ -29,6 +29,8 @@ Module array.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ N ] [ F ],
@@ -502,7 +504,7 @@ Module array.
       | [], [], [ arr ] =>
         ltac:(M.monadic
           (let arr := M.alloc (| arr |) in
-          Value.StructTuple "p3_field::array::FieldArray" [ M.read (| arr |) ]))
+          Value.StructTuple "p3_field::array::FieldArray" [ N ] [ F ] [ M.read (| arr |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -538,6 +540,8 @@ Module array.
         (M.alloc (|
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", F |) |),
@@ -560,6 +564,8 @@ Module array.
         (M.alloc (|
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ONE", F |) |),
@@ -582,6 +588,8 @@ Module array.
         (M.alloc (|
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::TWO", F |) |),
@@ -604,6 +612,8 @@ Module array.
         (M.alloc (|
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               repeat (|
                 M.read (|
@@ -796,7 +806,7 @@ Module array.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -826,7 +836,11 @@ Module array.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -972,7 +986,11 @@ Module array.
                                               []
                                               [ Ty.path "core::panicking::AssertKind" ] :=
                                           M.alloc (|
-                                            Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                            Value.StructTuple
+                                              "core::panicking::AssertKind::Eq"
+                                              []
+                                              []
+                                              []
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
@@ -1002,7 +1020,11 @@ Module array.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.path "core::fmt::Arguments" ]
+                                                []
                                             ]
                                           |)
                                         |)
@@ -1088,6 +1110,8 @@ Module array.
           (let f := M.alloc (| f |) in
           Value.StructTuple
             "p3_field::array::FieldArray"
+            [ N ]
+            [ F ]
             [
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ N ] [ F ],

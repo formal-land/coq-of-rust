@@ -618,6 +618,17 @@ Module instructions.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "alloy_primitives::bytes_::Bytes";
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ]
+                              ]
                               [ Value.Tuple [ M.read (| input |); M.read (| ret_range |) ] ]
                           |)))
                     ]
@@ -826,11 +837,22 @@ Module instructions.
                                                       Value.StructTuple
                                                         "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                         []
+                                                        []
+                                                        []
                                                     ]
                                                   |)
                                                 |) in
                                               M.return_ (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -1055,12 +1077,22 @@ Module instructions.
                                                                   Value.StructTuple
                                                                     "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 ]
                                                               |)
                                                             |) in
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ]
+                                                              ]
                                                               []
                                                           |)
                                                         |)
@@ -1245,11 +1277,22 @@ Module instructions.
                                                       Value.StructTuple
                                                         "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                                                         []
+                                                        []
+                                                        []
                                                     ]
                                                   |)
                                                 |) in
                                               M.return_ (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -1278,9 +1321,13 @@ Module instructions.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", M.read (| offset |));
                             ("end_",
@@ -1478,10 +1525,18 @@ Module instructions.
                                           Value.StructTuple
                                             "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                             []
+                                            []
+                                            []
                                         ]
                                       |)
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u64" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1537,6 +1592,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_specification::hardfork::SpecId::TANGERINE"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1603,7 +1660,11 @@ Module instructions.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| gas_limit |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "u64" ]
+                      [ M.read (| gas_limit |) ]
                   |)
                 |)))
             |)))

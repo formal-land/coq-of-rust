@@ -93,6 +93,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::vec_deque::drain::Drain"
+                    []
+                    [ T; A ]
                     [
                       ("deque",
                         M.call_closure (|
@@ -138,7 +140,12 @@ Module collections.
                       ("idx", M.read (| drain_start |));
                       ("new_len", M.read (| new_len |));
                       ("remaining", M.read (| drain_len |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          [])
                     ]
                 |)
               |)))
@@ -230,6 +237,8 @@ Module collections.
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start",
                           M.read (|
@@ -772,6 +781,8 @@ Module collections.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::collections::vec_deque::drain::drop::DropGuard"
+                      []
+                      [ T; A ]
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1066,7 +1077,7 @@ Module collections.
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple "core::option::Option::None" [] [ T ] []
                                     |)
                                   |)
                                 |)
@@ -1175,6 +1186,8 @@ Module collections.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -1268,7 +1281,11 @@ Module collections.
                   Value.Tuple
                     [
                       M.read (| len |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| len |) ]
                     ]
                 |)
               |)))
@@ -1349,7 +1366,7 @@ Module collections.
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple "core::option::Option::None" [] [ T ] []
                                     |)
                                   |)
                                 |)
@@ -1454,6 +1471,8 @@ Module collections.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
