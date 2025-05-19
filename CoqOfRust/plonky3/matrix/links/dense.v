@@ -4,6 +4,10 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import plonky3.matrix.dense.
 
+(* TODO:
+  - in the future, check the detail of the proof
+*)
+
 (* 
 pub struct DenseMatrix<T, V = Vec<T>> {
     pub values: V,
@@ -30,6 +34,7 @@ Module DenseMatrix.
     OfTy.t T' ->
     OfTy.t V' ->
     OfTy.t (Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T'; V']).
+  (* TODO: check the proof in the future *)
   Proof. intros [T] [V]. eapply OfTy.Make with (A := t T V). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 End DenseMatrix.
@@ -39,4 +44,17 @@ pub type RowMajorMatrix<T> = DenseMatrix<T, Vec<T>>;
 *)
 Module RowMajorMatrix.
   Definition t (T : Set) := DenseMatrix.t T (Vec.t Global.t T).
+
+  Parameter to_value : forall {T : Set}, t T -> Value.t.
+
+  Global Instance IsLink (T : Set) `{Link T} : Link (t T) := {
+    Φ := Ty.apply (Ty.path "p3_matrix::dense::RowMajorMatrix") [] [ Φ T ];
+    φ := to_value;
+  }.
+
+  Definition of_ty (T_ty : Ty.t) :
+    OfTy.t T_ty -> 
+    OfTy.t (Ty.apply (Ty.path "p3_matrix::dense::RowMajorMatrix") [] [ T_ty ]).
+  Proof. intros [T]. eapply OfTy.Make with (A := t T). now subst. Defined.
+  Smpl Add eapply of_ty : of_ty.
 End RowMajorMatrix.

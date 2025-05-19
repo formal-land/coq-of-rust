@@ -12,6 +12,8 @@ TODO:
 - In future, refer to `gas` to deal with different impls
 - In future, for all dependencies, fix their type path to actual path that starts with `p_3`
 - Check if AirBuilder needs `AB_types`
+- Check occurences for `Vec` as in `dense`
+- Check occurences for `of_ty` as in `dense`
 *)
 
 (* pub struct Blake3Air {} *)
