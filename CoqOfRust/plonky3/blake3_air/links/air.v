@@ -8,9 +8,8 @@ Require Import plonky3.matrix.links.dense.
 
 (* 
 TODO:
-- Move all files under `src` to their parent files for consistency
-- In future, refer to `gas` to deal with different impls
-- In future, for all dependencies, fix their type path to actual path that starts with `p_3`
+- Refer to `gas` to deal with different impls
+- For all dependencies, fix their type path to actual path that starts with `p_3`
 - Check if AirBuilder needs `AB_types`
 - Check occurences for `Vec` as in `dense`
 - Check occurences for `of_ty` as in `dense`
