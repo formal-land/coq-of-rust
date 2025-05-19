@@ -126,7 +126,8 @@ pub trait PrimeField64: PrimeField {
 }
 *)
 Module PrimeField64.
-  Parameter t : Set.
+  Inductive t : Set :=
+  | Make.
 
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("plonky3::field::field::PrimeField64", [], [], Φ Self).

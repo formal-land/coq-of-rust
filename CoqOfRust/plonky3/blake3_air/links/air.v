@@ -11,13 +11,13 @@ TODO:
 - Refer to `gas` to deal with different impls
 - For all dependencies, fix their type path to actual path that starts with `p_3`
 - Check if AirBuilder needs `AB_types`
-- Check occurences for `Vec` as in `dense`
 - Check occurences for `of_ty` as in `dense`
 *)
 
 (* pub struct Blake3Air {} *)
 Module Blake3Air.
-  Record t : Set := {}.
+  Inductive t : Set :=
+  | Make.
 
   Parameter to_value : t -> Value.t.
 
@@ -93,7 +93,7 @@ Module Impl_Blake3Air.
     (self : Ref.t Pointer.Kind.Ref Self) 
     (input : Ref.t Pointer.Kind.Ref (Blake3State.t T))
     (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
-    (m_vector : list (list U))
+    (m_vector : Ref.t Pointer.Kind.Ref (array.t (array.t U {| Integer.value := 2 |}) {| Integer.value := 16 |})
     (index : Usize.t)
     :
     Run.Trait
@@ -117,7 +117,7 @@ Module Impl_Blake3Air.
     {T U : Set} `{Link T}  `{Link U}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
-    (m_vector : list (list U))
+    (m_vector : Ref.t Pointer.Kind.Ref (array.t (array.t U {| Integer.value := 2 |}) {| Integer.value := 16 |})
     (index : Usize.t)
     :
     Run.Trait
