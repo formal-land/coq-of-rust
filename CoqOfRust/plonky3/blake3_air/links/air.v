@@ -9,9 +9,7 @@ Require Import plonky3.matrix.links.dense.
 (* 
 TODO:
 - Refer to `gas` to deal with different impls
-- For all dependencies, fix their type path to actual path that starts with `p_3`
 - Check if AirBuilder needs `AB_types`
-- Check occurences for `of_ty` as in `dense`
 *)
 
 (* pub struct Blake3Air {} *)
@@ -20,7 +18,6 @@ Module Blake3Air.
   | Make.
 
   Global Instance IsLink : Link t := {
-  (* TODO: fix path here *)
     Φ := Ty.path "p3_blake3_air::air::Blake3Air";
     φ _ := Value.StructRecord "p3_blake3_air::air::Blake3Air" [] [] [];
   }.
