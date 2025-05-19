@@ -2,6 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.blake3_air.columns.
 
+(* TODO: check where is U32_LIMBS *)
+
 (* 
 pub(crate) struct QuarterRound<'a, T, U> {
     pub a: &'a [T; U32_LIMBS],
@@ -26,20 +28,20 @@ pub(crate) struct QuarterRound<'a, T, U> {
 *)
 Module QuarterRound.
   Record t (T U : Set) : Set := {
-    a : list T; 
-    b : list T; 
-    c : list T; 
-    d : list T;
-    m_two_i : list U;
-    a_prime : list T;
-    b_prime : list T;
-    c_prime : list T;
-    d_prime : list T;
-    m_two_i_plus_one : list U;
-    a_output : list T;
-    b_output : list T;
-    c_output : list T;
-    d_output : list T;
+    a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
+    c : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    d : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
+    m_two_i : Ref.t Pointer.Kind.Ref (array.t U {| Integer.value := 32 |});
+    a_prime : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    b_prime : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
+    c_prime : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    d_prime : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
+    m_two_i_plus_one : Ref.t Pointer.Kind.Ref (array.t U {| Integer.value := 32 |});
+    a_output : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    b_output : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
+    c_output : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    d_output : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
   }.
   Arguments t : clear implicits.
 
@@ -67,10 +69,10 @@ pub struct Blake3State<T> {
 *)
 Module Blake3State.
   Record t (T : Set) : Set := {
-    row0 : list (list T);
-    row1 : list (list T);
-    row2 : list (list T);
-    row3 : list (list T);
+    row0 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |};
+    row1 : array.t (array.t T {| Integer.value := 32 |}) {| Integer.value := 4 |};
+    row2 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |};
+    row3 : array.t (array.t T {| Integer.value := 32 |}) {| Integer.value := 4 |};
   }.
   Arguments t : clear implicits.
 
