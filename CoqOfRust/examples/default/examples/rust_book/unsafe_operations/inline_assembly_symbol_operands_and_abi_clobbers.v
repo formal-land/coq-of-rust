@@ -54,9 +54,9 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -111,9 +111,9 @@ Module main.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (|
             M.call_closure (|
               Ty.path "i32",
@@ -156,8 +156,8 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let result := M.copy (| Value.DeclaredButUndefined |) in
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := InlineAssembly in
+          let result := M.read (| Value.DeclaredButUndefined |) in
+          let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
           result
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

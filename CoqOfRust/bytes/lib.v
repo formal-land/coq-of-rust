@@ -54,7 +54,7 @@ Definition saturating_sub_usize_u64 (ε : list Value.t) (τ : list Ty.t) (α : l
       let b := M.alloc (| b |) in
       M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+          Ty.path "usize",
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -119,7 +119,7 @@ Definition min_u64_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
       let b := M.alloc (| b |) in
       M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+          Ty.path "usize",
           M.alloc (|
             M.call_closure (|
               Ty.apply

@@ -202,7 +202,8 @@ fn build_inner_match(
                                                         .iter()
                                                         .map(|(name, _)| Expr::local_var(name))
                                                         .collect(),
-                                                }),
+                                                })
+                                                .alloc(),
                                                 0,
                                             ),
                                         })
@@ -509,7 +510,7 @@ pub(crate) fn compile_expr<'a>(
             };
 
             build_match(
-                ty.make_raw_ref(),
+                ty,
                 Expr::tt(),
                 vec![
                     MatchArm {
@@ -670,7 +671,7 @@ pub(crate) fn compile_expr<'a>(
                 })
                 .collect();
 
-            build_match(ty.make_raw_ref(), scrutinee, arms)
+            build_match(ty, scrutinee, arms)
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -965,7 +966,7 @@ pub(crate) fn compile_expr<'a>(
                     .enumerate()
                     .rfold(body, |body, (index, (pattern, _))| {
                         build_match(
-                            ty.clone().make_raw_ref(),
+                            ty.clone(),
                             Expr::local_var(&format!("α{index}")).alloc(),
                             vec![MatchArm {
                                 pattern: pattern.clone(),
@@ -1345,11 +1346,11 @@ fn compile_stmts<'a>(
                             ty: init_ty
                                 .as_ref()
                                 .map(|init_ty| compile_type(env, &pattern.span, generics, init_ty)),
-                            init: init.copy(),
+                            init: init.read(),
                             body,
                         }),
                         _ => build_match(
-                            return_ty.clone().make_raw_ref(),
+                            return_ty.clone(),
                             init,
                             vec![MatchArm {
                                 pattern: compiled_pattern,
@@ -1371,7 +1372,7 @@ fn compile_stmts<'a>(
                     Rc::new(Expr::Let {
                         name: None,
                         ty: Some(compile_type(env, &expr.span, generics, init_ty)),
-                        init,
+                        init: init.read(),
                         body,
                     })
                 }

@@ -145,46 +145,35 @@ Module strided.
           let stride := M.alloc (| stride |) in
           let offset := M.alloc (| offset |) in
           M.read (|
-            let~ h : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "height", [], [] |),
-                  [ M.borrow (| Pointer.Kind.Ref, inner |) ]
-                |)
+            let~ h : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "height", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, inner |) ]
               |) in
-            let~ full_strides : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  BinOp.Wrap.div,
-                  [ M.read (| h |); M.read (| stride |) ]
-                |)
+            let~ full_strides : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.div,
+                [ M.read (| h |); M.read (| stride |) ]
               |) in
-            let~ remainder : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  BinOp.Wrap.rem,
-                  [ M.read (| h |); M.read (| stride |) ]
-                |)
+            let~ remainder : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.rem,
+                [ M.read (| h |); M.read (| stride |) ]
               |) in
-            let~ final_stride : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  BinOp.lt,
-                  [ M.read (| offset |); M.read (| remainder |) ]
-                |)
+            let~ final_stride : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.lt,
+                [ M.read (| offset |); M.read (| remainder |) ]
               |) in
-            let~ height : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  BinOp.Wrap.add,
-                  [ M.read (| full_strides |); M.cast (Ty.path "usize") (M.read (| final_stride |))
-                  ]
-                |)
+            let~ height : Ty.path "usize" :=
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.add,
+                [ M.read (| full_strides |); M.cast (Ty.path "usize") (M.read (| final_stride |)) ]
               |) in
             M.alloc (|
               Value.StructRecord

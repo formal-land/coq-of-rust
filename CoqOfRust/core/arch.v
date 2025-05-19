@@ -12,13 +12,11 @@ Module arch.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "core::intrinsics::breakpoint", [], [] |),
-                []
-              |)
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "core::intrinsics::breakpoint", [], [] |),
+              []
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

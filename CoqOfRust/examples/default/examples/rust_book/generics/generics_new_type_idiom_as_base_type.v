@@ -21,17 +21,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ years :
-            Ty.apply (Ty.path "*") [] [ Ty.path "generics_new_type_idiom_as_base_type::Years" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "generics_new_type_idiom_as_base_type::Years"
-              []
-              []
-              [ Value.Integer IntegerKind.I64 42 ]
-          |) in
-        let~ years_as_primitive_1 : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
-          M.copy (|
+        let~ years : Ty.path "generics_new_type_idiom_as_base_type::Years" :=
+          Value.StructTuple
+            "generics_new_type_idiom_as_base_type::Years"
+            []
+            []
+            [ Value.Integer IntegerKind.I64 42 ] in
+        let~ years_as_primitive_1 : Ty.path "i64" :=
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               years,
               "generics_new_type_idiom_as_base_type::Years",
@@ -39,7 +36,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           years,
           [
             fun γ =>

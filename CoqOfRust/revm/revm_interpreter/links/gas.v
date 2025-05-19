@@ -1,11 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.clone.
-Require core.links.cmp.
+Require Import core.links.cmp.
 Require Import core.links.default.
 Require Import core.links.option.
 Require Import core.mem.links.mod.
-Require core.mem.mod.
+Require Import core.mem.mod.
 Require Import core.num.links.mod.
 Require Import revm_interpreter.gas.calc.
 Require Import revm_interpreter.gas.links.calc.
@@ -151,6 +151,7 @@ Module Impl_MemoryGas.
     run_symbolic.
   Defined.
 End Impl_MemoryGas.
+Export Impl_MemoryGas.
 
 (*
     pub enum MemoryExtensionResult {
@@ -384,9 +385,6 @@ Module Impl_Default_for_Gas.
 End Impl_Default_for_Gas.
 
 Module Impl_Gas.
-  Import Impl_MemoryGas.
-  Import Impl_u64.
-
   Definition Self : Set := Gas.t.
 
   (*

@@ -33,33 +33,19 @@ Module signed.
             (let from := M.alloc (| from |) in
             M.read (|
               let~ value :
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ] :=
-                M.alloc (|
-                  Value.StructTuple
-                    "alloy_primitives::signed::int::Signed"
-                    [ BITS; LIMBS ]
-                    []
-                    [ M.read (| from |) ]
-                |) in
+                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [] :=
+                Value.StructTuple
+                  "alloy_primitives::signed::int::Signed"
+                  [ BITS; LIMBS ]
+                  []
+                  [ M.read (| from |) ] in
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -170,16 +156,11 @@ Module signed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
+                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                    Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                   ],
                 M.alloc (|
                   M.call_closure (|
@@ -506,26 +487,27 @@ Module signed.
         | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
                       []
-                      [
+                      []
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -535,387 +517,386 @@ Module signed.
                               [ BITS; LIMBS ]
                               [];
                             Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                          ]
-                      ],
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+                          ],
+                        M.match_operator (|
                           Ty.tuple
                             [
                               Ty.path "alloy_primitives::signed::sign::Sign";
                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
-                            ]
-                        ],
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "first",
-                            [],
-                            []
+                            ],
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                "first",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "as_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| s |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |),
                           [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 43
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| s |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ0_0 |),
-                                Value.Integer IntegerKind.U8 45
-                              |) in
-                            M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Negative"
-                                    []
-                                    []
-                                    [];
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.path "str",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| s |) |)
-                                          |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
-                                            []
-                                            [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                        ]
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Value.Tuple
-                                [
-                                  Value.StructTuple
-                                    "alloy_primitives::signed::sign::Sign::Positive"
-                                    []
-                                    []
-                                    [];
-                                  M.read (| s |)
-                                ]
-                            |)))
-                      ]
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let sign := M.copy (| γ0_0 |) in
-                          let s := M.copy (| γ0_1 |) in
-                          let~ abs :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                            M.copy (|
-                              M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 43
+                                  |) in
                                 M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "ruint::string::ParseError"
-                                          ];
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                          Ty.path "ruint::string::ParseError"
-                                        ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
-                                      []
-                                    |),
+                                  Value.Tuple
                                     [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ0_0 |),
+                                    Value.Integer IntegerKind.U8 45
+                                  |) in
+                                M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Negative"
+                                        []
+                                        []
+                                        [];
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
+                                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.Tuple
+                                    [
+                                      Value.StructTuple
+                                        "alloy_primitives::signed::sign::Sign::Positive"
+                                        []
+                                        []
+                                        [];
+                                      M.read (| s |)
+                                    ]
+                                |)))
+                          ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let sign := M.copy (| γ0_0 |) in
+                              let s := M.copy (| γ0_1 |) in
+                              let~ abs : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
                                           []
                                           [
-                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                            Ty.path "ruint::string::ParseError"
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "ruint::string::ParseError"
+                                              ];
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                           ],
                                         M.get_trait_method (|
-                                          "core::str::traits::FromStr",
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.path "ruint::string::ParseError"
+                                            ],
                                           [],
                                           [],
-                                          "from_str",
+                                          "branch",
                                           [],
                                           []
                                         |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| s |) |)
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                                Ty.path "ruint::string::ParseError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::str::traits::FromStr",
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                              [],
+                                              [],
+                                              "from_str",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual := M.copy (| γ0_0 |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloy_primitives::signed::int::Signed")
-                                                      [ BITS; LIMBS ]
-                                                      [];
-                                                    Ty.path
-                                                      "alloy_primitives::signed::errors::ParseSignedError"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloy_primitives::signed::int::Signed")
-                                                        [ BITS; LIMBS ]
-                                                        [];
-                                                      Ty.path
-                                                        "alloy_primitives::signed::errors::ParseSignedError"
-                                                    ],
-                                                  [],
-                                                  [
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "ruint::string::ParseError"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::signed::int::Signed")
+                                                          [ BITS; LIMBS ]
+                                                          [];
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::ParseSignedError"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::signed::int::Signed")
+                                                            [ BITS; LIMBS ]
+                                                            [];
+                                                          Ty.path
+                                                            "alloy_primitives::signed::errors::ParseSignedError"
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "ruint::string::ParseError"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| γ0_0 |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::signed::int::Signed")
-                                    [ BITS; LIMBS ]
-                                    [];
-                                  Ty.path "alloy_primitives::signed::errors::ParseSignedError"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      []
-                                  ],
-                                "ok_or",
-                                [],
-                                [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
-                              |),
-                              [
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::option::Option")
+                                    (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply
                                         (Ty.path "alloy_primitives::signed::int::Signed")
                                         [ BITS; LIMBS ]
-                                        []
+                                        [];
+                                      Ty.path "alloy_primitives::signed::errors::ParseSignedError"
                                     ],
                                   M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [],
-                                    "checked_from_sign_and_abs",
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      ],
+                                    "ok_or",
                                     [],
-                                    []
+                                    [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
                                   |),
-                                  [ M.read (| sign |); M.read (| abs |) ]
-                                |);
-                                Value.StructTuple
-                                  "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
-                                  []
-                                  []
-                                  []
-                              ]
-                            |)
-                          |)))
-                    ]
-                  |)
-                |)))
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "checked_from_sign_and_abs",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| sign |); M.read (| abs |) ]
+                                    |);
+                                    Value.StructTuple
+                                      "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                      []
+                                      []
+                                      []
+                                  ]
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -967,126 +948,209 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "i128";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "i128")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [],
-                                          "bits",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                                      |);
-                                      Value.Integer IntegerKind.U32 128
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "i128";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
                       [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "i128")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [],
+                                                "bits",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                            |);
+                                            Value.Integer IntegerKind.U32 128
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "i128";
+                                              Ty.path
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
                           [
                             Ty.path "i128";
                             Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                          ]
-                      ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                          ],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "is_positive",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.path "i128";
+                                    Ty.path
+                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                  ]
+                                  [
+                                    M.cast
+                                      (Ty.path "i128")
+                                      (M.call_closure (|
+                                        Ty.path "u128",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "u128";
+                                              Ty.apply
+                                                (Ty.path "ruint::from::FromUintError")
+                                                []
+                                                [ Ty.path "u128" ]
+                                            ],
+                                          "unwrap",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "u128";
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::FromUintError")
+                                                  []
+                                                  [ Ty.path "u128" ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.path "u128",
+                                              [],
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  value,
+                                                  "alloy_primitives::signed::int::Signed",
+                                                  0
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |))
+                                  ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                                 M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [],
-                                    "is_positive",
-                                    [],
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  M.get_function (|
+                                    "alloy_primitives::signed::utils::twos_complement",
+                                    [ BITS; LIMBS ],
                                     []
                                   |),
-                                  [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [
-                                Ty.path "i128";
-                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                              ]
-                              [
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        value,
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
+                                |) in
+                              let~ u : Ty.path "i128" :=
                                 M.cast
                                   (Ty.path "i128")
                                   (M.call_closure (|
@@ -1127,118 +1191,40 @@ Module signed.
                                           [],
                                           []
                                         |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              value,
-                                              "alloy_primitives::signed::int::Signed",
-                                              0
-                                            |)
-                                          |)
-                                        ]
+                                        [ M.read (| u |) ]
                                       |)
                                     ]
-                                  |))
-                              ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let~ u :
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                M.get_function (|
-                                  "alloy_primitives::signed::utils::twos_complement",
-                                  [ BITS; LIMBS ],
+                                  |)) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
                                   []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      value,
-                                      "alloy_primitives::signed::int::Signed",
-                                      0
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            |) in
-                          let~ u : Ty.apply (Ty.path "*") [] [ Ty.path "i128" ] :=
-                            M.alloc (|
-                              M.cast
-                                (Ty.path "i128")
-                                (M.call_closure (|
-                                  Ty.path "u128",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "u128";
-                                        Ty.apply
-                                          (Ty.path "ruint::from::FromUintError")
-                                          []
-                                          [ Ty.path "u128" ]
-                                      ],
-                                    "unwrap",
-                                    [],
-                                    []
-                                  |),
+                                  [
+                                    Ty.path "i128";
+                                    Ty.path
+                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                  ]
                                   [
                                     M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "u128";
-                                          Ty.apply
-                                            (Ty.path "ruint::from::FromUintError")
-                                            []
-                                            [ Ty.path "u128" ]
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.path "u128",
-                                        [],
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                                        "try_from",
+                                      Ty.path "i128",
+                                      M.get_associated_function (|
+                                        Ty.path "i128",
+                                        "wrapping_add",
                                         [],
                                         []
                                       |),
-                                      [ M.read (| u |) ]
+                                      [
+                                        UnOp.not (| M.read (| u |) |);
+                                        Value.Integer IntegerKind.I128 1
+                                      ]
                                     |)
                                   ]
-                                |))
-                            |) in
-                          M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [
-                                Ty.path "i128";
-                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                              ]
-                              [
-                                M.call_closure (|
-                                  Ty.path "i128",
-                                  M.get_associated_function (|
-                                    Ty.path "i128",
-                                    "wrapping_add",
-                                    [],
-                                    []
-                                  |),
-                                  [ UnOp.not (| M.read (| u |) |); Value.Integer IntegerKind.I128 1
-                                  ]
-                                |)
-                              ]
-                          |)))
-                    ]
-                  |)
-                |)))
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1294,121 +1280,120 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "i128" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                    M.alloc (| M.cast (Ty.path "u128") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [ M.read (| value |); Value.Integer IntegerKind.I128 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "u128" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| u |) ]
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "i128" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.path "u128" := M.cast (Ty.path "u128") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ge,
+                                          [ M.read (| value |); Value.Integer IntegerKind.I128 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "u128" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| u |) ]
+                                          |)
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ tc : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| u |) |); Value.Integer IntegerKind.U128 1 ]
-                      |)
-                    |) in
-                  let~ stc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ tc : Ty.path "u128" :=
+                        M.call_closure (|
+                          Ty.path "u128",
+                          M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| u |) |); Value.Integer IntegerKind.U128 1 ]
+                        |) in
+                      let~ stc :
                           Ty.apply
                             (Ty.path "ruint::Uint")
                             [ Value.Integer IntegerKind.Usize 128; Value.Integer IntegerKind.Usize 2
                             ]
-                            []
-                        ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 128; Value.Integer IntegerKind.Usize 2 ]
-                          [],
-                        M.get_associated_function (|
+                            [] :=
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
                             [ Value.Integer IntegerKind.Usize 128; Value.Integer IntegerKind.Usize 2
                             ]
                             [],
-                          "saturating_from",
-                          [],
-                          [ Ty.path "u128" ]
-                        |),
-                        [ M.read (| tc |) ]
-                      |)
-                    |) in
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 128;
+                                Value.Integer IntegerKind.Usize 2
+                              ]
+                              [],
+                            "saturating_from",
+                            [],
+                            [ Ty.path "u128" ]
+                          |),
+                          [ M.read (| tc |) ]
+                        |) in
+                      M.match_operator (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -1418,134 +1403,140 @@ Module signed.
                               [ BITS; LIMBS ]
                               [];
                             Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                          ]
-                      ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool" ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          "overflowing_from_limbs_slice",
-                          [],
-                          []
-                        |),
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "u64" ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 128;
-                                        Value.Integer IntegerKind.Usize 2
-                                      ]
-                                      [],
-                                    "as_limbs",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, stc |) ]
-                                |)
-                              |)
-                            |))
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let num := M.copy (| γ0_0 |) in
-                          let overflow := M.copy (| γ0_1 |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.use overflow in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                                  [ BITS; LIMBS ]
-                                                  [];
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                              [
-                                                Value.StructTuple
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  []
-                                                  []
-                                                  []
-                                              ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Ok"
+                          ],
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.tuple
+                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []; Ty.path "bool"
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "overflowing_from_limbs_slice",
+                              [],
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                  [ BITS; LIMBS ]
-                                  [];
-                                Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                              ]
-                              [
-                                Value.StructTuple
-                                  "alloy_primitives::signed::int::Signed"
-                                  [ BITS; LIMBS ]
-                                  []
-                                  [
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
                                     M.call_closure (|
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      M.get_function (|
-                                        "alloy_primitives::signed::utils::twos_complement",
-                                        [ BITS; LIMBS ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "u64" ]
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 128;
+                                            Value.Integer IntegerKind.Usize 2
+                                          ]
+                                          [],
+                                        "as_limbs",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| num |) ]
+                                      [ M.borrow (| Pointer.Kind.Ref, stc |) ]
                                     |)
+                                  |)
+                                |))
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let num := M.copy (| γ0_0 |) in
+                              let overflow := M.copy (| γ0_1 |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.use overflow in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::signed::int::Signed")
+                                                        [ BITS; LIMBS ]
+                                                        [];
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ]
+                                                    [
+                                                      Value.StructTuple
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                        []
+                                                        []
+                                                        []
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      [];
+                                    Ty.path
+                                      "alloy_primitives::signed::errors::BigIntConversionError"
                                   ]
-                              ]
-                          |)))
-                    ]
-                  |)
-                |)))
+                                  [
+                                    Value.StructTuple
+                                      "alloy_primitives::signed::int::Signed"
+                                      [ BITS; LIMBS ]
+                                      []
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          M.get_function (|
+                                            "alloy_primitives::signed::utils::twos_complement",
+                                            [ BITS; LIMBS ],
+                                            []
+                                          |),
+                                          [ M.read (| num |) ]
+                                        |)
+                                      ]
+                                  ]
+                              |)))
+                        ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1598,246 +1589,258 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "u128";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "u128")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "u128";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
                       [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
-                                        [],
-                                      "is_negative",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
                       ]
-                    |) in
-                  let~ saturated :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          "saturating_from",
-                          [],
-                          [ Ty.path "u128" ]
-                        |),
-                        [
-                          M.read (|
-                            get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |)
-                          |)
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialOrd",
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
-                                        [],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "gt",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, value |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "alloy_primitives::signed::int::Signed"
-                                            [ BITS; LIMBS ]
+                      (Ty.path "u128")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "is_negative",
+                                            [],
                                             []
-                                            [ M.read (| saturated |) ]
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "u128";
+                                              Ty.path
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.path "u128";
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.path "u128";
-                            Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u128" ]
-                          ],
-                        "map_err",
-                        [],
-                        [
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::from::FromUintError")
-                                    []
-                                    [ Ty.path "u128" ]
-                                ]
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
-                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                        ]
-                      |),
-                      [
+                          |)
+                        |) in
+                      let~ saturated : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "saturating_from",
+                            [],
+                            [ Ty.path "u128" ]
+                          |),
+                          [
+                            M.read (|
+                              get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |)
+                            |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                []
+                                            ],
+                                            "gt",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, value |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.StructTuple
+                                                  "alloy_primitives::signed::int::Signed"
+                                                  [ BITS; LIMBS ]
+                                                  []
+                                                  [ M.read (| saturated |) ]
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "u128";
+                                              Ty.path
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
                             [
                               Ty.path "u128";
-                              Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u128" ]
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
-                          M.get_trait_method (|
-                            "core::convert::TryInto",
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "u128";
+                                Ty.apply
+                                  (Ty.path "ruint::from::FromUintError")
+                                  []
+                                  [ Ty.path "u128" ]
+                              ],
+                            "map_err",
                             [],
-                            [ Ty.path "u128" ],
-                            "try_into",
-                            [],
-                            []
+                            [
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u128" ]
+                                    ]
+                                ]
+                                (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                            ]
                           |),
                           [
                             M.call_closure (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                  [ BITS; LIMBS ]
-                                  [],
-                                "into_raw",
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "u128";
+                                  Ty.apply
+                                    (Ty.path "ruint::from::FromUintError")
+                                    []
+                                    [ Ty.path "u128" ]
+                                ],
+                              M.get_trait_method (|
+                                "core::convert::TryInto",
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                [],
+                                [ Ty.path "u128" ],
+                                "try_into",
                                 [],
                                 []
                               |),
-                              [ M.read (| value |) ]
-                            |)
-                          ]
-                        |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      [],
+                                    "into_raw",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| value |) ]
+                                |)
+                              ]
+                            |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
                                         Ty.function
                                           [
                                             Ty.tuple
@@ -1849,25 +1852,26 @@ Module signed.
                                               ]
                                           ]
                                           (Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError")
-                                      ],
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (Value.StructTuple
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                            []
-                                            []
-                                            []))
-                                    ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
-                      ]
+                                            "alloy_primitives::signed::errors::BigIntConversionError"),
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                                []
+                                                []
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1917,125 +1921,131 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "u128" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ saturated :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_associated_function (|
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "u128" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ saturated : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
                           Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          "saturating_from",
-                          [],
-                          [ Ty.path "u128" ]
-                        |),
-                        [ M.read (| value |) ]
-                      |)
-                    |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ne,
-                                    [
-                                      M.read (| value |);
-                                      M.call_closure (|
-                                        Ty.path "u128",
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                          "to",
-                                          [],
-                                          [ Ty.path "u128" ]
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, saturated |) ]
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "saturating_from",
+                            [],
+                            [ Ty.path "u128" ]
+                          |),
+                          [ M.read (| value |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| value |);
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "to",
+                                                [],
+                                                [ Ty.path "u128" ]
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, saturated |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [];
+                                              Ty.path
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                            ]
+                                            [
+                                              Value.StructTuple
+                                                "alloy_primitives::signed::errors::BigIntConversionError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                        |)
                                       |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [];
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ]
-                                      [
-                                        Value.StructTuple
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
                           Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_trait_method (|
-                        "core::convert::TryFrom",
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [],
-                        [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        "try_from",
-                        [],
-                        []
-                      |),
-                      [ M.read (| saturated |) ]
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                            ],
+                          M.get_trait_method (|
+                            "core::convert::TryFrom",
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [],
+                            [],
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                            "try_from",
+                            [],
+                            []
+                          |),
+                          [ M.read (| saturated |) ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2078,69 +2088,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "u8") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.U8 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "u8")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "u8") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.U8 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "u8")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2231,69 +2250,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "i8") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.I8 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "i8")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "i8") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.I8 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "i8")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2384,69 +2412,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "u16") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.U16 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "u16")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "u16") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.U16 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "u16")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2537,69 +2574,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "i16") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.I16 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "i16")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "i16") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.I16 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "i16")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2690,69 +2736,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "u32") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.U32 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "u32")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "u32") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.U32 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "u32")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2843,69 +2898,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "i32") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.I32 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "i32")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "i32") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.I32 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "i32")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2996,64 +3060,73 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "u64") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+            M.read (|
+              M.catch_return (Ty.path "u64") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.use
+                        (M.SubPointer.get_array_field (|
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "as_limbs",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloy_primitives::signed::int::Signed",
+                                    0
                                   |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.use
-                    (M.SubPointer.get_array_field (|
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            "as_limbs",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloy_primitives::signed::int::Signed",
-                                0
-                              |)
+                                |)
+                              ]
                             |)
-                          ]
-                        |)
-                      |),
-                      Value.Integer IntegerKind.Usize 0
-                    |))
-                |)))
+                          |),
+                          Value.Integer IntegerKind.Usize 0
+                        |))
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3144,69 +3217,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "i64") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.I64 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "i64")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "i64") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.I64 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "i64")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3297,69 +3379,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "usize") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.Usize 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "usize") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.Usize 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "usize")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3452,69 +3543,78 @@ Module signed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (Ty.path "isize") (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (| M.return_ (| Value.Integer IntegerKind.Isize 0 |) |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "isize")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloy_primitives::signed::int::Signed",
-                                    0
-                                  |)
+            M.read (|
+              M.catch_return (Ty.path "isize") (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (| M.return_ (| Value.Integer IntegerKind.Isize 0 |) |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        M.cast
+                          (Ty.path "isize")
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "as_limbs",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signed::int::Signed",
+                                        0
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |),
+                              Value.Integer IntegerKind.Usize 0
                             |)
-                          |),
-                          Value.Integer IntegerKind.Usize 0
-                        |)
-                      |))
-                  |)
-                |)))
+                          |))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3613,103 +3713,61 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "u8" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                  ];
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                  Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "u8" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ];
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                   ],
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.apply
-                                        (Ty.path "ruint::from::ToUintError")
-                                        []
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                      Ty.path
+                                        "alloy_primitives::signed::errors::BigIntConversionError"
                                     ],
-                                  "map_err",
                                   [],
-                                  [
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError";
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::from::ToUintError")
-                                              []
-                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ]
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
@@ -3718,33 +3776,75 @@ Module signed.
                                       []
                                       [
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.apply
-                                          (Ty.path "ruint::from::ToUintError")
-                                          []
-                                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.apply
+                                            (Ty.path "ruint::from::ToUintError")
+                                            []
+                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        ],
+                                      "map_err",
                                       [],
-                                      [ Ty.path "u8" ],
-                                      "try_from",
-                                      [],
-                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError";
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError")
+                                      ]
                                     |),
-                                    [ M.read (| value |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.apply
+                                              (Ty.path "ruint::from::ToUintError")
+                                              []
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          [],
+                                          [ Ty.path "u8" ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -3761,163 +3861,165 @@ Module signed.
                                                         ]
                                                     ]
                                                     (Ty.path
-                                                      "alloy_primitives::signed::errors::BigIntConversionError")
-                                                ],
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"),
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                          []
+                                                          []
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            Ty.path
-                                              "alloy_primitives::signed::errors::BigIntConversionError"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                                [ BITS; LIMBS ]
-                                                [];
-                                              Ty.path
-                                                "alloy_primitives::signed::errors::BigIntConversionError"
-                                            ],
-                                          [],
-                                          [
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
                                                 Ty.path
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [];
+                                                  Ty.path
+                                                    "alloy_primitives::signed::errors::BigIntConversionError"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              []
-                          ],
-                        "ok_or",
-                        [],
-                        [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
-                      |),
-                      [
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "core::result::Result")
                             []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
                                 [ BITS; LIMBS ]
-                                []
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
                           M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              [],
-                            "checked_from_sign_and_abs",
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              ],
+                            "ok_or",
                             [],
-                            []
+                            [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
                           |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::signed::int::Signed")
+                                    [ BITS; LIMBS ]
+                                    []
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "checked_from_sign_and_abs",
+                                [],
+                                []
+                              |),
+                              [
+                                Value.StructTuple
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                  []
+                                  []
+                                  [];
+                                M.read (| u |)
+                              ]
+                            |);
                             Value.StructTuple
-                              "alloy_primitives::signed::sign::Sign::Positive"
+                              "alloy_primitives::signed::errors::BigIntConversionError"
                               []
                               []
-                              [];
-                            M.read (| u |)
+                              []
                           ]
-                        |);
-                        Value.StructTuple
-                          "alloy_primitives::signed::errors::BigIntConversionError"
-                          []
-                          []
-                          []
-                      ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3968,138 +4070,141 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "i8" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ uint : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                    M.alloc (| M.cast (Ty.path "u8") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "i8",
-                                      "is_positive",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "u8" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| uint |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U8 1 ]
-                      |)
-                    |) in
-                  let~ tc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_function (|
-                          "alloy_primitives::signed::utils::twos_complement",
-                          [ BITS; LIMBS ],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "from",
-                              [],
-                              [ Ty.path "u8" ]
-                            |),
-                            [ M.read (| abs |) ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
-                      [
+                      [ Ty.path "i8" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ uint : Ty.path "u8" := M.cast (Ty.path "u8") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "i8",
+                                            "is_positive",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "u8" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| uint |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ abs : Ty.path "u8" :=
+                        M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U8 1 ]
+                        |) in
+                      let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_function (|
+                            "alloy_primitives::signed::utils::twos_complement",
+                            [ BITS; LIMBS ],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "from",
+                                [],
+                                [ Ty.path "u8" ]
+                              |),
+                              [ M.read (| abs |) ]
+                            |)
+                          ]
+                        |) in
+                      M.alloc (|
                         Value.StructTuple
-                          "alloy_primitives::signed::int::Signed"
-                          [ BITS; LIMBS ]
+                          "core::result::Result::Ok"
                           []
-                          [ M.read (| tc |) ]
-                      ]
-                  |)
-                |)))
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [
+                            Value.StructTuple
+                              "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
+                              [ M.read (| tc |) ]
+                          ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4141,223 +4246,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "u8";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "u8")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "u8";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "u8";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "u8")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "u128",
+                        [
+                          Ty.path "u8";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "u8" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "u128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u8" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "u128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "u128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "u128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "u8";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "u8";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "u8";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "u8";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4400,223 +4508,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "i8";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "i8")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "i8";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "i8";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "i8")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "i128",
+                        [
+                          Ty.path "i8";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "i8" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "i128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "i128",
+                            [],
+                            [ Ty.path "i8" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "i128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "i128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "i128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "i128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "i8";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "i8";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "i8";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "i8";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4661,103 +4772,61 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "u16" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                  ];
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                  Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "u16" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ];
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                   ],
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.apply
-                                        (Ty.path "ruint::from::ToUintError")
-                                        []
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                      Ty.path
+                                        "alloy_primitives::signed::errors::BigIntConversionError"
                                     ],
-                                  "map_err",
                                   [],
-                                  [
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError";
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::from::ToUintError")
-                                              []
-                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ]
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
@@ -4766,33 +4835,75 @@ Module signed.
                                       []
                                       [
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.apply
-                                          (Ty.path "ruint::from::ToUintError")
-                                          []
-                                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.apply
+                                            (Ty.path "ruint::from::ToUintError")
+                                            []
+                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        ],
+                                      "map_err",
                                       [],
-                                      [ Ty.path "u16" ],
-                                      "try_from",
-                                      [],
-                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError";
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError")
+                                      ]
                                     |),
-                                    [ M.read (| value |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.apply
+                                              (Ty.path "ruint::from::ToUintError")
+                                              []
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          [],
+                                          [ Ty.path "u16" ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -4809,163 +4920,165 @@ Module signed.
                                                         ]
                                                     ]
                                                     (Ty.path
-                                                      "alloy_primitives::signed::errors::BigIntConversionError")
-                                                ],
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"),
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                          []
+                                                          []
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            Ty.path
-                                              "alloy_primitives::signed::errors::BigIntConversionError"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                                [ BITS; LIMBS ]
-                                                [];
-                                              Ty.path
-                                                "alloy_primitives::signed::errors::BigIntConversionError"
-                                            ],
-                                          [],
-                                          [
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
                                                 Ty.path
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [];
+                                                  Ty.path
+                                                    "alloy_primitives::signed::errors::BigIntConversionError"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              []
-                          ],
-                        "ok_or",
-                        [],
-                        [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
-                      |),
-                      [
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "core::result::Result")
                             []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
                                 [ BITS; LIMBS ]
-                                []
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
                           M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              [],
-                            "checked_from_sign_and_abs",
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              ],
+                            "ok_or",
                             [],
-                            []
+                            [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
                           |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::signed::int::Signed")
+                                    [ BITS; LIMBS ]
+                                    []
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "checked_from_sign_and_abs",
+                                [],
+                                []
+                              |),
+                              [
+                                Value.StructTuple
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                  []
+                                  []
+                                  [];
+                                M.read (| u |)
+                              ]
+                            |);
                             Value.StructTuple
-                              "alloy_primitives::signed::sign::Sign::Positive"
+                              "alloy_primitives::signed::errors::BigIntConversionError"
                               []
                               []
-                              [];
-                            M.read (| u |)
+                              []
                           ]
-                        |);
-                        Value.StructTuple
-                          "alloy_primitives::signed::errors::BigIntConversionError"
-                          []
-                          []
-                          []
-                      ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5016,138 +5129,141 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "i16" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ uint : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                    M.alloc (| M.cast (Ty.path "u16") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "i16",
-                                      "is_positive",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "u16" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| uint |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U16 1 ]
-                      |)
-                    |) in
-                  let~ tc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_function (|
-                          "alloy_primitives::signed::utils::twos_complement",
-                          [ BITS; LIMBS ],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "from",
-                              [],
-                              [ Ty.path "u16" ]
-                            |),
-                            [ M.read (| abs |) ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
-                      [
+                      [ Ty.path "i16" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ uint : Ty.path "u16" := M.cast (Ty.path "u16") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "i16",
+                                            "is_positive",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "u16" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| uint |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ abs : Ty.path "u16" :=
+                        M.call_closure (|
+                          Ty.path "u16",
+                          M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U16 1 ]
+                        |) in
+                      let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_function (|
+                            "alloy_primitives::signed::utils::twos_complement",
+                            [ BITS; LIMBS ],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "from",
+                                [],
+                                [ Ty.path "u16" ]
+                              |),
+                              [ M.read (| abs |) ]
+                            |)
+                          ]
+                        |) in
+                      M.alloc (|
                         Value.StructTuple
-                          "alloy_primitives::signed::int::Signed"
-                          [ BITS; LIMBS ]
+                          "core::result::Result::Ok"
                           []
-                          [ M.read (| tc |) ]
-                      ]
-                  |)
-                |)))
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [
+                            Value.StructTuple
+                              "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
+                              [ M.read (| tc |) ]
+                          ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5189,223 +5305,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "u16";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "u16")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "u16";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "u16";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "u16")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "u128",
+                        [
+                          Ty.path "u16";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "u16" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "u128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u16" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "u128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "u128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "u128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "u16";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "u16";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "u16";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "u16";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5448,223 +5567,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "i16";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "i16")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "i16";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "i16";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "i16")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "i128",
+                        [
+                          Ty.path "i16";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "i16" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "i128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "i128",
+                            [],
+                            [ Ty.path "i16" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "i128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "i128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "i128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "i128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "i16";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "i16";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "i16";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "i16";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5709,103 +5831,61 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "u32" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                  ];
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                  Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "u32" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ];
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                   ],
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.apply
-                                        (Ty.path "ruint::from::ToUintError")
-                                        []
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                      Ty.path
+                                        "alloy_primitives::signed::errors::BigIntConversionError"
                                     ],
-                                  "map_err",
                                   [],
-                                  [
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError";
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::from::ToUintError")
-                                              []
-                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ]
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
@@ -5814,33 +5894,75 @@ Module signed.
                                       []
                                       [
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.apply
-                                          (Ty.path "ruint::from::ToUintError")
-                                          []
-                                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.apply
+                                            (Ty.path "ruint::from::ToUintError")
+                                            []
+                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        ],
+                                      "map_err",
                                       [],
-                                      [ Ty.path "u32" ],
-                                      "try_from",
-                                      [],
-                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError";
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError")
+                                      ]
                                     |),
-                                    [ M.read (| value |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.apply
+                                              (Ty.path "ruint::from::ToUintError")
+                                              []
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          [],
+                                          [ Ty.path "u32" ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -5857,163 +5979,165 @@ Module signed.
                                                         ]
                                                     ]
                                                     (Ty.path
-                                                      "alloy_primitives::signed::errors::BigIntConversionError")
-                                                ],
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"),
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                          []
+                                                          []
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            Ty.path
-                                              "alloy_primitives::signed::errors::BigIntConversionError"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                                [ BITS; LIMBS ]
-                                                [];
-                                              Ty.path
-                                                "alloy_primitives::signed::errors::BigIntConversionError"
-                                            ],
-                                          [],
-                                          [
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
                                                 Ty.path
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [];
+                                                  Ty.path
+                                                    "alloy_primitives::signed::errors::BigIntConversionError"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              []
-                          ],
-                        "ok_or",
-                        [],
-                        [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
-                      |),
-                      [
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "core::result::Result")
                             []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
                                 [ BITS; LIMBS ]
-                                []
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
                           M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              [],
-                            "checked_from_sign_and_abs",
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              ],
+                            "ok_or",
                             [],
-                            []
+                            [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
                           |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::signed::int::Signed")
+                                    [ BITS; LIMBS ]
+                                    []
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "checked_from_sign_and_abs",
+                                [],
+                                []
+                              |),
+                              [
+                                Value.StructTuple
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                  []
+                                  []
+                                  [];
+                                M.read (| u |)
+                              ]
+                            |);
                             Value.StructTuple
-                              "alloy_primitives::signed::sign::Sign::Positive"
+                              "alloy_primitives::signed::errors::BigIntConversionError"
                               []
                               []
-                              [];
-                            M.read (| u |)
+                              []
                           ]
-                        |);
-                        Value.StructTuple
-                          "alloy_primitives::signed::errors::BigIntConversionError"
-                          []
-                          []
-                          []
-                      ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6064,138 +6188,141 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "i32" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ uint : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                    M.alloc (| M.cast (Ty.path "u32") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "i32",
-                                      "is_positive",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "u32" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| uint |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U32 1 ]
-                      |)
-                    |) in
-                  let~ tc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_function (|
-                          "alloy_primitives::signed::utils::twos_complement",
-                          [ BITS; LIMBS ],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "from",
-                              [],
-                              [ Ty.path "u32" ]
-                            |),
-                            [ M.read (| abs |) ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
-                      [
+                      [ Ty.path "i32" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ uint : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "i32",
+                                            "is_positive",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "u32" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| uint |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ abs : Ty.path "u32" :=
+                        M.call_closure (|
+                          Ty.path "u32",
+                          M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U32 1 ]
+                        |) in
+                      let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_function (|
+                            "alloy_primitives::signed::utils::twos_complement",
+                            [ BITS; LIMBS ],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "from",
+                                [],
+                                [ Ty.path "u32" ]
+                              |),
+                              [ M.read (| abs |) ]
+                            |)
+                          ]
+                        |) in
+                      M.alloc (|
                         Value.StructTuple
-                          "alloy_primitives::signed::int::Signed"
-                          [ BITS; LIMBS ]
+                          "core::result::Result::Ok"
                           []
-                          [ M.read (| tc |) ]
-                      ]
-                  |)
-                |)))
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [
+                            Value.StructTuple
+                              "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
+                              [ M.read (| tc |) ]
+                          ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6237,223 +6364,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "u32";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "u32")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "u32";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "u32";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "u32")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "u128",
+                        [
+                          Ty.path "u32";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "u32" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "u128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u32" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "u128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "u128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "u128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "u32";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "u32";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "u32";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "u32";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6496,223 +6626,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "i32";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "i32")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "i32";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "i32";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "i32")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "i128",
+                        [
+                          Ty.path "i32";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "i32" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "i128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "i128",
+                            [],
+                            [ Ty.path "i32" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "i128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "i128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "i128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "i128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "i32";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "i32";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "i32";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "i32";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6757,103 +6890,61 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "u64" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                  ];
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                  Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "u64" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ];
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                   ],
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.apply
-                                        (Ty.path "ruint::from::ToUintError")
-                                        []
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                      Ty.path
+                                        "alloy_primitives::signed::errors::BigIntConversionError"
                                     ],
-                                  "map_err",
                                   [],
-                                  [
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError";
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::from::ToUintError")
-                                              []
-                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ]
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
@@ -6862,33 +6953,75 @@ Module signed.
                                       []
                                       [
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.apply
-                                          (Ty.path "ruint::from::ToUintError")
-                                          []
-                                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.apply
+                                            (Ty.path "ruint::from::ToUintError")
+                                            []
+                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        ],
+                                      "map_err",
                                       [],
-                                      [ Ty.path "u64" ],
-                                      "try_from",
-                                      [],
-                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError";
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError")
+                                      ]
                                     |),
-                                    [ M.read (| value |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.apply
+                                              (Ty.path "ruint::from::ToUintError")
+                                              []
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          [],
+                                          [ Ty.path "u64" ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -6905,163 +7038,165 @@ Module signed.
                                                         ]
                                                     ]
                                                     (Ty.path
-                                                      "alloy_primitives::signed::errors::BigIntConversionError")
-                                                ],
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"),
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                          []
+                                                          []
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            Ty.path
-                                              "alloy_primitives::signed::errors::BigIntConversionError"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                                [ BITS; LIMBS ]
-                                                [];
-                                              Ty.path
-                                                "alloy_primitives::signed::errors::BigIntConversionError"
-                                            ],
-                                          [],
-                                          [
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
                                                 Ty.path
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [];
+                                                  Ty.path
+                                                    "alloy_primitives::signed::errors::BigIntConversionError"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              []
-                          ],
-                        "ok_or",
-                        [],
-                        [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
-                      |),
-                      [
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "core::result::Result")
                             []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
                                 [ BITS; LIMBS ]
-                                []
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
                           M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              [],
-                            "checked_from_sign_and_abs",
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              ],
+                            "ok_or",
                             [],
-                            []
+                            [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
                           |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::signed::int::Signed")
+                                    [ BITS; LIMBS ]
+                                    []
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "checked_from_sign_and_abs",
+                                [],
+                                []
+                              |),
+                              [
+                                Value.StructTuple
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                  []
+                                  []
+                                  [];
+                                M.read (| u |)
+                              ]
+                            |);
                             Value.StructTuple
-                              "alloy_primitives::signed::sign::Sign::Positive"
+                              "alloy_primitives::signed::errors::BigIntConversionError"
                               []
                               []
-                              [];
-                            M.read (| u |)
+                              []
                           ]
-                        |);
-                        Value.StructTuple
-                          "alloy_primitives::signed::errors::BigIntConversionError"
-                          []
-                          []
-                          []
-                      ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7112,138 +7247,141 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "i64" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ uint : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                    M.alloc (| M.cast (Ty.path "u64") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "i64",
-                                      "is_positive",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "u64" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| uint |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U64 1 ]
-                      |)
-                    |) in
-                  let~ tc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_function (|
-                          "alloy_primitives::signed::utils::twos_complement",
-                          [ BITS; LIMBS ],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "from",
-                              [],
-                              [ Ty.path "u64" ]
-                            |),
-                            [ M.read (| abs |) ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
-                      [
+                      [ Ty.path "i64" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ uint : Ty.path "u64" := M.cast (Ty.path "u64") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "i64",
+                                            "is_positive",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "u64" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| uint |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ abs : Ty.path "u64" :=
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U64 1 ]
+                        |) in
+                      let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_function (|
+                            "alloy_primitives::signed::utils::twos_complement",
+                            [ BITS; LIMBS ],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "from",
+                                [],
+                                [ Ty.path "u64" ]
+                              |),
+                              [ M.read (| abs |) ]
+                            |)
+                          ]
+                        |) in
+                      M.alloc (|
                         Value.StructTuple
-                          "alloy_primitives::signed::int::Signed"
-                          [ BITS; LIMBS ]
+                          "core::result::Result::Ok"
                           []
-                          [ M.read (| tc |) ]
-                      ]
-                  |)
-                |)))
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [
+                            Value.StructTuple
+                              "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
+                              [ M.read (| tc |) ]
+                          ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7285,223 +7423,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "u64";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "u64")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "u64";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "u64";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "u64")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "u128",
+                        [
+                          Ty.path "u64";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "u64" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "u128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "u64" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "u128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "u128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "u128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "u64";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "u64";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "u64";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "u64";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7544,223 +7685,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "i64";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "i64")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "i64";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "i64";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "i64")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "i128",
+                        [
+                          Ty.path "i64";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "i64" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "i128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "i128",
+                            [],
+                            [ Ty.path "i64" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "i128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "i128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "i128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "i128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "i64";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "i64";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "i64";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "i64";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7805,103 +7949,61 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "usize" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ u :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                  ];
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                  Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [ Ty.path "usize" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ u : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            M.alloc (|
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "core::result::Result")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
                                   [
-                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                      ];
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
                                   ],
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                      Ty.apply
-                                        (Ty.path "ruint::from::ToUintError")
-                                        []
-                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                      Ty.path
+                                        "alloy_primitives::signed::errors::BigIntConversionError"
                                     ],
-                                  "map_err",
                                   [],
-                                  [
-                                    Ty.path
-                                      "alloy_primitives::signed::errors::BigIntConversionError";
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::from::ToUintError")
-                                              []
-                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ]
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
@@ -7910,33 +8012,75 @@ Module signed.
                                       []
                                       [
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
-                                        Ty.apply
-                                          (Ty.path "ruint::from::ToUintError")
-                                          []
-                                          [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                          Ty.apply
+                                            (Ty.path "ruint::from::ToUintError")
+                                            []
+                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                        ],
+                                      "map_err",
                                       [],
-                                      [ Ty.path "usize" ],
-                                      "try_from",
-                                      [],
-                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signed::errors::BigIntConversionError";
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError")
+                                      ]
                                     |),
-                                    [ M.read (| value |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                            Ty.apply
+                                              (Ty.path "ruint::from::ToUintError")
+                                              []
+                                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          [],
+                                          [ Ty.path "usize" ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -7953,163 +8097,165 @@ Module signed.
                                                         ]
                                                     ]
                                                     (Ty.path
-                                                      "alloy_primitives::signed::errors::BigIntConversionError")
-                                                ],
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "alloy_primitives::signed::errors::BigIntConversionError"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"),
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (Value.StructTuple
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                          []
+                                                          []
+                                                          []))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
                                 ]
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            Ty.path
-                                              "alloy_primitives::signed::errors::BigIntConversionError"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                                [ BITS; LIMBS ]
-                                                [];
-                                              Ty.path
-                                                "alloy_primitives::signed::errors::BigIntConversionError"
-                                            ],
-                                          [],
-                                          [
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
                                                 Ty.path
                                                   "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [];
+                                                  Ty.path
+                                                    "alloy_primitives::signed::errors::BigIntConversionError"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::signed::errors::BigIntConversionError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              []
-                          ],
-                        "ok_or",
-                        [],
-                        [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
-                      |),
-                      [
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "core::result::Result")
                             []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
                                 [ BITS; LIMBS ]
-                                []
+                                [];
+                              Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
                             ],
                           M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "alloy_primitives::signed::int::Signed")
-                              [ BITS; LIMBS ]
-                              [],
-                            "checked_from_sign_and_abs",
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              ],
+                            "ok_or",
                             [],
-                            []
+                            [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ]
                           |),
                           [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::signed::int::Signed")
+                                    [ BITS; LIMBS ]
+                                    []
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "checked_from_sign_and_abs",
+                                [],
+                                []
+                              |),
+                              [
+                                Value.StructTuple
+                                  "alloy_primitives::signed::sign::Sign::Positive"
+                                  []
+                                  []
+                                  [];
+                                M.read (| u |)
+                              ]
+                            |);
                             Value.StructTuple
-                              "alloy_primitives::signed::sign::Sign::Positive"
+                              "alloy_primitives::signed::errors::BigIntConversionError"
                               []
                               []
-                              [];
-                            M.read (| u |)
+                              []
                           ]
-                        |);
-                        Value.StructTuple
-                          "alloy_primitives::signed::errors::BigIntConversionError"
-                          []
-                          []
-                          []
-                      ]
+                        |)
+                      |)
                     |)
-                  |)
-                |)))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8160,138 +8306,142 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.path "isize" ]
-                    (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ uint : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                    M.alloc (| M.cast (Ty.path "usize") (M.read (| value |)) |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "isize",
-                                      "is_positive",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloy_primitives::signed::int::Signed")
-                                            [ BITS; LIMBS ]
-                                            [];
-                                          Ty.path
-                                            "alloy_primitives::signed::errors::BigIntConversionError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          [],
-                                        [],
-                                        [ Ty.path "usize" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| uint |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
-                        [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.Usize 1 ]
-                      |)
-                    |) in
-                  let~ tc :
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        M.get_function (|
-                          "alloy_primitives::signed::utils::twos_complement",
-                          [ BITS; LIMBS ],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "from",
-                              [],
-                              [ Ty.path "usize" ]
-                            |),
-                            [ M.read (| abs |) ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::signed::int::Signed")
-                          [ BITS; LIMBS ]
-                          [];
-                        Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                      ]
-                      [
+                      [ Ty.path "isize" ]
+                      (Ty.apply
+                        (Ty.path "alloy_primitives::signed::int::Signed")
+                        [ BITS; LIMBS ]
+                        [])
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.read (|
+                      let~ uint : Ty.path "usize" :=
+                        M.cast (Ty.path "usize") (M.read (| value |)) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "isize",
+                                            "is_positive",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::BigIntConversionError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                                [ BITS; LIMBS ]
+                                                [],
+                                              [],
+                                              [ Ty.path "usize" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| uint |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ abs : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
+                          [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.Usize 1 ]
+                        |) in
+                      let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                          M.get_function (|
+                            "alloy_primitives::signed::utils::twos_complement",
+                            [ BITS; LIMBS ],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "from",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [ M.read (| abs |) ]
+                            |)
+                          ]
+                        |) in
+                      M.alloc (|
                         Value.StructTuple
-                          "alloy_primitives::signed::int::Signed"
-                          [ BITS; LIMBS ]
+                          "core::result::Result::Ok"
                           []
-                          [ M.read (| tc |) ]
-                      ]
-                  |)
-                |)))
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [];
+                            Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                          ]
+                          [
+                            Value.StructTuple
+                              "alloy_primitives::signed::int::Signed"
+                              [ BITS; LIMBS ]
+                              []
+                              [ M.read (| tc |) ]
+                          ]
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8333,223 +8483,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "usize";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "usize")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "usize";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "usize";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "usize")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "u128",
+                        [
+                          Ty.path "usize";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "usize" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "u128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "u128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "u128",
+                            [],
+                            [ Ty.path "usize" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "u128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "u128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "u128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "u128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "u128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "u128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "usize";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "usize";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "usize";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8592,223 +8745,226 @@ Module signed.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "isize";
-                  Ty.associated_in_trait
-                    "core::convert::TryFrom"
-                    []
-                    [ Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
-                    ]
-                    (Ty.path "isize")
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "isize";
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                    "map_err",
-                    [],
-                    [
-                      Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                        (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
-                    ]
-                  |),
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
+                    Ty.path "isize";
+                    Ty.associated_in_trait
+                      "core::convert::TryFrom"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      ]
+                      (Ty.path "isize")
+                      "Error"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                      M.get_trait_method (|
-                        "core::convert::TryInto",
-                        Ty.path "i128",
+                        [
+                          Ty.path "isize";
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError"
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
+                        "map_err",
                         [],
-                        [ Ty.path "isize" ],
-                        "try_into",
-                        [],
-                        []
+                        [
+                          Ty.path "alloy_primitives::signed::errors::BigIntConversionError";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                            (Ty.path "alloy_primitives::signed::errors::BigIntConversionError")
+                        ]
                       |),
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.path "i128" ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
-                                      ];
-                                    Ty.path "i128"
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "i128";
-                                      Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                    ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
+                            Ty.path "i128",
+                            [],
+                            [ Ty.path "isize" ],
+                            "try_into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.match_operator (|
+                                Ty.path "i128",
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
-                                        Ty.path "i128";
-                                        Ty.path
-                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ];
+                                        Ty.path "i128"
                                       ],
                                     M.get_trait_method (|
-                                      "core::convert::TryFrom",
-                                      Ty.path "i128",
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "i128";
+                                          Ty.path
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                        ],
                                       [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
-                                          []
-                                      ],
-                                      "try_from",
+                                      [],
+                                      "branch",
                                       [],
                                       []
                                     |),
-                                    [ M.read (| value |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "i128";
+                                            Ty.path
+                                              "alloy_primitives::signed::errors::BigIntConversionError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::convert::TryFrom",
+                                          Ty.path "i128",
+                                          [],
+                                          [
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
                                               []
-                                              [
-                                                Ty.path "isize";
-                                                Ty.path
-                                                  "alloy_primitives::signed::errors::BigIntConversionError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "isize";
-                                                  Ty.path
-                                                    "alloy_primitives::signed::errors::BigIntConversionError"
-                                                ],
-                                              [],
-                                              [
+                                          ],
+                                          "try_from",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| value |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "isize";
                                                     Ty.path
                                                       "alloy_primitives::signed::errors::BigIntConversionError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "isize";
+                                                      Ty.path
+                                                        "alloy_primitives::signed::errors::BigIntConversionError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "alloy_primitives::signed::errors::BigIntConversionError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
                                       (Ty.path
-                                        "alloy_primitives::signed::errors::BigIntConversionError")
-                                  ],
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "alloy_primitives::signed::errors::BigIntConversionError"
-                                        []
-                                        []
-                                        []))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |)))
+                                        "alloy_primitives::signed::errors::BigIntConversionError"),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "alloy_primitives::signed::errors::BigIntConversionError"
+                                            []
+                                            []
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -91,7 +91,7 @@ Module state.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -169,29 +169,25 @@ Module state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::state::VMState" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::state::VMState" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::state::VMState" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::state::VMState" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -307,27 +303,22 @@ Module state.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
+                        Ty.function
                           [
-                            Ty.function
+                            Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
                                     Ty.apply
-                                      (Ty.path "&")
+                                      (Ty.path "core::cell::RefCell")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::cell::RefCell")
-                                          []
-                                          [ Ty.path "move_core_types::state::VMState" ]
-                                      ]
+                                      [ Ty.path "move_core_types::state::VMState" ]
                                   ]
                               ]
-                              (Ty.path "move_core_types::state::VMState")
-                          ],
+                          ]
+                          (Ty.path "move_core_types::state::VMState"),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -429,27 +420,22 @@ Module state.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
+                        Ty.function
                           [
-                            Ty.function
+                            Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
                                     Ty.apply
-                                      (Ty.path "&")
+                                      (Ty.path "core::cell::RefCell")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::cell::RefCell")
-                                          []
-                                          [ Ty.path "move_core_types::state::VMState" ]
-                                      ]
+                                      [ Ty.path "move_core_types::state::VMState" ]
                                   ]
                               ]
-                              (Ty.path "move_core_types::state::VMState")
-                          ],
+                          ]
+                          (Ty.path "move_core_types::state::VMState"),
                         M.alloc (| α0 |),
                         [
                           fun γ =>

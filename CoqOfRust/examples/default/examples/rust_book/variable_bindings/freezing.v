@@ -25,14 +25,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _mutable_integer : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-          M.alloc (| Value.Integer IntegerKind.I32 7 |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _mutable_integer : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-            M.copy (| _mutable_integer |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (| M.write (| _mutable_integer, Value.Integer IntegerKind.I32 3 |) |) in
+        let~ _mutable_integer : Ty.path "i32" := Value.Integer IntegerKind.I32 7 in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _mutable_integer : Ty.path "i32" := M.read (| _mutable_integer |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] := M.write (| _mutable_integer, Value.Integer IntegerKind.I32 3 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

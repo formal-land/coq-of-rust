@@ -35,75 +35,56 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ outer_var : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-          M.alloc (| Value.Integer IntegerKind.I32 42 |) in
-        let~ closure_annotated :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ],
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                Ty.path "i32",
-                                BinOp.Wrap.add,
-                                [ M.read (| i |); M.read (| outer_var |) ]
-                              |)))
-                        ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
-          |) in
-        let~ closure_inferred :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ],
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                Ty.path "i32",
-                                BinOp.Wrap.add,
-                                [ M.read (| i |); M.read (| outer_var |) ]
-                              |)))
-                        ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ outer_var : Ty.path "i32" := Value.Integer IntegerKind.I32 42 in
+        let~ closure_annotated : Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let i := M.copy (| γ |) in
+                            M.call_closure (|
+                              Ty.path "i32",
+                              BinOp.Wrap.add,
+                              [ M.read (| i |); M.read (| outer_var |) ]
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ closure_inferred : Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let i := M.copy (| γ |) in
+                            M.call_closure (|
+                              Ty.path "i32",
+                              BinOp.Wrap.add,
+                              [ M.read (| i |); M.read (| outer_var |) ]
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -187,12 +168,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -273,28 +254,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ one : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.path "i32") ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.path "i32") ],
-                        M.alloc (| α0 |),
-                        [ fun γ => ltac:(M.monadic (Value.Integer IntegerKind.I32 1)) ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ one : Ty.function [ Ty.tuple [] ] (Ty.path "i32") :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
+                      M.alloc (| α0 |),
+                      [ fun γ => ltac:(M.monadic (Value.Integer IntegerKind.I32 1)) ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -374,9 +353,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

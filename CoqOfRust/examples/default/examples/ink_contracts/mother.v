@@ -188,7 +188,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "mother::AccountId" ],
+            Ty.path "mother::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -286,7 +286,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -526,7 +526,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -679,29 +679,25 @@ Module Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Outline" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |)
+          let~ __self_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Outline" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |) in
-          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Outline" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-              |)
+          let~ __arg1_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Outline" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -761,7 +757,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "mother::Outline" ],
+            Ty.path "mother::Outline",
             self,
             [
               fun γ =>
@@ -854,29 +850,25 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Status" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |)
+          let~ __self_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Status" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |) in
-          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Status" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-              |)
+          let~ __arg1_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Status" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
             LogicalOp.and (|
@@ -888,7 +880,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                    Ty.path "bool",
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -1039,13 +1031,13 @@ Module Impl_core_cmp_Eq_for_mother_Status.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                   |)))
@@ -1076,7 +1068,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "mother::Status" ],
+            Ty.path "mother::Status",
             self,
             [
               fun γ =>
@@ -1500,46 +1492,43 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     Value.DeclaredButUndefined,
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             Value.DeclaredButUndefined,
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     Value.DeclaredButUndefined,
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                            Ty.tuple [],
                                             Value.DeclaredButUndefined,
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                    Ty.tuple [],
                                                     Value.DeclaredButUndefined,
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.apply
-                                                              (Ty.path "*")
-                                                              []
-                                                              [ Ty.tuple [] ],
+                                                            Ty.tuple [],
                                                             Value.DeclaredButUndefined,
                                                             [
                                                               fun γ =>
@@ -1975,29 +1964,25 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Failure" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |)
+          let~ __self_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Failure" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |) in
-          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "isize",
-                M.get_function (|
-                  "core::intrinsics::discriminant_value",
-                  [],
-                  [ Ty.path "mother::Failure" ]
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-              |)
+          let~ __arg1_discr : Ty.path "isize" :=
+            M.call_closure (|
+              Ty.path "isize",
+              M.get_function (|
+                "core::intrinsics::discriminant_value",
+                [],
+                [ Ty.path "mother::Failure" ]
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
             LogicalOp.and (|
@@ -2009,7 +1994,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                    Ty.path "bool",
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -2084,7 +2069,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -2396,14 +2381,9 @@ Module Impl_mother_Mother.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]
-              ],
+              [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2491,50 +2471,48 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (| Ty.path "mother::Env", "emit_event", [], [] |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mother::Env",
-                        M.get_associated_function (| Ty.path "mother::Mother", "env", [], [] |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (| Ty.path "mother::Env", "emit_event", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mother::Env",
+                      M.get_associated_function (| Ty.path "mother::Mother", "env", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
-                  |);
-                  Value.StructTuple
-                    "mother::Event::AuctionEchoed"
-                    []
-                    []
-                    [
-                      Value.StructRecord
-                        "mother::AuctionEchoed"
-                        []
-                        []
-                        [
-                          ("auction",
-                            M.call_closure (|
+                  |)
+                |);
+                Value.StructTuple
+                  "mother::Event::AuctionEchoed"
+                  []
+                  []
+                  [
+                    Value.StructRecord
+                      "mother::AuctionEchoed"
+                      []
+                      []
+                      [
+                        ("auction",
+                          M.call_closure (|
+                            Ty.path "mother::Auction",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
                               Ty.path "mother::Auction",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "mother::Auction",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, auction |) ]
-                            |))
-                        ]
-                    ]
-                ]
-              |)
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, auction |) ]
+                          |))
+                      ]
+                  ]
+              ]
             |) in
           auction
         |)))
@@ -2567,15 +2545,7 @@ Module Impl_mother_Mother.
         let fail := M.alloc (| fail |) in
         M.read (|
           M.match_operator (|
-            Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "mother::Failure" ]
-              ],
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "mother::Failure" ],
             fail,
             [
               fun γ =>
@@ -2667,9 +2637,9 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              M.alloc (|
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -2726,9 +2696,9 @@ Module Impl_mother_Mother.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

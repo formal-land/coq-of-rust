@@ -54,7 +54,7 @@ Module checked.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -141,15 +141,9 @@ Module checked.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
-                  ]
-              ],
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -226,15 +220,9 @@ Module checked.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
-                  ]
-              ],
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -311,15 +299,9 @@ Module checked.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
-                  ]
-              ],
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -396,267 +378,276 @@ Module checked.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
-        M.catch_return
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            []
-            [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ ratio : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "result_chaining_with_question_mark::checked::MathError"
-                              ];
-                            Ty.path "f64"
-                          ],
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "f64";
-                              Ty.path "result_chaining_with_question_mark::checked::MathError"
-                            ],
-                          [],
-                          [],
-                          "branch",
-                          [],
-                          []
-                        |),
-                        [
+        M.read (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+              ]) (|
+            ltac:(M.monadic
+              (M.alloc (|
+                M.read (|
+                  let~ ratio : Ty.path "f64" :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.path "f64",
+                        M.alloc (|
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "core::ops::control_flow::ControlFlow")
                               []
                               [
-                                Ty.path "f64";
-                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                  ];
+                                Ty.path "f64"
                               ],
-                            M.get_function (|
-                              "result_chaining_with_question_mark::checked::div",
+                            M.get_trait_method (|
+                              "core::ops::try_trait::Try",
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "f64";
+                                  Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                ],
+                              [],
+                              [],
+                              "branch",
                               [],
                               []
                             |),
-                            [ M.read (| x |); M.read (| y |) ]
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "f64";
+                                    Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                  ],
+                                M.get_function (|
+                                  "result_chaining_with_question_mark::checked::div",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| x |); M.read (| y |) ]
+                              |)
+                            ]
                           |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "f64";
-                                        Ty.path
-                                          "result_chaining_with_question_mark::checked::MathError"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "f64";
-                                          Ty.path
-                                            "result_chaining_with_question_mark::checked::MathError"
-                                        ],
-                                      [],
-                                      [
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::ops::control_flow::ControlFlow::Break",
+                                  0
+                                |) in
+                              let residual := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [
-                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "f64";
                                             Ty.path
                                               "result_chaining_with_question_mark::checked::MathError"
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::FromResidual",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "f64";
+                                              Ty.path
+                                                "result_chaining_with_question_mark::checked::MathError"
+                                            ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path
+                                                  "result_chaining_with_question_mark::checked::MathError"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |)
-                |) in
-              let~ ln : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-                M.copy (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "result_chaining_with_question_mark::checked::MathError"
-                              ];
-                            Ty.path "f64"
-                          ],
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "f64";
-                              Ty.path "result_chaining_with_question_mark::checked::MathError"
-                            ],
-                          [],
-                          [],
-                          "branch",
-                          [],
-                          []
-                        |),
-                        [
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::ops::control_flow::ControlFlow::Continue",
+                                  0
+                                |) in
+                              let val := M.copy (| γ0_0 |) in
+                              val))
+                        ]
+                      |)
+                    |) in
+                  let~ ln : Ty.path "f64" :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.path "f64",
+                        M.alloc (|
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "core::ops::control_flow::ControlFlow")
                               []
                               [
-                                Ty.path "f64";
-                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                  ];
+                                Ty.path "f64"
                               ],
-                            M.get_function (|
-                              "result_chaining_with_question_mark::checked::ln",
+                            M.get_trait_method (|
+                              "core::ops::try_trait::Try",
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "f64";
+                                  Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                ],
+                              [],
+                              [],
+                              "branch",
                               [],
                               []
                             |),
-                            [ M.read (| ratio |) ]
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "f64";
+                                    Ty.path "result_chaining_with_question_mark::checked::MathError"
+                                  ],
+                                M.get_function (|
+                                  "result_chaining_with_question_mark::checked::ln",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| ratio |) ]
+                              |)
+                            ]
                           |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "f64";
-                                        Ty.path
-                                          "result_chaining_with_question_mark::checked::MathError"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "f64";
-                                          Ty.path
-                                            "result_chaining_with_question_mark::checked::MathError"
-                                        ],
-                                      [],
-                                      [
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::ops::control_flow::ControlFlow::Break",
+                                  0
+                                |) in
+                              let residual := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [
-                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "f64";
                                             Ty.path
                                               "result_chaining_with_question_mark::checked::MathError"
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::FromResidual",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "f64";
+                                              Ty.path
+                                                "result_chaining_with_question_mark::checked::MathError"
+                                            ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path
+                                                  "result_chaining_with_question_mark::checked::MathError"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::ops::control_flow::ControlFlow::Continue",
+                                  0
+                                |) in
+                              let val := M.copy (| γ0_0 |) in
+                              val))
+                        ]
+                      |)
+                    |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "f64";
+                          Ty.path "result_chaining_with_question_mark::checked::MathError"
+                        ],
+                      M.get_function (|
+                        "result_chaining_with_question_mark::checked::sqrt",
+                        [],
+                        []
+                      |),
+                      [ M.read (| ln |) ]
+                    |)
                   |)
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "f64";
-                      Ty.path "result_chaining_with_question_mark::checked::MathError"
-                    ],
-                  M.get_function (| "result_chaining_with_question_mark::checked::sqrt", [], [] |),
-                  [ M.read (| ln |) ]
                 |)
-              |)
-            |)))
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -689,7 +680,7 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -723,10 +714,7 @@ Module checked.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   why,
                                   [
                                     fun γ =>
@@ -781,64 +769,62 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
-                          M.call_closure (|
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+                            "new_v1",
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ] |)
-                                  |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.path "f64" ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |)
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "f64" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        ]
-                      |)
+                            |)
+                          ]
+                        |)
+                      ]
                     |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
@@ -863,13 +849,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "result_chaining_with_question_mark::checked::op", [], [] |),
-              [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "result_chaining_with_question_mark::checked::op", [], [] |),
+            [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

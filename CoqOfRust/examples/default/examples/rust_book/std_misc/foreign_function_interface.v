@@ -54,25 +54,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ z : Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ] :=
-          M.alloc (|
-            Value.StructRecord
-              "foreign_function_interface::Complex"
-              []
-              []
-              [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ]
+        let~ z : Ty.path "foreign_function_interface::Complex" :=
+          Value.StructRecord
+            "foreign_function_interface::Complex"
+            []
+            []
+            [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ] in
+        let~ z_sqrt : Ty.path "foreign_function_interface::Complex" :=
+          M.call_closure (|
+            Ty.path "foreign_function_interface::Complex",
+            M.get_function (| "foreign_function_interface::csqrtf", [], [] |),
+            [ M.read (| z |) ]
           |) in
-        let~ z_sqrt : Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "foreign_function_interface::Complex",
-              M.get_function (| "foreign_function_interface::csqrtf", [], [] |),
-              [ M.read (| z |) ]
-            |)
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -149,12 +145,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -242,9 +238,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -273,7 +269,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ],
+            Ty.path "foreign_function_interface::Complex",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -323,14 +319,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-              ],
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

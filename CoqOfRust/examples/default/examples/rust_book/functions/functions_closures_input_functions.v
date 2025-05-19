@@ -12,21 +12,19 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_trait_method (|
-                "core::ops::function::Fn",
-                F,
-                [],
-                [ Ty.tuple [] ],
-                "call",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, f |); Value.Tuple [] ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_trait_method (|
+              "core::ops::function::Fn",
+              F,
+              [],
+              [ Ty.tuple [] ],
+              "call",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, f |); Value.Tuple [] ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
@@ -48,9 +46,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -77,9 +75,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -104,83 +102,75 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ closure : Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  M.alloc (|
+        let~ closure : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.call_closure (|
+                                  Ty.tuple [],
+                                  M.get_function (| "std::io::stdio::_print", [], [] |),
+                                  [
                                     M.call_closure (|
-                                      Ty.tuple [],
-                                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                                      Ty.path "core::fmt::Arguments",
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        [ Value.Integer IntegerKind.Usize 1 ],
+                                        []
+                                      |),
                                       [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            [ Value.Integer IntegerKind.Usize 1 ],
-                                            []
-                                          |),
-                                          [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ mk_str (| "I'm a closure!
+                                              M.alloc (|
+                                                Value.Array [ mk_str (| "I'm a closure!
 " |) ]
-                                                  |)
-                                                |)
                                               |)
                                             |)
-                                          ]
+                                          |)
                                         |)
                                       ]
                                     |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)
-                              |)))
-                        ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "functions_closures_input_functions::call_me",
+              [],
+              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
+            |),
+            [ M.read (| closure |) ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "functions_closures_input_functions::call_me",
-                [],
-                [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
-              |),
-              [ M.read (| closure |) ]
-            |)
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "functions_closures_input_functions::call_me",
-                [],
-                [ Ty.function [] (Ty.tuple []) ]
-              |),
-              [ M.get_function (| "functions_closures_input_functions::function", [], [] |) ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "functions_closures_input_functions::call_me",
+              [],
+              [ Ty.function [] (Ty.tuple []) ]
+            |),
+            [ M.get_function (| "functions_closures_input_functions::function", [], [] |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

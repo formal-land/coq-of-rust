@@ -60,7 +60,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 self,
                 [
                   fun γ =>
@@ -163,292 +163,238 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ apple :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::option::Option")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-              ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              []
-              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-              [
-                Value.StructTuple
-                  "unpacking_options_and_defaults_via_or_else::Fruit::Apple"
-                  []
-                  []
-                  []
-              ]
-          |) in
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ] :=
+          Value.StructTuple
+            "core::option::Option::Some"
+            []
+            [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+            [ Value.StructTuple "unpacking_options_and_defaults_via_or_else::Fruit::Apple" [] [] []
+            ] in
         let~ no_fruit :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::option::Option")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-              ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::None"
-              []
-              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-              []
-          |) in
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ] :=
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+            [] in
         let~ get_kiwi_as_fallback :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.function
-                  [ Ty.tuple [] ]
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-              ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                          ],
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::Arguments",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_const",
-                                              [ Value.Integer IntegerKind.Usize 1 ],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [ mk_str (| "Providing kiwi as fallback
-" |)
-                                                        ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-                                    [
-                                      Value.StructTuple
-                                        "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
-                                        []
-                                        []
-                                        []
-                                    ]
-                                |)
-                              |)))
-                        ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
-          |) in
-        let~ get_lemon_as_fallback :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.function
-                  [ Ty.tuple [] ]
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-              ] :=
-          M.alloc (|
-            M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                          ],
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.read (|
-                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::Arguments",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_const",
-                                              [ Value.Integer IntegerKind.Usize 1 ],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          mk_str (|
-                                                            "Providing lemon as fallback
-"
-                                                          |)
-                                                        ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-                                    [
-                                      Value.StructTuple
-                                        "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
-                                        []
-                                        []
-                                        []
-                                    ]
-                                |)
-                              |)))
-                        ]
-                      |)))
-                  | _ => M.impossible "wrong number of arguments"
-                  end))
-          |) in
-        let~ first_available_fruit :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
+            Ty.function
+              [ Ty.tuple [] ]
+              (Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-                "or_else",
-                [],
-                [
-                  Ty.function
-                    [ Ty.tuple [] ]
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                ]
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-                    "or_else",
-                    [],
-                    [
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]) :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
                       Ty.function
                         [ Ty.tuple [] ]
                         (Ty.apply
                           (Ty.path "core::option::Option")
                           []
-                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                    ]
-                  |),
-                  [ M.read (| no_fruit |); M.read (| get_kiwi_as_fallback |) ]
-                |);
-                M.read (| get_lemon_as_fallback |)
+                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]),
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            [ Value.Integer IntegerKind.Usize 1 ],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ mk_str (| "Providing kiwi as fallback
+" |) ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+                                  [
+                                    Value.StructTuple
+                                      "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
+                                      []
+                                      []
+                                      []
+                                  ]
+                              |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ get_lemon_as_fallback :
+            Ty.function
+              [ Ty.tuple [] ]
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]) :=
+          M.closure
+            (fun γ =>
+              ltac:(M.monadic
+                match γ with
+                | [ α0 ] =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.function
+                        [ Ty.tuple [] ]
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]),
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            [ Value.Integer IntegerKind.Usize 1 ],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ mk_str (| "Providing lemon as fallback
+" |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+                                  [
+                                    Value.StructTuple
+                                      "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
+                                      []
+                                      []
+                                      []
+                                  ]
+                              |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
+                end)) in
+        let~ first_available_fruit :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+              "or_else",
+              [],
+              [
+                Ty.function
+                  [ Ty.tuple [] ]
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
               ]
-            |)
+            |),
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+                  "or_else",
+                  [],
+                  [
+                    Ty.function
+                      [ Ty.tuple [] ]
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
+                  ]
+                |),
+                [ M.read (| no_fruit |); M.read (| get_kiwi_as_fallback |) ]
+              |);
+              M.read (| get_lemon_as_fallback |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -516,9 +462,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

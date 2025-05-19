@@ -64,80 +64,87 @@ Module signature.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "alloy_primitives::signature::utils::is_valid_v",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| v |) ]
+          M.read (|
+            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      UnOp.not (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_function (|
+                                            "alloy_primitives::signature::utils::is_valid_v",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| v |) ]
+                                        |)
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "bool" ]
+                                          []
+                                      |)
+                                    |)
                                   |)
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::option::Option::None"
-                                    []
-                                    [ Ty.path "bool" ]
-                                    []
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ cmp : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "u64")
-                      (M.call_closure (|
-                        Ty.path "bool",
-                        BinOp.le,
-                        [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
-                      |))
-                  |) in
-                M.alloc (|
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    []
-                    [ Ty.path "bool" ]
-                    [
-                      M.call_closure (|
-                        Ty.path "bool",
-                        BinOp.eq,
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ cmp : Ty.path "u64" :=
+                      M.cast
+                        (Ty.path "u64")
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.le,
+                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                        |)) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "bool" ]
                         [
                           M.call_closure (|
-                            Ty.path "u64",
-                            BinOp.Wrap.rem,
-                            [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
-                          |);
-                          M.read (| cmp |)
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "u64",
+                                BinOp.Wrap.rem,
+                                [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                              |);
+                              M.read (| cmp |)
+                            ]
+                          |)
                         ]
-                      |)
-                    ]
-                |)
-              |)))
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -167,7 +174,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+              Ty.path "bool",
               v,
               [
                 fun γ =>
@@ -182,7 +189,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 0
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -190,7 +197,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 1
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -198,7 +205,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 27
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -206,8 +213,8 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 28
                               |) in
-                            Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -247,7 +254,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
+              Ty.path "u8",
               v,
               [
                 fun γ =>

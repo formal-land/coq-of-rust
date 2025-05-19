@@ -66,7 +66,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
         [ fun γ => ltac:(M.monadic (mk_str (| "red" |))) ]
       |)))
@@ -89,7 +89,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
         [ fun γ => ltac:(M.monadic (mk_str (| "blue" |))) ]
       |)))
@@ -120,33 +120,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ cardinal :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" ] :=
-          M.alloc (|
-            Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] [] []
-          |) in
-        let~ blue_jay :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" ] :=
-          M.alloc (|
-            Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] [] []
-          |) in
-        let~ _turkey :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.path "generics_bounds_test_case_empty_bounds::Turkey" ] :=
-          M.alloc (|
-            Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] [] []
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ cardinal : Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" :=
+          Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] [] [] in
+        let~ blue_jay : Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" :=
+          Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] [] [] in
+        let~ _turkey : Ty.path "generics_bounds_test_case_empty_bounds::Turkey" :=
+          Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] [] [] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -228,12 +210,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -315,9 +297,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

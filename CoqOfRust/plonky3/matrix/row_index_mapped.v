@@ -106,19 +106,14 @@ Module row_index_mapped.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
-                                          "p3_matrix::Matrix"
-                                          []
-                                          [ T ]
-                                          Inner
-                                          "Row")
-                                    ],
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "usize" ] ]
+                                    (Ty.associated_in_trait
+                                      "p3_matrix::Matrix"
+                                      []
+                                      [ T ]
+                                      Inner
+                                      "Row"),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>

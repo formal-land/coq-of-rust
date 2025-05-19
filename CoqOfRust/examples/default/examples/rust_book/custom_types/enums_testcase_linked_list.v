@@ -118,7 +118,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
+            Ty.path "u32",
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -195,7 +195,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ],
+            Ty.path "alloc::string::String",
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -224,113 +224,110 @@ Module Impl_enums_testcase_linked_list_List.
                       |),
                       [
                         M.read (|
-                          let~ res :
-                              Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.path "alloc::string::String",
-                                M.get_function (| "alloc::fmt::format", [], [] |),
-                                [
-                                  M.call_closure (|
+                          let~ res : Ty.path "alloc::string::String" :=
+                            M.call_closure (|
+                              Ty.path "alloc::string::String",
+                              M.get_function (| "alloc::fmt::format", [], [] |),
+                              [
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_v1",
-                                      [
-                                        Value.Integer IntegerKind.Usize 2;
-                                        Value.Integer IntegerKind.Usize 2
-                                      ],
-                                      []
-                                    |),
+                                    "new_v1",
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array [ mk_str (| "" |); mk_str (| ", " |) ]
-                                            |)
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.Integer IntegerKind.Usize 2
+                                    ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ mk_str (| "" |); mk_str (| ", " |) ]
                                           |)
                                         |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [ Ty.path "u32" ]
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.Ref, head |)
-                                                        |)
+                                                    "new_display",
+                                                    [],
+                                                    [ Ty.path "u32" ]
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, head |)
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.call_closure (|
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path "alloc::string::String",
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "enums_testcase_linked_list::List",
-                                                                  "stringify",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        M.deref (|
-                                                                          M.read (| tail |)
-                                                                        |)
+                                                    "new_display",
+                                                    [],
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.path "alloc::string::String",
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "enums_testcase_linked_list::List",
+                                                                "stringify",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| tail |)
                                                                       |)
                                                                     |)
                                                                   |)
-                                                                ]
-                                                              |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)
                                                         |)
                                                       |)
-                                                    ]
-                                                  |)
-                                                ]
-                                            |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                           |)
                                         |)
                                       |)
-                                    ]
-                                  |)
-                                ]
-                              |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |) in
                           res
                         |)
@@ -350,35 +347,32 @@ Module Impl_enums_testcase_linked_list_List.
                       |),
                       [
                         M.read (|
-                          let~ res :
-                              Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.path "alloc::string::String",
-                                M.get_function (| "alloc::fmt::format", [], [] |),
-                                [
-                                  M.call_closure (|
+                          let~ res : Ty.path "alloc::string::String" :=
+                            M.call_closure (|
+                              Ty.path "alloc::string::String",
+                              M.get_function (| "alloc::fmt::format", [], [] |),
+                              [
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_const",
-                                      [ Value.Integer IntegerKind.Usize 1 ],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (| Value.Array [ mk_str (| "Nil" |) ] |)
-                                          |)
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (| Value.Array [ mk_str (| "Nil" |) ] |)
                                         |)
                                       |)
-                                    ]
-                                  |)
-                                ]
-                              |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |) in
                           res
                         |)
@@ -417,70 +411,62 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ list : Ty.apply (Ty.path "*") [] [ Ty.path "enums_testcase_linked_list::List" ] :=
-          M.alloc (|
+        let~ list : Ty.path "enums_testcase_linked_list::List" :=
+          M.call_closure (|
+            Ty.path "enums_testcase_linked_list::List",
+            M.get_associated_function (|
+              Ty.path "enums_testcase_linked_list::List",
+              "new",
+              [],
+              []
+            |),
+            []
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.write (|
+            list,
             M.call_closure (|
               Ty.path "enums_testcase_linked_list::List",
               M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
-                "new",
+                "prepend",
                 [],
                 []
               |),
-              []
+              [ M.read (| list |); Value.Integer IntegerKind.U32 1 ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.write (|
-              list,
-              M.call_closure (|
+        let~ _ : Ty.tuple [] :=
+          M.write (|
+            list,
+            M.call_closure (|
+              Ty.path "enums_testcase_linked_list::List",
+              M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
-                M.get_associated_function (|
-                  Ty.path "enums_testcase_linked_list::List",
-                  "prepend",
-                  [],
-                  []
-                |),
-                [ M.read (| list |); Value.Integer IntegerKind.U32 1 ]
-              |)
+                "prepend",
+                [],
+                []
+              |),
+              [ M.read (| list |); Value.Integer IntegerKind.U32 2 ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.write (|
-              list,
-              M.call_closure (|
+        let~ _ : Ty.tuple [] :=
+          M.write (|
+            list,
+            M.call_closure (|
+              Ty.path "enums_testcase_linked_list::List",
+              M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
-                M.get_associated_function (|
-                  Ty.path "enums_testcase_linked_list::List",
-                  "prepend",
-                  [],
-                  []
-                |),
-                [ M.read (| list |); Value.Integer IntegerKind.U32 2 ]
-              |)
+                "prepend",
+                [],
+                []
+              |),
+              [ M.read (| list |); Value.Integer IntegerKind.U32 3 ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.write (|
-              list,
-              M.call_closure (|
-                Ty.path "enums_testcase_linked_list::List",
-                M.get_associated_function (|
-                  Ty.path "enums_testcase_linked_list::List",
-                  "prepend",
-                  [],
-                  []
-                |),
-                [ M.read (| list |); Value.Integer IntegerKind.U32 3 ]
-              |)
-            |)
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -554,12 +540,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -630,9 +616,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

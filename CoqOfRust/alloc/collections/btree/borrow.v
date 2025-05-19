@@ -68,44 +68,36 @@ Module collections.
             ltac:(M.monadic
               (let t := M.alloc (| t |) in
               M.read (|
-                let~ ptr :
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    M.get_trait_method (|
+                      "core::convert::From",
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        [],
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                        "from",
-                        [],
-                        []
-                      |),
-                      [ M.read (| t |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| t |) ]
                   |) in
-                let~ new_ref : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ] :=
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |)
+                let~ new_ref : Ty.apply (Ty.path "&mut") [] [ T ] :=
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "as_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
                           |)
                         |)
                       |)

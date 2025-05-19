@@ -231,16 +231,11 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
-                        ]
+                      Ty.tuple [];
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
                     ],
                   n,
                   [
@@ -280,7 +275,7 @@ Module iter.
               let n := M.alloc (| n |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ A ],
                   n,
                   [
                     fun γ =>
@@ -334,10 +329,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.never_to_any (|
                 M.read (|
-                  M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  |)
+                  M.loop (| Ty.path "never", ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |)
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -356,10 +348,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.never_to_any (|
                 M.read (|
-                  M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  |)
+                  M.loop (| Ty.path "never", ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |)
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -444,16 +433,11 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
-                        ]
+                      Ty.tuple [];
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
                     ],
                   n,
                   [
@@ -493,7 +477,7 @@ Module iter.
               let n := M.alloc (| n |) in
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ A ],
                   n,
                   [
                     fun γ =>

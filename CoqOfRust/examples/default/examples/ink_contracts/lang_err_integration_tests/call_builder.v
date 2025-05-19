@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "call_builder::AccountId" ],
+            Ty.path "call_builder::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -242,29 +242,18 @@ Module Impl_call_builder_CallBuilderTest.
         M.read (|
           let~ result :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "call_builder::LangError" ]
-                ] :=
-            M.alloc (|
-              M.never_to_any (|
-                M.call_closure (|
-                  Ty.path "never",
-                  M.get_function (| "core::panicking::panic", [], [] |),
-                  [ mk_str (| "not yet implemented" |) ]
-                |)
+                [ Ty.tuple []; Ty.path "call_builder::LangError" ] :=
+            M.never_to_any (|
+              M.call_closure (|
+                Ty.path "never",
+                M.get_function (| "core::panicking::panic", [], [] |),
+                [ mk_str (| "not yet implemented" |) ]
               |)
             |) in
           M.match_operator (|
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ]
-              ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ],
             result,
             [
               fun γ =>

@@ -59,7 +59,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "custom_environment::AccountId" ],
+            Ty.path "custom_environment::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -397,53 +397,51 @@ Module Impl_custom_environment_Topics.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "custom_environment::Env",
-                  "emit_event",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "custom_environment::Env",
-                        M.get_associated_function (|
-                          Ty.path "custom_environment::Topics",
-                          "env",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |)
-                  |);
-                  Value.StructTuple
-                    "custom_environment::Event::EventWithTopics"
-                    []
-                    []
-                    [
-                      M.call_closure (|
-                        Ty.path "custom_environment::EventWithTopics",
-                        M.get_trait_method (|
-                          "core::default::Default",
-                          Ty.path "custom_environment::EventWithTopics",
-                          [],
-                          [],
-                          "default",
-                          [],
-                          []
-                        |),
+          let~ _ : Ty.tuple [] :=
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "custom_environment::Env",
+                "emit_event",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "custom_environment::Env",
+                      M.get_associated_function (|
+                        Ty.path "custom_environment::Topics",
+                        "env",
+                        [],
                         []
-                      |)
-                    ]
-                ]
-              |)
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
+                |);
+                Value.StructTuple
+                  "custom_environment::Event::EventWithTopics"
+                  []
+                  []
+                  [
+                    M.call_closure (|
+                      Ty.path "custom_environment::EventWithTopics",
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "custom_environment::EventWithTopics",
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
+                      []
+                    |)
+                  ]
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

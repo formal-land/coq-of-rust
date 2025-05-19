@@ -131,7 +131,9 @@ Module Pointer.
 
   Module Core.
     Inductive t (Value : Set) : Set :=
-    | Immediate (value : Value)
+    (** The immediate value is optional in case with have a sub-pointer of an immediate pointer for
+        an enum case that is not the current one. *)
+    | Immediate (value : option Value)
     | Mutable {Address : Set} (address : Address) (path : Path.t).
     Arguments Immediate {_}.
     Arguments Mutable {_ _}.
@@ -317,6 +319,7 @@ Module LowM.
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | CallLogicalOp (op : LogicalOp.t) (lhs : Value.t) (rhs : t A) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
+  | LetAlloc (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | MatchTuple (tuple : Value.t) (k : list Value.t -> t A)
   | Impossible (message : string).
@@ -325,6 +328,7 @@ Module LowM.
   Arguments CallClosure {_}.
   Arguments CallLogicalOp {_}.
   Arguments Let {_}.
+  Arguments LetAlloc {_}.
   Arguments Loop {_}.
   Arguments MatchTuple {_}.
   Arguments Impossible {_}.
@@ -342,6 +346,8 @@ Module LowM.
       Let ty e (fun v => let_ (k v) e2)
     | Loop ty body k =>
       Loop ty body (fun v => let_ (k v) e2)
+    | LetAlloc ty e k =>
+      LetAlloc ty e (fun v => let_ (k v) e2)
     | MatchTuple tuple k =>
       MatchTuple tuple (fun fields => let_ (k fields) e2)
     | Impossible message => Impossible message
@@ -384,7 +390,7 @@ Definition let_user (ty : Ty.t) (e1 : Value.t) (e2 : Value.t -> Value.t) : Value
   e2 e1.
 
 Definition let_user_monadic (ty : Ty.t) (e1 : M) (e2 : Value.t -> M) : M :=
-  LowM.Let ty e1 (fun v1 =>
+  LowM.LetAlloc ty e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
@@ -696,7 +702,7 @@ Definition get_trait_method
   ).
 
 Definition catch (ty : Ty.t) (body : M) (handler : Exception.t -> M) : M :=
-  LowM.Let ty body (fun result =>
+  LowM.LetAlloc ty (let_ body read) (fun result =>
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
@@ -708,7 +714,7 @@ Definition catch_return (ty : Ty.t) (body : M) : M :=
     body
     (fun exception =>
       match exception with
-      | Exception.Return r => pure r
+      | Exception.Return r => alloc r
       | _ => raise exception
       end
     ).
@@ -738,7 +744,7 @@ Definition catch_break (ty : Ty.t) (body : M) : M :=
 Definition loop (ty : Ty.t) (body : M) : M :=
   LowM.Loop
     ty
-    (catch_continue ty body)
+    (let_ (catch_continue ty body) read)
     (fun result =>
       catch_break ty (LowM.Pure result)).
 
@@ -795,6 +801,7 @@ Definition find_or_pattern
     (body : list Value.t -> M) :
     M :=
   let* free_vars := find_or_pattern_aux arm_ty scrutinee arms in
+  let* free_vars := M.read free_vars in
   LowM.MatchTuple free_vars body.
 
 Definition never_to_any (x : Value.t) : M :=

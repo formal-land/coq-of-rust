@@ -28,7 +28,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
+                Ty.path "alloy_primitives::bits::address::Address",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -189,7 +189,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -562,45 +562,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -698,45 +696,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -834,45 +830,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1080,181 +1074,181 @@ Module bits.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "alloy_primitives::bits::address::Address";
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.path "alloy_primitives::bits::address::Address")
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (Value.StructTuple
-                  "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
-                    Ty.path "const_hex::error::FromHexError"
-                  ]
-                  [
-                    Value.StructTuple
-                      "alloy_primitives::bits::address::Address"
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
                       []
+                      []
+                      (Ty.path "alloy_primitives::bits::address::Address")
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
                       []
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
+                        Ty.path "alloy_primitives::bits::address::Address";
+                        Ty.path "const_hex::error::FromHexError"
+                      ]
+                      [
+                        Value.StructTuple
+                          "alloy_primitives::bits::address::Address"
+                          []
+                          []
+                          [
+                            M.read (|
+                              M.match_operator (|
                                 Ty.apply
                                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                   [ Value.Integer IntegerKind.Usize 20 ]
-                                  []
-                              ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "const_hex::error::FromHexError"
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer IntegerKind.Usize 20 ]
-                                      []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 20 ]
-                                        [];
-                                      Ty.path "const_hex::error::FromHexError"
-                                    ],
                                   [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
                                         Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ];
+                                        Ty.apply
                                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                           [ Value.Integer IntegerKind.Usize 20 ]
-                                          [];
-                                        Ty.path "const_hex::error::FromHexError"
+                                          []
                                       ],
                                     M.get_trait_method (|
-                                      "core::str::traits::FromStr",
+                                      "core::ops::try_trait::Try",
                                       Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 20 ]
-                                        [],
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 20 ]
+                                            [];
+                                          Ty.path "const_hex::error::FromHexError"
+                                        ],
                                       [],
                                       [],
-                                      "from_str",
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer IntegerKind.Usize 20 ]
+                                              [];
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::str::traits::FromStr",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 20 ]
+                                            [],
+                                          [],
+                                          [],
+                                          "from_str",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "alloy_primitives::bits::address::Address";
-                                                Ty.path "const_hex::error::FromHexError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloy_primitives::bits::address::Address";
-                                                  Ty.path "const_hex::error::FromHexError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::bits::address::Address";
                                                     Ty.path "const_hex::error::FromHexError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloy_primitives::bits::address::Address";
+                                                      Ty.path "const_hex::error::FromHexError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "const_hex::error::FromHexError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
                       ]
-                  ]))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1806,27 +1800,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 20 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 20 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::address::Address",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::address::Address",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -1879,27 +1866,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 20 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 20 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::address::Address",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::address::Address",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -2346,30 +2326,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 20 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 20 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::address::Address" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bits::address::Address" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -2544,30 +2519,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 20 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 20 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::address::Address" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "alloy_primitives::bits::address::Address" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -5418,7 +5388,7 @@ Module bits.
             (let src := M.alloc (| src |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
+                Ty.path "alloy_primitives::bits::address::Address",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -5978,7 +5948,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::bloom::Bloom" ],
+                Ty.path "alloy_primitives::bits::bloom::Bloom",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -6139,7 +6109,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -6512,45 +6482,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -6648,45 +6616,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -6784,45 +6750,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -7026,180 +6990,180 @@ Module bits.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "alloy_primitives::bits::bloom::Bloom";
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.path "alloy_primitives::bits::bloom::Bloom")
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (Value.StructTuple
-                  "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.path "alloy_primitives::bits::bloom::Bloom";
-                    Ty.path "const_hex::error::FromHexError"
-                  ]
-                  [
-                    Value.StructTuple
-                      "alloy_primitives::bits::bloom::Bloom"
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
                       []
+                      []
+                      (Ty.path "alloy_primitives::bits::bloom::Bloom")
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
                       []
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
+                        Ty.path "alloy_primitives::bits::bloom::Bloom";
+                        Ty.path "const_hex::error::FromHexError"
+                      ]
+                      [
+                        Value.StructTuple
+                          "alloy_primitives::bits::bloom::Bloom"
+                          []
+                          []
+                          [
+                            M.read (|
+                              M.match_operator (|
                                 Ty.apply
                                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                   [ Value.Integer IntegerKind.Usize 256 ]
-                                  []
-                              ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "const_hex::error::FromHexError"
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer IntegerKind.Usize 256 ]
-                                      []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 256 ]
-                                        [];
-                                      Ty.path "const_hex::error::FromHexError"
-                                    ],
                                   [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
                                         Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ];
+                                        Ty.apply
                                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                           [ Value.Integer IntegerKind.Usize 256 ]
-                                          [];
-                                        Ty.path "const_hex::error::FromHexError"
+                                          []
                                       ],
                                     M.get_trait_method (|
-                                      "core::str::traits::FromStr",
+                                      "core::ops::try_trait::Try",
                                       Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 256 ]
-                                        [],
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 256 ]
+                                            [];
+                                          Ty.path "const_hex::error::FromHexError"
+                                        ],
                                       [],
                                       [],
-                                      "from_str",
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer IntegerKind.Usize 256 ]
+                                              [];
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::str::traits::FromStr",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 256 ]
+                                            [],
+                                          [],
+                                          [],
+                                          "from_str",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "alloy_primitives::bits::bloom::Bloom";
-                                                Ty.path "const_hex::error::FromHexError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "alloy_primitives::bits::bloom::Bloom";
-                                                  Ty.path "const_hex::error::FromHexError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "alloy_primitives::bits::bloom::Bloom";
                                                     Ty.path "const_hex::error::FromHexError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloy_primitives::bits::bloom::Bloom";
+                                                      Ty.path "const_hex::error::FromHexError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "const_hex::error::FromHexError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
                       ]
-                  ]))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7751,27 +7715,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -7824,27 +7781,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -7897,27 +7847,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -8354,30 +8297,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 256 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::bloom::Bloom" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bits::bloom::Bloom" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -8546,30 +8484,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 256 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::bloom::Bloom" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "alloy_primitives::bits::bloom::Bloom" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -11441,7 +11374,7 @@ Module bits.
             (let src := M.alloc (| src |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::bloom::Bloom" ],
+                Ty.path "alloy_primitives::bits::bloom::Bloom",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -14352,7 +14285,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::function::Function" ],
+                Ty.path "alloy_primitives::bits::function::Function",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -14513,7 +14446,7 @@ Module bits.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -14886,45 +14819,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -15022,45 +14953,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -15158,45 +15087,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -15404,182 +15331,181 @@ Module bits.
         | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "alloy_primitives::bits::function::Function";
-                  Ty.associated_in_trait
-                    "core::str::traits::FromStr"
-                    []
-                    []
-                    (Ty.path "alloy_primitives::bits::function::Function")
-                    "Err"
-                ]) (|
-              ltac:(M.monadic
-                (Value.StructTuple
-                  "core::result::Result::Ok"
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.path "alloy_primitives::bits::function::Function";
-                    Ty.path "const_hex::error::FromHexError"
-                  ]
-                  [
-                    Value.StructTuple
-                      "alloy_primitives::bits::function::Function"
+                    Ty.associated_in_trait
+                      "core::str::traits::FromStr"
                       []
+                      []
+                      (Ty.path "alloy_primitives::bits::function::Function")
+                      "Err"
+                  ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
                       []
                       [
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
+                        Ty.path "alloy_primitives::bits::function::Function";
+                        Ty.path "const_hex::error::FromHexError"
+                      ]
+                      [
+                        Value.StructTuple
+                          "alloy_primitives::bits::function::Function"
+                          []
+                          []
+                          [
+                            M.read (|
+                              M.match_operator (|
                                 Ty.apply
                                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                   [ Value.Integer IntegerKind.Usize 24 ]
-                                  []
-                              ],
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "const_hex::error::FromHexError"
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                      [ Value.Integer IntegerKind.Usize 24 ]
-                                      []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 24 ]
-                                        [];
-                                      Ty.path "const_hex::error::FromHexError"
-                                    ],
                                   [],
-                                  [],
-                                  "branch",
-                                  [],
-                                  []
-                                |),
-                                [
+                                M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
                                       [
                                         Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ];
+                                        Ty.apply
                                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                                           [ Value.Integer IntegerKind.Usize 24 ]
-                                          [];
-                                        Ty.path "const_hex::error::FromHexError"
+                                          []
                                       ],
                                     M.get_trait_method (|
-                                      "core::str::traits::FromStr",
+                                      "core::ops::try_trait::Try",
                                       Ty.apply
-                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer IntegerKind.Usize 24 ]
-                                        [],
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 24 ]
+                                            [];
+                                          Ty.path "const_hex::error::FromHexError"
+                                        ],
                                       [],
                                       [],
-                                      "from_str",
+                                      "branch",
                                       [],
                                       []
                                     |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| src |) |)
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer IntegerKind.Usize 24 ]
+                                              [];
+                                            Ty.path "const_hex::error::FromHexError"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::str::traits::FromStr",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 24 ]
+                                            [],
+                                          [],
+                                          [],
+                                          "from_str",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| src |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloy_primitives::bits::function::Function";
-                                                Ty.path "const_hex::error::FromHexError"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloy_primitives::bits::function::Function";
-                                                  Ty.path "const_hex::error::FromHexError"
-                                                ],
-                                              [],
-                                              [
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloy_primitives::bits::function::Function";
                                                     Ty.path "const_hex::error::FromHexError"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
+                                                  ],
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloy_primitives::bits::function::Function";
+                                                      Ty.path "const_hex::error::FromHexError"
+                                                    ],
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "const_hex::error::FromHexError"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |)
+                            |)
+                          ]
                       ]
-                  ]))
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16133,27 +16059,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -16206,27 +16125,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -16279,27 +16191,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -16752,30 +16657,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 24 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 24 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::function::Function" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bits::function::Function" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -16950,30 +16850,25 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 24 ]
-                                              [ Ty.path "u8" ]
-                                          ]
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 24 ]
+                                          [ Ty.path "u8" ]
                                       ]
                                   ]
-                                  (Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::function::Function" ])
-                              ],
+                              ]
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "alloy_primitives::bits::function::Function" ]),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -19827,7 +19722,7 @@ Module bits.
             (let src := M.alloc (| src |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::function::Function" ],
+                Ty.path "alloy_primitives::bits::function::Function",
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

@@ -48,337 +48,327 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ a :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "std::collections::hash::set::HashSet")
               []
-              [
-                Ty.apply
-                  (Ty.path "std::collections::hash::set::HashSet")
-                  []
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                []
-                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
-                Ty.apply
-                  (Ty.path "alloc::vec::into_iter::IntoIter")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                [],
-                [],
-                "collect",
-                [],
-                [
-                  Ty.apply
-                    (Ty.path "std::collections::hash::set::HashSet")
-                    []
-                    [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
-                ]
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                    []
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    [],
-                    "into_iter",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                        "into_vec",
-                        [],
-                        [ Ty.path "alloc::alloc::Global" ]
-                      |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 3 ]
-                                    [ Ty.path "i32" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 3 ]
-                                      [ Ty.path "i32" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      Value.Integer IntegerKind.I32 1;
-                                      Value.Integer IntegerKind.I32 2;
-                                      Value.Integer IntegerKind.I32 3
-                                    ]
-                                |)
-                              ]
-                            |)
-                          |))
-                      ]
-                    |)
-                  ]
-                |)
-              ]
-            |)
-          |) in
-        let~ b :
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ] :=
+          M.call_closure (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "std::collections::hash::set::HashSet")
               []
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+              [],
+              [],
+              "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "std::collections::hash::set::HashSet")
                   []
                   [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                []
-                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
+              ]
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                [],
-                [],
-                "collect",
-                [],
-                [
+                M.get_trait_method (|
+                  "core::iter::traits::collect::IntoIterator",
                   Ty.apply
-                    (Ty.path "std::collections::hash::set::HashSet")
-                    []
-                    [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
-                ]
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
+                  [],
+                  [],
+                  "into_iter",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    [],
-                    "into_iter",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                        "into_vec",
-                        [],
-                        [ Ty.path "alloc::alloc::Global" ]
-                      |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 3 ]
-                                    [ Ty.path "i32" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 3 ]
-                                      [ Ty.path "i32" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      Value.Integer IntegerKind.I32 2;
-                                      Value.Integer IntegerKind.I32 3;
-                                      Value.Integer IntegerKind.I32 4
-                                    ]
-                                |)
-                              ]
-                            |)
-                          |))
-                      ]
-                    |)
-                  ]
-                |)
-              ]
-            |)
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                      "into_vec",
+                      [],
+                      [ Ty.path "alloc::alloc::Global" ]
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.read (|
                           M.call_closure (|
-                            Ty.path "bool",
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "i32" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "std::collections::hash::set::HashSet")
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                              "insert",
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "i32" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
                               [],
                               []
                             |),
-                            [ M.borrow (| Pointer.Kind.MutRef, a |); Value.Integer IntegerKind.I32 4
-                            ]
-                          |)
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic", [], [] |),
-                        [ mk_str (| "assertion failed: a.insert(4)" |) ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "std::collections::hash::set::HashSet")
-                                []
-                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                              "contains",
-                              [],
-                              [ Ty.path "i32" ]
-                            |),
                             [
-                              M.borrow (| Pointer.Kind.Ref, a |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Value.Integer IntegerKind.I32 4 |)
-                                  |)
-                                |)
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    Value.Integer IntegerKind.I32 1;
+                                    Value.Integer IntegerKind.I32 2;
+                                    Value.Integer IntegerKind.I32 3
+                                  ]
                               |)
                             ]
                           |)
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic", [], [] |),
-                        [ mk_str (| "assertion failed: a.contains(&4)" |) ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
             ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (|
+        let~ b :
+            Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              []
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              []
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+              [],
+              [],
+              "collect",
+              [],
+              [
                 Ty.apply
                   (Ty.path "std::collections::hash::set::HashSet")
                   []
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                "insert",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.MutRef, b |); Value.Integer IntegerKind.I32 5 ]
+                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+              ]
+            |),
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                M.get_trait_method (|
+                  "core::iter::traits::collect::IntoIterator",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "into_iter",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                      "into_vec",
+                      [],
+                      [ Ty.path "alloc::alloc::Global" ]
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.read (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "i32" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "i32" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    Value.Integer IntegerKind.I32 2;
+                                    Value.Integer IntegerKind.I32 3;
+                                    Value.Integer IntegerKind.I32 4
+                                  ]
+                              |)
+                            ]
+                          |)
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            ]
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          UnOp.not (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "std::collections::hash::set::HashSet")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                                "insert",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, a |);
+                                Value.Integer IntegerKind.I32 4
+                              ]
+                            |)
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::panicking::panic", [], [] |),
+                          [ mk_str (| "assertion failed: a.insert(4)" |) ]
+                        |)
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
             |)
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          UnOp.not (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "std::collections::hash::set::HashSet")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                                "contains",
+                                [],
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, a |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (| Value.Integer IntegerKind.I32 4 |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::panicking::panic", [], [] |),
+                          [ mk_str (| "assertion failed: a.contains(&4)" |) ]
+                        |)
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+          |) in
+        let~ _ : Ty.path "bool" :=
+          M.call_closure (|
+            Ty.path "bool",
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                []
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+              "insert",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.MutRef, b |); Value.Integer IntegerKind.I32 5 ]
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -439,12 +429,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -505,12 +495,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -644,12 +634,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -787,12 +777,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -930,12 +920,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -1074,9 +1064,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
