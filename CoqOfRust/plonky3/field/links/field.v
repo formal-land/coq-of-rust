@@ -81,7 +81,7 @@ pub trait Field:
 *)
 Module Field.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("plonky3::field::field::Field", [], [], Φ Self).
+    ("p3_field::field::Field", [], [], Φ Self).
 
   Class Run (Self : Set) `{Link Self} : Set := {
   }.
@@ -106,7 +106,7 @@ pub trait PrimeField:
 *)
 Module PrimeField.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("plonky3::field::field::PrimeField", [], [], Φ Self).
+    ("p3_field::field::PrimeField", [], [], Φ Self).
 
   Class Run (Self : Set) `{Link Self} : Set := {
     run_Field_for_PrimeField : Field.Run Self;
@@ -130,7 +130,7 @@ Module PrimeField64.
   | Make.
 
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("plonky3::field::field::PrimeField64", [], [], Φ Self).
+    ("p3_field::field::PrimeField64", [], [], Φ Self).
 
   (* const ORDER_U64: u64; *)
   Definition run_ORDER_U64 (Self : Set) `{Link Self} : Set :=

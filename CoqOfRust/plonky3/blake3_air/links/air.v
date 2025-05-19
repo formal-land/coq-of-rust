@@ -19,15 +19,13 @@ Module Blake3Air.
   Inductive t : Set :=
   | Make.
 
-  Parameter to_value : t -> Value.t.
-
   Global Instance IsLink : Link t := {
   (* TODO: fix path here *)
-    Φ := Ty.path "plonky3::blake3_air::air::Blake3Air";
-    φ := to_value;
+    Φ := Ty.path "p3_blake3_air::air::Blake3Air";
+    φ _ := Value.StructRecord "p3_blake3_air::air::Blake3Air" [] [] [];
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3_air::air::Blake3Air").
+  Definition of_ty : OfTy.t (Ty.path "p3_blake3_air::air::Blake3Air").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty. 
 End Blake3Air.
