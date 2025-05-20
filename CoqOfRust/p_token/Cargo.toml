@@ -1,0 +1,31 @@
+[package]
+name = "pinocchio-token-program"
+version = "0.0.0"
+description = "A pinocchio-based Token (aka 'p-token') program"
+authors = { workspace = true}
+repository = { workspace = true}
+license = { workspace = true}
+edition = { workspace = true}
+readme = "./README.md"
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+logging = []
+
+[dependencies]
+pinocchio = "0.8.4"
+pinocchio-log = { version = "0.4", default-features = false }
+spl-token-interface = { version = "^0", path = "../interface" }
+
+[dev-dependencies]
+assert_matches = "1.5.0"
+num-traits = "0.2"
+solana-program-test = "2.1"
+solana-sdk = "2.1"
+spl-token = { version="^4", features=["no-entrypoint"] }
+spl-token-2022 = { version="^7", features=["no-entrypoint"] }
+
+[lints]
+workspace = true
