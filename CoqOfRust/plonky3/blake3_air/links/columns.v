@@ -32,27 +32,69 @@ pub(crate) struct QuarterRound<'a, T, U> {
     pub d_output: &'a [T; 32],
 }
 *)
-(* NOTE: this is an example to explain what error happened in the actual code *)
 Module test_error.
-  (* First of all, we have to provide link instances for T U otherwise Coq cannot find an 
-    instance for `Ref (array.t T _)` *)
   Record t {T U : Set} `{Link T} `{Link U} : Set := {
     a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
+    b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
   }.
 
-  (* When defining `of_value_with`, comparing to definitions in `gas` where entry types 
-    are being auto deducted, here we also need to provide instances for link T and U. *)
-  Lemma of_value_with {T U : Set} `{Link T} `{Link U}
-    a a' :
-    a' = φ a -> Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
-    ("a", a')
-    ] = 
-    (* The actual issue here is parameters for `Build_t`. Seems like it has 5 parameter:
-    Build_t (T U : Set) `{Link T} `{Link U} (a : Ref.t (...))
-    And I don't know how to correctly provide the Link T and U instances.
-    *)
-    φ (Build_t T U _ _ a).
+  Global Instance IsLink (T U : Set) `{T_Link : Link T} `{U_Link : Link U} : Link (@t T U T_Link U_Link)
+  := {
+    Φ := Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ Φ T; Φ U ];
+    φ x :=
+      Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
+        ("a", φ x.(a));
+        ("b", φ x.(b))
+      ];
+  }.
+
+  Lemma of_value_with {T U : Set} `{T_Link : Link T} `{U_Link : Link U} 
+    a a' b b' :
+    a' = φ a ->
+    b' = φ b -> 
+    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
+      ("a", a');
+      ("b", b')
+      ] 
+    = @φ (@t T U T_Link U_Link) (IsLink T U) (Build_t T U T_Link U_Link a b).
   Proof. Admitted.
+
+  Definition of_value {T U : Set} `{Link T} `{Link U}
+  (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) a' 
+  (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |})) b' :
+  a' = φ a ->
+  b' = φ b ->
+  OfValue.t (
+    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
+      ("a", a');
+      ("b", b')
+    ]).
+  Proof. 
+  Set Typeclasses Debug.
+  intros Ha Hb.
+  (* econstructor. *)
+  (* 
+  Unable to unify
+  "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
+      [("a", ?M1555); ("b", ?M1557)] =
+    (IsLink ?T ?U).(φ) {| a := ?M1554; b := ?M1556 |}"
+  with
+  "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
+      [("a", a'); ("b", b')] = H0.(φ) ?value".
+  *)
+  (* 
+  Unable to unify
+   "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
+      [("a", a'); ("b", b')] = (IsLink T U).(φ) {| a := a; b := b |}"
+  with
+   "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
+      [("a", a'); ("b", b')] = H0.(φ) ?value".coqtop
+  *)
+  eapply (@of_value_with T U _ _ _ _ _ _ Ha Hb).
+  
+  econstructor;
+  Print of_value_with.
+  eapply (@of_value_with T U H H0 a a' b b' _ _); eassumption. Defined.
 End test_error.
 
 Module QuarterRound.
@@ -76,8 +118,7 @@ Module QuarterRound.
   }.
   Arguments t : clear implicits.
 
-  (* NOTE: the result from definition above is that it needs two extra Link instance for T and U here(???) *)
-  Global Instance IsLink (T U : Set) `{Link T} `{Link U} : Link (t T U _ _)
+  Global Instance IsLink (T U : Set) `{T_Link : Link T} `{U_Link : Link U} : Link (@t T U T_Link U_Link)
   := {
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ Φ T; Φ U ];
     φ x :=
@@ -105,8 +146,7 @@ Module QuarterRound.
   Proof. intros [T] [U]. eapply OfTy.Make with (A := t T U _ _). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  (* NOTE: stuck *)
-  Lemma of_value_with {T U : Set} `{Link T} `{Link U}
+  Lemma of_value_with {T U : Set} `{T_Link : Link T} `{U_Link : Link U} 
     a a'
     b b'
     c c'
@@ -149,8 +189,10 @@ Module QuarterRound.
       ("a_output", a_output');
       ("b_output", b_output');
       ("c_output", c_output');
-      ("d_output", d_output');
-    ] = φ (Build_t a b c d m_two_i a_prime b_prime c_prime d_prime 
+      ("d_output", d_output')
+    ] = 
+    @φ (t T U T_Link U_Link) (IsLink T U) (Build_t T U T_Link U_Link
+    a b c d m_two_i a_prime b_prime c_prime d_prime 
       m_two_i_plus_one a_output b_output c_output d_output).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
@@ -204,7 +246,7 @@ Module QuarterRound.
         ("d_output", d_output')
       ]
     ).
-  Proof. econstructor; apply of_value_with; eassumption. Defined.
+  Proof. econstructor. apply (@of_value_with T U H H0). eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End QuarterRound.
  
