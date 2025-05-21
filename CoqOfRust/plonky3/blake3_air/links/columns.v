@@ -32,18 +32,29 @@ pub(crate) struct QuarterRound<'a, T, U> {
     pub d_output: &'a [T; 32],
 }
 *)
-Module test.
+(* NOTE: this is an example to explain what error happened in the actual code *)
+Module test_error.
+  (* First of all, we have to provide link instances for T U otherwise Coq cannot find an 
+    instance for `Ref (array.t T _)` *)
   Record t {T U : Set} `{Link T} `{Link U} : Set := {
     a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
   }.
 
+  (* When defining `of_value_with`, comparing to definitions in `gas` where entry types 
+    are being auto deducted, here we also need to provide instances for link T and U. *)
   Lemma of_value_with {T U : Set} `{Link T} `{Link U}
     a a' :
     a' = φ a -> Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
     ("a", a')
-    ] = φ (Build_t a).
-  Admitted.
-End test.
+    ] = 
+    (* The actual issue here is parameters for `Build_t`. Seems like it has 5 parameter:
+    Build_t (T U : Set) `{Link T} `{Link U} (a : Ref.t (...))
+    And I don't know how to correctly provide the Link T and U instances.
+    *)
+    φ (Build_t T U _ _ a).
+  Proof. Admitted.
+End test_error.
+
 Module QuarterRound.
   (* NOTE: here we provide link instance for T and U or otherwise Coq cannot recognize
   instances for arrays of them *)
@@ -94,22 +105,7 @@ Module QuarterRound.
   Proof. intros [T] [U]. eapply OfTy.Make with (A := t T U _ _). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  (* 
-    Lemma of_value_with limit limit' remaining remaining' refunded refunded' memory memory' :
-    limit' = φ limit ->
-    remaining' = φ remaining ->
-    refunded' = φ refunded ->
-    memory' = φ memory ->
-    Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
-      ("limit", limit');
-      ("remaining", remaining');
-      ("refunded", refunded');
-      ("memory", memory')
-    ] = φ (Build_t limit remaining refunded memory).
-  Proof. now intros; subst. Qed.
-  Smpl Add apply of_value_with : of_value.
-  *)
-
+  (* NOTE: stuck *)
   Lemma of_value_with {T U : Set} `{Link T} `{Link U}
     a a'
     b b'
