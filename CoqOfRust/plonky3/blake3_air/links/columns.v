@@ -32,7 +32,7 @@ pub(crate) struct QuarterRound<'a, T, U> {
     pub d_output: &'a [T; 32],
 }
 *)
-Module test_error.
+Module test_case.
   Record t {T U : Set} `{Link T} `{Link U} : Set := {
     a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
     b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
@@ -59,7 +59,7 @@ Module test_error.
     = @φ (@t T U T_Link U_Link) (IsLink T U) (Build_t T U T_Link U_Link a b).
   Proof. Admitted.
 
-  Definition of_value {T U : Set} `{Link T} `{Link U}
+  Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
   (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) a' 
   (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |})) b' :
   a' = φ a ->
@@ -69,37 +69,19 @@ Module test_error.
       ("a", a');
       ("b", b')
     ]).
-  Proof. 
-  Set Typeclasses Debug.
-  intros Ha Hb.
-  (* econstructor. *)
-  (* 
-  Unable to unify
-  "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
-      [("a", ?M1555); ("b", ?M1557)] =
-    (IsLink ?T ?U).(φ) {| a := ?M1554; b := ?M1556 |}"
-  with
-  "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
-      [("a", a'); ("b", b')] = H0.(φ) ?value".
-  *)
-  (* 
-  Unable to unify
-   "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
-      [("a", a'); ("b", b')] = (IsLink T U).(φ) {| a := a; b := b |}"
-  with
-   "Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] []
-      [("a", a'); ("b", b')] = H0.(φ) ?value".coqtop
-  *)
-  eapply (@of_value_with T U _ _ _ _ _ _ Ha Hb).
-  
-  econstructor;
-  Print of_value_with.
-  eapply (@of_value_with T U H H0 a a' b b' _ _); eassumption. Defined.
-End test_error.
+  Proof.
+    (* Set Typeclasses Debug. *)
+    econstructor 1 with t (IsLink T U) _. 
+    apply (@of_value_with T U T_Link U_Link a a' b b' H H0). 
+  Defined.
+  Smpl Add apply of_value : of_value.
+End test_case.
 
 Module QuarterRound.
   (* NOTE: here we provide link instance for T and U or otherwise Coq cannot recognize
-  instances for arrays of them *)
+  instances for arrays of them(?)
+  Is there some way to avoid this, since this will cause much inconvenience when other
+  types are calling this? *)
   Record t {T U : Set} `{Link T} `{Link U} : Set := {
     a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
     b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
@@ -198,7 +180,7 @@ Module QuarterRound.
   Smpl Add apply of_value_with : of_value.
 
   (* NOTE: for future reference, deleting link instances will report errors about undefined evars *)
-  Definition of_value {T U : Set} `{Link T} `{Link U}
+  Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
     (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) (a' : Value.t)
     (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32|}))  (b' : Value.t)
     (c : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS))  (c' : Value.t)
@@ -246,7 +228,10 @@ Module QuarterRound.
         ("d_output", d_output')
       ]
     ).
-  Proof. econstructor. apply (@of_value_with T U H H0). eassumption. Defined.
+  Proof. 
+  econstructor 1 with (t T U T_Link U_Link) (IsLink T U) _.
+  eapply (@of_value_with T U T_Link U_Link a a' b b' _ _).
+  all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End QuarterRound.
  
@@ -259,7 +244,7 @@ pub struct Blake3State<T> {
 }
 *)
 Module Blake3State.
-  Record t (T : Set) : Set := {
+  Record t {T : Set} : Set := {
     row0 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |};
     row1 : array.t (array.t T {| Integer.value := 32 |}) {| Integer.value := 4 |};
     row2 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |};
@@ -267,14 +252,14 @@ Module Blake3State.
   }.
   Arguments t : clear implicits.
 
-  Global Instance IsLink (T U : Set) `{Link T} : Link (t T) := {
+  Global Instance IsLink (T : Set) `{T_Link : Link T} : Link (t T) := {
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::Blake3State") [] [ Φ T ];
     φ x :=
       Value.StructRecord "p3_blake3_air::columns::Blake3State" [] [] [
         ("row0", φ x.(row0));
         ("row1", φ x.(row1));
         ("row2", φ x.(row2));
-        ("row3", φ x.(row3));
+        ("row3", φ x.(row3))
       ];
   }.
 
@@ -284,7 +269,21 @@ Module Blake3State.
   Proof. intros [T]. eapply OfTy.Make with (A := t T). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Definition of_value {T : Set}
+  Lemma of_value_with {T : Set} `{T_Link : Link T} 
+    row0 row0' row1 row1' row2 row2' row3 row3' :
+    row0' = φ row0 ->
+    row1' = φ row1 ->
+    row2' = φ row2 ->
+    row3' = φ row3 ->
+    Value.StructRecord "p3_blake3_air::columns::Blake3State" [] [] [
+      ("row0", row0');
+      ("row1", row1');
+      ("row2", row2');
+      ("row3", row3')]
+    = φ (Build_t T row0 row1 row2 row3).
+  Proof. Admitted.
+
+  Definition of_value {T : Set} `{T_Link : Link T}
     (row0 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |}) row0'
     (row1 : array.t (array.t T {| Integer.value := 32 |}) {| Integer.value := 4 |}) row1'
     (row2 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |}) row2'
@@ -299,10 +298,13 @@ Module Blake3State.
         ("row0", row0');
         ("row1", row1');
         ("row2", row2');
-        ("row3", row3');
+        ("row3", row3')
       ]
     ).
-  Proof. econstructor; apply of_value_with; eassumption. Defined.
+  Proof. 
+  econstructor 1 with (t T) (IsLink T) _. 
+  eapply (@of_value_with T T_Link row0 row0' row1 row1' row2 row2' row3 row3').
+  all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End Blake3State.
 
@@ -327,10 +329,10 @@ Module FullRound.
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::FullRound") [] [ Φ T ];
     φ x :=
       Value.StructRecord "p3_blake3_air::columns::FullRound" [] [] [
-        ("state_prime", φ x.(state_prime));
-        ("state_middle", φ x.(state_middle));
-        ("state_middle_prime", φ x.(state_middle_prime));
-        ("state_output", φ x.(state_output));
+        ("state_prime", φ x.(state_prime T));
+        ("state_middle", φ x.(state_middle T));
+        ("state_middle_prime", φ x.(state_middle_prime T));
+        ("state_output", φ x.(state_output T))
       ];
   }.
 
@@ -340,24 +342,61 @@ Module FullRound.
   Proof. intros [T]. eapply OfTy.Make with (A := t T). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Definition of_value {T : Set}
+  Lemma of_value_with {T : Set} `{T_Link : Link T} 
+    state_prime state_prime'
+    state_middle state_middle'
+    state_middle_prime state_middle_prime'
+    state_output state_output' :
+    state_prime' = φ state_prime ->
+    state_middle' = φ state_middle ->
+    state_middle_prime' = φ state_middle_prime ->
+    state_output' = φ state_output ->
+    Value.StructRecord "p3_blake3_air::columns::FullRound" [] [] [
+      ("state_prime", state_prime');
+      ("state_middle", state_middle');
+      ("state_middle_prime", state_middle_prime');
+      ("state_output", state_output')]
+    = φ (Build_t T state_prime state_middle state_middle_prime state_output).
+    Proof. Admitted.
+
+  (* Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
+  (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) a' 
+  (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |})) b' :
+  a' = φ a ->
+  b' = φ b ->
+  OfValue.t (
+    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
+      ("a", a');
+      ("b", b')
+    ]).
+  Proof.
+  (* Set Typeclasses Debug. *)
+  econstructor 1 with t (IsLink T U) _;
+  eapply (@of_value_with T U T_Link U_Link a a' b b' _ _). Unshelve.
+  all: eassumption. Defined.
+  Smpl Add apply of_value : of_value. *)
+
+  Definition of_value {T : Set} `{T_Link : Link T}
     (state_prime : Blake3State.t T) state_prime'
     (state_middle : Blake3State.t T) state_middle'
     (state_middle_prime : Blake3State.t T) state_middle_prime'
-    (state_output : Blake3State.t T) state_output'
-  :
+    (state_output : Blake3State.t T) state_output' :
     state_prime' = φ state_prime ->
     state_middle' = φ state_middle ->
     state_middle_prime' = φ state_middle_prime ->
     state_output' = φ state_output ->
     OfValue.t (
-      Value.StructRecord "p3_blake3_air::columns::FullRound"" [] [] [
+      Value.StructRecord "p3_blake3_air::columns::FullRound" [] [] [
         ("state_prime", state_prime');
         ("state_middle", state_middle');
         ("state_middle_prime", state_middle_prime');
-        ("state_output", state_output');
-      ]
-    ).
-  Proof. econstructor; apply of_value_with; eassumption. Defined.
+        ("state_output", state_output')
+      ]).
+  Proof. 
+    econstructor 1 with (t T) (IsLink T) _.
+    eapply (@of_value_with T T_Link state_prime state_prime' state_middle 
+      state_middle' state_middle_prime state_middle_prime' 
+      state_output state_output').
+    all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End FullRound.
