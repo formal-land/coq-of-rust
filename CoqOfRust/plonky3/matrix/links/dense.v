@@ -4,6 +4,10 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import plonky3.matrix.dense.
 
+(* TODO:
+  - in the future, check the detail of the proof
+*)
+
 (* 
 pub struct DenseMatrix<T, V = Vec<T>> {
     pub values: V,
@@ -30,6 +34,7 @@ Module DenseMatrix.
     OfTy.t T' ->
     OfTy.t V' ->
     OfTy.t (Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T'; V']).
+  (* TODO: check the proof in the future *)
   Proof. intros [T] [V]. eapply OfTy.Make with (A := t T V). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 End DenseMatrix.
