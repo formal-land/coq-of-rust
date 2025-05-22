@@ -32,51 +32,6 @@ pub(crate) struct QuarterRound<'a, T, U> {
     pub d_output: &'a [T; 32],
 }
 *)
-Module test_case.
-  Record t {T U : Set} `{Link T} `{Link U} : Set := {
-    a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
-    b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
-  }.
-
-  Global Instance IsLink (T U : Set) `{T_Link : Link T} `{U_Link : Link U} : Link (@t T U T_Link U_Link)
-  := {
-    Φ := Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ Φ T; Φ U ];
-    φ x :=
-      Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
-        ("a", φ x.(a));
-        ("b", φ x.(b))
-      ];
-  }.
-
-  Lemma of_value_with {T U : Set} `{T_Link : Link T} `{U_Link : Link U} 
-    a a' b b' :
-    a' = φ a ->
-    b' = φ b -> 
-    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
-      ("a", a');
-      ("b", b')
-      ] 
-    = @φ (@t T U T_Link U_Link) (IsLink T U) (Build_t T U T_Link U_Link a b).
-  Proof. Admitted.
-
-  Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
-  (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) a' 
-  (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |})) b' :
-  a' = φ a ->
-  b' = φ b ->
-  OfValue.t (
-    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
-      ("a", a');
-      ("b", b')
-    ]).
-  Proof.
-    (* Set Typeclasses Debug. *)
-    econstructor 1 with t (IsLink T U) _. 
-    apply (@of_value_with T U T_Link U_Link a a' b b' H H0). 
-  Defined.
-  Smpl Add apply of_value : of_value.
-End test_case.
-
 Module QuarterRound.
   (* NOTE: here we provide link instance for T and U or otherwise Coq cannot recognize
   instances for arrays of them(?)
