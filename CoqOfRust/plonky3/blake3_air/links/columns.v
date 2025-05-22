@@ -314,23 +314,6 @@ Module FullRound.
     = φ (Build_t T state_prime state_middle state_middle_prime state_output).
     Proof. Admitted.
 
-  (* Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
-  (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) a' 
-  (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |})) b' :
-  a' = φ a ->
-  b' = φ b ->
-  OfValue.t (
-    Value.StructRecord "p3_blake3_air::columns::QuarterRound" [] [] [
-      ("a", a');
-      ("b", b')
-    ]).
-  Proof.
-  (* Set Typeclasses Debug. *)
-  econstructor 1 with t (IsLink T U) _;
-  eapply (@of_value_with T U T_Link U_Link a a' b b' _ _). Unshelve.
-  all: eassumption. Defined.
-  Smpl Add apply of_value : of_value. *)
-
   Definition of_value {T : Set} `{T_Link : Link T}
     (state_prime : Blake3State.t T) state_prime'
     (state_middle : Blake3State.t T) state_middle'
