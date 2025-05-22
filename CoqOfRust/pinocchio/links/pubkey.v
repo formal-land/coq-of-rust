@@ -7,3 +7,4 @@ Module Pubkey.
   Definition t : Set :=
     array.t U8.t {| Integer.value := 32 |}.
 End Pubkey.
+
