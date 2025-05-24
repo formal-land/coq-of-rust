@@ -1,9 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import plonky3.blake3_air.air.
-Require Import plonky3.field.links.field.
-Require Import plonky3.blake3_air.links.columns.
 Require Import plonky3.air.links.air.
+Require Import plonky3.blake3_air.air.
+Require Import plonky3.blake3_air.links.columns.
+Require Import plonky3.field.links.field.
 Require Import plonky3.matrix.links.dense.
 
 (* 
@@ -24,7 +24,7 @@ Module Blake3Air.
 
   Definition of_ty : OfTy.t (Ty.path "p3_blake3_air::air::Blake3Air").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add apply of_ty : of_ty. 
+  Smpl Add apply of_ty : of_ty.
 End Blake3Air.
 
 Module Impl_Blake3Air.
@@ -85,7 +85,7 @@ Module Impl_Blake3Air.
   *)
   Instance run_full_round_to_column_quarter_round
   (* NOTE: seems like there are some issues with T and U being defined here *)
-    {T U : Set} `{T_Link : Link T}  `{U_Link : Link U}
+    {T U : Set} `{Link T} `{Link U}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (input : Ref.t Pointer.Kind.Ref (Blake3State.t T))
     (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
@@ -95,7 +95,7 @@ Module Impl_Blake3Air.
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_column_quarter_round [] [ Φ T; Φ U ] 
       [ (* φ input; φ round_data; φ m_vector; φ index *) ]
-      (QuarterRound.t T U T_Link U_Link).
+      (QuarterRound.t T U _ _).
   Proof.
     constructor.
     run_symbolic.
@@ -110,7 +110,7 @@ Module Impl_Blake3Air.
   ) -> QuarterRound<'a, T, U> 
   *)
   Instance run_full_round_to_diagonal_quarter_round
-    {T U : Set} `{T_Link : Link T}  `{U_Link : Link U}
+    {T U : Set} `{Link T}  `{Link U}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (round_data : Ref.t Pointer.Kind.Ref (FullRound.t T))
     (m_vector : Ref.t Pointer.Kind.Ref (array.t (array.t U {| Integer.value := 2 |}) {| Integer.value := 16 |}))
@@ -119,7 +119,7 @@ Module Impl_Blake3Air.
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_diagonal_quarter_round [] [ Φ T; Φ U ] 
       [ (* φ input; φ round_data; φ m_vector; φ index *) ]
-      (QuarterRound.t T U T_Link U_Link).
+      (QuarterRound.t T U _ _).
   Proof.
     constructor.
     run_symbolic.

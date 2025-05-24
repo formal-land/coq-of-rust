@@ -51,7 +51,7 @@ Module QuarterRound.
   }.
   Arguments t : clear implicits.
 
-  Global Instance IsLink (T U : Set) `{T_Link : Link T} `{U_Link : Link U} : Link (@t T U T_Link U_Link)
+  Global Instance IsLink (T U : Set) `{Link T} `{Link U} : Link (@t T U _ _)
   := {
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ Φ T; Φ U ];
     φ x :=
@@ -79,7 +79,7 @@ Module QuarterRound.
   Proof. intros [T] [U]. eapply OfTy.Make with (A := t T U _ _). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Lemma of_value_with {T U : Set} `{T_Link : Link T} `{U_Link : Link U} 
+  Lemma of_value_with {T U : Set} `{Link T} `{Link U} 
     a a'
     b b'
     c c'
@@ -124,14 +124,14 @@ Module QuarterRound.
       ("c_output", c_output');
       ("d_output", d_output')
     ] = 
-    @φ (t T U T_Link U_Link) (IsLink T U) (Build_t T U T_Link U_Link
+    @φ (t T U _ _) (IsLink T U) (Build_t T U _ _
     a b c d m_two_i a_prime b_prime c_prime d_prime 
       m_two_i_plus_one a_output b_output c_output d_output).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
   (* NOTE: for future reference, deleting link instances will report errors about undefined evars *)
-  Definition of_value {T U : Set} `{T_Link : Link T} `{U_Link : Link U}
+  Definition of_value {T U : Set} `{Link T} `{Link U}
     (a : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS)) (a' : Value.t)
     (b : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32|}))  (b' : Value.t)
     (c : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS))  (c' : Value.t)
@@ -180,8 +180,8 @@ Module QuarterRound.
       ]
     ).
   Proof. 
-  econstructor 1 with (t T U T_Link U_Link) (IsLink T U) _.
-  eapply (@of_value_with T U T_Link U_Link a a' b b' _ _).
+  econstructor 1 with (t T U _ _) (IsLink T U) _.
+  eapply (@of_value_with T U _ _ a a' b b' _ _).
   all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End QuarterRound.
@@ -203,7 +203,7 @@ Module Blake3State.
   }.
   Arguments t : clear implicits.
 
-  Global Instance IsLink (T : Set) `{T_Link : Link T} : Link (t T) := {
+  Global Instance IsLink (T : Set) `{Link T} : Link (t T) := {
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::Blake3State") [] [ Φ T ];
     φ x :=
       Value.StructRecord "p3_blake3_air::columns::Blake3State" [] [] [
@@ -220,7 +220,7 @@ Module Blake3State.
   Proof. intros [T]. eapply OfTy.Make with (A := t T). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Lemma of_value_with {T : Set} `{T_Link : Link T} 
+  Lemma of_value_with {T : Set} `{Link T} 
     row0 row0' row1 row1' row2 row2' row3 row3' :
     row0' = φ row0 ->
     row1' = φ row1 ->
@@ -234,7 +234,7 @@ Module Blake3State.
     = φ (Build_t T row0 row1 row2 row3).
   Proof. Admitted.
 
-  Definition of_value {T : Set} `{T_Link : Link T}
+  Definition of_value {T : Set} `{Link T}
     (row0 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |}) row0'
     (row1 : array.t (array.t T {| Integer.value := 32 |}) {| Integer.value := 4 |}) row1'
     (row2 : array.t (array.t T U32_LIMBS) {| Integer.value := 4 |}) row2'
@@ -254,7 +254,7 @@ Module Blake3State.
     ).
   Proof. 
   econstructor 1 with (t T) (IsLink T) _. 
-  eapply (@of_value_with T T_Link row0 row0' row1 row1' row2 row2' row3 row3').
+  eapply (@of_value_with T _ row0 row0' row1 row1' row2 row2' row3 row3').
   all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End Blake3State.
@@ -293,7 +293,7 @@ Module FullRound.
   Proof. intros [T]. eapply OfTy.Make with (A := t T). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Lemma of_value_with {T : Set} `{T_Link : Link T} 
+  Lemma of_value_with {T : Set} `{Link T} 
     state_prime state_prime'
     state_middle state_middle'
     state_middle_prime state_middle_prime'
@@ -310,7 +310,7 @@ Module FullRound.
     = φ (Build_t T state_prime state_middle state_middle_prime state_output).
     Proof. Admitted.
 
-  Definition of_value {T : Set} `{T_Link : Link T}
+  Definition of_value {T : Set} `{Link T}
     (state_prime : Blake3State.t T) state_prime'
     (state_middle : Blake3State.t T) state_middle'
     (state_middle_prime : Blake3State.t T) state_middle_prime'
@@ -328,7 +328,7 @@ Module FullRound.
       ]).
   Proof. 
     econstructor 1 with (t T) (IsLink T) _.
-    eapply (@of_value_with T T_Link state_prime state_prime' state_middle 
+    eapply (@of_value_with T _ state_prime state_prime' state_middle 
       state_middle' state_middle_prime state_middle_prime' 
       state_output state_output').
     all: eassumption. Defined.
