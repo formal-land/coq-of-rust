@@ -6,10 +6,6 @@ Require Import plonky3.blake3_air.columns.
 
 Definition U32_LIMBS := links.constants.U32_LIMBS.
 
-(* TODO: 
-- check where is U32_LIMBS 
-*)
-
 (* 
 pub(crate) struct QuarterRound<'a, T, U> {
     pub a: &'a [T; U32_LIMBS],
