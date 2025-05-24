@@ -12,6 +12,3 @@ Definition BITS_PER_LIMB : Usize.t := {|
 Definition U32_LIMBS : Usize.t := {|
   Integer.value := 2;
 |}.
-
-Module test. 
-End test.
