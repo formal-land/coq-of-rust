@@ -16,6 +16,11 @@ pub trait Algebra<F>:
 }
 *)
 Module Algebra.
+  Definition trait (Self F : Set) `{Link Self} `{Link F} : TraitMethod.Header.t :=
+    ("plonky3::field::field::Algebra", [], [Φ F], Φ Self).
+
+  Class Run (Self F : Set) `{Link Self} `{Link F} : Set := {
+  }.
 End Algebra.
 
 (* 

@@ -1235,7 +1235,7 @@ Ltac run_symbolic_pure :=
   ).
 
 Ltac run_symbolic_state_alloc :=
-  unshelve eapply Run.CallPrimitiveStateAlloc; [now repeat (smpl of_value || smpl of_ty) | intro].
+  unshelve eapply Run.CallPrimitiveStateAlloc; [now repeat (smpl of_value || smpl of_ty) | cbn; intro].
 
 Ltac run_symbolic_state_alloc_immediate :=
   unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |].

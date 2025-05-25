@@ -32,7 +32,7 @@ Lemma of_value_with_1 {A : Set} `{Link A}
   Value.Array [value1'] =
   φ ({| value := [value1] |} : t A {| Integer.value := 1 |}).
 Proof. now intros; subst. Qed.
-Smpl Add apply of_value_with_1 : of_value.
+Smpl Add unshelve eapply of_value_with_1 : of_value.
 
 Definition of_value_1 (value1' : Value.t) :
   OfValue.t value1' ->
@@ -42,7 +42,7 @@ Proof.
   eapply OfValue.Make with (A := t A {| Integer.value := 1 |}).
   apply of_value_with_1; eassumption.
 Defined.
-Smpl Add apply of_value_1 : of_value.
+Smpl Add unshelve eapply of_value_1 : of_value.
 
 Lemma of_value_with_4 {A : Set} `{Link A}
   (value1' : Value.t) (value1 : A)
@@ -58,9 +58,9 @@ Lemma of_value_with_4 {A : Set} `{Link A}
 Proof.
   now intros; subst.
 Qed.
-Smpl Add eapply of_value_with_4 : of_value.
+Smpl Add unshelve eapply of_value_with_4 : of_value.
 
-Definition of_value_4 
+Definition of_value_4
   (value1' : Value.t)
   (H_value1' : OfValue.t value1')
   (value2' : Value.t) (value2 : OfValue.get_Set H_value1')
@@ -76,7 +76,43 @@ Proof.
   eapply OfValue.Make with (A := t A {| Integer.value := 4 |}).
   apply of_value_with_4; eassumption.
 Defined.
-Smpl Add eapply of_value_4 : of_value.
+Smpl Add unshelve eapply of_value_4 : of_value.
+
+Definition of_value_with_5 {A : Set} `{Link A}
+  (value1' : Value.t) (value1 : A)
+  (value2' : Value.t) (value2 : A)
+  (value3' : Value.t) (value3 : A)
+  (value4' : Value.t) (value4 : A)
+  (value5' : Value.t) (value5 : A) :
+  value1' = φ value1 ->
+  value2' = φ value2 ->
+  value3' = φ value3 ->
+  value4' = φ value4 ->
+  value5' = φ value5 ->
+  Value.Array [value1'; value2'; value3'; value4'; value5'] =
+  φ ({| value := [value1; value2; value3; value4; value5] |} : t A {| Integer.value := 5 |}).
+Proof. now intros; subst. Qed.
+Smpl Add unshelve eapply of_value_with_5 : of_value.
+
+Definition of_value_5
+  (value1' : Value.t)
+  (H_value1' : OfValue.t value1')
+  (value2' : Value.t) (value2 : OfValue.get_Set H_value1')
+  (value3' : Value.t) (value3 : OfValue.get_Set H_value1')
+  (value4' : Value.t) (value4 : OfValue.get_Set H_value1')
+  (value5' : Value.t) (value5 : OfValue.get_Set H_value1') :
+  value2' = φ value2 ->
+  value3' = φ value3 ->
+  value4' = φ value4 ->
+  value5' = φ value5 ->
+  OfValue.t (Value.Array [value1'; value2'; value3'; value4'; value5']).
+Proof.
+  intros.
+  destruct H_value1' as [A].
+  eapply OfValue.Make with (A := t A {| Integer.value := 5 |}).
+  apply of_value_with_5; eassumption.
+Defined.
+Smpl Add unshelve eapply of_value_5 : of_value.
 
 (** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
     appears and to switch it with the [φ] on its parameters. *)
