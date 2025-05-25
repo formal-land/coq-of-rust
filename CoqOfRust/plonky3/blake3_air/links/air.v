@@ -84,7 +84,6 @@ Module Impl_Blake3Air.
   ) -> QuarterRound<'a, T, U>
   *)
   Instance run_full_round_to_column_quarter_round
-  (* NOTE: seems like there are some issues with T and U being defined here *)
     {T U : Set} `{Link T} `{Link U}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (input : Ref.t Pointer.Kind.Ref (Blake3State.t T))
@@ -95,7 +94,7 @@ Module Impl_Blake3Air.
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_column_quarter_round [] [ Φ T; Φ U ] 
       [ (* φ input; φ round_data; φ m_vector; φ index *) ]
-      (QuarterRound.t T U _ _).
+      (QuarterRound.t T U).
   Proof.
     constructor.
     run_symbolic.
@@ -119,7 +118,7 @@ Module Impl_Blake3Air.
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_diagonal_quarter_round [] [ Φ T; Φ U ] 
       [ (* φ input; φ round_data; φ m_vector; φ index *) ]
-      (QuarterRound.t T U _ _).
+      (QuarterRound.t T U).
   Proof.
     constructor.
     run_symbolic.

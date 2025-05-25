@@ -49,9 +49,9 @@ Module QuarterRound.
     c_output : Ref.t Pointer.Kind.Ref (array.t T U32_LIMBS); 
     d_output : Ref.t Pointer.Kind.Ref (array.t T {| Integer.value := 32 |});
   }.
-  Arguments t : clear implicits.
+  Arguments t T U {_} {_}.
 
-  Global Instance IsLink (T U : Set) `{Link T} `{Link U} : Link (@t T U _ _)
+  Global Instance IsLink (T U : Set) `{Link T} `{Link U} : Link (t T U)
   := {
     Φ := Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ Φ T; Φ U ];
     φ x :=
@@ -76,7 +76,7 @@ Module QuarterRound.
   Definition of_ty (T_ty U_ty : Ty.t) :
     OfTy.t T_ty -> OfTy.t U_ty ->
     OfTy.t (Ty.apply (Ty.path "p3_blake3_air::columns::QuarterRound") [] [ T_ty ; U_ty ]).
-  Proof. intros [T] [U]. eapply OfTy.Make with (A := t T U _ _). now subst. Defined.
+  Proof. intros [T] [U]. eapply OfTy.Make with (A := t T U). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 
   Lemma of_value_with {T U : Set} `{Link T} `{Link U} 
@@ -124,7 +124,7 @@ Module QuarterRound.
       ("c_output", c_output');
       ("d_output", d_output')
     ] = 
-    @φ (t T U _ _) (IsLink T U) (Build_t T U _ _
+    @φ (t T U) (IsLink T U) (Build_t T U _ _
     a b c d m_two_i a_prime b_prime c_prime d_prime 
       m_two_i_plus_one a_output b_output c_output d_output).
   Proof. now intros; subst. Qed.
@@ -180,7 +180,7 @@ Module QuarterRound.
       ]
     ).
   Proof. 
-  econstructor 1 with (t T U _ _) (IsLink T U) _.
+  econstructor 1 with (t T U) (IsLink T U) _.
   eapply (@of_value_with T U _ _ a a' b b' _ _).
   all: eassumption. Defined.
   Smpl Add apply of_value : of_value.
