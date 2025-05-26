@@ -170,7 +170,7 @@ Module iter.
                               "Item"
                           ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.read (|
                       get_constant (|
                         "core::iter::adapters::filter::next_chunk_dropless_discriminant",

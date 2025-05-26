@@ -1360,7 +1360,7 @@ Module iter.
                               [ N ]
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ] :=
-                          repeat (|
+                          lib.repeat (|
                             M.read (|
                               get_constant (|
                                 "core::iter::adapters::copied::spec_next_chunk_discriminant",

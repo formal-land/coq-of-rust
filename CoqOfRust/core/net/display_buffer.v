@@ -39,7 +39,7 @@ Module net.
               []
               [
                 ("buf",
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|

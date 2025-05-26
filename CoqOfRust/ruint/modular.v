@@ -418,8 +418,8 @@ Module modular.
                               [ Value.Integer IntegerKind.Usize 2 ]
                               [ Ty.path "u64" ]
                           ] :=
-                      repeat (|
-                        repeat (|
+                      lib.repeat (|
+                        lib.repeat (|
                           Value.Integer IntegerKind.U64 0,
                           Value.Integer IntegerKind.Usize 2
                         |),

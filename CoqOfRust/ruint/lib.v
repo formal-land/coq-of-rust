@@ -380,7 +380,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
             [],
             []
           |),
-          [ repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) ]
+          [ lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) ]
         |)
       |))).
   
@@ -431,7 +431,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
     let Self : Ty.t := Self BITS LIMBS in
     ltac:(M.monadic
       (let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-        repeat (|
+        lib.repeat (|
           M.read (| get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |) |),
           LIMBS
         |) in
@@ -1066,7 +1066,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                    repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                    lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
@@ -1181,7 +1181,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                           let head := M.copy (| γ0_0 |) in
                           let tail := M.copy (| γ0_1 |) in
                           let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                            repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                            lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],

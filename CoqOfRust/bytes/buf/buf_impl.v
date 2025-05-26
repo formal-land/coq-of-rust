@@ -1066,7 +1066,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -1437,7 +1437,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -1808,7 +1808,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -2174,7 +2174,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -2545,7 +2545,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -2916,7 +2916,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 2
                                             |) in
@@ -3282,7 +3282,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -3653,7 +3653,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -4024,7 +4024,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -4390,7 +4390,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -4761,7 +4761,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -5132,7 +5132,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |) in
@@ -5498,7 +5498,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -5869,7 +5869,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -6240,7 +6240,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -6606,7 +6606,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -6977,7 +6977,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -7348,7 +7348,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 8 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 8
                                             |) in
@@ -7714,7 +7714,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -8085,7 +8085,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -8456,7 +8456,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -8822,7 +8822,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -9193,7 +9193,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -9564,7 +9564,7 @@ Module buf.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 16 ]
                                                 [ Ty.path "u8" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 16
                                             |) in
@@ -9700,7 +9700,7 @@ Module buf.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 8 ]
                               [ Ty.path "u8" ] :=
-                          repeat (|
+                          lib.repeat (|
                             Value.Integer IntegerKind.U8 0,
                             Value.Integer IntegerKind.Usize 8
                           |) in
@@ -9800,7 +9800,7 @@ Module buf.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 8 ]
                               [ Ty.path "u8" ] :=
-                          repeat (|
+                          lib.repeat (|
                             Value.Integer IntegerKind.U8 0,
                             Value.Integer IntegerKind.Usize 8
                           |) in
@@ -10062,7 +10062,7 @@ Module buf.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 8 ]
                               [ Ty.path "u8" ] :=
-                          repeat (|
+                          lib.repeat (|
                             Value.Integer IntegerKind.U8 0,
                             Value.Integer IntegerKind.Usize 8
                           |) in
@@ -10162,7 +10162,7 @@ Module buf.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 8 ]
                               [ Ty.path "u8" ] :=
-                          repeat (|
+                          lib.repeat (|
                             Value.Integer IntegerKind.U8 0,
                             Value.Integer IntegerKind.Usize 8
                           |) in

@@ -43,7 +43,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ name_buf :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ Ty.path "u8" ] :=
-          repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |) in
+          lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in

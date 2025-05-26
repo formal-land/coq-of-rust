@@ -1436,7 +1436,7 @@ Module extension.
               [ F; PF ]
               [
                 ("value",
-                  repeat (|
+                  lib.repeat (|
                     M.read (|
                       get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", PF |)
                     |),
