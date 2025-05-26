@@ -22,6 +22,15 @@ Module From.
   }.
 End From.
 
+(* impl<T> From<T> for T *)
+Module Impl_From_for_T.
+  Instance run
+    (T : Set) `{Link T} :
+    From.Run T T.
+  Admitted.
+End Impl_From_for_T.
+Export Impl_From_for_T.
+
 (*
 pub trait Into<T>: Sized {
     fn into(self) -> T;
@@ -72,6 +81,7 @@ Module Impl_Into_for_From_T.
     Into.into := run_into T U run_From_for_U;
   }.
 End Impl_Into_for_From_T.
+Export Impl_Into_for_From_T.
 
 (*
 pub trait AsRef<T: ?Sized> {
@@ -159,6 +169,22 @@ Module TryInto.
     try_into : Run_try_into Self T Error;
   }.
 End TryInto.
+
+(*
+impl<T, U> TryInto<U> for T
+where
+    U: TryFrom<T>,
+{
+    type Error = U::Error;
+*)
+Module Impl_TryInto_for_TryFrom_T.
+  Instance run
+    (T U Error : Set) `{Link T} `{Link U} `{Link Error}
+    {run_TryFrom_for_U : TryFrom.Run U T Error} :
+    TryInto.Run T U Error.
+  Admitted.
+End Impl_TryInto_for_TryFrom_T.
+Export Impl_TryInto_for_TryFrom_T.
 
 (* pub enum Infallible {} *)
 Module Infallible.

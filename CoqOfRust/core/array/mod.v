@@ -121,7 +121,7 @@ Module array.
                     []
                     [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                 ] :=
-            repeat (|
+            lib.repeat (|
               M.read (|
                 get_constant (|
                   "core::array::try_from_fn_discriminant",
@@ -2553,7 +2553,7 @@ Module array.
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_array_Usize_32_T.
   
-  Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
+  (* Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
@@ -5784,7 +5784,7 @@ Module array.
         (* Trait polymorphic types *) []
         (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
-  End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
+  End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T. *)
   
   
   
@@ -6186,7 +6186,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
-              repeat (|
+              lib.repeat (|
                 M.call_closure (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_function (| "core::ptr::null", [], [ T ] |),
@@ -6308,7 +6308,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
-              repeat (|
+              lib.repeat (|
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_function (| "core::ptr::null_mut", [], [ T ] |),
@@ -6420,7 +6420,7 @@ Module array.
           M.call_closure (|
             Ty.tuple
               [
-                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
               ],
             M.get_associated_function (|
@@ -6430,7 +6430,7 @@ Module array.
                 [
                   Ty.tuple
                     [
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     ]
                 ],
@@ -6446,14 +6446,14 @@ Module array.
                   [
                     Ty.tuple
                       [
-                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       ]
                   ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk",
-                  [ M ],
+                  [ M_ ],
                   []
                 |),
                 [
@@ -6516,7 +6516,7 @@ Module array.
           M.call_closure (|
             Ty.tuple
               [
-                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                 Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
               ],
             M.get_associated_function (|
@@ -6526,7 +6526,7 @@ Module array.
                 [
                   Ty.tuple
                     [
-                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                       Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     ]
                 ],
@@ -6542,14 +6542,14 @@ Module array.
                   [
                     Ty.tuple
                       [
-                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ];
                         Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       ]
                   ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk_mut",
-                  [ M ],
+                  [ M_ ],
                   []
                 |),
                 [
@@ -6613,7 +6613,7 @@ Module array.
             Ty.tuple
               [
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
               ],
             M.get_associated_function (|
               Ty.apply
@@ -6623,7 +6623,7 @@ Module array.
                   Ty.tuple
                     [
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
                     ]
                 ],
               "unwrap",
@@ -6639,13 +6639,13 @@ Module array.
                     Ty.tuple
                       [
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
                       ]
                   ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk",
-                  [ M ],
+                  [ M_ ],
                   []
                 |),
                 [
@@ -6709,7 +6709,7 @@ Module array.
             Ty.tuple
               [
                 Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
               ],
             M.get_associated_function (|
               Ty.apply
@@ -6719,7 +6719,7 @@ Module array.
                   Ty.tuple
                     [
                       Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
                     ]
                 ],
               "unwrap",
@@ -6735,13 +6735,13 @@ Module array.
                     Ty.tuple
                       [
                         Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M_ ] [ T ] ]
                       ]
                   ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk_mut",
-                  [ M ],
+                  [ M_ ],
                   []
                 |),
                 [
@@ -7778,7 +7778,7 @@ Module array.
                 (Ty.path "array")
                 [ N ]
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-            repeat (|
+            lib.repeat (|
               M.read (|
                 get_constant (|
                   "core::array::iter_next_chunk_discriminant",

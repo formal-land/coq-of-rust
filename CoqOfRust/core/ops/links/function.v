@@ -50,3 +50,26 @@ Module Impl_FnOnce_for_Function2.
     FnOnce.call_once := run_call_once A1 A2 Output;
   }.
 End Impl_FnOnce_for_Function2.
+
+(*
+pub trait FnMut<Args: Tuple>: FnOnce<Args> {
+    extern "rust-call" fn call_mut(&mut self, args: Args) -> Self::Output;
+}
+*)
+Module FnMut.
+  Definition trait (Self Args : Set) `{Link Self} `{Link Args} : TraitMethod.Header.t :=
+    ("core::ops::function::FnMut", [], [Φ Args], Φ Self).
+
+  Definition Run_call_mut (Self Args Output : Set)
+      `{Link Self} `{Link Args} `{Link Output} : Set :=
+    TraitMethod.C (trait Self Args) "call_mut" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self) (args : Args),
+      Run.Trait method [] [] [ φ self; φ args ] Output
+    ).
+
+  Class Run (Self Args Output : Set)
+      `{Link Self} `{Link Args} `{Link Output} : Set := {
+    run_FnOnce_for_Self : FnOnce.Run Self Args Output;
+    call_mut : Run_call_mut Self Args Output;
+  }.
+End FnMut.

@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.links.borrow.
 Require Import core.links.panicking.
 Require Import plonky3.keccak_air.links.constants.
 Require Import plonky3.keccak_air.links.lib.
@@ -324,3 +325,23 @@ Module Impl_KeccakCols.
     run_symbolic.
   Defined.
 End Impl_KeccakCols.
+
+(* impl<T> Borrow<KeccakCols<T>> for [T] *)
+Module Impl_Borrow_KeccakCols_for_slice.
+  Definition Self (T : Set) : Set :=
+    KeccakCols.t T.
+
+  Instance run (T : Set) `{Link T} : Borrow.Run (list T) (Self T).
+  Admitted.
+End Impl_Borrow_KeccakCols_for_slice.
+Export Impl_Borrow_KeccakCols_for_slice.
+
+(* impl<T> BorrowMut<KeccakCols<T>> for [T] *)
+Module Impl_BorrowMut_KeccakCols_for_slice.
+  Definition Self (T : Set) : Set :=
+    KeccakCols.t T.
+
+  Instance run (T : Set) `{Link T} : BorrowMut.Run (list T) (Self T).
+  Admitted.
+End Impl_BorrowMut_KeccakCols_for_slice.
+Export Impl_BorrowMut_KeccakCols_for_slice.

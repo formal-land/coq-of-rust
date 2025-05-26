@@ -5,6 +5,7 @@ Require Import core.convert.links.mod.
 Require Import core.ops.links.arith.
 Require Import plonky3.air.air.
 Require Import plonky3.field.links.field.
+Require Import plonky3.matrix.links.lib.
 
 (*
 pub struct FilteredAirBuilder<'a, AB: AirBuilder> {
@@ -82,6 +83,7 @@ Module AirBuilder.
       Expr : Set;
       Var : Set;
       M : Set;
+      M_types : Matrix.AssociatedTypes.t;
     }.
 
     Class AreLinks (types : t) : Set := {
@@ -89,6 +91,7 @@ Module AirBuilder.
       H_Expr : Link types.(Expr);
       H_Var : Link types.(Var);
       H_M : Link types.(M);
+      H_M_types : Matrix.AssociatedTypes.AreLinks types.(M_types);
     }.
 
     Global Instance IsLinkF (types : t) (H : AreLinks types) : Link types.(F) :=
@@ -99,6 +102,9 @@ Module AirBuilder.
       H.(H_Var _).
     Global Instance IsLinkM (types : t) (H : AreLinks types) : Link types.(M) :=
       H.(H_M _).
+    Global Instance AreLinksM_types (types : t) (H : AreLinks types) :
+      Matrix.AssociatedTypes.AreLinks types.(M_types) :=
+      H.(H_M_types _).
   End AssociatedTypes.
 
   Definition Run_main
@@ -338,6 +344,8 @@ Module AirBuilder.
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "M" (Φ types.(AssociatedTypes.M));
+    run_Matrix_for_M :
+      Matrix.Run types.(AssociatedTypes.M) types.(AssociatedTypes.Var) types.(AssociatedTypes.M_types);
     main : Run_main Self types;
     is_first_row : Run_is_first_row Self types;
     is_last_row : Run_is_last_row Self types;
@@ -357,3 +365,35 @@ Module AirBuilder.
     assert_bool : Run_assert_bool Self types;
   }.
 End AirBuilder.
+
+(** We make this definition here as we require the definition of the trait first to be able to
+    uniquely infer the [Expr] type. *)
+Definition FilteredAirBuilder_of_ty (AB' : Ty.t)
+    types `{AirBuilder.AssociatedTypes.AreLinks types}
+    (H_AB' : OfTy.t AB') :
+  AirBuilder.Run (OfTy.get_Set H_AB') types ->
+  OfTy.t (Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [AB']).
+Proof.
+  intros.
+  destruct H_AB' as [AB].
+  eapply OfTy.Make with (A := FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr)).
+  cbn.
+  now subst.
+Defined.
+Smpl Add unshelve eapply FilteredAirBuilder_of_ty : of_ty.
+
+(* impl<AB: AirBuilder> AirBuilder for FilteredAirBuilder<'_, AB> *)
+Module Impl_AirBuilder_for_FilteredAirBuilder.
+  Definition Self (AB : Set) `{Link AB} (types : AirBuilder.AssociatedTypes.t) : Set :=
+    FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr).
+
+  Definition types (types : AirBuilder.AssociatedTypes.t) : AirBuilder.AssociatedTypes.t :=
+    types.
+
+  Instance run
+      (AB : Set) `{Link AB}
+      (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
+      AirBuilder.Run (Self AB types) types.
+  Admitted.
+End Impl_AirBuilder_for_FilteredAirBuilder.
+Export Impl_AirBuilder_for_FilteredAirBuilder.

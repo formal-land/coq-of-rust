@@ -10,7 +10,7 @@ examples/axiomatized/examples/subtle.v
 # revm/revm_bytecode/opcode.v
 revm/types.v
 revm/revm_interpreter/simulations/gas.v
-core/array/mod.v
+# core/array/mod.v
 core/future/async_drop.v
 core/iter/adapters/flatten.v
 core/net/ip_addr.v

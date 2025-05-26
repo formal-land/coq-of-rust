@@ -57,8 +57,9 @@ Module Impl_Blake3Air.
       )
   *)
   Instance run_quarter_round_function
-    {AB : Set} `{Link AB} 
-    {run_AirBuilder_for_AB : AirBuilder.Run AB}
+    {AB : Set} `{Link AB}
+    {types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks types}
+    {run_AirBuilder_for_AB : AirBuilder.Run AB types}
     (* TODO: check if AirBuilder needs `AB_types` *)
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
@@ -134,8 +135,9 @@ Module Impl_Blake3Air.
   )
   *)
   Instance run_verify_round
-    {AB : Set} `{Link AB} 
-    {run_AirBuilder_for_AB : AirBuilder.Run AB}
+    {AB : Set} `{Link AB}
+    {types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks types}
+    {run_AirBuilder_for_AB : AirBuilder.Run AB types}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
     (* TODO: translate correctly the following variables *)
