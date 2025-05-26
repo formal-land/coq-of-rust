@@ -51,6 +51,31 @@ Module Sub.
 End Sub.
 
 (*
+pub trait Mul<Rhs = Self> {
+    type Output;
+
+    // Required method
+    fn mul(self, rhs: Rhs) -> Self::Output;
+}
+*)
+Module Mul.
+  Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
+    ("core::ops::arith::Mul", [], [ Φ Rhs ], Φ Self).
+
+  Definition Run_mul (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set :=
+    TraitMethod.C (trait Self Rhs) "mul" (fun method =>
+      forall
+        (self : Self)
+        (rhs : Rhs),
+      Run.Trait method [] [] [ φ self; φ rhs ] Output
+    ).
+
+  Class Run (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set := {
+    mul : Run_mul Self Rhs Output;
+  }.
+End Mul.
+
+(*
 pub trait Div<Rhs = Self> {
     type Output;
 

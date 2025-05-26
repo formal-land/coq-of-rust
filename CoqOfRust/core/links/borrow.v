@@ -34,3 +34,23 @@ Module Impl_Borrow_T_for_T.
   Admitted.
 End Impl_Borrow_T_for_T.
 Export Impl_Borrow_T_for_T.
+
+(*
+pub trait BorrowMut<Borrowed: ?Sized>: Borrow<Borrowed> {
+    fn borrow_mut(&mut self) -> &mut Borrowed;
+}
+*)
+Module BorrowMut.
+  Definition trait (Self Borrowed : Set) `{Link Self} `{Link Borrowed} : TraitMethod.Header.t :=
+    ("core::borrow::BorrowMut", [], [ Φ Borrowed ], Φ Self).
+
+  Definition Run_borrow_mut (Self Borrowed : Set) `{Link Self} `{Link Borrowed} : Set :=
+    TraitMethod.C (trait Self Borrowed) "borrow_mut" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      Run.Trait method [] [] [ φ self ] (Ref.t Pointer.Kind.MutRef Borrowed)).
+
+  Class Run (Self Borrowed : Set) `{Link Self} `{Link Borrowed} : Set := {
+    run_Borrow_for_Self : Borrow.Run Self Borrowed;
+    borrow_mut : Run_borrow_mut Self Borrowed;
+  }.
+End BorrowMut.
