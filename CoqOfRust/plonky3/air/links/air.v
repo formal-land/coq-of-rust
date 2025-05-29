@@ -57,7 +57,7 @@ Module AirBuilder.
 
   Module AssociatedTypes.
       Record t : Type := {
-        F : Field.t;
+        F : Set;
         Expr : Set;
         Var : Set;
         M : Set;
