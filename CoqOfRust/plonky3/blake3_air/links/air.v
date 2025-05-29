@@ -42,11 +42,12 @@ Module Impl_Blake3Air.
     {run_PrimeField64_for_F : PrimeField64.Run F}
     (self : Ref.t Pointer.Kind.Ref Self) (num_hashes : Usize.t) (extra_capacity_bits : Usize.t) :
     Run.Trait
-      blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.generate_trace_rows [] [ Φ F ] [ φ num_hashes; φ extra_capacity_bits ]
+      blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.generate_trace_rows [] [ Φ F ] [ φ self; φ num_hashes; φ extra_capacity_bits ]
       (RowMajorMatrix.t F).
   Proof.
     constructor.
     run_symbolic.
+    (* "rand_core::SeedableRng::seed_from_u64" *)
   Admitted.
 
   (* 
@@ -58,21 +59,23 @@ Module Impl_Blake3Air.
   *)
   Instance run_quarter_round_function
     {AB : Set} `{Link AB}
-    {types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks types}
-    {run_AirBuilder_for_AB : AirBuilder.Run AB types}
-    (* TODO: check if AirBuilder needs `AB_types` *)
+    {AB_types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks AB_types}
+    {run_AirBuilder_for_AB : AirBuilder.Run AB AB_types}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
-    (* TODO: in the future, refer to revm to see if its possible to change ab into airbuilder *)
-    (* TODO: translate `trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>` *)
-    (trace : Set)
+    (trace : Ref.t Pointer.Kind.Ref (QuarterRound.t 
+      AB_types.(AirBuilder.AssociatedTypes.Var) AB_types.(AirBuilder.AssociatedTypes.Expr)))
     :
     Run.Trait
-      blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.quarter_round_function [] [ Φ AB ] [ φ builder (* ; φ trace *) ]
+      blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.quarter_round_function [] [ Φ AB ] [ φ self; φ builder; φ trace ]
       unit.
   Proof.
     constructor.
+    destruct run_AirBuilder_for_AB.
     run_symbolic.
+    (* NOTE: I think the `PolymorphicFunction.t` goals should be generated from somewhere
+       using `unshelve` or `eaaply` or `econstructor`... *)
+    (* core::slice::iter::Iter::copied *)
   Admitted.
 
   (* 
@@ -94,11 +97,12 @@ Module Impl_Blake3Air.
     :
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_column_quarter_round [] [ Φ T; Φ U ] 
-      [ (* φ input; φ round_data; φ m_vector; φ index *) ]
+      [ φ self; φ input; φ round_data; φ m_vector; φ index ]
       (QuarterRound.t T U).
   Proof.
     constructor.
     run_symbolic.
+    (* ??? *)
   Admitted.
 
   (* 
@@ -118,11 +122,12 @@ Module Impl_Blake3Air.
     :
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.full_round_to_diagonal_quarter_round [] [ Φ T; Φ U ] 
-      [ (* φ input; φ round_data; φ m_vector; φ index *) ]
+      [ φ self; φ round_data; φ m_vector; φ index ]
       (QuarterRound.t T U).
   Proof.
     constructor.
     run_symbolic.
+    (* Missing structs for FullRound? *)
   Admitted.
 
   (* 
@@ -136,21 +141,22 @@ Module Impl_Blake3Air.
   *)
   Instance run_verify_round
     {AB : Set} `{Link AB}
-    {types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks types}
-    {run_AirBuilder_for_AB : AirBuilder.Run AB types}
+    {AB_types : AirBuilder.AssociatedTypes.t} `{AirBuilder.AssociatedTypes.AreLinks AB_types}
+    {run_AirBuilder_for_AB : AirBuilder.Run AB AB_types}
     (self : Ref.t Pointer.Kind.Ref Self) 
     (builder : Ref.t Pointer.Kind.MutRef AB) 
-    (* TODO: translate correctly the following variables *)
-    (* (input : Ref.t Pointer.Kind.Ref Blake3State.t (AB.Var)) *)
-    (* (round_data : Ref.t Pointer.Kind.Ref FullRound (AB.Var)) *)
-    (* (m_vector : list (list Set)) *)
+    (input : Ref.t Pointer.Kind.Ref (Blake3State.t (AB_types.(AirBuilder.AssociatedTypes.Var))))
+    (round_data : Ref.t Pointer.Kind.Ref (FullRound.t (AB_types.(AirBuilder.AssociatedTypes.Var))))
+    (m_vector : Ref.t Pointer.Kind.Ref
+      (array.t (array.t (AB_types.(AirBuilder.AssociatedTypes.Expr)) {| Integer.value := 2 |}) {| Integer.value := 16 |}))
     :
     Run.Trait
       blake3_air.air.air.Impl_p3_blake3_air_air_Blake3Air.verify_round [] [ Φ AB ] 
-        [ φ builder (* ; φ input; φ round_data; φ m_vector *) ]
+        [ φ self; φ builder; φ input; φ round_data; φ m_vector ]
       unit.
   Proof.
     constructor.
+    destruct run_AirBuilder_for_AB.
     run_symbolic.
   Admitted.
 End Impl_Blake3Air.
