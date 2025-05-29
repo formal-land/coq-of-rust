@@ -6,10 +6,9 @@ Require Import plonky3.blake3_air.links.columns.
 Require Import plonky3.field.links.field.
 Require Import plonky3.matrix.links.dense.
 
-(* 
-TODO:
-- Refer to `gas` to deal with different impls
-- Check if AirBuilder needs `AB_types`
+(* TODO:
+- Implement BaseAir
+- Figure out how to implement `AirBuilder` for `Blake3Air`
 *)
 
 (* pub struct Blake3Air {} *)
@@ -102,7 +101,7 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     run_symbolic.
-    (* ??? *)
+    (* Looks like Coq stuck at using struct `Blake3State::row0` *)
   Admitted.
 
   (* 
@@ -127,7 +126,7 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     run_symbolic.
-    (* Missing structs for FullRound? *)
+    (* Stuck at using FullRound::state_middle? *)
   Admitted.
 
   (* 
@@ -157,6 +156,7 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     destruct run_AirBuilder_for_AB.
+    (* Stuck at a lot of redundant `Trait` goals *)
     run_symbolic.
   Admitted.
 End Impl_Blake3Air.
@@ -172,7 +172,7 @@ Module Impl_BaseAir_for_Blake3Air.
   Definition Self : Set :=
     Blake3Air.t.
 
-  (* Instance run : BaseAir.Run Self. *)
+  (* Instance run_width : BaseAir.Run Self. *)
   (* Admitted. *)
 End Impl_BaseAir_for_Blake3Air.
 
@@ -181,9 +181,31 @@ impl<AB: AirBuilder> Air<AB> for Blake3Air {
     fn eval(&self, builder: &mut AB)
 *)
 Module Impl_Air_for_Blake3Air.
-  Definition Self : Set :=
+  Definition Self (AB : Set) `{Link AB} (AB_types : AirBuilder.AssociatedTypes.t) : Set :=
     Blake3Air.t.
+
+  (* Instance run
+    (AB : Set) `{Link AB}
+    (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
+    Air.Run Self.
+  Admitted. *)
 
   (* Instance run : Air.Run Self. *)
   (* Admitted. *)
 End Impl_Air_for_Blake3Air.
+
+(* (* impl<AB: AirBuilder> AirBuilder for FilteredAirBuilder<'_, AB> *)
+Module Impl_AirBuilder_for_FilteredAirBuilder.
+  Definition Self (AB : Set) `{Link AB} (types : AirBuilder.AssociatedTypes.t) : Set :=
+    FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr).
+
+  Definition types (types : AirBuilder.AssociatedTypes.t) : AirBuilder.AssociatedTypes.t :=
+    types.
+
+  Instance run
+      (AB : Set) `{Link AB}
+      (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
+      AirBuilder.Run (Self AB types) types.
+  Admitted.
+End Impl_AirBuilder_for_FilteredAirBuilder.
+Export Impl_AirBuilder_for_FilteredAirBuilder. *)
