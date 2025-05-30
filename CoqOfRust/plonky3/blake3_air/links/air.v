@@ -6,11 +6,6 @@ Require Import plonky3.blake3_air.links.columns.
 Require Import plonky3.field.links.field.
 Require Import plonky3.matrix.links.dense.
 
-(* TODO:
-- Implement BaseAir
-- Figure out how to implement `AirBuilder` for `Blake3Air`
-*)
-
 (* pub struct Blake3Air {} *)
 Module Blake3Air.
   Inductive t : Set :=
@@ -101,7 +96,8 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     run_symbolic.
-    (* Looks like Coq stuck at using struct `Blake3State::row0` *)
+    (* - typeclasses eauto. *)
+    (* PolymorphicFunction.t... seems like it cannot be completely resolved by current ltac*)
   Admitted.
 
   (* 
@@ -169,11 +165,16 @@ impl<F> BaseAir<F> for Blake3Air {
 }
 *)
 Module Impl_BaseAir_for_Blake3Air.
-  Definition Self : Set :=
-    Blake3Air.t.
+(* 
+(* impl<AB: AirBuilder> AirBuilder for FilteredAirBuilder<'_, AB> *)
 
-  (* Instance run_width : BaseAir.Run Self. *)
-  (* Admitted. *)
+  Definition Self (AB : Set) `{Link AB} (types : AirBuilder.AssociatedTypes.t) : Set :=
+    FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr).
+*)
+  Definition Self := Blake3Air.t F.
+
+  Instance run_width (F : Set) `{Link F} (F_types : BaseAir.AssociatedTypes.t) : BaseAir.Run Self F.
+  Admitted.
 End Impl_BaseAir_for_Blake3Air.
 
 (* 
@@ -181,8 +182,7 @@ impl<AB: AirBuilder> Air<AB> for Blake3Air {
     fn eval(&self, builder: &mut AB)
 *)
 Module Impl_Air_for_Blake3Air.
-  Definition Self (AB : Set) `{Link AB} (AB_types : AirBuilder.AssociatedTypes.t) : Set :=
-    Blake3Air.t.
+  Definition Self := Blake3Air.t.
 
   (* Instance run
     (AB : Set) `{Link AB}
@@ -190,7 +190,7 @@ Module Impl_Air_for_Blake3Air.
     Air.Run Self.
   Admitted. *)
 
-  (* Instance run : Air.Run Self. *)
+  Instance run : Air.Run Self.
   (* Admitted. *)
 End Impl_Air_for_Blake3Air.
 
