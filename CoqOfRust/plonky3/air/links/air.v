@@ -469,14 +469,26 @@ Module Air.
   Module AssociatedTypes.
     Record t : Type := {
       AB : Set;
+      ABTypes : AirBuilder.AssociatedTypes.t;
+      BaseAirTypes : BaseAir.AssociatedTypes.t;
     }.
 
     Class AreLinks (types : t) : Set := {
       H_AB : Link types.(AB);
+      H_ABTypes : AirBuilder.AssociatedTypes.AreLinks types.(ABTypes);
+      H_BaseAirTypes : BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes);
     }.
 
-    Global Instance IsLinkAB (types : t) (H : AreLinks types) : Link types.(AB) :=
+    Global Instance AreLinksBaseAirTypes (types : t) (H : AreLinks types) :
+      BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes) :=
+      H.(H_BaseAirTypes _).
+
+    Global Instance IsLinkAirBuilder (types : t) (H : AreLinks types) : Link types.(AB) :=
       H.(H_AB _).
+
+    Global Instance AreLinksAirBuilderTypes (types : t) (H : AreLinks types) :
+      AirBuilder.AssociatedTypes.AreLinks types.(ABTypes) :=
+      H.(H_ABTypes _).
   End AssociatedTypes.
 
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
@@ -484,30 +496,22 @@ Module Air.
 
   (* fn eval(&self, builder: &mut AB); *)
   Definition Run_eval
-    (Self : Set) `{Link Self} 
-    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} 
-    (* TODO: check if this parameter is correct *)
-    (builder : Ref.t Pointer.Kind.MutRef types.(AssociatedTypes.AB)) :
+    (Self : Set) `{Link Self}
+    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
     Set :=
       TraitMethod.C (trait Self) "eval" (fun method =>
         forall (self : Ref.t Pointer.Kind.Ref Self) (builder : Ref.t Pointer.Kind.MutRef types.(AssociatedTypes.AB)),
-        Run.Trait method [] [] [ φ self ] Usize.t
+        Run.Trait method [] [] [ φ self; φ builder ] unit
   ).
 
   Class Run (Self : Set) `{Link Self} 
     (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} : Set := {
+    run_BaseAir_for_Air : BaseAir.Run Self types.(AssociatedTypes.BaseAirTypes);
     AB_IsAssociated :
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "AB" (Φ types.(AssociatedTypes.AB));
-    run_AirBuilder_for_AB : AirBuilder.Run types.(AssociatedTypes.AB);
-    (* 
-    run_Mul_Var_for_Expr :
-      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
-    run_Mul_Expr_for_Expr :
-      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
-    *)
-    run_BaseAir_for_Air : BaseAir.Run (???);
-    (* eval : Run_width Self types; *)
+    run_AirBuilder_for_AB : AirBuilder.Run types.(AssociatedTypes.AB) types.(AssociatedTypes.ABTypes);
+    eval : Run_eval Self types;
   }.
 End Air.
