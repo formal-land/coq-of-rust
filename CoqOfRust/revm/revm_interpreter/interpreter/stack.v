@@ -2432,7 +2432,7 @@ Module interpreter.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          repeat (|
+                                          lib.repeat (|
                                             M.read (|
                                               get_associated_constant (|
                                                 Ty.apply
@@ -2475,7 +2475,7 @@ Module interpreter.
                                 ]
                                 []
                             ] :=
-                        repeat (|
+                        lib.repeat (|
                           M.read (|
                             get_associated_constant (|
                               Ty.apply
@@ -5594,7 +5594,7 @@ Module interpreter.
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 8 ]
                                             [ Ty.path "u8" ] :=
-                                        repeat (|
+                                        lib.repeat (|
                                           Value.Integer IntegerKind.U8 0,
                                           Value.Integer IntegerKind.Usize 8
                                         |) in

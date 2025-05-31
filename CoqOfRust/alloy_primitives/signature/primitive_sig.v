@@ -2013,7 +2013,10 @@ Module signature.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 65 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 65 |) in
+                lib.repeat (|
+                  Value.Integer IntegerKind.U8 0,
+                  Value.Integer IntegerKind.Usize 65
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],

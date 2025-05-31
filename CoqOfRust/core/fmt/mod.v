@@ -479,7 +479,7 @@ Module fmt.
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.alloc (|
-                                repeat (|
+                                lib.repeat (|
                                   Value.Integer IntegerKind.U8 0,
                                   Value.Integer IntegerKind.Usize 4
                                 |)
@@ -5357,7 +5357,7 @@ Module fmt.
                                                                 [ Value.Integer IntegerKind.Usize 5
                                                                 ]
                                                                 [ Ty.path "u8" ] :=
-                                                            repeat (|
+                                                            lib.repeat (|
                                                               Value.Integer IntegerKind.U8 0,
                                                               Value.Integer IntegerKind.Usize 5
                                                             |) in
@@ -14715,7 +14715,7 @@ Module fmt.
                                         M.borrow (|
                                           Pointer.Kind.MutRef,
                                           M.alloc (|
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Integer IntegerKind.U8 0,
                                               Value.Integer IntegerKind.Usize 4
                                             |)

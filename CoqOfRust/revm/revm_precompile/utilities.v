@@ -273,7 +273,7 @@ Module utilities.
               fun γ =>
                 ltac:(M.monadic
                   (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
-                    repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
+                    lib.repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
@@ -640,7 +640,7 @@ Module utilities.
               fun γ =>
                 ltac:(M.monadic
                   (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
-                    repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
+                    lib.repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],

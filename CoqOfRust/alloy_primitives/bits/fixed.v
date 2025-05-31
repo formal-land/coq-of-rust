@@ -4588,7 +4588,7 @@ Module bits.
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 13 ]
                             [ Ty.path "u8" ] :=
-                        repeat (|
+                        lib.repeat (|
                           Value.Integer IntegerKind.U8 0,
                           Value.Integer IntegerKind.Usize 13
                         |) in
@@ -5868,7 +5868,7 @@ Module bits.
               "alloy_primitives::bits::fixed::FixedBytes"
               [ N ]
               []
-              [ repeat (| Value.Integer IntegerKind.U8 0, N |) ]
+              [ lib.repeat (| Value.Integer IntegerKind.U8 0, N |) ]
           |))).
       
       Global Instance AssociatedConstant_value_ZERO :
@@ -5924,7 +5924,7 @@ Module bits.
             (let x := M.alloc (| x |) in
             M.read (|
               let~ bytes : Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, N |) in
+                lib.repeat (| Value.Integer IntegerKind.U8 0, N |) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -5998,7 +5998,7 @@ Module bits.
               "alloy_primitives::bits::fixed::FixedBytes"
               [ N ]
               []
-              [ repeat (| M.read (| byte |), N |) ]))
+              [ lib.repeat (| M.read (| byte |), N |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6130,7 +6130,7 @@ Module bits.
                   |)
                 |) in
               let~ result : Ty.apply (Ty.path "array") [ Z ] [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Z |) in
+                lib.repeat (| Value.Integer IntegerKind.U8 0, Z |) in
               let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
               let~ _ : Ty.tuple [] :=
                 M.read (|

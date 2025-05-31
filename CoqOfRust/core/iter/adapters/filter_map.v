@@ -582,7 +582,7 @@ Module iter.
                       (Ty.path "array")
                       [ N ]
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ B ] ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.read (|
                       get_constant (|
                         "core::iter::adapters::filter_map::next_chunk_discriminant",

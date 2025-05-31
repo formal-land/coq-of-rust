@@ -460,7 +460,7 @@ Module array.
               [],
               []
             |),
-            [ repeat (| M.read (| val |), N |) ]
+            [ lib.repeat (| M.read (| val |), N |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -535,7 +535,7 @@ Module array.
             [ N ]
             [ F ]
             [
-              repeat (|
+              lib.repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", F |) |),
                 N
               |)
@@ -559,7 +559,7 @@ Module array.
             [ N ]
             [ F ]
             [
-              repeat (|
+              lib.repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ONE", F |) |),
                 N
               |)
@@ -583,7 +583,7 @@ Module array.
             [ N ]
             [ F ]
             [
-              repeat (|
+              lib.repeat (|
                 M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::TWO", F |) |),
                 N
               |)
@@ -607,7 +607,7 @@ Module array.
             [ N ]
             [ F ]
             [
-              repeat (|
+              lib.repeat (|
                 M.read (|
                   get_constant (| "p3_field::field::PrimeCharacteristicRing::NEG_ONE", F |)
                 |),

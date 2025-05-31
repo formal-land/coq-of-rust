@@ -830,7 +830,7 @@ pub(crate) fn compile_expr<'a>(
             })
         }
         thir::ExprKind::Repeat { value, count } => {
-            let func = Expr::local_var("repeat");
+            let func = Expr::local_var("lib.repeat");
             let args = vec![
                 compile_expr(env, generics, thir, value).read(),
                 compile_const(env, &expr.span, count),
@@ -1394,7 +1394,11 @@ fn compile_block<'a>(
 
 pub(crate) fn compile_const(env: &Env, span: &rustc_span::Span, const_: &Const) -> Rc<Expr> {
     match &const_.kind() {
-        ConstKind::Param(param) => Expr::local_var(param.name.as_str()),
+        ConstKind::Param(param) => {
+            let name = to_valid_coq_name(IsValue::No, param.name.as_str());
+
+            Expr::local_var(name.as_str())
+        }
         ConstKind::Infer(_) => Expr::local_var("InferConst"),
         ConstKind::Bound(_, _) => Expr::local_var("BoundConst"),
         ConstKind::Placeholder(_) => Expr::local_var("PlaceholderConst"),

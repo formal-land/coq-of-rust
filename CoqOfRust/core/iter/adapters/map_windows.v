@@ -1518,7 +1518,7 @@ Module iter.
                                   |)
                                 ]
                               |);
-                              repeat (|
+                              lib.repeat (|
                                 M.read (|
                                   get_constant (|
                                     "core::iter::adapters::map_windows::try_from_iter_discriminant",
@@ -2745,7 +2745,7 @@ Module iter.
                       ("buffer",
                         Value.Array
                           [
-                            repeat (|
+                            lib.repeat (|
                               M.read (|
                                 get_constant (|
                                   "core::iter::adapters::map_windows::clone_discriminant",
@@ -2754,7 +2754,7 @@ Module iter.
                               |),
                               N
                             |);
-                            repeat (|
+                            lib.repeat (|
                               M.read (|
                                 get_constant (|
                                   "core::iter::adapters::map_windows::clone_discriminant",

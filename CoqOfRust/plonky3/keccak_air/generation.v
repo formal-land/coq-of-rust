@@ -1281,7 +1281,7 @@ Module generation.
                                     ]
                                   |),
                                   [
-                                    repeat (|
+                                    lib.repeat (|
                                       Value.Integer IntegerKind.U64 0,
                                       Value.Integer IntegerKind.Usize 25
                                     |);

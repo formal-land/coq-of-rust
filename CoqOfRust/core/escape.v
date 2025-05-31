@@ -89,7 +89,10 @@ Module escape.
             M.read (| get_constant (| "core::escape::backslash_discriminant", Ty.tuple [] |) |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+            lib.repeat (|
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
+              N
+            |) in
           let~ _ : Ty.tuple [] :=
             M.write (|
               M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
@@ -150,7 +153,10 @@ Module escape.
             M.read (| get_constant (| "core::escape::hex_escape_discriminant", Ty.tuple [] |) |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+            lib.repeat (|
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
+              N
+            |) in
           let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
             M.read (|
               M.SubPointer.get_array_field (|
@@ -253,7 +259,10 @@ Module escape.
             M.read (| get_constant (| "core::escape::verbatim_discriminant", Ty.tuple [] |) |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+            lib.repeat (|
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
+              N
+            |) in
           let~ _ : Ty.tuple [] :=
             M.write (|
               M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
@@ -517,7 +526,7 @@ Module escape.
       ltac:(M.monadic
         (let~ arr :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ] :=
-          repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |) in
+          lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |) in
         let~ idx : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -784,7 +793,10 @@ Module escape.
             |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-            repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |) in
+            lib.repeat (|
+              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
+              N
+            |) in
           let~ _ : Ty.tuple [] :=
             M.write (|
               M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
@@ -1388,7 +1400,7 @@ Module escape.
             []
             [
               ("data",
-                repeat (|
+                lib.repeat (|
                   Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
                   N
                 |));

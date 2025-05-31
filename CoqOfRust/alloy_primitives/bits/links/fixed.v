@@ -6,6 +6,7 @@ Require Import alloy_primitives.bits.fixed.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
 Require Import core.links.borrow.
+Require Import core.ops.links.index.
 
 Module Impl_FixedBytes.
   Definition Self (N: Usize.t) : Set :=
@@ -74,3 +75,16 @@ Module Impl_Borrow_Array_u8_N_for_FixedBytes_N.
   Admitted.
 End Impl_Borrow_Array_u8_N_for_FixedBytes_N.
 Export Impl_Borrow_Array_u8_N_for_FixedBytes_N.
+
+Module Impl_Index_for_FixedBytes_N.
+  Definition Self (N: Usize.t) : Set :=
+    FixedBytes.t N.
+
+  (* type Output = <[u8; N] as Index<__IdxT>>::Output *)
+  Definition Output : Set :=
+    list U8.t.
+
+  Instance run (N: Usize.t) (__IdxT : Set) `{Link __IdxT} : Index.Run (Self N) __IdxT Output.
+  Admitted.
+End Impl_Index_for_FixedBytes_N.
+Export Impl_Index_for_FixedBytes_N.
