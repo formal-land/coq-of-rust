@@ -150,11 +150,11 @@
 
 ## Contract/Call
 
-- [x] `call`
+- [ ] `call`
 
 ## Contract/Call_code
 
-- [x] `call_code`
+- [ ] `call_code`
 
 ## Contract/Create
 
@@ -162,7 +162,7 @@
 
 ## Contract/Delegate_call
 
-- [x] `delegate_call`
+- [ ] `delegate_call`
 
 ## Contract/Eofcreate
 
@@ -170,7 +170,7 @@
 
 ## Contract/Extcall
 
-- [x] `extcall`
+- [ ] `extcall`
 
 ## Contract/Extcall_gas_calc
 
@@ -182,15 +182,15 @@
 
 ## Contract/Extdelegatecall
 
-- [x] `extdelegatecall`
+- [ ] `extdelegatecall`
 
 ## Contract/Extstaticcall
 
-- [x] `extstaticcall`
+- [ ] `extstaticcall`
 
 ## Contract/Pop_extcall_target_address
 
-- [x] `pop_extcall_target_address`
+- [ ] `pop_extcall_target_address`
 
 ## Contract/Return_contract
 
@@ -198,11 +198,11 @@
 
 ## Contract/Static_call
 
-- [x] `static_call`
+- [ ] `static_call`
 
 ## Summary
 
 - Total: 120
-- Admitted: 21
-- Defined: 99
-- Percentage: 82.50%
+- Admitted: 29
+- Defined: 91
+- Percentage: 75.83%

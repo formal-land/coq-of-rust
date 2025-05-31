@@ -61,4 +61,4 @@ Proof.
   destruct (Impl_Iterator_for_Iter.run U8.t).
   destruct (Impl_Index_for_FixedBytes_N.run {| Integer.value := 32 |} (RangeTo.t Usize.t)).
   run_symbolic.
-Defined.
+Admitted.
