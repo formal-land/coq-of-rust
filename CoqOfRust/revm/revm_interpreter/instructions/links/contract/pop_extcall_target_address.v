@@ -18,6 +18,7 @@ Require Import core.num.links.mod.
 Require Import core.ops.links.control_flow.
 Require Import core.ops.links.range.
 Require Import core.slice.links.iter.
+Require Import core.slice.links.mod.
 Require Import revm.revm_bytecode.links.eof.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import revm.revm_context_interface.links.host.
@@ -38,16 +39,26 @@ Require Import ruint.links.cmp.
 Require Import ruint.links.from.
 Require Import ruint.links.lib.
 
-Require Export revm.revm_interpreter.instructions.links.contract.call_code.
-Require Export revm.revm_interpreter.instructions.links.contract.call.
-Require Export revm.revm_interpreter.instructions.links.contract.create.
-Require Export revm.revm_interpreter.instructions.links.contract.delegate_call.
-Require Export revm.revm_interpreter.instructions.links.contract.eofcreate.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_gas_calc.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_input.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall.
-Require Export revm.revm_interpreter.instructions.links.contract.extdelegatecall.
-Require Export revm.revm_interpreter.instructions.links.contract.extstaticcall.
-Require Export revm.revm_interpreter.instructions.links.contract.pop_extcall_target_address.
-Require Export revm.revm_interpreter.instructions.links.contract.return_contract.
-Require Export revm.revm_interpreter.instructions.links.contract.static_call.
+(*
+pub fn pop_extcall_target_address(
+    interpreter: &mut Interpreter<impl InterpreterTypes>,
+) -> Option<Address>
+*)
+Instance run_pop_extcall_target_address
+  {WIRE : Set} `{Link WIRE}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types)) :
+  Run.Trait
+    instructions.contract.pop_extcall_target_address [] [ Φ WIRE ] [ φ interpreter ]
+    (option Address.t).
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct Impl_From_U256_for_FixedBytes_32.run.
+  destruct (Impl_Iterator_for_Iter.run U8.t).
+  destruct (Impl_Index_for_FixedBytes_N.run {| Integer.value := 32 |} (RangeTo.t Usize.t)).
+  run_symbolic.
+Defined.

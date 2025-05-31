@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
+Require Import core.links.clone.
 Require Import core.ops.range.
 
 (*
@@ -37,6 +38,15 @@ Module Range.
   Defined.
   Smpl Add eapply of_ty : of_ty.
 End Range.
+
+Module Impl_Clone_for_Range.
+  Definition Self (Idx : Set) : Set :=
+    Range.t Idx.
+
+  Instance run (Idx : Set) `{Link Idx} : Clone.Run (Self Idx).
+  Admitted.
+End Impl_Clone_for_Range.
+Export Impl_Clone_for_Range.
 
 Module Impl_Range.
   Definition Self (Idx : Set) : Set :=

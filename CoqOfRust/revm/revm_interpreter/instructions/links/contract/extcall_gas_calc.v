@@ -38,16 +38,36 @@ Require Import ruint.links.cmp.
 Require Import ruint.links.from.
 Require Import ruint.links.lib.
 
-Require Export revm.revm_interpreter.instructions.links.contract.call_code.
-Require Export revm.revm_interpreter.instructions.links.contract.call.
-Require Export revm.revm_interpreter.instructions.links.contract.create.
-Require Export revm.revm_interpreter.instructions.links.contract.delegate_call.
-Require Export revm.revm_interpreter.instructions.links.contract.eofcreate.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_gas_calc.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_input.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall.
-Require Export revm.revm_interpreter.instructions.links.contract.extdelegatecall.
-Require Export revm.revm_interpreter.instructions.links.contract.extstaticcall.
-Require Export revm.revm_interpreter.instructions.links.contract.pop_extcall_target_address.
-Require Export revm.revm_interpreter.instructions.links.contract.return_contract.
-Require Export revm.revm_interpreter.instructions.links.contract.static_call.
+(*
+pub fn extcall_gas_calc<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+    target: Address,
+    transfers_value: bool,
+) -> Option<u64>
+*)
+Instance run_extcall_gas_calc
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (host : Ref.t Pointer.Kind.MutRef H)
+  (target : Address.t)
+  (transfers_value : bool) :
+  Run.Trait
+    instructions.contract.extcall_gas_calc
+      [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host; φ target; φ transfers_value ]
+    (option U64.t).
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_ReturnData_for_ReturnData.
+  destruct run_Host_for_H.
+  destruct links.mod.Impl_DerefMut_for_Bytes.run.
+  run_symbolic.
+Defined.

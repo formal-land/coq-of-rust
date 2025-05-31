@@ -38,16 +38,28 @@ Require Import ruint.links.cmp.
 Require Import ruint.links.from.
 Require Import ruint.links.lib.
 
-Require Export revm.revm_interpreter.instructions.links.contract.call_code.
-Require Export revm.revm_interpreter.instructions.links.contract.call.
-Require Export revm.revm_interpreter.instructions.links.contract.create.
-Require Export revm.revm_interpreter.instructions.links.contract.delegate_call.
-Require Export revm.revm_interpreter.instructions.links.contract.eofcreate.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_gas_calc.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_input.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall.
-Require Export revm.revm_interpreter.instructions.links.contract.extdelegatecall.
-Require Export revm.revm_interpreter.instructions.links.contract.extstaticcall.
-Require Export revm.revm_interpreter.instructions.links.contract.pop_extcall_target_address.
-Require Export revm.revm_interpreter.instructions.links.contract.return_contract.
-Require Export revm.revm_interpreter.instructions.links.contract.static_call.
+(*
+pub fn extcall_input(interpreter: &mut Interpreter<impl InterpreterTypes>) -> Option<Bytes>
+*)
+Instance run_extcall_input
+  {WIRE : Set} `{Link WIRE}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types)) :
+  Run.Trait
+    instructions.contract.extcall_input [] [ Φ WIRE ] [ φ interpreter ]
+    (option alloy_primitives.bytes.links.mod.Bytes.t).
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_StackTrait_for_Stack.
+  destruct run_MemoryTrait_for_Memory.
+  destruct (Impl_Try_for_Option.run alloy_primitives.bytes.links.mod.Bytes.t).
+  destruct run_FromResidual_for_Self.
+  destruct (Impl_Try_for_Option.run (Range.t Usize.t)).
+  destruct (Impl_AsRef_for_Slice.run U8.t).
+  destruct run_Deref_for_Synthetic.
+  destruct (Impl_FromResidual_Infallible_for_Option.run alloy_primitives.bytes.links.mod.Bytes.t).
+  destruct (Impl_Clone_for_Range.run Usize.t).
+  run_symbolic.
+Defined.

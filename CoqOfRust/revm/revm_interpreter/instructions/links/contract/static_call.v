@@ -38,16 +38,32 @@ Require Import ruint.links.cmp.
 Require Import ruint.links.from.
 Require Import ruint.links.lib.
 
-Require Export revm.revm_interpreter.instructions.links.contract.call_code.
-Require Export revm.revm_interpreter.instructions.links.contract.call.
-Require Export revm.revm_interpreter.instructions.links.contract.create.
-Require Export revm.revm_interpreter.instructions.links.contract.delegate_call.
-Require Export revm.revm_interpreter.instructions.links.contract.eofcreate.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_gas_calc.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall_input.
-Require Export revm.revm_interpreter.instructions.links.contract.extcall.
-Require Export revm.revm_interpreter.instructions.links.contract.extdelegatecall.
-Require Export revm.revm_interpreter.instructions.links.contract.extstaticcall.
-Require Export revm.revm_interpreter.instructions.links.contract.pop_extcall_target_address.
-Require Export revm.revm_interpreter.instructions.links.contract.return_contract.
-Require Export revm.revm_interpreter.instructions.links.contract.static_call.
+(*
+pub fn static_call<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+)
+*)
+Instance run_static_call
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.contract.static_call [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
+    unit.
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_Host_for_H.
+  destruct Impl_From_U256_for_FixedBytes_32.run.
+  destruct (TryFrom_Uint_for_u64.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  run_symbolic.
+Defined.
