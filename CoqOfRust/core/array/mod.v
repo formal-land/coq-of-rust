@@ -2553,7 +2553,7 @@ Module array.
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_array_Usize_32_T.
   
-  Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
+  (* Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
@@ -5784,7 +5784,7 @@ Module array.
         (* Trait polymorphic types *) []
         (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
-  End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
+  End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T. *)
   
   
   
