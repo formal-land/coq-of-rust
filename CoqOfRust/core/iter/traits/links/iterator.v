@@ -199,7 +199,7 @@ Module Iterator.
       Set :=
     TraitMethod.C (trait Self) "any" (fun method =>
       forall
-         (F : Set) `{Link F}
+         (F : Set) `(Link F)
          (self : Ref.t Pointer.Kind.MutRef Self)
          (f : F)
          `(FnMut.Run F Item bool),
