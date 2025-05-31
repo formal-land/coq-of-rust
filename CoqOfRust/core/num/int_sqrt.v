@@ -14,7 +14,7 @@ Module num.
               (Ty.path "array")
               [ Value.Integer IntegerKind.Usize 256 ]
               [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ] :=
-          repeat (|
+          lib.repeat (|
             Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 0 ],
             Value.Integer IntegerKind.Usize 256
           |) in

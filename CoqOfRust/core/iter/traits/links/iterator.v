@@ -6,6 +6,7 @@ Require Import core.links.array.
 Require Import core.links.option.
 Require Import core.links.result.
 Require Import core.num.links.nonzero.
+Require Import core.ops.links.function.
 
 (* pub trait Iterator *)
 Module Iterator.
@@ -192,6 +193,18 @@ Module Iterator.
       where Self: Sized,
             F: FnMut(Self::Item) -> bool { ... }
   *)
+  Definition Run_any
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "any" (fun method =>
+      forall
+         (F : Set) `{Link F}
+         (self : Ref.t Pointer.Kind.MutRef Self)
+         (f : F)
+         `(FnMut.Run F Item bool),
+      Run.Trait method [] [Φ F] [φ self; φ f] bool
+    ).
 
   (*
     fn find<P>(&mut self, predicate: P) -> Option<Self::Item>
@@ -323,5 +336,6 @@ Module Iterator.
     count : Run_count Self;
     last : Run_last Self Item;
     advance_by : Run_advance_by Self;
+    any : Run_any Self Item;
   }.
 End Iterator.

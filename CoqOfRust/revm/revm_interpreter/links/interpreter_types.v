@@ -166,7 +166,7 @@ Module MemoryTrait.
     TraitMethod.C (trait Self) "slice" (fun method =>
       forall
         (self : Ref.t Pointer.Kind.Ref Self)
-        (range : Ref.t Pointer.Kind.Ref (range.Range.t Usize.t)),
+        (range : range.Range.t Usize.t),
       Run.Trait method [] [] [ φ self; φ range ] Synthetic
     ).
 

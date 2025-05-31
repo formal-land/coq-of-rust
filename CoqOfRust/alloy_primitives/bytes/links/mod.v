@@ -82,12 +82,30 @@ Module Impl_Deref_for_Bytes.
 End Impl_Deref_for_Bytes.
 Export Impl_Deref_for_Bytes.
 
+(* impl DerefMut for Bytes *)
+Module Impl_DerefMut_for_Bytes.
+  Definition Self : Set :=
+    Bytes.t.
+
+  Instance run : DerefMut.Run Self bytes.Bytes.t.
+  Admitted.
+End Impl_DerefMut_for_Bytes.
+Export Impl_DerefMut_for_Bytes.
+
 Module Impl_Bytes.
   Definition Self : Set :=
     Bytes.t.
 
   (* pub const fn new() -> Self *)
   Instance run_new : Run.Trait bytes_.Impl_alloy_primitives_bytes__Bytes.new [] [] [] Self.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+
+  (* pub fn copy_from_slice(data: &[u8]) -> Self *)
+  Instance run_copy_from_slice (data : Ref.t Pointer.Kind.Ref (list U8.t)) :
+    Run.Trait bytes_.Impl_alloy_primitives_bytes__Bytes.copy_from_slice [] [] [ φ data ] Self.
   Proof.
     constructor.
     run_symbolic.

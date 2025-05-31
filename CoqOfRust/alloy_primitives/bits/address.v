@@ -1093,7 +1093,10 @@ Module bits.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+                lib.repeat (|
+                  Value.Integer IntegerKind.U8 0,
+                  Value.Integer IntegerKind.Usize 32
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
@@ -2404,7 +2407,10 @@ Module bits.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 85 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 85 |) in
+                lib.repeat (|
+                  Value.Integer IntegerKind.U8 0,
+                  Value.Integer IntegerKind.Usize 85
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.write (|
                   M.SubPointer.get_array_field (| bytes, Value.Integer IntegerKind.Usize 0 |),

@@ -3432,7 +3432,7 @@ Module from.
                                                         (Ty.path "array")
                                                         [ LIMBS ]
                                                         [ Ty.path "u64" ] :=
-                                                    repeat (|
+                                                    lib.repeat (|
                                                       Value.Integer IntegerKind.U64 0,
                                                       LIMBS
                                                     |) in
@@ -3622,7 +3622,7 @@ Module from.
                         |)
                       |) in
                     let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                      repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                      lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                     let~ _ : Ty.tuple [] :=
                       M.write (|
                         M.SubPointer.get_array_field (| limbs, Value.Integer IntegerKind.Usize 0 |),
@@ -4022,7 +4022,7 @@ Module from.
                         |)
                       |) in
                     let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                      repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                      lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                     let~ _ : Ty.tuple [] :=
                       M.write (|
                         M.SubPointer.get_array_field (| limbs, Value.Integer IntegerKind.Usize 0 |),

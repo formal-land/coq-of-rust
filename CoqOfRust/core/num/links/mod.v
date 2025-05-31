@@ -4,6 +4,19 @@ Require Import core.intrinsics.links.mod.
 Require Import core.links.array.
 Require Import core.num.mod.
 
+Module Impl_u16.
+  Definition Self : Set := U16.t.
+
+  (* pub const fn to_be_bytes(self) -> [u8; 2] *)
+  Instance run_to_be_bytes (self: Self) :
+    Run.Trait num.Impl_u16.to_be_bytes [] [] [ φ self ] (array.t U8.t {| Integer.value := 2 |}).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+End Impl_u16.
+Export Impl_u16.
+
 Module Impl_u64.
   Definition Self : Set := U64.t.
 

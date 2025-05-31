@@ -627,7 +627,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
           [],
           []
         |),
-        [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
+        [ lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

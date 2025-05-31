@@ -5703,7 +5703,7 @@ Module string.
                                                 M.borrow (|
                                                   Pointer.Kind.MutRef,
                                                   M.alloc (|
-                                                    repeat (|
+                                                    lib.repeat (|
                                                       Value.Integer IntegerKind.U8 0,
                                                       Value.Integer IntegerKind.Usize 4
                                                     |)
@@ -7806,7 +7806,7 @@ Module string.
               |) in
             let~ bits :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
+              lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
             let~ bits :
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
               M.call_closure (|
@@ -14847,7 +14847,7 @@ Module string.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
-                            repeat (|
+                            lib.repeat (|
                               Value.Integer IntegerKind.U8 0,
                               Value.Integer IntegerKind.Usize 4
                             |)

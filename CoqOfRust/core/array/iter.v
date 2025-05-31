@@ -260,7 +260,7 @@ Module array.
                     (Ty.path "array")
                     [ N ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                repeat (|
+                lib.repeat (|
                   M.read (|
                     get_constant (|
                       "core::array::iter::empty_discriminant",
@@ -2201,7 +2201,7 @@ Module array.
                   [ T ]
                   [
                     ("data",
-                      repeat (|
+                      lib.repeat (|
                         M.read (|
                           get_constant (|
                             "core::array::iter::clone_discriminant",

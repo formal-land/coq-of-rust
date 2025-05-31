@@ -757,7 +757,7 @@ Module helpers.
                 (Ty.path "array")
                 [ D ]
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ R ] ] :=
-            repeat (|
+            lib.repeat (|
               M.read (|
                 get_constant (|
                   "p3_field::helpers::field_to_array_discriminant",

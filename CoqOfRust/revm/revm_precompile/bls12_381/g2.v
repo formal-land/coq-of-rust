@@ -1415,11 +1415,11 @@ Module bls12_381.
                                   [ Ty.path "u8" ]
                               ]
                           ] :=
-                      repeat (|
+                      lib.repeat (|
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            repeat (|
+                            lib.repeat (|
                               Value.Integer IntegerKind.U8 0,
                               Value.Integer IntegerKind.Usize 48
                             |)

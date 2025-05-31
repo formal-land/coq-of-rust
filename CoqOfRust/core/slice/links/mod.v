@@ -59,6 +59,14 @@ Module Impl_Slice.
     run_symbolic.
   Defined.
 
+  (* pub fn iter(&self) -> Iter<'_, T> *)
+  Instance run_iter
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T)) :
+    Run.Trait (slice.Impl_slice_T.iter (Φ T)) [] [] [φ self]
+      (Iter.t T).
+  Admitted.
+
   (* pub fn iter_mut(&mut self) -> IterMut<'_, T> *)
   Instance run_iter_mut
       (T : Set) `{Link T}

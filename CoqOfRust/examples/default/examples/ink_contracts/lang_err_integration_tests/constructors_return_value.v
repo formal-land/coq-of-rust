@@ -424,7 +424,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                               []
                             |),
                             [
-                              repeat (|
+                              lib.repeat (|
                                 Value.Integer IntegerKind.U8 0,
                                 Value.Integer IntegerKind.Usize 32
                               |)
@@ -541,7 +541,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     []
                                   |),
                                   [
-                                    repeat (|
+                                    lib.repeat (|
                                       Value.Integer IntegerKind.U8 0,
                                       Value.Integer IntegerKind.Usize 32
                                     |)

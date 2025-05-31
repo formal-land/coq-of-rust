@@ -111,7 +111,7 @@ Module instructions.
                     ]
                     (Ty.tuple [])
                 ] :=
-            repeat (|
+            lib.repeat (|
               M.read (|
                 M.use
                   (M.alloc (|

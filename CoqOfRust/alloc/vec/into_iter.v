@@ -1899,7 +1899,7 @@ Module vec.
                             [ N ]
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                             ] :=
-                        repeat (|
+                        lib.repeat (|
                           M.read (|
                             get_constant (|
                               "alloc::vec::into_iter::next_chunk_discriminant",

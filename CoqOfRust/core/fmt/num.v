@@ -826,7 +826,7 @@ Module fmt.
                     [ Value.Integer IntegerKind.Usize 128 ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                     ] :=
-                repeat (|
+                lib.repeat (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
@@ -6829,7 +6829,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
@@ -7648,7 +7648,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
@@ -8467,7 +8467,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
@@ -9286,7 +9286,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
@@ -10105,7 +10105,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
+                  lib.repeat (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
@@ -11448,7 +11448,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ]
                             ] :=
-                        repeat (|
+                        lib.repeat (|
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -11935,7 +11935,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ]
                             ] :=
-                        repeat (|
+                        lib.repeat (|
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -15463,7 +15463,7 @@ Module fmt.
                               []
                               [ Ty.path "u8" ]
                           ] :=
-                      repeat (|
+                      lib.repeat (|
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -15949,7 +15949,7 @@ Module fmt.
                               []
                               [ Ty.path "u8" ]
                           ] :=
-                      repeat (|
+                      lib.repeat (|
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -18466,7 +18466,7 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 39 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
+              lib.repeat (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|

@@ -638,7 +638,7 @@ Module slice.
                 [
                   ("_align", Value.Array []);
                   ("storage",
-                    repeat (|
+                    lib.repeat (|
                       M.read (|
                         get_constant (|
                           "core::slice::sort::stable::new_discriminant",

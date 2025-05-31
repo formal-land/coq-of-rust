@@ -1032,7 +1032,7 @@ Module Impl_payment_channel_PaymentChannel.
             |) in
           let~ pub_key :
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 33 ] [ Ty.path "u8" ] :=
-            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 33 |) in
+            lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 33 |) in
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
               Ty.tuple [],
@@ -1101,7 +1101,7 @@ Module Impl_payment_channel_PaymentChannel.
             |) in
           let~ signature_account_id :
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
-            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+            lib.repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
               Ty.tuple [],

@@ -3498,7 +3498,7 @@ Module extension.
                 []
               |),
               [
-                repeat (|
+                lib.repeat (|
                   M.read (|
                     get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", A |)
                   |),

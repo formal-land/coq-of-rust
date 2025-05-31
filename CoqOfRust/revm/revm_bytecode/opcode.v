@@ -3942,7 +3942,7 @@ Module opcode.
                 []
                 [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
             ] :=
-        repeat (|
+        lib.repeat (|
           Value.StructTuple
             "core::option::Option::None"
             []
