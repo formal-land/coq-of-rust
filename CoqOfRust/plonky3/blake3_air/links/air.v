@@ -157,55 +157,30 @@ Module Impl_Blake3Air.
   Admitted.
 End Impl_Blake3Air.
 
-(* 
-impl<F> BaseAir<F> for Blake3Air {
-    fn width(&self) -> usize {
-        NUM_BLAKE3_COLS
-    }
-}
-*)
+(* impl<F> BaseAir<F> for Blake3Air { *)
 Module Impl_BaseAir_for_Blake3Air.
-(* 
-(* impl<AB: AirBuilder> AirBuilder for FilteredAirBuilder<'_, AB> *)
+  Definition Self := Blake3Air.t.
 
-  Definition Self (AB : Set) `{Link AB} (types : AirBuilder.AssociatedTypes.t) : Set :=
-    FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr).
-*)
-  Definition Self := Blake3Air.t F.
+  (* fn width(&self) -> usize { *)
+  Definition Run_width (F_types : BaseAir.AssociatedTypes.t) 
+    `{BaseAir.AssociatedTypes.AreLinks F_types}
+    : BaseAir.Run_width Self F_types. Admitted.
 
-  Instance run_width (F : Set) `{Link F} (F_types : BaseAir.AssociatedTypes.t) : BaseAir.Run Self F.
-  Admitted.
+  Instance run (F : Set) `{Link F} (F_types : BaseAir.AssociatedTypes.t) 
+    `{BaseAir.AssociatedTypes.AreLinks F_types}
+    : BaseAir.Run Self F_types. Admitted.
 End Impl_BaseAir_for_Blake3Air.
+Export Impl_BaseAir_for_Blake3Air.
 
-(* 
-impl<AB: AirBuilder> Air<AB> for Blake3Air {
-    fn eval(&self, builder: &mut AB)
-*)
+(* impl<AB: AirBuilder> Air<AB> for Blake3Air { *)
 Module Impl_Air_for_Blake3Air.
   Definition Self := Blake3Air.t.
 
-  (* Instance run
-    (AB : Set) `{Link AB}
-    (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
-    Air.Run Self.
-  Admitted. *)
+  (* fn eval(&self, builder: &mut AB) *)
+  Definition Run_eval (Air_types : Air.AssociatedTypes.t) `{Air.AssociatedTypes.AreLinks Air_types}
+    : Air.Run_eval Self Air_types. Admitted.
 
-  Instance run : Air.Run Self.
-  (* Admitted. *)
+  Instance run (Air_types : Air.AssociatedTypes.t) `{Air.AssociatedTypes.AreLinks Air_types} 
+    : Air.Run Self Air_types. Admitted.
 End Impl_Air_for_Blake3Air.
-
-(* (* impl<AB: AirBuilder> AirBuilder for FilteredAirBuilder<'_, AB> *)
-Module Impl_AirBuilder_for_FilteredAirBuilder.
-  Definition Self (AB : Set) `{Link AB} (types : AirBuilder.AssociatedTypes.t) : Set :=
-    FilteredAirBuilder.t AB types.(AirBuilder.AssociatedTypes.Expr).
-
-  Definition types (types : AirBuilder.AssociatedTypes.t) : AirBuilder.AssociatedTypes.t :=
-    types.
-
-  Instance run
-      (AB : Set) `{Link AB}
-      (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
-      AirBuilder.Run (Self AB types) types.
-  Admitted.
-End Impl_AirBuilder_for_FilteredAirBuilder.
-Export Impl_AirBuilder_for_FilteredAirBuilder. *)
+Export Impl_Air_for_Blake3Air.
