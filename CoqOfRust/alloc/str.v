@@ -8072,7 +8072,7 @@ Module str.
                 (Ty.path "array")
                 [ Value.Integer IntegerKind.Usize 16 ]
                 [ Ty.path "bool" ] :=
-            repeat (| Value.Bool false, Value.Integer IntegerKind.Usize 16 |) in
+            lib.repeat (| Value.Bool false, Value.Integer IntegerKind.Usize 16 |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.loop (|

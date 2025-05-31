@@ -4699,7 +4699,7 @@ Module file_format_common.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 1 ]
                         [ Ty.path "u8" ] :=
-                    repeat (|
+                    lib.repeat (|
                       Value.Integer IntegerKind.U8 0,
                       Value.Integer IntegerKind.Usize 1
                     |) in
@@ -4880,7 +4880,7 @@ Module file_format_common.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 4 ]
                         [ Ty.path "u8" ] :=
-                    repeat (|
+                    lib.repeat (|
                       Value.Integer IntegerKind.U8 0,
                       Value.Integer IntegerKind.Usize 4
                     |) in

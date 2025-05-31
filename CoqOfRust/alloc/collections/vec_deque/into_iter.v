@@ -1345,7 +1345,7 @@ Module collections.
                               [ N ]
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ] :=
-                          repeat (|
+                          lib.repeat (|
                             M.read (|
                               get_constant (|
                                 "alloc::collections::vec_deque::into_iter::next_chunk_discriminant",

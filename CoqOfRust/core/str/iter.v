@@ -411,7 +411,7 @@ Module str.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "bool" ] :=
-                                            repeat (|
+                                            lib.repeat (|
                                               Value.Bool false,
                                               Value.Integer IntegerKind.Usize 32
                                             |) in
@@ -12309,7 +12309,7 @@ Module str.
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 2 ]
                             [ Ty.path "u16" ] :=
-                        repeat (|
+                        lib.repeat (|
                           Value.Integer IntegerKind.U16 0,
                           Value.Integer IntegerKind.Usize 2
                         |) in

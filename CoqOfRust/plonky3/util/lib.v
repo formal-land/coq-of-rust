@@ -316,7 +316,7 @@ Definition indices_arr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (M.read (|
         let~ indices_arr : Ty.apply (Ty.path "array") [ N ] [ Ty.path "usize" ] :=
-          repeat (| Value.Integer IntegerKind.Usize 0, N |) in
+          lib.repeat (| Value.Integer IntegerKind.Usize 0, N |) in
         let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -2446,7 +2446,7 @@ Definition iter_next_chunk (ε : list Value.t) (τ : list Ty.t) (α : list Value
                           "Item"
                       ]
                   ] :=
-              repeat (|
+              lib.repeat (|
                 M.read (|
                   get_constant (|
                     "p3_util::iter_next_chunk_discriminant",

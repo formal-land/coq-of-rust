@@ -45,19 +45,6 @@
 
 ## Contract
 
-- [ ] `eofcreate`
-- [ ] `return_contract`
-- [ ] `extcall_input`
-- [ ] `extcall_gas_calc`
-- [ ] `pop_extcall_target_address`
-- [ ] `extcall`
-- [ ] `extdelegatecall`
-- [ ] `extstaticcall`
-- [ ] `create`
-- [ ] `call`
-- [ ] `call_code`
-- [ ] `delegate_call`
-- [ ] `static_call`
 
 ## Control
 
@@ -161,9 +148,61 @@
 
 - [ ] `cast_slice_to_u256`
 
+## Contract/Call
+
+- [x] `call`
+
+## Contract/Call_code
+
+- [x] `call_code`
+
+## Contract/Create
+
+- [x] `create`
+
+## Contract/Delegate_call
+
+- [x] `delegate_call`
+
+## Contract/Eofcreate
+
+- [x] `eofcreate`
+
+## Contract/Extcall
+
+- [x] `extcall`
+
+## Contract/Extcall_gas_calc
+
+- [x] `extcall_gas_calc`
+
+## Contract/Extcall_input
+
+- [x] `extcall_input`
+
+## Contract/Extdelegatecall
+
+- [x] `extdelegatecall`
+
+## Contract/Extstaticcall
+
+- [x] `extstaticcall`
+
+## Contract/Pop_extcall_target_address
+
+- [x] `pop_extcall_target_address`
+
+## Contract/Return_contract
+
+- [ ] `return_contract`
+
+## Contract/Static_call
+
+- [x] `static_call`
+
 ## Summary
 
 - Total: 120
-- Admitted: 33
-- Defined: 87
-- Percentage: 72.50%
+- Admitted: 21
+- Defined: 99
+- Percentage: 82.50%

@@ -36,6 +36,14 @@ Module Impl_Bytes.
       bytes.Impl_bytes_bytes_Bytes.len [] [] [ φ self ]
       Usize.t.
   Admitted.
+
+  (* pub fn clear(&mut self) *)
+  Instance run_clear (self : Ref.t Pointer.Kind.MutRef Self) :
+    Run.Trait bytes.Impl_bytes_bytes_Bytes.clear [] [] [φ self] unit.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_Bytes.
 Export Impl_Bytes.
 

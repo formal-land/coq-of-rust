@@ -513,7 +513,7 @@ Module signed.
                         |)
                       |) in
                     let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                      repeat (|
+                      lib.repeat (|
                         M.read (|
                           get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
                         |),
@@ -679,7 +679,7 @@ Module signed.
                         |)
                       |) in
                     let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                      repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                      lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                     let~ _ : Ty.tuple [] :=
                       M.write (|
                         M.SubPointer.get_array_field (|
@@ -743,7 +743,7 @@ Module signed.
         ltac:(M.monadic
           (M.read (|
             let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-              repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+              lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
             M.alloc (|
               Value.StructTuple
                 "alloy_primitives::signed::int::Signed"
@@ -839,7 +839,7 @@ Module signed.
                         |)
                       |) in
                     let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                      repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                      lib.repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
                     let~ _ : Ty.tuple [] :=
                       M.write (|
                         M.SubPointer.get_array_field (| limbs, Value.Integer IntegerKind.Usize 0 |),

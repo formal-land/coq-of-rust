@@ -32,12 +32,15 @@ Module Option.
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with_None : of_value.
 
-  Lemma of_value_with_Some {A : Set} `{Link A} (value : A) value' :
+  Lemma of_value_with_Some
+      A' (A : Set) `{Link A}
+      value' (value : A) :
+    A' = Φ A ->
     value' = φ value ->
-    Value.StructTuple "core::option::Option::Some" [] [Φ A] [value'] =
+    Value.StructTuple "core::option::Option::Some" [] [A'] [value'] =
     φ (Some value).
   Proof. intros; subst; reflexivity. Qed.
-  Smpl Add apply of_value_with_Some : of_value.
+  Smpl Add unshelve eapply of_value_with_Some : of_value.
 
   Definition of_value_None A' :
     OfTy.t A' ->
@@ -49,13 +52,14 @@ Module Option.
   Defined.
   Smpl Add unshelve eapply of_value_None : of_value.
 
-  Definition of_value_Some A' value' :
-    forall
-      (of_value_value : OfValue.t value'),
-    A' = Φ (OfValue.get_Set of_value_value) ->
+  Definition of_value_Some A' value'
+      (H_A' : OfTy.t A')
+      (value : OfTy.get_Set H_A') :
+      value' = φ value ->
     OfValue.t (Value.StructTuple "core::option::Option::Some" [] [A'] [value']).
   Proof.
-    intros [A ? value] **.
+    intros.
+    destruct H_A' as [A].
     eapply OfValue.Make with (A := option A) (value := Some value).
     now subst.
   Defined.
@@ -178,3 +182,13 @@ Module Impl_Try_for_Option.
   Admitted.
 End Impl_Try_for_Option.
 Export Impl_Try_for_Option.
+
+(* impl<T> ops::FromResidual<Option<convert::Infallible>> for Option<T> *)
+Module Impl_FromResidual_Infallible_for_Option.
+  Definition Self (T : Set) : Set :=
+    option T.
+
+  Instance run (T : Set) `{Link T} : FromResidual.Run (Self T) (option Infallible.t).
+  Admitted.
+End Impl_FromResidual_Infallible_for_Option.
+Export Impl_FromResidual_Infallible_for_Option.

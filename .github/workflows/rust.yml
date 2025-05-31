@@ -85,6 +85,8 @@ jobs:
             touch src/lib.rs
             export RUST_MIN_STACK=800000000
             time cargo coq-of-rust
+            sed -i 's/Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./(* Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./' src/array/mod.v
+            sed -i 's/End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T. *)/' src/array/mod.v
             rsync -rcv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../../../..
           endGroup

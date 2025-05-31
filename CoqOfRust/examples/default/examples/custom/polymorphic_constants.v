@@ -90,7 +90,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [
               ("data", Value.Integer IntegerKind.I32 42);
               ("array",
-                repeat (| Value.Integer IntegerKind.I32 42, Value.Integer IntegerKind.Usize 3 |))
+                lib.repeat (|
+                  Value.Integer IntegerKind.I32 42,
+                  Value.Integer IntegerKind.Usize 3
+                |))
             ] in
         let~ bar :
             Ty.apply

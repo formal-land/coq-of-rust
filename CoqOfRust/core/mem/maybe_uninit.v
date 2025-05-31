@@ -241,7 +241,7 @@ Module mem.
         match ε, τ, α with
         | [ N ], [], [] =>
           ltac:(M.monadic
-            (repeat (|
+            (lib.repeat (|
               M.read (|
                 get_constant (|
                   "core::mem::maybe_uninit::uninit_array_discriminant",

@@ -191,7 +191,7 @@ Module num.
                   ("decimal_point", Value.Integer IntegerKind.I32 0);
                   ("truncated", Value.Bool false);
                   ("digits",
-                    repeat (|
+                    lib.repeat (|
                       Value.Integer IntegerKind.U8 0,
                       Value.Integer IntegerKind.Usize 768
                     |))

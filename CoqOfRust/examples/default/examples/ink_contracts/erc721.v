@@ -1186,7 +1186,7 @@ Module Impl_erc721_Erc721.
                               []
                             |),
                             [
-                              repeat (|
+                              lib.repeat (|
                                 Value.Integer IntegerKind.U8 0,
                                 Value.Integer IntegerKind.Usize 32
                               |)
@@ -2103,7 +2103,7 @@ Module Impl_erc721_Erc721.
                                                 []
                                               |),
                                               [
-                                                repeat (|
+                                                lib.repeat (|
                                                   Value.Integer IntegerKind.U8 0,
                                                   Value.Integer IntegerKind.Usize 32
                                                 |)
@@ -3436,7 +3436,7 @@ Module Impl_erc721_Erc721.
                                           []
                                         |),
                                         [
-                                          repeat (|
+                                          lib.repeat (|
                                             Value.Integer IntegerKind.U8 0,
                                             Value.Integer IntegerKind.Usize 32
                                           |)
