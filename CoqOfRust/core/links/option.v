@@ -1,6 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.convert.links.mod.
+Require Import core.links.default.
+Require Import core.links.hint.
+Require Import core.links.panickingAux.
 Require Import core.links.result.
 Require Import core.option.
 Require Import core.ops.links.function.
@@ -86,6 +89,26 @@ Module Option.
   End SubPointer.
 End Option.
 
+(* const fn unwrap_failed() -> ! *)
+Instance run_unwrap_failed :
+  Run.Trait
+    option.unwrap_failed [] [] []
+    Empty_set.
+Proof.
+  constructor.
+  run_symbolic.
+Defined.
+
+(* const fn expect_failed(msg: &str) -> ! *)
+Instance run_expect_failed (msg : Ref.t Pointer.Kind.Ref string) :
+  Run.Trait
+    option.expect_failed [] [] [ φ msg ]
+    Empty_set.
+Proof.
+  constructor.
+  run_symbolic.
+Defined.
+
 Module Impl_Option.
   Definition Self (T : Set) `{Link T} : Set := option T.
 
@@ -120,7 +143,7 @@ Module Impl_Option.
   Proof.
     constructor.
     run_symbolic.
-  Admitted.
+  Defined.
 
   (* pub const unsafe fn unwrap_unchecked(self) -> T *)
   Instance run_unwrap_unchecked {T : Set} `{Link T}
@@ -128,15 +151,27 @@ Module Impl_Option.
     Run.Trait
       (option.Impl_core_option_Option_T.unwrap_unchecked (Φ T)) [] [] [ φ self ]
       T.
-  Admitted.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 
-  (* pub fn unwrap_or_default(self) -> T *)
+  (*
+    pub fn unwrap_or_default(self) -> T
+    where
+        T: Default,
+  *)
   Instance run_unwrap_or_default {T : Set} `{Link T}
+      {run_Default_for_T : Default.Run T}
       (self : Self T) :
     Run.Trait
       (option.Impl_core_option_Option_T.unwrap_or_default (Φ T)) [] [] [ φ self ]
       T.
-  Admitted.
+  Proof.
+    constructor.
+    destruct run_Default_for_T.
+    run_symbolic.
+  Defined.
 
   (* pub fn unwrap_or(self, default: T) -> T *)
   Instance run_unwrap_or {T : Set} `{Link T}
@@ -155,7 +190,10 @@ Module Impl_Option.
     Run.Trait
       (option.Impl_core_option_Option_T.expect (Φ T)) [] [] [ φ self; φ msg ]
       T.
-  Admitted.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 End Impl_Option.
 Export Impl_Option.
 

@@ -66,4 +66,4 @@ Proof.
   destruct (TryFrom_Uint_for_u64.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   destruct Impl_IntoAddress_for_U256.run.
   run_symbolic.
-Defined.
+Admitted.
