@@ -40,6 +40,7 @@ Module Impl_Blake3Air.
       (RowMajorMatrix.t F).
   Proof.
     constructor.
+    (* destruct run_PrimeField64_for_F. *)
     run_symbolic.
     (* "rand_core::SeedableRng::seed_from_u64" *)
   Admitted.
@@ -70,6 +71,9 @@ Module Impl_Blake3Air.
     (* NOTE: I think the `PolymorphicFunction.t` goals should be generated from somewhere
        using `unshelve` or `eaaply` or `econstructor`... *)
     (* core::slice::iter::Iter::copied *)
+    (* p3_air::utils::pack_bits_le *)
+    (* p3_air::utils::add2 *)
+    (* p3_air::utils::xor_32_shift *)
   Admitted.
 
   (* 
@@ -96,8 +100,8 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     run_symbolic.
-    (* - typeclasses eauto. *)
-    (* PolymorphicFunction.t... seems like it cannot be completely resolved by current ltac*)
+    (* p3_blake3_air::columns::Blake3State::row0
+    Seems like Coq cannot recognize our current definition in struct is a link... *)
   Admitted.
 
   (* 
@@ -152,7 +156,9 @@ Module Impl_Blake3Air.
   Proof.
     constructor.
     destruct run_AirBuilder_for_AB.
-    (* Stuck at a lot of redundant `Trait` goals *)
+    (* NOTE: (Mutal dependency?) If I have understood the goals correctly, this proof is requiring
+    instances of `Impl_p3_blake3_air_air_Blake3Air`, which are defined below as
+    `Impl_Air_for_Blake3Air` *)
     run_symbolic.
   Admitted.
 End Impl_Blake3Air.
