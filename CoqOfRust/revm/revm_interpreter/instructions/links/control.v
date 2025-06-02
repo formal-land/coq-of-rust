@@ -1,7 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloc.links.slice.
 Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import core.convert.links.mod.
 Require Import core.convert.links.num.
 Require Import core.links.option.
 Require Import core.links.result.
@@ -308,7 +310,9 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
+  destruct run_Deref_for_Synthetic1.
   destruct Impl_Default_for_Bytes.run.
+  destruct (Impl_Into_for_From_T.run Impl_From_Vec_u8_for_Bytes.run).
   run_symbolic.
 Admitted.
 
