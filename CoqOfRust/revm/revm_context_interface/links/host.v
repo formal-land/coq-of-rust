@@ -17,10 +17,45 @@ pub struct SStoreResult {
 }
 *)
 Module SStoreResult.
-  Parameter t : Set.
+  Record t : Set := {
+    original_value : aliases.U256.t;
+    present_value : aliases.U256.t;
+    new_value : aliases.U256.t;
+  }.
 
-  Global Instance IsLink : Link t.
-  Admitted.
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::host::SStoreResult";
+    φ x :=
+      Value.StructRecord "revm_context_interface::host::SStoreResult" [] [] [
+        ("original_value", φ x.(original_value));
+        ("present_value", φ x.(present_value));
+        ("new_value", φ x.(new_value))
+      ]
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::host::SStoreResult").
+  Proof.
+    eapply OfTy.Make with (A := t).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with
+      original_value' original_value
+      present_value' present_value
+      new_value' new_value :
+    original_value' = φ original_value ->
+    present_value' = φ present_value ->
+    new_value' = φ new_value ->
+    Value.StructRecord "revm_context_interface::host::SStoreResult" [] [] [
+      ("original_value", original_value');
+      ("present_value", present_value');
+      ("new_value", new_value')
+    ] = φ (Build_t original_value present_value new_value).
+  Proof.
+    now intros; subst.
+  Qed.
+  Smpl Add unshelve eapply of_value_with : of_value.
 End SStoreResult.
 
 (*

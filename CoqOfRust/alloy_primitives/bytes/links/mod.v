@@ -121,3 +121,4 @@ Module Impl_From_Vec_u8_for_Bytes.
   Instance run : From.Run Self (Vec.t U8.t Global.t).
   Admitted.
 End Impl_From_Vec_u8_for_Bytes.
+Export Impl_From_Vec_u8_for_Bytes.

@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import core.convert.links.mod.
+Require Import core.links.default.
 Require Import core.links.option.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.block.
